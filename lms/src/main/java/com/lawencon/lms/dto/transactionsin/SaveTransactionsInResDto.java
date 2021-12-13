@@ -1,14 +1,14 @@
 package com.lawencon.lms.dto.transactionsin;
 
-public class InsertResTransactionsInDto {
-	private InsertResTransactionsInDataDto data;
+public class SaveTransactionsInResDto {
+	private SaveTransactionsInDataResDto data;
 	private String msg;
 
-	public InsertResTransactionsInDataDto getData() {
+	public SaveTransactionsInDataResDto getData() {
 		return data;
 	}
 
-	public void setData(InsertResTransactionsInDataDto data) {
+	public void setData(SaveTransactionsInDataResDto data) {
 		this.data = data;
 	}
 

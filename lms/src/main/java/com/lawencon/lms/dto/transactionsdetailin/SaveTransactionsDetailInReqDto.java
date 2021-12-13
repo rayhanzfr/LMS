@@ -1,6 +1,6 @@
 package com.lawencon.lms.dto.transactionsdetailin;
 
-public class InsertReqTransactionsDetailInDto {
+public class SaveTransactionsDetailInReqDto {
 
 	private String transactionsInId;
 	private String locationsId;
