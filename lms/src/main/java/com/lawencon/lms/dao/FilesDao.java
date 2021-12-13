@@ -6,9 +6,11 @@ import com.lawencon.lms.model.Files;
 
 public interface FilesDao {
 	
-	void saveOrUpdate(Files items) throws Exception;
+	Files saveOrUpdate(Files items) throws Exception;
 	
 	Files getById(String id) throws Exception;
 	
 	List<Files> getAll() throws Exception;
+	
+	Boolean removeById(String id) throws Exception;
 }
