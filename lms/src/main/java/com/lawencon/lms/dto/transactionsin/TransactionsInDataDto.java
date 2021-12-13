@@ -1,12 +1,16 @@
 package com.lawencon.lms.dto.transactionsin;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.lawencon.lms.dto.transactionsdetailin.InsertReqTransactionsDetailInDto;
 
 public class TransactionsInDataDto {
 	private String id;
 	private String transactionsCode;
 	private String transactionsDate;
 	private String transactionsOutId;
+	private List<InsertReqTransactionsDetailInDto> transactionsDetailIn;
 	private Integer version;
 	private LocalDateTime createdAt;
 	private String createdBy;
@@ -44,6 +48,14 @@ public class TransactionsInDataDto {
 
 	public void setTransactionsOutId(String transactionsOutId) {
 		this.transactionsOutId = transactionsOutId;
+	}
+	
+	public List<InsertReqTransactionsDetailInDto> getTransactionsDetailIn() {
+		return transactionsDetailIn;
+	}
+
+	public void setTransactionsDetailIn(List<InsertReqTransactionsDetailInDto> transactionsDetailIn) {
+		this.transactionsDetailIn = transactionsDetailIn;
 	}
 
 	public Integer getVersion() {
