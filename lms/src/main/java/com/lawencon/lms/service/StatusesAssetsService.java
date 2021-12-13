@@ -1,16 +1,16 @@
 package com.lawencon.lms.service;
 
+import java.util.List;
+
 import com.lawencon.lms.model.StatusesAssets;
 
 public interface StatusesAssetsService {
-	void getAll() throws Exception;
+	List<StatusesAssets> getAll() throws Exception;
 
-	void getById(Long id) throws Exception;
+	StatusesAssets getById(Long id) throws Exception;
 
-	StatusesAssets insert(StatusesAssets statusesAssets) throws Exception;
+	void saveOrUpdate(StatusesAssets statusesAssets) throws Exception;
 
-	StatusesAssets update(StatusesAssets statusesAssets) throws Exception;
-
-	void deleteById(Long id) throws Exception;
+	Boolean deleteById(Long id) throws Exception;
 	
 }

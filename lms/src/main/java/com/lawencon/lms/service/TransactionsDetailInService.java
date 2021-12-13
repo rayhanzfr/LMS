@@ -1,11 +1,13 @@
 package com.lawencon.lms.service;
 
+import java.util.List;
+
+import com.lawencon.lms.model.TransactionsDetailIn;
+
 public interface TransactionsDetailInService {
-	void getAll() throws Exception;
+	List<TransactionsDetailIn> getAll() throws Exception;
 
-	void getById(Long id) throws Exception;
+	TransactionsDetailIn getById(Long id) throws Exception;
 
-	TransactionsDetailInService insert(TransactionsDetailInService transactionsInService) throws Exception;
-
-	TransactionsDetailInService update(TransactionsDetailInService transactionsInService) throws Exception;
+	void saveOrUpdate(TransactionsDetailIn transactionsDetailIn) throws Exception;
 }
