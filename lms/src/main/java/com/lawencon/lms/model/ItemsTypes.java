@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import com.lawencon.base.BaseEntity;
 
 @Entity
-@Table(name="items_types")
+@Table
 public class ItemsTypes extends BaseEntity{
 	
 	@Column(nullable=false, unique=true, length=15)

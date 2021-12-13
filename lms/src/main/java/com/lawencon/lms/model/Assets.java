@@ -12,46 +12,46 @@ import javax.persistence.Table;
 import com.lawencon.base.BaseEntity;
 
 @Entity
-@Table(name ="assets")
+@Table
 public class Assets extends BaseEntity{
 
 	@ManyToOne
 	@JoinColumn(nullable=false)
-	private Items itemsId;
+	private Items items;
 	
 	@ManyToOne
 	@JoinColumn(nullable=false)
-	private Invoices invoicesId;
+	private Invoices invoices;
 	
 	@Column(nullable=false)
 	private String assetsName;
 	
 	@OneToOne
 	@JoinColumn(nullable=false)
-	private StatusesAssets statusesAssetsId;
+	private StatusesAssets statusesAssets;
 	
 	@OneToOne
 	@JoinColumn(nullable=false)
-	private StatusesInOut statuses_in_out_id;
+	private StatusesInOut statusesInOut;
 	
 	@Column
 	private LocalDate assetsExpired;
 
 	
 	public Items getItemsId() {
-		return itemsId;
+		return items;
 	}
 
-	public void setItemsId(Items itemsId) {
-		this.itemsId = itemsId;
+	public void setItemsId(Items items) {
+		this.items = items;
 	}
 
 	public Invoices getInvoicesId() {
-		return invoicesId;
+		return invoices;
 	}
 
-	public void setInvoicesId(Invoices invoicesId) {
-		this.invoicesId = invoicesId;
+	public void setInvoicesId(Invoices invoices) {
+		this.invoices = invoices;
 	}
 
 	public String getAssetsName() {
@@ -63,19 +63,19 @@ public class Assets extends BaseEntity{
 	}
 
 	public StatusesAssets getStatusesAssetsId() {
-		return statusesAssetsId;
+		return statusesAssets;
 	}
 
-	public void setStatusesAssetsId(StatusesAssets statusesAssetsId) {
-		this.statusesAssetsId = statusesAssetsId;
+	public void setStatusesAssetsId(StatusesAssets statusesAssets) {
+		this.statusesAssets = statusesAssets;
 	}
 
-	public StatusesInOut getStatuses_in_out_id() {
-		return statuses_in_out_id;
+	public StatusesInOut getStatusesInOut() {
+		return statusesInOut;
 	}
 
-	public void setStatuses_in_out_id(StatusesInOut statuses_in_out_id) {
-		this.statuses_in_out_id = statuses_in_out_id;
+	public void setStatusesInOut(StatusesInOut statusesInOut) {
+		this.statusesInOut = statusesInOut;
 	}
 
 	public LocalDate getAssetsExpired() {
@@ -84,7 +84,5 @@ public class Assets extends BaseEntity{
 
 	public void setAssetsExpired(LocalDate assetsExpired) {
 		this.assetsExpired = assetsExpired;
-	}
-	
-	
+	}	
 }
