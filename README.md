@@ -1,6 +1,9 @@
 Lawencon Management System
 
-Anggota Kelompok
+Anggota Kelompok:
+
 Rayhan
+
 Bondhan
+
 Bahrul
