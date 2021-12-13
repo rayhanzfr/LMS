@@ -3,14 +3,12 @@ package com.lawencon.lms.dto.transactionsin;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.lawencon.lms.dto.transactionsdetailin.SaveTransactionsDetailInReqDto;
-
-public class TransactionsInDataDto {
+public class GetTransactionsInDataDto {
 	private String id;
 	private String transactionsCode;
 	private String transactionsDate;
 	private String transactionsOutId;
-	private List<SaveTransactionsDetailInReqDto> transactionsDetailIn;
+	private List<SaveTransactionsDetailsInReqDto> transactionsDetailIn;
 	private Integer version;
 	private LocalDateTime createdAt;
 	private String createdBy;
@@ -50,11 +48,11 @@ public class TransactionsInDataDto {
 		this.transactionsOutId = transactionsOutId;
 	}
 	
-	public List<SaveTransactionsDetailInReqDto> getTransactionsDetailIn() {
+	public List<SaveTransactionsDetailsInReqDto> getTransactionsDetailIn() {
 		return transactionsDetailIn;
 	}
 
-	public void setTransactionsDetailIn(List<SaveTransactionsDetailInReqDto> transactionsDetailIn) {
+	public void setTransactionsDetailIn(List<SaveTransactionsDetailsInReqDto> transactionsDetailIn) {
 		this.transactionsDetailIn = transactionsDetailIn;
 	}
 
