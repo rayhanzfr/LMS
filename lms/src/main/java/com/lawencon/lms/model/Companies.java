@@ -7,7 +7,6 @@ import javax.persistence.Table;
 import com.lawencon.base.BaseEntity;
 
 @Entity
-@Table(name = "companies")
 public class Companies extends BaseEntity {
 
 	@Column(length = 10, nullable = false, unique = true)
