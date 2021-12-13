@@ -1,16 +1,18 @@
 package com.lawencon.lms.service;
 
+import java.util.List;
+
 import com.lawencon.lms.model.Companies;
 
 public interface CompaniesService {
 
-	void getAll() throws Exception;
+	List<Companies> getAll() throws Exception;
 
-	void getById(Long id) throws Exception;
+	Companies getById(Long id) throws Exception;
 
 	Companies insert(Companies companies) throws Exception;
 
 	Companies update(Companies companies) throws Exception;
 
-	void deleteById(Long id) throws Exception;
+	Boolean deleteById(Long id) throws Exception;
 }

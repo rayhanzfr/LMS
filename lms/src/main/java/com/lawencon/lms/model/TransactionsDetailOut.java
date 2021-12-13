@@ -33,6 +33,46 @@ public class TransactionsDetailOut extends BaseEntity{
 	
 	@Column(nullable=false)
 	private LocalDate transactionDetailOutExpired;
+
+	public TransactionsOut getTransactionsOutId() {
+		return transactionsOutId;
+	}
+
+	public void setTransactionsOutId(TransactionsOut transactionsOutId) {
+		this.transactionsOutId = transactionsOutId;
+	}
+
+	public Locations getLocationsId() {
+		return locationsId;
+	}
+
+	public void setLocationsId(Locations locationsId) {
+		this.locationsId = locationsId;
+	}
+
+	public Employees getEmployeesId() {
+		return employeesId;
+	}
+
+	public void setEmployeesId(Employees employeesId) {
+		this.employeesId = employeesId;
+	}
+
+	public Assets getAssetsId() {
+		return assetsId;
+	}
+
+	public void setAssetsId(Assets assetsId) {
+		this.assetsId = assetsId;
+	}
+
+	public LocalDate getTransactionDetailOutExpired() {
+		return transactionDetailOutExpired;
+	}
+
+	public void setTransactionDetailOutExpired(LocalDate transactionDetailOutExpired) {
+		this.transactionDetailOutExpired = transactionDetailOutExpired;
+	}
 	
 	
 }
