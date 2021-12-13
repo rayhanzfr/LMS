@@ -10,18 +10,17 @@ import javax.persistence.Table;
 import com.lawencon.base.BaseEntity;
 
 @Entity
-@Table(name = "locations")
 public class Locations extends BaseEntity{
 	
-	@Column(name = "locations_code", length = 10, nullable = false, unique = true)
+	@Column(length = 10, nullable = false, unique = true)
 	private String locationsCode;
 	
-	@Column(name = "locations_deploy", nullable = false)
+	@Column(nullable = false)
 	private String locationsDeploy;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "companies_id", nullable = false)
-	private Companies companiesId;
+	private Companies companies;
 
 	public String getLocationsCode() {
 		return locationsCode;
@@ -39,12 +38,12 @@ public class Locations extends BaseEntity{
 		this.locationsDeploy = locationsDeploy;
 	}
 
-	public Companies getCompaniesId() {
-		return companiesId;
+	public Companies getCompanies() {
+		return companies;
 	}
 
-	public void setCompaniesId(Companies companiesId) {
-		this.companiesId = companiesId;
+	public void setCompanies(Companies companies) {
+		this.companies = companies;
 	}
 
 }
