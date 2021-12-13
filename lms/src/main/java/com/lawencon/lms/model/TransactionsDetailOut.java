@@ -73,4 +73,6 @@ public class TransactionsDetailOut extends BaseEntity{
 	public void setTransactionDetailOutExpired(LocalDate transactionDetailOutExpired) {
 		this.transactionDetailOutExpired = transactionDetailOutExpired;
 	}
+
+	
 }
