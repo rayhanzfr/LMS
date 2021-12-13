@@ -9,12 +9,12 @@ import javax.persistence.Table;
 import com.lawencon.base.BaseEntity;
 
 @Entity
-@Table(name="employees")
+@Table
 public class Employees extends BaseEntity{
 
 	@OneToOne
 	@JoinColumn(nullable=false)
-	private Users usersId;
+	private Users users;
 	
 	@Column(length=255, nullable=false)
 	private String employeesFullname;
@@ -25,12 +25,12 @@ public class Employees extends BaseEntity{
 	@Column(length=14, nullable=false,unique=true)
 	private String employeesPhoneNumber;
 
-	public Users getUsersId() {
-		return usersId;
+	public Users getUsers() {
+		return users;
 	}
 
-	public void setUsersId(Users usersId) {
-		this.usersId = usersId;
+	public void setUsers(Users users) {
+		this.users = users;
 	}
 
 	public String getEmployeesFullname() {

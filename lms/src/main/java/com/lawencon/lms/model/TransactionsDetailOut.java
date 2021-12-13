@@ -12,58 +12,58 @@ import javax.persistence.Table;
 import com.lawencon.base.BaseEntity;
 
 @Entity
-@Table(name="transactions_detail_out")
+@Table
 public class TransactionsDetailOut extends BaseEntity{
 
 	@ManyToOne
 	@JoinColumn(nullable=false)
-	private TransactionsOut transactionsOutId;
+	private TransactionsOut transactionsOut;
 	
 	@ManyToOne
 	@JoinColumn
-	private Locations locationsId;
+	private Locations locations;
 	
 	@ManyToOne
 	@JoinColumn
-	private Employees employeesId;
+	private Employees employees;
 	
 	@ManyToOne
 	@JoinColumn(nullable=false)
-	private Assets assetsId;
+	private Assets assets;
 	
 	@Column(nullable=false)
 	private LocalDate transactionDetailOutExpired;
 
-	public TransactionsOut getTransactionsOutId() {
-		return transactionsOutId;
+	public TransactionsOut getTransactionsOut() {
+		return transactionsOut;
 	}
 
-	public void setTransactionsOutId(TransactionsOut transactionsOutId) {
-		this.transactionsOutId = transactionsOutId;
+	public void setTransactionsOut(TransactionsOut transactionsOut) {
+		this.transactionsOut = transactionsOut;
 	}
 
-	public Locations getLocationsId() {
-		return locationsId;
+	public Locations getLocations() {
+		return locations;
 	}
 
-	public void setLocationsId(Locations locationsId) {
-		this.locationsId = locationsId;
+	public void setLocations(Locations locations) {
+		this.locations = locations;
 	}
 
-	public Employees getEmployeesId() {
-		return employeesId;
+	public Employees getEmployees() {
+		return employees;
 	}
 
-	public void setEmployeesId(Employees employeesId) {
-		this.employeesId = employeesId;
+	public void setEmployees(Employees employees) {
+		this.employees = employees;
 	}
 
-	public Assets getAssetsId() {
-		return assetsId;
+	public Assets getAssets() {
+		return assets;
 	}
 
-	public void setAssetsId(Assets assetsId) {
-		this.assetsId = assetsId;
+	public void setAssets(Assets assets) {
+		this.assets = assets;
 	}
 
 	public LocalDate getTransactionDetailOutExpired() {
@@ -73,6 +73,6 @@ public class TransactionsDetailOut extends BaseEntity{
 	public void setTransactionDetailOutExpired(LocalDate transactionDetailOutExpired) {
 		this.transactionDetailOutExpired = transactionDetailOutExpired;
 	}
-	
+
 	
 }

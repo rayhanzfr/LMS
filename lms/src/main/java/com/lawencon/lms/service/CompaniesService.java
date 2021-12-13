@@ -10,9 +10,7 @@ public interface CompaniesService {
 
 	Companies getById(Long id) throws Exception;
 
-	Companies insert(Companies companies) throws Exception;
-
-	Companies update(Companies companies) throws Exception;
+	void saveOrUpdate(Companies companies) throws Exception;
 
 	Boolean deleteById(Long id) throws Exception;
 }
