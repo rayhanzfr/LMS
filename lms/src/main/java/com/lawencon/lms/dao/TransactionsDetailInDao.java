@@ -9,5 +9,5 @@ public interface TransactionsDetailInDao {
 
 	TransactionsDetailIn getById(String id) throws Exception;
 
-	void saveOrUpdate(TransactionsDetailIn transactionsDetailIn) throws Exception;
+	TransactionsDetailIn saveOrUpdate(TransactionsDetailIn transactionsDetailIn) throws Exception;
 }
