@@ -2,7 +2,7 @@ package com.lawencon.lms.dto.transactionsout;
 
 import java.util.List;
 
-public class GetAllTransactionsResDto {
+public class GetAllTransactionsOutResDto {
 	private List<GetTransactionsOutDataDto> getTransactionsOutDataDto;
 	private String message;
 	public List<GetTransactionsOutDataDto> getGetTransactionsOutDataDto() {
