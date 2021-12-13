@@ -1,4 +1,4 @@
-Lawencon Management System
+Lawencon-Assets Management System
 
 Anggota Kelompok:
 
