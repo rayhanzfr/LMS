@@ -1,8 +1,8 @@
-package com.lawencon.lms.dto.transactionsdetailin;
+package com.lawencon.lms.dto.transactionsin;
 
 import java.time.LocalDateTime;
 
-public class TransactionsDetailInDataDto {
+public class GetTransactionsDetailsInDataDto {
 	private String id;
 	private String transactionsInId;
 	private String locationsId;
