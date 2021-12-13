@@ -2,18 +2,18 @@ package com.lawencon.lms.dto.transactionsin;
 
 import java.util.List;
 
-import com.lawencon.lms.dto.transactionsdetailin.InsertReqTransactionsDetailInDto;
+import com.lawencon.lms.dto.transactionsdetailin.SaveTransactionsDetailInReqDto;
 
-public class SaveReqTransactionsInDto {
+public class SaveTransactionsInReqDto {
 
-	private List<InsertReqTransactionsDetailInDto> transactionsDetailDto;
+	private List<SaveTransactionsDetailInReqDto> transactionsDetailDto;
 	private String transactionsOutId;
 	
-	public List<InsertReqTransactionsDetailInDto> getTransactionsDetailDto() {
+	public List<SaveTransactionsDetailInReqDto> getTransactionsDetailDto() {
 		return transactionsDetailDto;
 	}
 
-	public void setTransactionsDetailDto(List<InsertReqTransactionsDetailInDto> transactionsDetailDto) {
+	public void setTransactionsDetailDto(List<SaveTransactionsDetailInReqDto> transactionsDetailDto) {
 		this.transactionsDetailDto = transactionsDetailDto;
 	}
 

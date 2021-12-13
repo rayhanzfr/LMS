@@ -1,6 +1,6 @@
 package com.lawencon.lms.dto.transactionsin;
 
-public class SaveResTransactionsInDataDto {
+public class SaveTransactionsInDataResDto {
 	private String id;
 
 	public String getId() {
