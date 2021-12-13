@@ -1,6 +1,6 @@
 package com.lawencon.lms.dto.assets;
 
-public class InsertResAssetsDataDto {
+public class SaveAssetsDataDto {
 	private String id;
 
 	public String getId() {

@@ -1,14 +1,14 @@
 package com.lawencon.lms.dto.assets;
 
 public class SaveAssetsResDto {
-	private SaveAssetsResDataDto data;
+	private SaveAssetsDataDto data;
 	private String message;
 
-	public SaveAssetsResDataDto getData() {
+	public SaveAssetsDataDto getData() {
 		return data;
 	}
 
-	public void setData(SaveAssetsResDataDto data) {
+	public void setData(SaveAssetsDataDto data) {
 		this.data = data;
 	}
 
