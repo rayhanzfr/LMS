@@ -1,6 +1,6 @@
 package com.lawencon.lms.dto.assets;
 
-public class InsertResAssetsDataDto {
+public class UpdateAssetsDataDto {
 	private String id;
 
 	public String getId() {
@@ -10,4 +10,5 @@ public class InsertResAssetsDataDto {
 	public void setId(String id) {
 		this.id = id;
 	}
+	
 }
