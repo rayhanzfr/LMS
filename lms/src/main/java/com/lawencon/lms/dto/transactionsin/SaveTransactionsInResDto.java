@@ -1,23 +1,23 @@
 package com.lawencon.lms.dto.transactionsin;
 
 public class SaveTransactionsInResDto {
-	private SaveTransactionsInDataResDto data;
-	private String msg;
+	private String id;
+	private SaveTransactionsDetailsInResDto listDetail;
 
-	public SaveTransactionsInDataResDto getData() {
-		return data;
+	public String getId() {
+		return id;
 	}
 
-	public void setData(SaveTransactionsInDataResDto data) {
-		this.data = data;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public String getMsg() {
-		return msg;
+	public SaveTransactionsDetailsInResDto getListDetail() {
+		return listDetail;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public void setListDetail(SaveTransactionsDetailsInResDto listDetail) {
+		this.listDetail = listDetail;
 	}
 
 }
