@@ -11,5 +11,5 @@ public interface TransactionsInDao {
 
 	TransactionsIn getByCode(String code) throws Exception;
 	
-	void saveOrUpdate(TransactionsIn transactionsIn) throws Exception;
+	TransactionsIn saveOrUpdate(TransactionsIn transactionsIn) throws Exception;
 }
