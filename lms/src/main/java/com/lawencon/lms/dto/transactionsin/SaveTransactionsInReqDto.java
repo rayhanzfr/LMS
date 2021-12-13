@@ -1,20 +1,24 @@
 package com.lawencon.lms.dto.transactionsin;
 
-import java.util.List;
-
-import com.lawencon.lms.dto.transactionsdetailin.SaveTransactionsDetailInReqDto;
-
 public class SaveTransactionsInReqDto {
-
-	private List<SaveTransactionsDetailInReqDto> transactionsDetailDto;
+	private String transactionsCode;
+	private String transactionsDate;
 	private String transactionsOutId;
-	
-	public List<SaveTransactionsDetailInReqDto> getTransactionsDetailDto() {
-		return transactionsDetailDto;
+
+	public String getTransactionsCode() {
+		return transactionsCode;
 	}
 
-	public void setTransactionsDetailDto(List<SaveTransactionsDetailInReqDto> transactionsDetailDto) {
-		this.transactionsDetailDto = transactionsDetailDto;
+	public void setTransactionsCode(String transactionsCode) {
+		this.transactionsCode = transactionsCode;
+	}
+
+	public String getTransactionsDate() {
+		return transactionsDate;
+	}
+
+	public void setTransactionsDate(String transactionsDate) {
+		this.transactionsDate = transactionsDate;
 	}
 
 	public String getTransactionsOutId() {

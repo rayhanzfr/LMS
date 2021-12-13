@@ -1,6 +1,6 @@
-package com.lawencon.lms.dto.transactionsdetailin;
+package com.lawencon.lms.dto.transactionsin;
 
-public class SaveTransactionsDetailInReqDto {
+public class SaveTransactionsDetailsInReqDto {
 
 	private String transactionsInId;
 	private String locationsId;
@@ -8,7 +8,6 @@ public class SaveTransactionsDetailInReqDto {
 	private String assetsId;
 	private String statusesTransactionsId;
 	private String returnDate;
-	private String createdBy;
 
 	public String getTransactionsInId() {
 		return transactionsInId;
@@ -56,14 +55,6 @@ public class SaveTransactionsDetailInReqDto {
 
 	public void setReturnDate(String returnDate) {
 		this.returnDate = returnDate;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
 	}
 
 }
