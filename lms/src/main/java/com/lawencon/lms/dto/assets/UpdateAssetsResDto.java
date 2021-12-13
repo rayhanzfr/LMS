@@ -1,22 +1,20 @@
 package com.lawencon.lms.dto.assets;
 
-public class InsertResAssetsDto {
-	private InsertResAssetsDataDto data;
+public class UpdateAssetsResDto {
+	private UpdateAssetsDataDto data;
 	private String msg;
-
-	public InsertResAssetsDataDto getData() {
+	public UpdateAssetsDataDto getData() {
 		return data;
 	}
-
-	public void setData(InsertResAssetsDataDto data) {
+	public void setData(UpdateAssetsDataDto data) {
 		this.data = data;
 	}
-
 	public String getMsg() {
 		return msg;
 	}
-
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
+	
+	
 }
