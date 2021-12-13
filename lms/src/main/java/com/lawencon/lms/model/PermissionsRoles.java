@@ -32,5 +32,4 @@ public class PermissionsRoles extends BaseEntity{
 		this.roles = roles;
 	}
 	
-	
 }
