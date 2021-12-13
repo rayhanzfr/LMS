@@ -3,12 +3,14 @@ package com.lawencon.lms.model;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.lawencon.base.BaseEntity;
 
+@Entity
 public class TransactionsIn extends BaseEntity {
 
 	@Column(length = 15, nullable = false)
@@ -17,10 +19,11 @@ public class TransactionsIn extends BaseEntity {
 	@Column(nullable = false)
 	private LocalDateTime transactionsDate;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(nullable = false)
-	private TransactionsOut transactionsOutId;
+	@ManyToOne()
+	@JoinColumn(name = "transactions_out_id", nullable = false)
+	private TransactionsOut transactionsOut;
 
+	
 	public String getTransactionsCode() {
 		return transactionsCode;
 	}
@@ -37,12 +40,14 @@ public class TransactionsIn extends BaseEntity {
 		this.transactionsDate = transactionsDate;
 	}
 
-	public TransactionsOut getTransactionsOutId() {
-		return transactionsOutId;
+	public TransactionsOut getTransactionsOut() {
+		return transactionsOut;
 	}
 
-	public void setTransactionsOutId(TransactionsOut transactionsOutId) {
-		this.transactionsOutId = transactionsOutId;
+	public void setTransactionsOut(TransactionsOut transactionsOut) {
+		this.transactionsOut = transactionsOut;
 	}
+
+
 
 }
