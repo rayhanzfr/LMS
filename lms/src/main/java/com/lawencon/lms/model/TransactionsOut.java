@@ -11,6 +11,8 @@ import com.lawencon.base.BaseEntity;
 public class TransactionsOut extends BaseEntity{
 	
 	@Column(nullable = false)
+	private String transactionsOutCode;
+	@Column(nullable = false)
 	private LocalDate checkOutDate;
 	@Column
 	private LocalDate expiredDate;
