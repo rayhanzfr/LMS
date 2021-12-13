@@ -1,10 +1,10 @@
-package com.lawencon.lms.dao;
+package com.lawencon.lms.service;
 
 import java.util.List;
 
 import com.lawencon.lms.model.TransactionsOut;
 
-public interface TransactionsOutDao {
+public interface TransactionsOutService {
 	TransactionsOut saveOrUpdate(TransactionsOut items) throws Exception;
 	
 	TransactionsOut getById(String id) throws Exception;

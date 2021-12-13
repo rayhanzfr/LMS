@@ -6,7 +6,7 @@ import com.lawencon.lms.model.Roles;
 
 public interface RolesDao {
 
-	void saveOrUpdate(Roles roles) throws Exception;
+	Roles saveOrUpdate(Roles roles) throws Exception;
 	
 	Roles getById(String id) throws Exception;
 	
@@ -14,4 +14,5 @@ public interface RolesDao {
 	
 	List<Roles> getAll() throws Exception;
 	
+	Boolean removeById(String id) throws Exception;
 }
