@@ -2,6 +2,8 @@ package com.lawencon.lms.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.lawencon.base.BaseEntity;
@@ -20,6 +22,10 @@ public class Companies extends BaseEntity {
 
 	@Column(nullable = false)
 	private String companiesAddress;
+
+	@ManyToOne()
+	@JoinColumn(name = "files_id", nullable = false)
+	private Files files;
 
 	public String getCompaniesCode() {
 		return companiesCode;
@@ -51,6 +57,14 @@ public class Companies extends BaseEntity {
 
 	public void setCompaniesAddress(String companiesAddress) {
 		this.companiesAddress = companiesAddress;
+	}
+
+	public Files getFiles() {
+		return files;
+	}
+
+	public void setFiles(Files files) {
+		this.files = files;
 	}
 
 }

@@ -11,8 +11,10 @@ public interface LocationsService {
 
 	Locations findByCode(String code) throws Exception;
 
-	Locations saveOrUpdate(Locations locations) throws Exception;
+	Locations save(Locations locations) throws Exception;
 
+	Locations update(Locations locations) throws Exception;
+	
 	Boolean removeById(String id) throws Exception;
 
 }

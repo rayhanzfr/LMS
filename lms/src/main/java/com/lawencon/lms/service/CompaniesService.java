@@ -11,7 +11,9 @@ public interface CompaniesService {
 
 	Companies findByCode(String code) throws Exception;
 	
-	Companies saveOrUpdate(Companies companies) throws Exception;
+	Companies save(Companies companies) throws Exception;
+	
+	Companies update(Companies companies) throws Exception;
 
 	Boolean removeById(String id) throws Exception;
 
