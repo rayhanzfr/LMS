@@ -8,11 +8,11 @@ public interface RolesDao {
 
 	Roles saveOrUpdate(Roles roles) throws Exception;
 	
-	Roles getById(String id) throws Exception;
+	Roles findById(String id) throws Exception;
 	
-	Roles getByCode(String code) throws Exception;
+	Roles findByCode(String code) throws Exception;
 	
-	List<Roles> getAll() throws Exception;
+	List<Roles> findAll() throws Exception;
 	
 	Boolean removeById(String id) throws Exception;
 }
