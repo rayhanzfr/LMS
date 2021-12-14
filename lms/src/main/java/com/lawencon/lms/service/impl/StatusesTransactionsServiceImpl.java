@@ -30,7 +30,7 @@ public class StatusesTransactionsServiceImpl extends BaseServiceImpl implements 
 	@Override
 	public StatusesTransactions update(StatusesTransactions statusesTransactions) throws Exception {
 		try {
-			StatusesTransactions statusesTransactionsDb = findById(statusesTransactions.getId());	
+			StatusesTransactions statusesTransactionsDb = findByCode(statusesTransactions.getStatusesTransactionsCode());	
 			statusesTransactions.setCreatedAt(statusesTransactionsDb.getCreatedAt());
 			statusesTransactions.setCreatedBy(statusesTransactionsDb.getCreatedBy());
 

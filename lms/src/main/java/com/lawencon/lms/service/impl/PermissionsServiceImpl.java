@@ -30,7 +30,7 @@ public class PermissionsServiceImpl extends BaseServiceImpl implements Permissio
 	@Override
 	public Permissions update(Permissions permissions) throws Exception {
 		try {
-			Permissions permissionsDb = findById(permissions.getId());	
+			Permissions permissionsDb = findByCode(permissions.getPermissionsCode());	
 			permissions.setCreatedAt(permissionsDb.getCreatedAt());
 			permissions.setCreatedBy(permissionsDb.getCreatedBy());
 
