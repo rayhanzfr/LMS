@@ -38,7 +38,7 @@ public class TransactionsOutDaoImpl extends BaseDaoImpl<TransactionsOut> impleme
 				transactionsOut.setCreatedBy(objArr[4].toString());
 				transactionsOut.setCreatedAt(((Timestamp) objArr[5]).toLocalDateTime());
 				transactionsOut.setIsActive((Boolean) objArr[6]);
-				transactionsOut.setVersion(Long.valueOf(objArr[9].toString()));
+				transactionsOut.setVersion((Integer)objArr[9]);
 			}
 		}catch (NoResultException e) {
 			e.printStackTrace();

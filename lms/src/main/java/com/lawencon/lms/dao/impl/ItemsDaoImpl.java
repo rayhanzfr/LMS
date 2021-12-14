@@ -52,7 +52,7 @@ public class ItemsDaoImpl extends BaseDaoImpl<Items> implements ItemsDao {
 				items.setCreatedBy(objArr[6].toString());
 				items.setCreatedAt(((Timestamp) objArr[7]).toLocalDateTime());
 				items.setIsActive((Boolean) objArr[8]);
-				items.setVersion(Long.valueOf(objArr[11].toString()));
+				items.setVersion((Integer)objArr[11]);
 			}
 		}catch (NoResultException e) {
 			e.printStackTrace();
