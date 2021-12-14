@@ -14,5 +14,5 @@ public interface StatusesAssetsDao {
 	
 	StatusesAssets saveOrUpdate(StatusesAssets statusesAssets) throws Exception;
 
-	Boolean deleteById(String id) throws Exception;
+	Boolean removeById(String id) throws Exception;
 }

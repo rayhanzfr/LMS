@@ -17,6 +17,12 @@ public class TransactionsOut extends BaseEntity{
 	@Column
 	private LocalDate expiredDate;
 	
+	public String getTransactionsOutCode() {
+		return transactionsOutCode;
+	}
+	public void setTransactionsOutCode(String transactionsOutCode) {
+		this.transactionsOutCode = transactionsOutCode;
+	}
 	public LocalDate getCheckOutDate() {
 		return checkOutDate;
 	}

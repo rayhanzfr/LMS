@@ -9,8 +9,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.lawencon.base.BaseEntity;
+
 @Entity
-public class TransactionsDetailIn {
+public class TransactionsDetailIn extends BaseEntity{
 
 	@ManyToOne()
 	@JoinColumn(name = "transactions_in_id", nullable = false)
