@@ -12,10 +12,10 @@ import com.lawencon.lms.model.Roles;
 public class RolesDaoImpl extends BaseDaoImpl<Roles> implements RolesDao {
 
 
-@Override
-public Roles findById(String id) throws Exception {
-	return findByCode(id);
-}
+	@Override
+	public Roles findById(String id) throws Exception {
+		return getById(id);
+	}
 
 	@Override
 	public Roles findByCode(String code) throws Exception {
@@ -27,20 +27,18 @@ public Roles findById(String id) throws Exception {
 
 	@Override
 	public List<Roles> findAll() throws Exception {
-		return findAll();
+		return getAll();
     }
 
 
 	@Override
 	public Roles saveOrUpdate(Roles roles) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return save(roles);
 	}
 	
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return deleteById(id);
 	}
 
 }
