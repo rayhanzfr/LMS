@@ -12,7 +12,9 @@ public interface InvoicesService {
 
 	Invoices findByCode(String id) throws Exception;
 
-	Invoices saveOrUpdate(Invoices invoices) throws Exception;
+	Invoices save(Invoices invoices) throws Exception;
+	
+	Invoices update(Invoices invoices) throws Exception;
 
 	Boolean removeById(String id) throws Exception;
 }
