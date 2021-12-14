@@ -12,11 +12,11 @@ public class SaveAssetsResDto {
 		this.data = data;
 	}
 
-	public String getMsg() {
+	public String getMessage() {
 		return message;
 	}
 
-	public void setMsg(String message) {
+	public void setMessage(String message) {
 		this.message = message;
 	}
 }

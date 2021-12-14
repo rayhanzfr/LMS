@@ -80,4 +80,9 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 		return listDetail;
 	}
 
+	@Override
+	public TransactionsDetailOut saveOrUpdate(TransactionsDetailOut transactionsDetailOut) throws Exception {
+		return save(transactionsDetailOut);
+	}
+
 }

@@ -8,6 +8,8 @@ public class SaveAssetsReqDto {
 	private String statusesAssetsCode;
 	private String statusesInOutCode;
 	private String assetsExpired;
+	private String createdBy;
+	private boolean isActive;
 
 	public String getItemsName() {
 		return itemsCode;
@@ -56,4 +58,29 @@ public class SaveAssetsReqDto {
 	public void setAssetsExpired(String assetsExpired) {
 		this.assetsExpired = assetsExpired;
 	}
+
+	public String getItemsCode() {
+		return itemsCode;
+	}
+
+	public void setItemsCode(String itemsCode) {
+		this.itemsCode = itemsCode;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+	
 }

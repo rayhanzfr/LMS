@@ -8,4 +8,6 @@ public interface TransactionsDetailOutDao {
 	TransactionsDetailOut findById(String id) throws Exception;
 	
 	List<TransactionsDetailOut> findByTransactionOutCode(String tansactionOutCode) throws Exception;
+	
+	TransactionsDetailOut saveOrUpdate(TransactionsDetailOut transactionsDetailOut) throws Exception;
 }

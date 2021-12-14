@@ -31,7 +31,7 @@ public class StatusesInOutDaoImpl extends BaseDaoImpl<StatusesInOut> implements 
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return removeById(id);
+		return deleteById(id);
 	}
 
 	@Override

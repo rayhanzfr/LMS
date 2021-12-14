@@ -63,7 +63,7 @@ public class UsersDaoImpl extends BaseDaoImpl<Users> implements UsersDao {
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return removeById(id);
+		return deleteById(id);
 	}
 
 }

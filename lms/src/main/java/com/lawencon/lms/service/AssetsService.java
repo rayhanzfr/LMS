@@ -1,33 +1,36 @@
 package com.lawencon.lms.service;
 
-import java.util.List;
-
-import com.lawencon.lms.model.Assets;
+import com.lawencon.lms.dto.assets.GetAllAssetsDto;
+import com.lawencon.lms.dto.assets.GetByIdAssetsDto;
+import com.lawencon.lms.dto.assets.SaveAssetsReqDto;
+import com.lawencon.lms.dto.assets.SaveAssetsResDto;
+import com.lawencon.lms.dto.assets.UpdateAssetsReqDto;
+import com.lawencon.lms.dto.assets.UpdateAssetsResDto;
 
 public interface AssetsService {
-	List<Assets> findAll() throws Exception;
+	GetAllAssetsDto findAll() throws Exception;
 
-	Assets findById(String id) throws Exception;
+	GetByIdAssetsDto findById(String id) throws Exception;
 
-	Assets findByAssetsName(String assetsName) throws Exception;
+	GetByIdAssetsDto findByAssetsName(String assetsName) throws Exception;
 
-	List<Assets> findByItemsCode(String itemsCode) throws Exception;
+	GetAllAssetsDto findByItemsCode(String itemsCode) throws Exception;
 
-	List<Assets> findByBrandsCode(String brandsCode) throws Exception;
+	GetAllAssetsDto findByBrandsCode(String brandsCode) throws Exception;
 
-	List<Assets> findByItemsTypesCode(String itemsTypesCode) throws Exception;
+	GetAllAssetsDto findByItemsTypesCode(String itemsTypesCode) throws Exception;
 
-	List<Assets> findByStatusesAssetsCode(String statusesAssetsCode) throws Exception;
+	GetAllAssetsDto findByStatusesAssetsCode(String statusesAssetsCode) throws Exception;
 
-	List<Assets> findByStatusesInOutCode(String statusesInOutCode) throws Exception;
+	GetAllAssetsDto findByStatusesInOutCode(String statusesInOutCode) throws Exception;
 
-	Assets save(Assets assets) throws Exception;
+	SaveAssetsResDto save(SaveAssetsReqDto saveAssetsReqDto) throws Exception;
 	
-	Assets update(Assets assets) throws Exception;
+	UpdateAssetsResDto update(UpdateAssetsReqDto updateAssetsReqDto) throws Exception;
 	
-	Assets updateStatusAssets(Assets assets) throws Exception;
+	UpdateAssetsResDto updateStatusAssets(UpdateAssetsReqDto updateAssetsReqDto) throws Exception;
 	
-	Assets updateStatusInOut(Assets assets) throws Exception;
+	UpdateAssetsResDto updateStatusInOut(UpdateAssetsReqDto updateAssetsReqDto) throws Exception;
 
 	Boolean removeById(String id) throws Exception;
 }
