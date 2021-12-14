@@ -10,7 +10,7 @@ public interface InvoicesService {
 
 	Invoices findById(String id) throws Exception;
 
-	Invoices findByCode(String id) throws Exception;
+	Invoices findByCode(String code) throws Exception;
 
 	Invoices save(Invoices invoices) throws Exception;
 	
