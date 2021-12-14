@@ -9,7 +9,7 @@ public class GetTransactionsInDataDto {
 	private String transactionsInDate;
 	private String transactionsOutId;
 	private List<SaveTransactionsDetailsInReqDto> transactionsDetailIn;
-	private Long version;
+	private Integer version;
 	private LocalDateTime createdAt;
 	private String createdBy;
 	private LocalDateTime updatedAt;
@@ -56,11 +56,11 @@ public class GetTransactionsInDataDto {
 		this.transactionsDetailIn = transactionsDetailIn;
 	}
 
-	public Long getVersion() {
+	public Integer getVersion() {
 		return version;
 	}
 
-	public void setVersion(Long version) {
+	public void setVersion(Integer version) {
 		this.version = version;
 	}
 

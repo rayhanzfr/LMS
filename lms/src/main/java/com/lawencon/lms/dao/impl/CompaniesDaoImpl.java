@@ -27,7 +27,8 @@ public class CompaniesDaoImpl extends BaseDaoImpl<Companies> implements Companie
 	@Override
 	public Companies findByCode(String code) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT c.id, c.companies_code, c.companies_name, c.companies_phone, c.companies_address, f.file, f.extensions, c.version, c.created_at, c.created_by, c.updated_at, c.updated_by, c.is_active ");
+		sql.append(
+				" SELECT c.id, c.companies_code, c.companies_name, c.companies_phone, c.companies_address, f.file, f.extensions, c.version, c.created_at, c.created_by, c.updated_at, c.updated_by, c.is_active ");
 		sql.append(" FROM companies as c");
 		sql.append(" INNER JOIN files as f ON f.id = c.files_id ");
 		sql.append(" WHERE companies_code = :companies_code ");
@@ -41,7 +42,7 @@ public class CompaniesDaoImpl extends BaseDaoImpl<Companies> implements Companie
 			if (resultQuery != null) {
 				Object[] objArr = (Object[]) resultQuery;
 				companies = new Companies();
-				
+
 				String id = objArr[0].toString();
 				String companiesCode = objArr[1].toString();
 				String companiesName = objArr[2].toString();
@@ -49,17 +50,17 @@ public class CompaniesDaoImpl extends BaseDaoImpl<Companies> implements Companie
 				String companiesAddress = objArr[4].toString();
 				byte[] file = objArr[5].toString().getBytes();
 				String extensions = objArr[6].toString();
-				Long version = Long.parseLong(objArr[7].toString());
+				Integer version = (Integer) objArr[7];
 				LocalDateTime createdAt = Timestamp.valueOf(objArr[8].toString()).toLocalDateTime();
 				String createdBy = objArr[9].toString();
 				LocalDateTime updatedAt = Timestamp.valueOf(objArr[10].toString()).toLocalDateTime();
 				String updatedBy = objArr[11].toString();
 				Boolean isActive = Boolean.parseBoolean(objArr[12].toString());
-				
+
 				Files files = new Files();
 				files.setFile(file);
 				files.setExtensions(extensions);
-				
+
 				companies.setId(id);
 				companies.setCompaniesCode(companiesCode);
 				companies.setCompaniesName(companiesName);
@@ -72,7 +73,7 @@ public class CompaniesDaoImpl extends BaseDaoImpl<Companies> implements Companie
 				companies.setUpdatedAt(updatedAt);
 				companies.setUpdatedBy(updatedBy);
 				companies.setIsActive(isActive);
-				
+
 			}
 		} catch (NoResultException e) {
 			e.printStackTrace();

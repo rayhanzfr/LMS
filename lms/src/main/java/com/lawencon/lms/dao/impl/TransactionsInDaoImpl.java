@@ -48,7 +48,7 @@ public class TransactionsInDaoImpl extends BaseDaoImpl<TransactionsIn> implement
 				LocalDateTime tinDate = Timestamp.valueOf(objArr[2].toString()).toLocalDateTime();
 				String toutId = objArr[3].toString();
 				String toutCode = objArr[4].toString();
-				Long version = Long.parseLong(objArr[5].toString());
+				Integer version = (Integer) objArr[5];
 				LocalDateTime createdAt = Timestamp.valueOf(objArr[6].toString()).toLocalDateTime();
 				String createdBy = objArr[7].toString();
 				LocalDateTime updatedAt = Timestamp.valueOf(objArr[8].toString()).toLocalDateTime();

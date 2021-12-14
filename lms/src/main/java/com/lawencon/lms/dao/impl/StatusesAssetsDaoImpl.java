@@ -43,7 +43,7 @@ public class StatusesAssetsDaoImpl extends BaseDaoImpl<StatusesAssets> implement
 				String id = objArr[0].toString();
 				String statusesAssetsCode = objArr[1].toString();
 				String statusesAssetsName = objArr[2].toString();
-				Long version = Long.parseLong(objArr[3].toString());
+				Integer version = (Integer) objArr[3];
 				LocalDateTime createdAt = Timestamp.valueOf(objArr[4].toString()).toLocalDateTime();
 				String createdBy = objArr[5].toString();
 				LocalDateTime updatedAt = Timestamp.valueOf(objArr[6].toString()).toLocalDateTime();
