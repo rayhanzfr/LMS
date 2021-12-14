@@ -1,15 +1,15 @@
 package com.lawencon.lms.dto.transactionsin;
 
 public class SaveTransactionsInResDto {
-	private String id;
+	private String code;
 	private SaveTransactionsDetailsInResDto listDetail;
 
-	public String getId() {
-		return id;
+	public String getCode() {
+		return code;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public SaveTransactionsDetailsInResDto getListDetail() {

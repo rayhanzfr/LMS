@@ -38,19 +38,19 @@ public class Assets extends BaseEntity{
 	private LocalDate assetsExpired;
 
 	
-	public Items getItemsId() {
+	public Items getItems() {
 		return items;
 	}
 
-	public void setItemsId(Items items) {
+	public void setItems(Items items) {
 		this.items = items;
 	}
 
-	public Invoices getInvoicesId() {
+	public Invoices getInvoices() {
 		return invoices;
 	}
 
-	public void setInvoicesId(Invoices invoices) {
+	public void setInvoices(Invoices invoices) {
 		this.invoices = invoices;
 	}
 
@@ -62,11 +62,11 @@ public class Assets extends BaseEntity{
 		this.assetsName = assetsName;
 	}
 
-	public StatusesAssets getStatusesAssetsId() {
+	public StatusesAssets getStatusesAssets() {
 		return statusesAssets;
 	}
 
-	public void setStatusesAssetsId(StatusesAssets statusesAssets) {
+	public void setStatusesAssets(StatusesAssets statusesAssets) {
 		this.statusesAssets = statusesAssets;
 	}
 
