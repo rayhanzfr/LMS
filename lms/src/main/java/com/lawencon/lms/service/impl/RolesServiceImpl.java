@@ -18,13 +18,13 @@ public class RolesServiceImpl extends BaseServiceImpl implements RolesService {
 	public Roles save(Roles roles) throws Exception {
 		try {
 			begin();
-			rolesDao.saveOrUpdate(roles);
+			roles = rolesDao.saveOrUpdate(roles);
 			commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return null;
+		return roles;
 	}
 
 	@Override
@@ -35,13 +35,13 @@ public class RolesServiceImpl extends BaseServiceImpl implements RolesService {
 			roles.setCreatedBy(rolesDb.getCreatedBy());
 
 			begin();
-			rolesDao.saveOrUpdate(roles);
+			roles = rolesDao.saveOrUpdate(roles);
 			commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return null;
+		return roles;
 	}
 
 	@Override

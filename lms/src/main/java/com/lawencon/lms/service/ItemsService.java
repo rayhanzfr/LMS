@@ -5,13 +5,15 @@ import java.util.List;
 import com.lawencon.lms.model.Items;
 
 public interface ItemsService {
-	Items saveOrUpdate(Items items) throws Exception;
+	List<Items> findAll() throws Exception;
 	
 	Items findById(String id) throws Exception;
 	
+	Items save(Items itemsBrands) throws Exception;
+	
+	Items update(Items itemsBrands) throws Exception;
+	
 	Items findByCode(String code) throws Exception;
 	
-	List<Items> findAll() throws Exception;
-	
-	void removeById(String id) throws Exception;
+	Boolean removeById(String id) throws Exception;
 }

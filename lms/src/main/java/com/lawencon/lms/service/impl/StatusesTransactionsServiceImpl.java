@@ -18,13 +18,13 @@ public class StatusesTransactionsServiceImpl extends BaseServiceImpl implements 
 	public StatusesTransactions save(StatusesTransactions statusesTransactions) throws Exception {
 		try {
 			begin();
-			statusesTransactionsDao.saveOrUpdate(statusesTransactions);
+			statusesTransactions = statusesTransactionsDao.saveOrUpdate(statusesTransactions);
 			commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return null;
+		return statusesTransactions;
 	}
 
 	@Override
@@ -35,13 +35,13 @@ public class StatusesTransactionsServiceImpl extends BaseServiceImpl implements 
 			statusesTransactions.setCreatedBy(statusesTransactionsDb.getCreatedBy());
 
 			begin();
-			statusesTransactionsDao.saveOrUpdate(statusesTransactions);
+			statusesTransactions = statusesTransactionsDao.saveOrUpdate(statusesTransactions);
 			commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return null;
+		return statusesTransactions;
 	}
 
 	@Override

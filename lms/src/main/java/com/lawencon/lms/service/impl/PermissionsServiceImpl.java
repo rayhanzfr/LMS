@@ -18,13 +18,13 @@ public class PermissionsServiceImpl extends BaseServiceImpl implements Permissio
 	public Permissions save(Permissions permissions) throws Exception {
 		try {
 			begin();
-			permissionsDao.saveOrUpdate(permissions);
+			permissions = permissionsDao.saveOrUpdate(permissions);
 			commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return null;
+		return permissions;
 	}
 
 	@Override
@@ -35,13 +35,13 @@ public class PermissionsServiceImpl extends BaseServiceImpl implements Permissio
 			permissions.setCreatedBy(permissionsDb.getCreatedBy());
 
 			begin();
-			permissionsDao.saveOrUpdate(permissions);
+			permissions = permissionsDao.saveOrUpdate(permissions);
 			commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return null;
+		return permissions;
 	}
 
 	@Override
