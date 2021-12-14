@@ -5,8 +5,8 @@ import java.util.List;
 
 public class GetTransactionsInDataDto {
 	private String id;
-	private String transactionsCode;
-	private String transactionsDate;
+	private String transactionsInCode;
+	private String transactionsInDate;
 	private String transactionsOutId;
 	private List<SaveTransactionsDetailsInReqDto> transactionsDetailIn;
 	private Integer version;
@@ -24,20 +24,20 @@ public class GetTransactionsInDataDto {
 		this.id = id;
 	}
 
-	public String getTransactionsCode() {
-		return transactionsCode;
+	public String getTransactionsInCode() {
+		return transactionsInCode;
 	}
 
-	public void setTransactionsCode(String transactionsCode) {
-		this.transactionsCode = transactionsCode;
+	public void setTransactionsInCode(String transactionsInCode) {
+		this.transactionsInCode = transactionsInCode;
 	}
 
-	public String getTransactionsDate() {
-		return transactionsDate;
+	public String getTransactionsInDate() {
+		return transactionsInDate;
 	}
 
-	public void setTransactionsDate(String transactionsDate) {
-		this.transactionsDate = transactionsDate;
+	public void setTransactionsInDate(String transactionsInDate) {
+		this.transactionsInDate = transactionsInDate;
 	}
 
 	public String getTransactionsOutId() {
@@ -47,7 +47,7 @@ public class GetTransactionsInDataDto {
 	public void setTransactionsOutId(String transactionsOutId) {
 		this.transactionsOutId = transactionsOutId;
 	}
-	
+
 	public List<SaveTransactionsDetailsInReqDto> getTransactionsDetailIn() {
 		return transactionsDetailIn;
 	}

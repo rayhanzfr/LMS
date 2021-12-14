@@ -7,7 +7,9 @@ import com.lawencon.lms.model.TransactionsDetailIn;
 public interface TransactionsDetailInService {
 	List<TransactionsDetailIn> findAll() throws Exception;
 
-	TransactionsDetailIn findById(Long id) throws Exception;
+	TransactionsDetailIn findById(String id) throws Exception;
 
-	void saveOrUpdate(TransactionsDetailIn transactionsDetailIn) throws Exception;
+	void save(TransactionsDetailIn transactionsDetailIn) throws Exception;
+	
+	void update(TransactionsDetailIn transactionsDetailIn) throws Exception;
 }

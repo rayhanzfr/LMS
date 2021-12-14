@@ -5,7 +5,9 @@ import java.util.List;
 import com.lawencon.lms.model.StatusesTransactions;
 
 public interface StatusesTransactionsService {
-	StatusesTransactions saveOrUpdate(StatusesTransactions items) throws Exception;
+	StatusesTransactions save(StatusesTransactions items) throws Exception;
+	
+	StatusesTransactions update(StatusesTransactions items) throws Exception;
 	
 	StatusesTransactions findById(String id) throws Exception;
 	

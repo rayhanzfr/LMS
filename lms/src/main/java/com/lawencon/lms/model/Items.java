@@ -3,18 +3,23 @@ package com.lawencon.lms.model;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.lawencon.base.BaseEntity;
 
 public class Items extends BaseEntity{
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "files_id")
-	private Files filesId;
+	private Files files;
 	
 	@ManyToOne
 	@JoinColumn(name = "item_types_id")
-	private ItemsTypes itemTypes;
+	private ItemsTypes itemsTypes;
+	
+	@ManyToOne
+	@JoinColumn(name = "item_brands_id")
+	private ItemsBrands itemsBrands;
 	
 	@Column(unique = true,length = 15,nullable = false)
 	private String itemsCode;
@@ -22,20 +27,28 @@ public class Items extends BaseEntity{
 	@Column(length = 30)
 	private String itemsName;
 
-	public Files getFilesId() {
-		return filesId;
+	public Files getFiles() {
+		return files;
 	}
 
-	public void setFilesId(Files filesId) {
-		this.filesId = filesId;
+	public void setFiles(Files files) {
+		this.files = files;
 	}
 
-	public ItemsTypes getItemTypes() {
-		return itemTypes;
+	public ItemsTypes getItemsTypes() {
+		return itemsTypes;
 	}
 
-	public void setItemTypes(ItemsTypes itemTypes) {
-		this.itemTypes = itemTypes;
+	public void setItemsTypes(ItemsTypes itemsTypes) {
+		this.itemsTypes = itemsTypes;
+	}
+
+	public ItemsBrands getItemsBrands() {
+		return itemsBrands;
+	}
+
+	public void setItemsBrands(ItemsBrands itemsBrands) {
+		this.itemsBrands = itemsBrands;
 	}
 
 	public String getItemsCode() {

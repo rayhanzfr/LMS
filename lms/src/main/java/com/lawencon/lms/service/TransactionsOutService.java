@@ -5,7 +5,9 @@ import java.util.List;
 import com.lawencon.lms.model.TransactionsOut;
 
 public interface TransactionsOutService {
-	TransactionsOut saveOrUpdate(TransactionsOut items) throws Exception;
+	TransactionsOut save(TransactionsOut items) throws Exception;
+	
+	TransactionsOut update(TransactionsOut items) throws Exception;
 	
 	TransactionsOut findById(String id) throws Exception;
 	
@@ -13,5 +15,4 @@ public interface TransactionsOutService {
 	
 	List<TransactionsOut> findAll() throws Exception;
 	
-	Boolean removeById(String id) throws Exception;
 }
