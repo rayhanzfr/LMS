@@ -11,8 +11,10 @@ public interface StatusesAssetsService {
 
 	StatusesAssets findByCode(String code) throws Exception;
 	
-	StatusesAssets saveOrUpdate(StatusesAssets statusesAssets) throws Exception;
+	StatusesAssets save(StatusesAssets statusesAssets) throws Exception;
 
+	StatusesAssets update(StatusesAssets statusesAssets) throws Exception;
+	
 	Boolean removeById(String id) throws Exception;
 	
 }
