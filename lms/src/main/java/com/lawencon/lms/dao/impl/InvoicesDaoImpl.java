@@ -47,7 +47,7 @@ public class InvoicesDaoImpl extends BaseDaoImpl<Invoices> implements InvoicesDa
 				LocalDateTime invoicesDate = Timestamp.valueOf(objArr[2].toString()).toLocalDateTime();
 				String storeName = objArr[3].toString();
 				BigDecimal price = new BigDecimal(objArr[4].toString());
-				Long version = Long.parseLong(objArr[5].toString());
+				Integer version = (Integer) objArr[5];
 				LocalDateTime createdAt = Timestamp.valueOf(objArr[6].toString()).toLocalDateTime();
 				String createdBy = objArr[7].toString();
 				LocalDateTime updatedAt = Timestamp.valueOf(objArr[8].toString()).toLocalDateTime();

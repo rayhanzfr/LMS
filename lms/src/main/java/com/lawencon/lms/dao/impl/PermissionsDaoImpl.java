@@ -36,7 +36,7 @@ public class PermissionsDaoImpl extends BaseDaoImpl<Permissions> implements Perm
 				permissions.setCreatedBy(objArr[3].toString());
 				permissions.setCreatedAt(((Timestamp) objArr[4]).toLocalDateTime());
 				permissions.setIsActive((Boolean) objArr[5]);
-				permissions.setVersion(Long.valueOf(objArr[8].toString()));
+				permissions.setVersion((Integer)objArr[8]);
 			}
 		}catch (NoResultException e) {
 			e.printStackTrace();

@@ -47,7 +47,7 @@ public class LocationsDaoImpl extends BaseDaoImpl<Locations> implements Location
 				String locationsCode = objArr[1].toString();
 				String locationsDeploy = objArr[2].toString();
 				String companiesName = objArr[3].toString();
-				Long version = Long.parseLong(objArr[4].toString());
+				Integer version = (Integer) objArr[4];
 				LocalDateTime createdAt = Timestamp.valueOf(objArr[5].toString()).toLocalDateTime();
 				String createdBy = objArr[6].toString();
 				LocalDateTime updatedAt = Timestamp.valueOf(objArr[7].toString()).toLocalDateTime();

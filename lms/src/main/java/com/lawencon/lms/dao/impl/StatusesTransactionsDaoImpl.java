@@ -42,7 +42,7 @@ public class StatusesTransactionsDaoImpl extends BaseDaoImpl<StatusesTransaction
 				statusesTransactions.setCreatedBy(objArr[4].toString());
 				statusesTransactions.setCreatedAt(((Timestamp) objArr[5]).toLocalDateTime());
 				statusesTransactions.setIsActive((Boolean) objArr[6]);
-				statusesTransactions.setVersion(Long.valueOf(objArr[9].toString()));
+				statusesTransactions.setVersion((Integer)objArr[9]);
 			}
 		}catch (NoResultException e) {
 			e.printStackTrace();

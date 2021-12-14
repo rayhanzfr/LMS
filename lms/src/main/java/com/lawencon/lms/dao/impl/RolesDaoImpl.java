@@ -38,7 +38,7 @@ public class RolesDaoImpl extends BaseDaoImpl<Roles> implements RolesDao {
 				roles.setCreatedBy(objArr[3].toString());
 				roles.setCreatedAt(((Timestamp) objArr[4]).toLocalDateTime());
 				roles.setIsActive((Boolean) objArr[5]);
-				roles.setVersion(Long.valueOf(objArr[8].toString()));
+				roles.setVersion((Integer)objArr[8]);
 			}
 		}catch (NoResultException e) {
 			e.printStackTrace();
