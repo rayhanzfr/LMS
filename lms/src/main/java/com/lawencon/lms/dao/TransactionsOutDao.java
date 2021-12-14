@@ -12,6 +12,4 @@ public interface TransactionsOutDao {
 	TransactionsOut findByCode(String code) throws Exception;
 	
 	List<TransactionsOut> findAll() throws Exception;
-	
-	Boolean removeById(String id) throws Exception;
 }
