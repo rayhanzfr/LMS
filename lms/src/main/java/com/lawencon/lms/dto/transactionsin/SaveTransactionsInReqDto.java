@@ -1,24 +1,24 @@
 package com.lawencon.lms.dto.transactionsin;
 
 public class SaveTransactionsInReqDto {
-	private String transactionsCode;
-	private String transactionsDate;
+	private String transactionsInCode;
+	private String transactionsInDate;
 	private String transactionsOutId;
 
-	public String getTransactionsCode() {
-		return transactionsCode;
+	public String getTransactionsInCode() {
+		return transactionsInCode;
 	}
 
-	public void setTransactionsCode(String transactionsCode) {
-		this.transactionsCode = transactionsCode;
+	public void setTransactionsInCode(String transactionsInCode) {
+		this.transactionsInCode = transactionsInCode;
 	}
 
-	public String getTransactionsDate() {
-		return transactionsDate;
+	public String getTransactionsInDate() {
+		return transactionsInDate;
 	}
 
-	public void setTransactionsDate(String transactionsDate) {
-		this.transactionsDate = transactionsDate;
+	public void setTransactionsInDate(String transactionsInDate) {
+		this.transactionsInDate = transactionsInDate;
 	}
 
 	public String getTransactionsOutId() {

@@ -1,11 +1,10 @@
 package com.lawencon.lms.model;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import com.lawencon.base.BaseEntity;
 
@@ -22,7 +21,7 @@ public class Invoices extends BaseEntity {
 	private String storeName;
 
 	@Column(nullable = false)
-	private BigInteger price;
+	private BigDecimal price;
 
 	public String getInvoicesCode() {
 		return invoicesCode;
@@ -48,12 +47,14 @@ public class Invoices extends BaseEntity {
 		this.storeName = storeName;
 	}
 
-	public BigInteger getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(BigInteger price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
+
+
 
 }

@@ -7,10 +7,12 @@ import com.lawencon.lms.model.StatusesAssets;
 public interface StatusesAssetsService {
 	List<StatusesAssets> findAll() throws Exception;
 
-	StatusesAssets findById(Long id) throws Exception;
+	StatusesAssets findById(String id) throws Exception;
 
-	void saveOrUpdate(StatusesAssets statusesAssets) throws Exception;
+	StatusesAssets findByCode(String code) throws Exception;
+	
+	StatusesAssets saveOrUpdate(StatusesAssets statusesAssets) throws Exception;
 
-	Boolean deleteById(Long id) throws Exception;
+	Boolean removeById(String id) throws Exception;
 	
 }
