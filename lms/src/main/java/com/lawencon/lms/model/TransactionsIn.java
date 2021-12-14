@@ -14,30 +14,29 @@ import com.lawencon.base.BaseEntity;
 public class TransactionsIn extends BaseEntity {
 
 	@Column(length = 15, nullable = false)
-	private String transactionsCode;
-	
+	private String transactionsInCode;
+
 	@Column(nullable = false)
-	private LocalDateTime transactionsDate;
-	
+	private LocalDateTime transactionsInDate;
+
 	@ManyToOne()
 	@JoinColumn(name = "transactions_out_id", nullable = false)
 	private TransactionsOut transactionsOut;
 
-	
-	public String getTransactionsCode() {
-		return transactionsCode;
+	public String getTransactionsInCode() {
+		return transactionsInCode;
 	}
 
-	public void setTransactionsCode(String transactionsCode) {
-		this.transactionsCode = transactionsCode;
+	public void setTransactionsInCode(String transactionsInCode) {
+		this.transactionsInCode = transactionsInCode;
 	}
 
-	public LocalDateTime getTransactionsDate() {
-		return transactionsDate;
+	public LocalDateTime getTransactionsInDate() {
+		return transactionsInDate;
 	}
 
-	public void setTransactionsDate(LocalDateTime transactionsDate) {
-		this.transactionsDate = transactionsDate;
+	public void setTransactionsInDate(LocalDateTime transactionsInDate) {
+		this.transactionsInDate = transactionsInDate;
 	}
 
 	public TransactionsOut getTransactionsOut() {
@@ -47,7 +46,5 @@ public class TransactionsIn extends BaseEntity {
 	public void setTransactionsOut(TransactionsOut transactionsOut) {
 		this.transactionsOut = transactionsOut;
 	}
-
-
 
 }

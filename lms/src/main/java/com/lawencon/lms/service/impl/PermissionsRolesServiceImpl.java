@@ -26,34 +26,39 @@ public class PermissionsRolesServiceImpl extends BaseServiceImpl implements Perm
 
 	@Override
 	public PermissionsRoles save(PermissionsRoles permissionsRoles) throws Exception {
-		Permissions permissions = new Permissions();
-		Roles roles = new Roles();
 		try {
+			Permissions permissions = permissionsService.findByCode(permissionsRoles.getPermissions().getPermissionsCode());
+			Roles roles = rolesService.findByCode(permissionsRoles.getRoles().getRolesCode());
+			permissionsRoles.setPermissions(permissions);
+			permissionsRoles.setRoles(roles);
 			begin();
-			permissionsRolesDao.saveOrUpdate(permissionsRoles);
+			permissionsRoles = permissionsRolesDao.saveOrUpdate(permissionsRoles);
 			commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return null;
+		return permissionsRoles;
 	}
 
 	@Override
 	public PermissionsRoles update(PermissionsRoles permissionsRoles) throws Exception {
 		try {
+			Permissions permissions = permissionsService.findByCode(permissionsRoles.getPermissions().getPermissionsCode());
+			Roles roles = rolesService.findByCode(permissionsRoles.getRoles().getRolesCode());
+			permissionsRoles.setPermissions(permissions);
+			permissionsRoles.setRoles(roles);
 			PermissionsRoles permissionsRolesDb = findById(permissionsRoles.getId());
 			permissionsRoles.setCreatedAt(permissionsRolesDb.getCreatedAt());
 			permissionsRoles.setCreatedBy(permissionsRolesDb.getCreatedBy());
-
 			begin();
-			permissionsRolesDao.saveOrUpdate(permissionsRoles);
+			permissionsRoles = permissionsRolesDao.saveOrUpdate(permissionsRoles);
 			commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return null;
+		return permissionsRoles;
 	}
 
 	@Override
