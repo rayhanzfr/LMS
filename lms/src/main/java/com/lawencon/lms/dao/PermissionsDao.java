@@ -8,11 +8,11 @@ public interface PermissionsDao {
 	
 	Permissions saveOrUpdate(Permissions permissions) throws Exception;
 	
-	Permissions getById(String id) throws Exception;
+	Permissions findById(String id) throws Exception;
 	
-	Permissions getByCode(String code) throws Exception;
+	Permissions findByCode(String code) throws Exception;
 	
-	List<Permissions> getAll() throws Exception;
+	List<Permissions> findAll() throws Exception;
 	
 	Boolean removeById(String id) throws Exception;
 }

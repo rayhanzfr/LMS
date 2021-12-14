@@ -8,9 +8,9 @@ public interface FilesDao {
 	
 	Files saveOrUpdate(Files items) throws Exception;
 	
-	Files getById(String id) throws Exception;
+	Files findById(String id) throws Exception;
 	
-	List<Files> getAll() throws Exception;
+	List<Files> findAll() throws Exception;
 	
 	Boolean removeById(String id) throws Exception;
 }

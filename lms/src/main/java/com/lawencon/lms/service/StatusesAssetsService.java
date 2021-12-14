@@ -5,9 +5,9 @@ import java.util.List;
 import com.lawencon.lms.model.StatusesAssets;
 
 public interface StatusesAssetsService {
-	List<StatusesAssets> getAll() throws Exception;
+	List<StatusesAssets> findAll() throws Exception;
 
-	StatusesAssets getById(Long id) throws Exception;
+	StatusesAssets findById(Long id) throws Exception;
 
 	void saveOrUpdate(StatusesAssets statusesAssets) throws Exception;
 

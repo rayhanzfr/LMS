@@ -6,8 +6,8 @@ import com.lawencon.lms.model.Employees;
 
 public interface EmployeesDao {
 
-	List<Employees> getAll()throws Exception;
-	Employees getById(String id)throws Exception;
+	List<Employees> findAll()throws Exception;
+	Employees findById(String id)throws Exception;
 	Employees saveOrUpdate(Employees employees) throws Exception;
 	Boolean removeById(String id)throws Exception;
 }
