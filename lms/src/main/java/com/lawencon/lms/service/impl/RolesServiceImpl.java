@@ -30,7 +30,7 @@ public class RolesServiceImpl extends BaseServiceImpl implements RolesService {
 	@Override
 	public Roles update(Roles roles) throws Exception {
 		try {
-			Roles rolesDb = findById(roles.getId());	
+			Roles rolesDb = findByCode(roles.getRolesCode());	
 			roles.setCreatedAt(rolesDb.getCreatedAt());
 			roles.setCreatedBy(rolesDb.getCreatedBy());
 

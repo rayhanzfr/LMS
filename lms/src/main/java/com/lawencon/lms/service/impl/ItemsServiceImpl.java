@@ -57,7 +57,7 @@ public class ItemsServiceImpl extends BaseServiceImpl implements ItemsService {
 			items.setFiles(files);
 			items.setItemsTypes(itemsTypes);
 			items.setItemsBrands(itemsBrands);
-			Items itemsDb = findById(items.getId());	
+			Items itemsDb = findByCode(items.getItemsCode());	
 			items.setCreatedAt(itemsDb.getCreatedAt());
 			items.setCreatedBy(itemsDb.getCreatedBy());
 
