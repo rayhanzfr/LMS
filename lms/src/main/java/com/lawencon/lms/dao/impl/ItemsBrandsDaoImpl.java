@@ -35,7 +35,7 @@ public class ItemsBrandsDaoImpl extends BaseDaoImpl<ItemsBrands> implements Item
 				itemsBrands.setCreatedBy(objArr[3].toString());
 				itemsBrands.setCreatedAt(((Timestamp) objArr[4]).toLocalDateTime());
 				itemsBrands.setIsActive((Boolean) objArr[5]);
-				itemsBrands.setVersion(Long.valueOf(objArr[8].toString()));
+				itemsBrands.setVersion((Integer)objArr[8]);
 			}
 		}catch (NoResultException e) {
 			e.printStackTrace();

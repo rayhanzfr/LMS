@@ -3,6 +3,7 @@ package com.lawencon.lms.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.ItemsDao;
@@ -30,15 +31,22 @@ public class ItemsServiceImpl extends BaseServiceImpl implements ItemsService {
 	private ItemsBrandsService itemsBrandsService;
 
 	@Override
-	public Items save(Items items) throws Exception {
+	public Items save(Items items,MultipartFile file) throws Exception {
 		try {
-			Files files = filesService.findById(items.getFiles().getId());
+			String img = file.getName();
+			String ext = img.substring(img.lastIndexOf(".")+1,ext.length());
+			Files filesInsert = new Files();
+			filesInsert.setFile(file.getBytes());
+			filesInsert.setExtensions(ext);
+			
+			begin();
+			Files filesDb = new Files();
+			filesDb = filesService.save(filesInsert);
 			ItemsTypes itemsTypes = itemsTypesService.findByCode(items.getItemsTypes().getItemsTypesCode());
 			ItemsBrands itemsBrands = itemsBrandsService.findByCode(items.getItemsBrands().getItemsBrandsCode());
-			items.setFiles(files);
+			items.setFiles(filesDb);
 			items.setItemsTypes(itemsTypes);
 			items.setItemsBrands(itemsBrands);
-			begin();
 			items = itemsDao.saveOrUpdate(items);
 			commit();
 		} catch (Exception e) {

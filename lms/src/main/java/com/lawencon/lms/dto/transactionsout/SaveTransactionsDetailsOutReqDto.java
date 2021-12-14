@@ -2,10 +2,12 @@ package com.lawencon.lms.dto.transactionsout;
 
 public class SaveTransactionsDetailsOutReqDto {
 	private String transactionsInId;
-	private String locationsId;
-	private String employeesId;
-	private String assetsId;
-	private String returnDate;
+	private String locationsCode;
+	private String employeesCode;
+	private String assetsName;
+	private String expiredDate;
+	private String createdBy;
+	private String isActive;
 
 	public String getTransactionsInId() {
 		return transactionsInId;
@@ -15,35 +17,53 @@ public class SaveTransactionsDetailsOutReqDto {
 		this.transactionsInId = transactionsInId;
 	}
 
-	public String getLocationsId() {
-		return locationsId;
+	public String getLocationsCode() {
+		return locationsCode;
 	}
 
-	public void setLocationsId(String locationsId) {
-		this.locationsId = locationsId;
+	public void setLocationsCode(String locationsCode) {
+		this.locationsCode = locationsCode;
 	}
 
-	public String getEmployeesId() {
-		return employeesId;
+	public String getEmployeesCode() {
+		return employeesCode;
 	}
 
-	public void setEmployeesId(String employeesId) {
-		this.employeesId = employeesId;
+	public void setEmployeesCode(String employeesCode) {
+		this.employeesCode = employeesCode;
 	}
 
-	public String getAssetsId() {
-		return assetsId;
+	public String getAssetsName() {
+		return assetsName;
 	}
 
-	public void setAssetsId(String assetsId) {
-		this.assetsId = assetsId;
+	public void setAssetsName(String assetsName) {
+		this.assetsName = assetsName;
 	}
 
-	public String getReturnDate() {
-		return returnDate;
+	public String getExpiredDate() {
+		return expiredDate;
 	}
 
-	public void setReturnDate(String returnDate) {
-		this.returnDate = returnDate;
+	public void setExpiredDate(String expiredDate) {
+		this.expiredDate = expiredDate;
 	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+	
+	
 }

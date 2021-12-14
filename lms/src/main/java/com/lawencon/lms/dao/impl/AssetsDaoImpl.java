@@ -64,9 +64,9 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 				Items items = new Items();
 				items.setItemsName(obj[2].toString());
 
-//				ItemsBrands itemsBrands = new ItemsBrands();
-//				itemsBrands.setItemsBrandsName(obj[3].toString());
-//				items.setItemsBrands(itemsBrands);
+				ItemsBrands itemsBrands = new ItemsBrands();
+				itemsBrands.setItemsBrandsName(obj[3].toString());
+				items.setItemsBrands(itemsBrands);
 
 				ItemsTypes itemsTypes = new ItemsTypes();
 				itemsTypes.setItemsTypesName(obj[4].toString());
@@ -122,9 +122,9 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 				Items items = new Items();
 				items.setItemsName(obj[2].toString());
 
-//				ItemsBrands itemsBrands = new ItemsBrands();
-//				itemsBrands.setItemsBrandsName(obj[3].toString());
-//				items.setItemsBrands(itemsBrands);
+				ItemsBrands itemsBrands = new ItemsBrands();
+				itemsBrands.setItemsBrandsName(obj[3].toString());
+				items.setItemsBrands(itemsBrands);
 
 				ItemsTypes itemsTypes = new ItemsTypes();
 				itemsTypes.setItemsTypesName(obj[4].toString());
@@ -185,9 +185,9 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 				Items items = new Items();
 				items.setItemsName(obj[2].toString());
 
-//			ItemsBrands itemsBrands = new ItemsBrands();
-//			itemsBrands.setItemsBrandsName(obj[3].toString());
-//			items.setItemsBrands(itemsBrands);
+				ItemsBrands itemsBrands = new ItemsBrands();
+				itemsBrands.setItemsBrandsName(obj[3].toString());
+				items.setItemsBrands(itemsBrands);
 
 				ItemsTypes itemsTypes = new ItemsTypes();
 				itemsTypes.setItemsTypesName(obj[4].toString());
