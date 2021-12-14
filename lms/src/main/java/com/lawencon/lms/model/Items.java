@@ -3,12 +3,13 @@ package com.lawencon.lms.model;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.lawencon.base.BaseEntity;
 
 public class Items extends BaseEntity{
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "files_id")
 	private Files files;
 	
