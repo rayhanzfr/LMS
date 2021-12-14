@@ -8,11 +8,11 @@ public interface ItemsDao {
 	
 	Items saveOrUpdate(Items items) throws Exception;
 	
-	Items getById(String id) throws Exception;
+	Items findById(String id) throws Exception;
 	
-	Items getByCode(String code) throws Exception;
+	Items findByCode(String code) throws Exception;
 	
-	List<Items> getAll() throws Exception;
+	List<Items> findAll() throws Exception;
 	
 	Boolean removeById(String id) throws Exception;
 }

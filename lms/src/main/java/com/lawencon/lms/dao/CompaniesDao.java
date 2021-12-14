@@ -5,11 +5,11 @@ import java.util.List;
 import com.lawencon.lms.model.Companies;
 
 public interface CompaniesDao {
-	List<Companies> getAll() throws Exception;
+	List<Companies> findAll() throws Exception;
 
-	Companies getById(String id) throws Exception;
+	Companies findById(String id) throws Exception;
 
-	Companies getByCode(String code) throws Exception;
+	Companies findByCode(String code) throws Exception;
 	
 	Companies saveOrUpdate(Companies companies) throws Exception;
 

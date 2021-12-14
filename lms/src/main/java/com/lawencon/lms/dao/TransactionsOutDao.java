@@ -7,11 +7,11 @@ import com.lawencon.lms.model.TransactionsOut;
 public interface TransactionsOutDao {
 	TransactionsOut saveOrUpdate(TransactionsOut items) throws Exception;
 	
-	TransactionsOut getById(String id) throws Exception;
+	TransactionsOut findById(String id) throws Exception;
 	
-	TransactionsOut getByCode(String code) throws Exception;
+	TransactionsOut findByCode(String code) throws Exception;
 	
-	List<TransactionsOut> getAll() throws Exception;
+	List<TransactionsOut> findAll() throws Exception;
 	
 	Boolean removeById(String id) throws Exception;
 }

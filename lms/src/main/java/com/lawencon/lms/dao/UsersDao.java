@@ -5,8 +5,8 @@ import java.util.List;
 import com.lawencon.lms.model.Users;
 
 public interface UsersDao {
-	List<Users> getAll() throws Exception;
-	Users getById(String id) throws Exception;
+	List<Users> findAll() throws Exception;
+	Users findById(String id) throws Exception;
 	Users saveOrUpdate(Users users) throws Exception;
 	Boolean removeById(String id)throws Exception;
 }

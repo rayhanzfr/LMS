@@ -6,11 +6,11 @@ import com.lawencon.lms.model.StatusesAssets;
 
 public interface StatusesAssetsDao {
 
-	List<StatusesAssets> getAll() throws Exception;
+	List<StatusesAssets> findAll() throws Exception;
 
-	StatusesAssets getById(String id) throws Exception;
+	StatusesAssets findById(String id) throws Exception;
 
-	StatusesAssets getByCode(String code) throws Exception;
+	StatusesAssets findByCode(String code) throws Exception;
 	
 	StatusesAssets saveOrUpdate(StatusesAssets statusesAssets) throws Exception;
 

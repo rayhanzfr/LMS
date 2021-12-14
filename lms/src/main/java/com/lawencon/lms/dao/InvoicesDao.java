@@ -5,11 +5,11 @@ import java.util.List;
 import com.lawencon.lms.model.Invoices;
 
 public interface InvoicesDao {
-	List<Invoices> getAll() throws Exception;
+	List<Invoices> findAll() throws Exception;
 
-	Invoices getById(String id) throws Exception;
+	Invoices findById(String id) throws Exception;
 
-	Invoices getByCode(String id) throws Exception;
+	Invoices findByCode(String id) throws Exception;
 	
 	Invoices saveOrUpdate(Invoices invoices) throws Exception;
 	

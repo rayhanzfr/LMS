@@ -6,8 +6,8 @@ import com.lawencon.lms.model.StatusesInOut;
 
 
 public interface StatusesInOutService {
-	List<StatusesInOut> getAll() throws Exception;
-	StatusesInOut getById() throws Exception;
+	List<StatusesInOut> findAll() throws Exception;
+	StatusesInOut findById() throws Exception;
 	void saveOrUpdate(StatusesInOut statusesInOut) throws Exception;
 	Boolean deleteById() throws Exception;
 }
