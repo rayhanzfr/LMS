@@ -16,7 +16,14 @@
 			<groupId>com.lawencon</groupId>
 			<artifactId>core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>		
+		</dependency>	
+		
+		<dependency>
+		    <groupId>org.liquibase</groupId>
+		    <artifactId>liquibase-core</artifactId>
+		    <version>4.3.5</version>
+		</dependency>	
 	</dependencies>
+	
 
 </project>
