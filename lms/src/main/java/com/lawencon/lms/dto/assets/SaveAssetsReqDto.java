@@ -1,6 +1,5 @@
 package com.lawencon.lms.dto.assets;
 
-import java.time.LocalDate;
 
 public class SaveAssetsReqDto {
 	private String itemsCode;
