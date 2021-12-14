@@ -30,7 +30,7 @@ public class TransactionsOutServiceImpl extends BaseServiceImpl implements Trans
 	@Override
 	public TransactionsOut update(TransactionsOut transactionsOut) throws Exception {
 		try {
-			TransactionsOut transactionsOutDb = findById(transactionsOut.getId());	
+			TransactionsOut transactionsOutDb = findByCode(transactionsOut.getTransactionsOutCode());	
 			transactionsOut.setCreatedAt(transactionsOutDb.getCreatedAt());
 			transactionsOut.setCreatedBy(transactionsOutDb.getCreatedBy());
 

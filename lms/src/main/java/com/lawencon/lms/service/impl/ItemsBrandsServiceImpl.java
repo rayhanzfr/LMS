@@ -31,7 +31,7 @@ public class ItemsBrandsServiceImpl extends BaseServiceImpl implements ItemsBran
 	@Override
 	public ItemsBrands update(ItemsBrands itemsBrands) throws Exception {
 		try {
-			ItemsBrands itemsBrandsDb = findById(itemsBrands.getId());	
+			ItemsBrands itemsBrandsDb = findByCode(itemsBrands.getItemsBrandsCode());	
 			itemsBrands.setCreatedAt(itemsBrandsDb.getCreatedAt());
 			itemsBrands.setCreatedBy(itemsBrandsDb.getCreatedBy());
 
