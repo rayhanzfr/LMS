@@ -1,18 +1,18 @@
 package com.lawencon.lms.service;
 
-import java.util.List;
-
-import com.lawencon.lms.model.TransactionsOut;
+import com.lawencon.lms.dto.transactionsout.GetAllTransactionsOutResDto;
+import com.lawencon.lms.dto.transactionsout.GetByTransactionsOutCodeResDto;
+import com.lawencon.lms.dto.transactionsout.GetByTransactionsOutIdResDto;
+import com.lawencon.lms.dto.transactionsout.SaveFullTransactionsOutReqDto;
+import com.lawencon.lms.dto.transactionsout.SaveFullTransactionsOutResDto;
 
 public interface TransactionsOutService {
-	TransactionsOut save(TransactionsOut items) throws Exception;
+	SaveFullTransactionsOutResDto save(SaveFullTransactionsOutReqDto itemsReq) throws Exception;
 	
-	TransactionsOut update(TransactionsOut items) throws Exception;
+	GetByTransactionsOutIdResDto findById(String id) throws Exception;
 	
-	TransactionsOut findById(String id) throws Exception;
+	GetByTransactionsOutCodeResDto findByCode(String code) throws Exception;
 	
-	TransactionsOut findByCode(String code) throws Exception;
-	
-	List<TransactionsOut> findAll() throws Exception;
+	GetAllTransactionsOutResDto findAll() throws Exception;
 	
 }
