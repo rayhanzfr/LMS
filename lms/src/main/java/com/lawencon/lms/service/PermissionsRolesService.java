@@ -7,9 +7,9 @@ import com.lawencon.lms.model.PermissionsRoles;
 public interface PermissionsRolesService {
 	PermissionsRoles saveOrUpdate(PermissionsRoles permissionsRoles) throws Exception;
 	
-	PermissionsRoles getById(String id) throws Exception;
+	PermissionsRoles findById(String id) throws Exception;
 	
-	List<PermissionsRoles> getAll() throws Exception;
+	List<PermissionsRoles> findAll() throws Exception;
 
 	Boolean removeById(String id) throws Exception;
 }

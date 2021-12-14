@@ -6,8 +6,8 @@ import com.lawencon.lms.model.Employees;
 
 public interface EmployeesService {
 
-	List<Employees> getAll()throws Exception;
-	Employees getById()throws Exception;
+	List<Employees> findAll()throws Exception;
+	Employees findById()throws Exception;
 	void saveOrUpdate(Employees employees) throws Exception;
 	Boolean deleteById()throws Exception;
 }
