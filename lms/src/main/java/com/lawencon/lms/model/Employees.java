@@ -3,6 +3,7 @@ package com.lawencon.lms.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -15,6 +16,13 @@ public class Employees extends BaseEntity{
 	@OneToOne
 	@JoinColumn(nullable=false)
 	private Users users;
+	
+	@ManyToOne
+	@JoinColumn(nullable=false)
+	private Companies companies;
+	
+	@Column(length = 15,nullable=false, unique=true)
+	private String employeesCode;
 	
 	@Column(length=255, nullable=false)
 	private String employeesFullname;
@@ -39,6 +47,22 @@ public class Employees extends BaseEntity{
 
 	public void setEmployeesFullname(String employeesFullname) {
 		this.employeesFullname = employeesFullname;
+	}
+	
+	public Companies getCompanies() {
+		return companies;
+	}
+
+	public void setCompanies(Companies companies) {
+		this.companies = companies;
+	}
+
+	public String getEmployeesCode() {
+		return employeesCode;
+	}
+
+	public void setEmployeesCode(String employeesCode) {
+		this.employeesCode = employeesCode;
 	}
 
 	public String getEmployeesAddress() {
