@@ -15,5 +15,4 @@ public interface TransactionsOutService {
 	
 	List<TransactionsOut> findAll() throws Exception;
 	
-	Boolean removeById(String id) throws Exception;
 }

@@ -18,13 +18,13 @@ public class FilesServiceImpl extends BaseServiceImpl implements FilesService {
 	public Files save(Files files) throws Exception {
 		try {
 			begin();
-			filesDao.saveOrUpdate(files);
+			files = filesDao.saveOrUpdate(files);
 			commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return null;
+		return files;
 	}
 
 	@Override
@@ -35,13 +35,13 @@ public class FilesServiceImpl extends BaseServiceImpl implements FilesService {
 			files.setCreatedBy(filesDb.getCreatedBy());
 
 			begin();
-			filesDao.saveOrUpdate(files);
+			files = filesDao.saveOrUpdate(files);
 			commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return null;
+		return files;
 	}
 
 	@Override

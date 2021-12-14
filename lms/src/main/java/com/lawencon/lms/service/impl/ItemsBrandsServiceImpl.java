@@ -17,14 +17,15 @@ public class ItemsBrandsServiceImpl extends BaseServiceImpl implements ItemsBran
 	@Override
 	public ItemsBrands save(ItemsBrands itemsBrands) throws Exception {
 		try {
+			
 			begin();
-			itemsBrandsDao.saveOrUpdate(itemsBrands);
+			itemsBrands=itemsBrandsDao.saveOrUpdate(itemsBrands);
 			commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return null;
+		return itemsBrands;
 	}
 
 	@Override
@@ -35,13 +36,13 @@ public class ItemsBrandsServiceImpl extends BaseServiceImpl implements ItemsBran
 			itemsBrands.setCreatedBy(itemsBrandsDb.getCreatedBy());
 
 			begin();
-			itemsBrandsDao.saveOrUpdate(itemsBrands);
+			itemsBrands=itemsBrandsDao.saveOrUpdate(itemsBrands);
 			commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return null;
+		return itemsBrands;
 	}
 
 	@Override
