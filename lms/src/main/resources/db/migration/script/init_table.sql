@@ -1,400 +1,346 @@
-CREATE TABLE roles(
-	id serial,
-	role_code varchar(10),
-	names varchar(10),
-	created_by integer,
-	created_date timestamp without time zone,
-	isactive boolean,
-	update_by integer,
-	update_date timestamp without time zone,
-	version integer
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE roles (
+   id uuid  PRIMARY KEY DEFAULT  uuid_generate_v4(),
+   roles_code varchar(15) UNIQUE NOT NULL,
+   roles_name varchar(30) NOT NULL,
+   "version" integer NOT NULL,
+   created_by text NOT NULL,
+   created_at timestamp without time zone NOT NULL,
+   updated_by text,
+   updated_at timestamp without time zone,
+   is_active boolean NOT NULL
 );
-ALTER TABLE roles
-	ADD CONSTRAINT role_pk PRIMARY KEY (id);
-ALTER TABLE roles
-	ADD CONSTRAINT role_bk UNIQUE(role_code);
-ALTER TABLE roles
-	ALTER COLUMN role_code SET NOT NULL;
-ALTER TABLE roles
-	ALTER COLUMN created_by SET NOT NULL;
-ALTER TABLE roles
-	ALTER COLUMN created_date SET NOT NULL;
-ALTER TABLE roles
-	ALTER COLUMN isactive SET NOT NULL;
+
+
+CREATE TABLE users (
+	id uuid DEFAULT  uuid_generate_v4(),
+	roles_id uuid NOT NULL,
+	users_email varchar(50) UNIQUE NOT null,
+	users_password TEXT NOT null,
+	"version" integer NOT NULL,
+	created_by text NOT NULL,
+	created_at timestamp WITHOUT time ZONE NOT null,
+	updated_by text,
+	updated_at timestamp WITHOUT time ZONE,
+	is_active boolean NOT NULL,
+	PRIMARY KEY(id),
+	FOREIGN KEY (roles_id)
+	REFERENCES roles(id)
+);
+
+
+CREATE TABLE permissions (
+   id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+   permissions_code varchar(15) UNIQUE NOT NULL,
+   permissions_name varchar(30) NOT NULL,
+   "version" integer NOT NULL,
+   created_by text NOT NULL,
+   created_at timestamp without time zone NOT NULL,
+   updated_by text,
+   updated_at timestamp without time zone,
+   is_active boolean NOT NULL
+);
+
+
+CREATE TABLE permissions_roles (
+   id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+   permissions_id uuid NOT NULL,
+   roles_id uuid NOT NULL,
+   "version" integer NOT NULL,
+   created_by text NOT NULL,
+   created_at timestamp without time zone NOT NULL,
+   updated_by text,
+   updated_at timestamp without time zone,
+   is_active boolean NOT NULL,
+   FOREIGN KEY (roles_id)
+      REFERENCES roles (id),
+   FOREIGN KEY (permissions_id)
+      REFERENCES permissions (id)
+);
+
+
+
+CREATE TABLE employees(
+	id uuid DEFAULT  uuid_generate_v4(),
+	users_id uuid NOT null,
+	employees_fullname TEXT NOT NULL,
+	employees_address TEXT,
+	employees_phone_number varchar(14) unique NOT NULL,
+	"version" integer NOT null,
+	created_by text NOT null,
+	created_at timestamp WITHOUT time ZONE NOT null,
+	updated_by text,
+	updated_at timestamp WITHOUT time ZONE,
+	is_active boolean NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (users_id)
+		REFERENCES users(id)
+);
+
+CREATE TABLE items_types(
+	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	items_types_code varchar(15) UNIQUE NOT NULL,
+	items_types_name varchar(50) UNIQUE NOT NULL,
+	"version" integer NOT NULL,
+	created_by text NOT NULL,
+	created_at timestamp WITHOUT time ZONE NOT null,
+	updated_by text,
+	updated_at timestamp WITHOUT time ZONE,
+	is_active boolean NOT NULL
+);
+
+CREATE TABLE files(
+	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	file bytea NOT NULL,
+	extensions varchar(5) NOT NULL,
+	created_by text NOT NULL,
+	created_at timestamp WITHOUT time ZONE NOT null,
+	updated_by text,
+	updated_at timestamp WITHOUT time ZONE,
+	is_active boolean NOT NULL
+);
+
+CREATE TABLE items_brands(
+	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	items_brands_code varchar(15) UNIQUE NOT NULL,
+	items_brands_name varchar(50) UNIQUE NOT NULL,
+	"version" integer NOT NULL,
+	created_by text NOT NULL,
+	created_at timestamp WITHOUT time ZONE NOT null,
+	updated_by text,
+	updated_at timestamp WITHOUT time ZONE,
+	is_active boolean NOT NULL
+);
+
+CREATE TABLE items (
+   id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+   files_id uuid NOT NULL,
+   items_types_id uuid NOT NULL,
+   items_brands_id uuid NOT NULL,
+   items_code varchar(15) UNIQUE NOT NULL,
+   items_name varchar(30) NOT NULL,
+   "version" integer NOT NULL,
+   created_by text NOT NULL,
+   created_at timestamp without time zone NOT NULL,
+   updated_by text,
+   updated_at timestamp without time zone,
+   is_active boolean NOT NULL,
+   FOREIGN KEY (files_id)
+   	REFERENCES files(id),
+   FOREIGN KEY (items_types_id)
+   	REFERENCES items_types(id),
+   FOREIGN KEY (items_brands_id)
+   	REFERENCES items_brands(id)
+);
+
+
+CREATE TABLE companies(
+	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	companies_code varchar(10) UNIQUE NOT NULL,
+	companies_name varchar(255) NOT NULL,
+	companies_phone varchar(14) NOT NULL,
+	companies_address text NOT NULL,
+	files_id uuid NOT NULL,
+	"version" integer NOT NULL,
+	created_at timestamp WITHOUT time ZONE NOT NULL,
+	created_by text NOT NULL,
+	updated_at timestamp WITHOUT time ZONE,
+	updated_by text,
+	is_active bool NOT NULL
+);
+
+
+CREATE TABLE locations(
+	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	locations_code varchar(10) UNIQUE NOT NULL,
+	locations_deploy text,
+	companies_id uuid NOT NULL,
+	"version" integer NOT NULL,
+	created_at timestamp WITHOUT time ZONE NOT NULL,
+	created_by text NOT NULL,
+	updated_at timestamp WITHOUT time ZONE,
+	updated_by text,
+	is_active bool NOT NULL
+);
+
+CREATE TABLE invoices(
+	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	invoices_code varchar(10) UNIQUE NOT NULL,
+	invoices_date timestamp WITHOUT time ZONE NOT NULL,
+	store_name varchar(50) NOT NULL,
+	price numeric NOT NULL,
+	"version" integer NOT NULL,
+	created_at timestamp WITHOUT time ZONE NOT NULL,
+	created_by text NOT NULL,
+	updated_at timestamp WITHOUT time ZONE,
+	updated_by text,
+	is_active bool NOT NULL
+);
+
+CREATE TABLE statuses_in_out(
+	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	statuses_in_out_code varchar (15) UNIQUE NOT NULL,
+	statuses_in_out_name varchar(50) NOT NULL,
+	"version" integer NOT NULL,
+	created_by text NOT NULL,
+	created_at timestamp WITHOUT time ZONE NOT NULL,
+	updated_by text,
+	updated_at timestamp WITHOUT time ZONE,
+	is_active boolean NOT NULL
+);
+
+
+CREATE TABLE statuses_assets(
+	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	statuses_assets_code varchar(5) UNIQUE NOT NULL,
+	statuses_assets_name varchar(15) NOT NULL,
+	"version" integer NOT NULL,
+	created_at timestamp WITHOUT time ZONE NOT NULL,
+	created_by text NOT NULL,
+	updated_at timestamp WITHOUT time ZONE,
+	updated_by text,
+	is_active bool NOT NULL
+);
+
+CREATE TABLE assets(
+	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	items_id uuid NOT null,
+	invoices_id uuid NOT null,
+	assets_name varchar(50) unique not null,
+	statuses_assets_id uuid NOT NULL,
+	statuses_in_out_id uuid NOT NULL,
+	assets_expired date,
+	"version" integer NOT NULL,
+	created_by text NOT NULL,
+	created_at timestamp WITHOUT time ZONE NOT NULL,
+	updated_by text,
+	updated_at timestamp WITHOUT time ZONE,
+	is_active boolean NOT NULL,
+	FOREIGN KEY (items_id)
+	REFERENCES items(id),
+	FOREIGN KEY (invoices_id)
+	REFERENCES invoices(id),
+	FOREIGN KEY (statuses_assets_id)
+	REFERENCES statuses_assets(id),
+	FOREIGN KEY (statuses_in_out_id)
+	REFERENCES statuses_in_out(id)
+
+);
+
+
+CREATE TABLE statuses_transactions (
+   id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+   statuses_assets_id uuid NOT NULL,
+   statuses_transactions_code varchar(15) UNIQUE NOT NULL,
+   statuses_transactions_name varchar(30) NOT NULL,
+   "version" integer NOT NULL,
+   created_by text NOT NULL,
+   created_at timestamp without time zone NOT NULL,
+   updated_by text,
+   updated_at timestamp without time zone,
+   is_active boolean NOT NULL,
+   FOREIGN KEY (statuses_assets_id)
+	REFERENCES statuses_assets(id)
+);
+
+
+CREATE TABLE transactions_out (
+   id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+   trasanctions_out_code varchar(15) UNIQUE NOT NULL, 
+   check_out_date timestamp without time zone NOT NULL,
+   expired_date timestamp without time zone NOT NULL,
+   "version" integer NOT NULL,
+   created_by text NOT NULL,
+   created_at timestamp without time zone NOT NULL,
+   updated_by text,
+   updated_at timestamp without time zone,
+   is_active boolean NOT NULL
+   
+);
+
+
+CREATE TABLE transactions_detail_out(
+	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	transactions_out_id uuid NOT NULL,
+	locations_id uuid,
+   	employees_id uuid,
+	assets_id uuid NOT NULL,
+	transaction_detail_out_expired date NOT NULL,
+	"version" integer NOT NULL,
+	created_by text NOT NULL,
+	created_at timestamp WITHOUT time ZONE NOT NULL,
+	updated_by text,
+	updated_at timestamp WITHOUT time ZONE,
+	is_active boolean NOT NULL,
+	FOREIGN KEY (locations_id)
+      REFERENCES locations (id),
+   FOREIGN KEY (employees_id)
+      REFERENCES employees (id),
+	FOREIGN KEY (transactions_out_id)
+	REFERENCES transactions_out(id),
+	FOREIGN KEY (assets_id)
+	REFERENCES assets (id)
+);
+
+
+CREATE TABLE transactions_in(
+	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	transactions_code varchar(15) UNIQUE NOT NULL,
+	transactions_date timestamp WITHOUT time ZONE NOT NULL,
+	transactions_out_id uuid NOT NULL,
+	"version" integer NOT NULL,
+	created_at timestamp WITHOUT time ZONE NOT NULL,
+	created_by text NOT NULL,
+	updated_at timestamp WITHOUT time ZONE,
+	updated_by text,
+	is_active bool NOT NULL
+);
+
+CREATE TABLE transactions_detail_in(
+	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	transactions_in_id uuid NOT NULL,
+	locations_id uuid,
+   	employees_id uuid,
+	assets_id uuid NOT NULL,
+	statuses_transactions_id uuid NOT NULL,
+	return_date timestamp WITHOUT time ZONE,
+	"version" integer NOT NULL,
+	created_at timestamp WITHOUT time ZONE NOT NULL,
+	created_by text NOT NULL,
+	updated_at timestamp WITHOUT time ZONE,
+	updated_by text,
+	is_active bool NOT NULL
+);
+
+ALTER TABLE locations
+	ADD CONSTRAINT companies_id_fk FOREIGN KEY(companies_id)
+	REFERENCES companies(id);
 	
-CREATE TABLE users(
-	id serial,
-	usernames varchar(16),
-	pass text,
-	email varchar(20),
-	id_role integer,
-	created_by integer,
-	created_date timestamp without time zone,
-	isactive boolean,
-	update_by integer,
-	update_date timestamp without time zone,
-	version integer
-);
-ALTER TABLE users
-	ADD CONSTRAINT user_pk PRIMARY KEY (id);
-ALTER TABLE users
-	ADD CONSTRAINT user_bk UNIQUE (usernames);
-ALTER TABLE users
-	ADD CONSTRAINT role_fk FOREIGN KEY (id_role)
-	REFERENCES roles(id);
-ALTER TABLE users
-	ALTER COLUMN id_role SET NOT NULL;
-ALTER TABLE users
-	ALTER COLUMN usernames SET NOT NULL;
-ALTER TABLE users
-	ALTER COLUMN pass SET NOT NULL;
-ALTER TABLE users
-	ALTER COLUMN created_by SET NOT NULL;
-ALTER TABLE users
-	ALTER COLUMN created_date SET NOT NULL;
-ALTER TABLE users
-	ALTER COLUMN isactive SET NOT NULL;
+Alter table transactions_in
+	add constraint transactions_out_id_fk FOREIGN KEY(transactions_out_id)
+	REFERENCES transactions_out(id);
 
-CREATE TABLE cities (
-	id serial,
-	city_code varchar(10),
-	names varchar(30),
-	created_by integer,
-	created_date timestamp without time zone,
-	isactive boolean,
-	update_by integer,
-	update_date timestamp without time zone,
-	version integer
-);
-ALTER TABLE cities
-	ADD CONSTRAINT city_pk PRIMARY KEY (id);
-ALTER TABLE cities
-	ADD CONSTRAINT city_bk UNIQUE (city_code);
-ALTER TABLE cities
-	ALTER COLUMN city_code SET NOT NULL;
-ALTER TABLE cities
-	ALTER COLUMN names SET NOT NULL;
-ALTER TABLE cities
-	ALTER COLUMN created_by SET NOT NULL;
-ALTER TABLE cities
-	ALTER COLUMN created_date SET NOT NULL;
-ALTER TABLE cities
-	ALTER COLUMN isactive SET NOT NULL;
+Alter table transactions_detail_in
+	add constraint transactions_in_id_fk FOREIGN KEY(transactions_in_id)
+	REFERENCES transactions_in(id);
+
+Alter table transactions_detail_in
+	add constraint statuses_transactions_fk FOREIGN KEY(statuses_transactions_id)
+	REFERENCES statuses_transactions(id);
+
+Alter table transactions_detail_in
+	add constraint employees_fk FOREIGN KEY(employees_id)
+	REFERENCES employees(id);
+
+Alter table transactions_detail_in
+	add constraint locations_fk FOREIGN KEY(locations_id)
+	REFERENCES locations(id);
 	
-CREATE TABLE branches (
-	id serial,
-	id_city integer,
-	branches_code varchar(30),
-	branches_name varchar(50),
-	created_by integer,
-	created_date timestamp without time zone,
-	isactive boolean,
-	update_by integer,
-	update_date timestamp without time zone,
-	version integer
-);
-ALTER TABLE branches
-	ADD CONSTRAINT branch_pk PRIMARY KEY (id);
-ALTER TABLE branches
-	ADD CONSTRAINT city_fk FOREIGN KEY(id_city)
-	REFERENCES cities(id);
-ALTER TABLE branches
-	ADD CONSTRAINT branch_bk UNIQUE (branches_code);
-ALTER TABLE branches
-	ALTER COLUMN branches_code SET NOT NULL;
-ALTER TABLE branches
-	ALTER COLUMN branches_name SET NOT NULL;
-ALTER TABLE branches
-	ALTER COLUMN created_by SET NOT NULL;
-ALTER TABLE branches
-	ALTER COLUMN created_date SET NOT NULL;
-ALTER TABLE branches
-	ALTER COLUMN isactive SET NOT NULL;
-	
-CREATE TABLE profile (
-	id serial,
-	id_branch integer,
-	id_user integer,
-	profile_code varchar(30),
-	firstnames varchar(30),
-	lastnames varchar(30),
-	phonenumber varchar(13),
-	created_by integer,
-	created_date timestamp without time zone,
-	isactive boolean,
-	update_by integer,
-	update_date timestamp without time zone,
-	version integer
-);
-ALTER TABLE profile
-	ADD CONSTRAINT profile_pk PRIMARY KEY(id);
-ALTER TABLE profile
-	ADD CONSTRAINT branches_fk FOREIGN KEY(id_branch)
-	REFERENCES branches(id);
-ALTER TABLE profile
-	ADD CONSTRAINT users_fk FOREIGN KEY(id_user)
-	REFERENCES users(id);
-ALTER TABLE profile
-	ADD CONSTRAINT profile_bk UNIQUE(profile_code);
-ALTER TABLE profile
-	ALTER COLUMN profile_code SET NOT NULL;
-ALTER TABLE profile
-	ALTER COLUMN id_branch SET NOT NULL;
-ALTER TABLE profile
-	ALTER COLUMN id_user SET NOT NULL;
-ALTER TABLE profile
-	ALTER COLUMN firstnames SET NOT NULL;
-ALTER TABLE profile
-	ALTER COLUMN created_by SET NOT NULL;
-ALTER TABLE profile
-	ALTER COLUMN created_date SET NOT NULL;
-ALTER TABLE profile
-	ALTER COLUMN isactive SET NOT NULL;
+Alter table transactions_detail_in
+	add constraint assets_fk FOREIGN KEY(assets_id)
+	REFERENCES assets(id);
 
-
-CREATE TABLE service_type (
-	id serial,
-	service_code varchar(20),
-	service_name varchar(30),
-	created_by integer,
-	created_date timestamp without time zone,
-	isactive boolean,
-	update_by integer,
-	update_date timestamp without time zone,
-	version integer
-);
-ALTER TABLE service_type
-	ADD CONSTRAINT service_pk PRIMARY KEY(id);
-ALTER TABLE service_type 
-	ADD CONSTRAINT service_bk UNIQUE(service_code);
-ALTER TABLE service_type
-	ALTER COLUMN service_code SET NOT NULL;
-ALTER TABLE service_type
-	ALTER COLUMN created_by SET NOT NULL;
-ALTER TABLE service_type
-	ALTER COLUMN created_date SET NOT NULL;
-ALTER TABLE service_type
-	ALTER COLUMN isactive SET NOT NULL;
-
-CREATE TABLE payment_method (
-	id serial,
-	payment_code varchar(30),
-	payment_name varchar(30),
-	created_by integer,
-	created_date timestamp without time zone,
-	isactive boolean,
-	update_by integer,
-	update_date timestamp without time zone,
-	version integer
-);
-ALTER TABLE payment_method
-	ADD CONSTRAINT payment_pk PRIMARY KEY(id);
-ALTER TABLE payment_method 
-	ADD CONSTRAINT payment_bk UNIQUE(payment_code);
-ALTER TABLE payment_method
-	ALTER COLUMN payment_code SET NOT NULL;
-ALTER TABLE payment_method
-	ALTER COLUMN created_by SET NOT NULL;
-ALTER TABLE payment_method
-	ALTER COLUMN created_date SET NOT NULL;
-ALTER TABLE payment_method
-	ALTER COLUMN isactive SET NOT NULL;
-
-CREATE TABLE default_price (
-	id serial,
-	id_branches integer,
-	id_service_type integer,
-	default_price_code varchar(20),
-	price numeric,
-	created_by integer,
-	created_date timestamp without time zone,
-	isactive boolean,
-	update_by integer,
-	update_date timestamp without time zone,
-	version integer
-);
-ALTER TABLE default_price
-	ADD CONSTRAINT default_price_pk PRIMARY KEY(id);
-ALTER TABLE default_price
-	ADD CONSTRAINT branches_fk FOREIGN KEY(id_branches)
-	REFERENCES branches(id);
-ALTER TABLE default_price
-	ADD CONSTRAINT service_type_fk FOREIGN KEY(id_service_type)
-	REFERENCES service_type(id);
-ALTER TABLE default_price 
-	ADD CONSTRAINT default_price_bk UNIQUE(default_price_code);
-ALTER TABLE default_price
-	ALTER COLUMN default_price_code SET NOT NULL;
-ALTER TABLE default_price
-	ALTER COLUMN created_by SET NOT NULL;
-ALTER TABLE default_price
-	ALTER COLUMN created_date SET NOT NULL;
-ALTER TABLE default_price
-	ALTER COLUMN isactive SET NOT NULL;
-
-CREATE TABLE status (
-	id serial,
-	status_code varchar(30),
-	status_name varchar(30),
-	created_by integer,
-	created_date timestamp without time zone,
-	isactive boolean,
-	update_by integer,
-	update_date timestamp without time zone,
-	version integer
-);
-ALTER TABLE status
-	ADD CONSTRAINT status_pk PRIMARY KEY(id);
-ALTER TABLE status 
-	ADD CONSTRAINT status_bk UNIQUE(status_code);
-ALTER TABLE status
-	ALTER COLUMN status_code SET NOT NULL;
-ALTER TABLE status
-	ALTER COLUMN created_by SET NOT NULL;
-ALTER TABLE status
-	ALTER COLUMN created_date SET NOT NULL;
-ALTER TABLE status
-	ALTER COLUMN isactive SET NOT NULL;
-
-
-CREATE TABLE categories (
-	id serial,
-	cat_code varchar(10),
-	names varchar(30),
-	created_by integer,
-	created_date timestamp without time zone,
-	isactive boolean,
-	update_by integer,
-	update_date timestamp without time zone,
-	version integer
-);
-ALTER TABLE categories
-	ADD CONSTRAINT cat_pk PRIMARY KEY (id);
-ALTER TABLE categories
-	ADD CONSTRAINT cat_bk UNIQUE (cat_code);
-ALTER TABLE categories
-	ALTER COLUMN cat_code SET NOT NULL;
-ALTER TABLE status
-	ALTER COLUMN created_by SET NOT NULL;
-ALTER TABLE status
-	ALTER COLUMN created_date SET NOT NULL;
-ALTER TABLE status
-	ALTER COLUMN isactive SET NOT NULL;
-
-CREATE TABLE shipment (
-	id serial,
-	id_status integer,
-	id_payment integer,
-	id_service_type integer,
-	receiver_destination integer,
-	shipment_number varchar(10),
-	sender_name varchar(30),
-	receiver_name varchar(30),
-	phone_receiver varchar(13),
-	address text,
-	shipping_date timestamp without time zone,
-	price numeric,
-	created_by integer ,
-	created_date timestamp without time zone,
-	isactive boolean,
-	update_by integer,
-	update_date timestamp without time zone,
-	version integer
-);
-ALTER TABLE shipment 
-	ADD CONSTRAINT shipment_pk PRIMARY KEY(id);
-ALTER TABLE shipment 
-	ADD CONSTRAINT shipment_bk UNIQUE(shipment_number);
-ALTER TABLE shipment 
-	ADD CONSTRAINT branches_fk FOREIGN KEY (receiver_destination)
-	REFERENCES branches(id);
-ALTER TABLE shipment 
-	ADD CONSTRAINT payment_fk FOREIGN KEY (id_payment)
-	REFERENCES payment_method(id);
-ALTER TABLE shipment 
-	ADD CONSTRAINT service_type_fk FOREIGN KEY (id_service_type) 
-	REFERENCES service_type(id);
-ALTER TABLE shipment 
-	ADD CONSTRAINT status_fk FOREIGN KEY (id_status)
-	REFERENCES status(id);
-ALTER TABLE shipment
-	ALTER COLUMN shipment_number SET NOT NULL;
-ALTER TABLE shipment
-	ALTER COLUMN id_payment SET NOT NULL;
-ALTER TABLE shipment
-	ALTER COLUMN receiver_destination SET NOT NULL;
-ALTER TABLE shipment
-	ALTER COLUMN id_service_type SET NOT NULL;
-ALTER TABLE shipment
-	ALTER COLUMN id_status SET NOT NULL;
-ALTER TABLE shipment
-	ALTER COLUMN created_by SET NOT NULL;
-ALTER TABLE shipment
-	ALTER COLUMN created_date SET NOT NULL;
-ALTER TABLE shipment
-	ALTER COLUMN isactive SET NOT NULL;
-
-CREATE TABLE shipment_delivery (
-	id serial,
-	id_shipment integer,
-	receiver_name varchar(30),
-	id_status integer,
-	time_delivered timestamp without time zone,
-	created_by integer,
-	created_date timestamp without time zone,
-	isactive boolean,
-	update_by integer,
-	update_date timestamp without time zone,
-	version integer
-);
-ALTER TABLE shipment_delivery 
-	ADD CONSTRAINT ship_deliv_pk PRIMARY KEY(id);
-ALTER TABLE shipment_delivery
-	ADD CONSTRAINT shipment_fk FOREIGN KEY (id_shipment) 
-	REFERENCES shipment(id);
-ALTER TABLE shipment_delivery 
-	ADD CONSTRAINT status_fk FOREIGN KEY (id_status) 
-	REFERENCES status(id);
-ALTER TABLE shipment_delivery
-	ALTER COLUMN id_shipment SET NOT NULL;
-ALTER TABLE shipment_delivery
-	ALTER COLUMN id_status SET NOT NULL;
-ALTER TABLE shipment_delivery
-	ALTER COLUMN created_by SET NOT NULL;
-ALTER TABLE shipment_delivery
-	ALTER COLUMN created_date SET NOT NULL;
-ALTER TABLE shipment_delivery
-	ALTER COLUMN isactive SET NOT NULL;
-
-CREATE TABLE shipment_detail (
-	id serial,
-	id_shipment integer,
-	id_cat integer,
-	item_name varchar(30),
-	weight integer,
-	quantity integer,
-	created_by integer,
-	created_date timestamp without time zone,
-	isactive boolean,
-	update_by integer,
-	update_date timestamp without time zone,
-	version integer
-);
-ALTER TABLE shipment_detail 
-	ADD CONSTRAINT ship_detail_pk PRIMARY KEY (id);
-ALTER TABLE shipment_detail 
-	ADD CONSTRAINT cat_fk FOREIGN KEY (id_cat) 
-	REFERENCES categories(id);
-ALTER TABLE shipment_detail 
-	ADD CONSTRAINT shipment_fk FOREIGN KEY (id_shipment) 
-	REFERENCES shipment(id);
-ALTER TABLE shipment_detail
-	ALTER COLUMN id_cat SET NOT NULL;
-ALTER TABLE shipment_detail
-	ALTER COLUMN id_shipment SET NOT NULL;
-ALTER TABLE shipment_detail
-	ALTER COLUMN created_by SET NOT NULL;
-ALTER TABLE shipment_detail
-	ALTER COLUMN created_date SET NOT NULL;
-ALTER TABLE shipment_detail
-	ALTER COLUMN isactive SET NOT NULL;
+ALTER TABLE companies
+	ADD CONSTRAINT files_id_fk FOREIGN KEY(files_id)
+	REFERENCES files(id);
