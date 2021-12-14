@@ -5,7 +5,9 @@ import java.util.List;
 import com.lawencon.lms.model.PermissionsRoles;
 
 public interface PermissionsRolesService {
-	PermissionsRoles saveOrUpdate(PermissionsRoles permissionsRoles) throws Exception;
+	PermissionsRoles save(PermissionsRoles permissionsRoles) throws Exception;
+	
+	PermissionsRoles update(PermissionsRoles permissionsRoles) throws Exception;
 	
 	PermissionsRoles findById(String id) throws Exception;
 	
