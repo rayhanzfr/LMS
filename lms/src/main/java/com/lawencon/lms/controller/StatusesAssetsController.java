@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.lawencon.lms.dto.statusesassets.SaveStatusesAssetsResDto;
+import com.lawencon.lms.dto.statusesassets.UpdateStatusesAssetsResDto;
 import com.lawencon.lms.model.StatusesAssets;
 import com.lawencon.lms.service.StatusesAssetsService;
 
@@ -64,7 +66,7 @@ public class StatusesAssetsController {
 
 	@PostMapping
 	public ResponseEntity<?> insert(@RequestBody StatusesAssets statusesAssets, MultipartFile files) {
-		StatusesAssets result = new StatusesAssets();
+		SaveStatusesAssetsResDto result = new SaveStatusesAssetsResDto();
 		try {
 			result = statusesAssetsService.save(statusesAssets);
 		} catch (Exception e) {
@@ -76,7 +78,7 @@ public class StatusesAssetsController {
 
 	@PutMapping
 	public ResponseEntity<?> update(@RequestBody StatusesAssets statusesAssets) {
-		StatusesAssets result = new StatusesAssets();
+		UpdateStatusesAssetsResDto result = new UpdateStatusesAssetsResDto();
 		try {
 			result = statusesAssetsService.update(statusesAssets);
 		} catch (Exception e) {

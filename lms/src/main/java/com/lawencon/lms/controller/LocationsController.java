@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.lawencon.lms.dto.locations.SaveLocationsResDto;
+import com.lawencon.lms.dto.locations.UpdateLocationsResDto;
 import com.lawencon.lms.model.Locations;
 import com.lawencon.lms.service.LocationsService;
 
@@ -64,7 +66,7 @@ public class LocationsController {
 
 	@PostMapping
 	public ResponseEntity<?> insert(@RequestBody Locations locations, MultipartFile files) {
-		Locations result = new Locations();
+		SaveLocationsResDto result = new SaveLocationsResDto();
 		try {
 			result = locationsService.save(locations);
 		} catch (Exception e) {
@@ -76,7 +78,7 @@ public class LocationsController {
 	
 	@PutMapping
 	public ResponseEntity<?> update(@RequestBody Locations locations) {
-		Locations result = new Locations();
+		UpdateLocationsResDto result = new UpdateLocationsResDto();
 		try {
 			result = locationsService.update(locations);
 		} catch (Exception e) {
