@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.PermissionsDao;
+import com.lawencon.lms.dto.permissions.SavePermissionsResDto;
+import com.lawencon.lms.dto.permissions.UpdatePermissionsResDto;
 import com.lawencon.lms.model.Permissions;
 import com.lawencon.lms.service.PermissionsService;
 
@@ -15,20 +17,24 @@ public class PermissionsServiceImpl extends BaseServiceImpl implements Permissio
 	private PermissionsDao permissionsDao;
 
 	@Override
-	public Permissions save(Permissions permissions) throws Exception {
+	public SavePermissionsResDto save(Permissions permissions) throws Exception {
+		SavePermissionsResDto savePermissionsResDto = new SavePermissionsResDto();
 		try {
 			begin();
 			permissions = permissionsDao.saveOrUpdate(permissions);
 			commit();
+			savePermissionsResDto.setId(permissions.getId());
+			savePermissionsResDto.setMsg("OK");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return permissions;
+		return savePermissionsResDto;
 	}
 
 	@Override
-	public Permissions update(Permissions permissions) throws Exception {
+	public UpdatePermissionsResDto update(Permissions permissions) throws Exception {
+		UpdatePermissionsResDto updatePermissionsResDto = new UpdatePermissionsResDto();
 		try {
 			Permissions permissionsDb = findByCode(permissions.getPermissionsCode());	
 			permissions.setCreatedAt(permissionsDb.getCreatedAt());
@@ -37,11 +43,13 @@ public class PermissionsServiceImpl extends BaseServiceImpl implements Permissio
 			begin();
 			permissions = permissionsDao.saveOrUpdate(permissions);
 			commit();
+			updatePermissionsResDto.setVersion(permissions.getVersion());
+			updatePermissionsResDto.setMsg("OK");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return permissions;
+		return updatePermissionsResDto;
 	}
 
 	@Override
@@ -61,6 +69,16 @@ public class PermissionsServiceImpl extends BaseServiceImpl implements Permissio
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return permissionsDao.removeById(id);
+		try {
+			begin();
+			boolean isDeleted = permissionsDao.removeById(id);
+			commit();
+
+			return isDeleted;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollback();
+			throw new Exception(e);
+		}
 	}
 }

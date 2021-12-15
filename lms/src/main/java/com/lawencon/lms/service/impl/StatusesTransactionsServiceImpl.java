@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.StatusesTransactionsDao;
+import com.lawencon.lms.dto.statusestransactions.SaveStatusesTransactionsResDto;
+import com.lawencon.lms.dto.statusestransactions.UpdateStatusesTransactionsResDto;
 import com.lawencon.lms.model.StatusesTransactions;
 import com.lawencon.lms.service.StatusesTransactionsService;
 
@@ -15,20 +17,24 @@ public class StatusesTransactionsServiceImpl extends BaseServiceImpl implements 
 	private StatusesTransactionsDao statusesTransactionsDao;
 
 	@Override
-	public StatusesTransactions save(StatusesTransactions statusesTransactions) throws Exception {
+	public SaveStatusesTransactionsResDto save(StatusesTransactions statusesTransactions) throws Exception {
+		SaveStatusesTransactionsResDto saveStatusesTransactionsResDto = new SaveStatusesTransactionsResDto();
 		try {
 			begin();
 			statusesTransactions = statusesTransactionsDao.saveOrUpdate(statusesTransactions);
 			commit();
+			saveStatusesTransactionsResDto.setId(statusesTransactions.getId());
+			saveStatusesTransactionsResDto.setMsg("SUCCESS");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return statusesTransactions;
+		return saveStatusesTransactionsResDto;
 	}
 
 	@Override
-	public StatusesTransactions update(StatusesTransactions statusesTransactions) throws Exception {
+	public UpdateStatusesTransactionsResDto update(StatusesTransactions statusesTransactions) throws Exception {
+		UpdateStatusesTransactionsResDto updateStatusesTransactionsResDto = new UpdateStatusesTransactionsResDto();
 		try {
 			StatusesTransactions statusesTransactionsDb = findByCode(statusesTransactions.getStatusesTransactionsCode());	
 			statusesTransactions.setCreatedAt(statusesTransactionsDb.getCreatedAt());
@@ -37,11 +43,13 @@ public class StatusesTransactionsServiceImpl extends BaseServiceImpl implements 
 			begin();
 			statusesTransactions = statusesTransactionsDao.saveOrUpdate(statusesTransactions);
 			commit();
+			updateStatusesTransactionsResDto.setVersion(statusesTransactions.getVersion());
+			updateStatusesTransactionsResDto.setMsg("SUCCESS");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return statusesTransactions;
+		return updateStatusesTransactionsResDto;
 	}
 
 	@Override
@@ -61,6 +69,16 @@ public class StatusesTransactionsServiceImpl extends BaseServiceImpl implements 
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return statusesTransactionsDao.removeById(id);
+		try {
+			begin();
+			boolean isDeleted = statusesTransactionsDao.removeById(id);
+			commit();
+
+			return isDeleted;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollback();
+			throw new Exception(e);
+		}
 	}
 }

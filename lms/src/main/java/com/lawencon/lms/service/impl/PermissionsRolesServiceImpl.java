@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.PermissionsRolesDao;
+import com.lawencon.lms.dto.permissionsroles.SavePermissionsRolesResDto;
+import com.lawencon.lms.dto.permissionsroles.UpdatePermissionsRolesResDto;
 import com.lawencon.lms.model.Permissions;
 import com.lawencon.lms.model.PermissionsRoles;
 import com.lawencon.lms.model.Roles;
@@ -25,7 +27,8 @@ public class PermissionsRolesServiceImpl extends BaseServiceImpl implements Perm
 	private RolesService rolesService;
 
 	@Override
-	public PermissionsRoles save(PermissionsRoles permissionsRoles) throws Exception {
+	public SavePermissionsRolesResDto save(PermissionsRoles permissionsRoles) throws Exception {
+		SavePermissionsRolesResDto savePermissionsRolesResDto = new SavePermissionsRolesResDto();
 		try {
 			Permissions permissions = permissionsService.findByCode(permissionsRoles.getPermissions().getPermissionsCode());
 			Roles roles = rolesService.findByCode(permissionsRoles.getRoles().getRolesCode());
@@ -34,15 +37,18 @@ public class PermissionsRolesServiceImpl extends BaseServiceImpl implements Perm
 			begin();
 			permissionsRoles = permissionsRolesDao.saveOrUpdate(permissionsRoles);
 			commit();
+			savePermissionsRolesResDto.setId(permissionsRoles.getId());
+			savePermissionsRolesResDto.setMsg("SUCCESS");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return permissionsRoles;
+		return savePermissionsRolesResDto;
 	}
 
 	@Override
-	public PermissionsRoles update(PermissionsRoles permissionsRoles) throws Exception {
+	public UpdatePermissionsRolesResDto update(PermissionsRoles permissionsRoles) throws Exception {
+		UpdatePermissionsRolesResDto updatePermissionsRolesResDto = new UpdatePermissionsRolesResDto();
 		try {
 			Permissions permissions = permissionsService.findByCode(permissionsRoles.getPermissions().getPermissionsCode());
 			Roles roles = rolesService.findByCode(permissionsRoles.getRoles().getRolesCode());
@@ -54,11 +60,13 @@ public class PermissionsRolesServiceImpl extends BaseServiceImpl implements Perm
 			begin();
 			permissionsRoles = permissionsRolesDao.saveOrUpdate(permissionsRoles);
 			commit();
+			updatePermissionsRolesResDto.setVersion(permissionsRoles.getVersion());
+			updatePermissionsRolesResDto.setMsg("SUCCESS");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return permissionsRoles;
+		return updatePermissionsRolesResDto;
 	}
 
 	@Override
@@ -73,6 +81,16 @@ public class PermissionsRolesServiceImpl extends BaseServiceImpl implements Perm
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return permissionsRolesDao.removeById(id);
+		try {
+			begin();
+			boolean isDeleted = permissionsRolesDao.removeById(id);
+			commit();
+
+			return isDeleted;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollback();
+			throw new Exception(e);
+		}
 	}
 }

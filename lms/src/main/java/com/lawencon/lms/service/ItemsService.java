@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.lawencon.lms.dto.items.SaveItemsResDto;
+import com.lawencon.lms.dto.items.UpdateItemsResDto;
 import com.lawencon.lms.model.Items;
 
 public interface ItemsService {
@@ -11,11 +13,11 @@ public interface ItemsService {
 	
 	Items findById(String id) throws Exception;
 	
-	Items update(Items itemsBrands) throws Exception;
+	UpdateItemsResDto update(Items itemsBrands) throws Exception;
 	
 	Items findByCode(String code) throws Exception;
 	
 	Boolean removeById(String id) throws Exception;
 
-	Items save(Items items, MultipartFile file) throws Exception;
+	SaveItemsResDto save(Items items, MultipartFile file) throws Exception;
 }

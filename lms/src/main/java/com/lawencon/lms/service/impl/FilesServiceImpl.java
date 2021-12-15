@@ -56,6 +56,16 @@ public class FilesServiceImpl extends BaseServiceImpl implements FilesService {
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return filesDao.removeById(id);
+		try {
+			begin();
+			boolean isDeleted = filesDao.removeById(id);
+			commit();
+
+			return isDeleted;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollback();
+			throw new Exception(e);
+		}
 	}
 }

@@ -12,6 +12,13 @@
 	<description>Lawencon-Assets Management System</description>
 
 	<dependencies>
+		
+		<dependency>
+	      <groupId>org.springdoc</groupId>
+	      <artifactId>springdoc-openapi-ui</artifactId>
+	      <version>1.5.12</version>
+	   </dependency>
+	   
 		<dependency>
 			<groupId>com.lawencon</groupId>
 			<artifactId>core</artifactId>
