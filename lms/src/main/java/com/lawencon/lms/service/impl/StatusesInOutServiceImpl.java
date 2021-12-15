@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.StatusesInOutDao;
+import com.lawencon.lms.dto.statusesinout.SaveStatusesInOutResDto;
+import com.lawencon.lms.dto.statusesinout.UpdateStatusesInOutResDto;
 import com.lawencon.lms.model.StatusesInOut;
 import com.lawencon.lms.service.StatusesInOutService;
 
@@ -31,20 +33,24 @@ public class StatusesInOutServiceImpl extends BaseServiceImpl implements Statuse
 	}
 
 	@Override
-	public StatusesInOut save(StatusesInOut statusesInOut) throws Exception {
+	public SaveStatusesInOutResDto save(StatusesInOut statusesInOut) throws Exception {
+		SaveStatusesInOutResDto resDto = new SaveStatusesInOutResDto();
 		try {
 			begin();
 			statusesInOut = statusesInOutDao.saveOrUpdate(statusesInOut);
 			commit();
+			resDto.setId(statusesInOut.getId());
+			resDto.setMesssage("INSERTED");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return statusesInOut;
+		return resDto;
 	}
 
 	@Override
-	public StatusesInOut update(StatusesInOut statusesInOut) throws Exception {
+	public UpdateStatusesInOutResDto update(StatusesInOut statusesInOut) throws Exception {
+		UpdateStatusesInOutResDto resDto = new UpdateStatusesInOutResDto();
 		try {
 			StatusesInOut statusesInAndOut = statusesInOutDao.findByCode(statusesInOut.getStatusesInOutCode());
 			statusesInOut.setCreatedBy(statusesInAndOut.getCreatedBy());
@@ -53,16 +59,28 @@ public class StatusesInOutServiceImpl extends BaseServiceImpl implements Statuse
 			begin();
 			statusesInOut = statusesInOutDao.saveOrUpdate(statusesInOut);
 			commit();
+			resDto.setVersion(statusesInAndOut.getVersion());
+			resDto.setMessage("UPDATED");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return statusesInOut;
+		return resDto;
 	}
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return removeById(id);
+		try {
+			begin();
+			boolean delete = statusesInOutDao.removeById(id);
+			commit();
+			
+			return delete;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollback();
+			throw new Exception(e);
+		}
 	}
 
 }

@@ -44,10 +44,11 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 			sql.append(" SELECT e.id, e.code, c.companies_name ,u.users_email, e.employees_fullname, e.employees_address, e.employees_phone_number, e.craeted_by, e.created_at, e.updated_by, e.updated_at, e.version ");
 			sql.append(" FROM employees as e ");
 			sql.append(" INNER JOIN users as u ON  u.id = e.users_id ");
+			sql.append(" INNER JOIN companies as c ON  c.id = e.companies_id ");
 			sql.append(" WHERE e.employees_code = :code ");
 			
 			Object resultQuery = createNativeQuery(sql.toString())
-					.setParameter("phoneNumber", code)
+					.setParameter("code", code)
 					.getSingleResult();
 			if(resultQuery!=null) {
 				Object[] obj = (Object[]) resultQuery;

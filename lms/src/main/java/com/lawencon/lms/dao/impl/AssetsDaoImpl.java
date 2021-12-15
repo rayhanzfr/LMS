@@ -424,4 +424,68 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		return deleteById(id);
 	}
 
+	@Override
+	public List<Assets> findByTotalReq(Integer total) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append(
+				" SELECT a.id, invoices.invoices_code, i.items_name, ib.items_brands_name, a.assets_name, sa.statuses_assets_name, sio.statuses_in_out_name, a.assets_expired, a.created_by, a.created_at,a.version ");
+		sql.append(" FROM assets as a ");
+		sql.append(" INNER JOIN items as i ON i.id = a.items_id ");
+		sql.append(" INNER JOIN items_types as it ON it.id = a.items_types_id ");
+		sql.append(" INNER JOIN items_brands as ib ON ib.id = a.items_brands_id ");
+		sql.append(" INNER JOIN invoices ON invoices.id = a.invoices_id ");
+		sql.append(" INNER JOIN statuses_assets as sa ON sa.id = a.statuses_assets_id ");
+		sql.append(" INNER JOIN statuses_in_out as sio ON sio.id = a.statuses_in_out_id ");
+		sql.append(" LIMIT :total ");
+
+		List<?> resultQuery = createNativeQuery(sql.toString())
+				.setParameter("total", total)
+				.getResultList();
+		List<Assets> listAssets = new ArrayList<Assets>();
+		if (resultQuery != null) {
+			resultQuery.forEach(rs -> {
+				Object[] obj = (Object[]) rs;
+				Assets assets = new Assets();
+				assets.setId(obj[0].toString());
+
+				Invoices invoices = new Invoices();
+				invoices.setInvoicesCode(obj[1].toString());
+				assets.setInvoices(invoices);
+
+				Items items = new Items();
+				items.setItemsName(obj[2].toString());
+
+				ItemsBrands itemsBrands = new ItemsBrands();
+				itemsBrands.setItemsBrandsName(obj[3].toString());
+				items.setItemsBrands(itemsBrands);
+
+				ItemsTypes itemsTypes = new ItemsTypes();
+				itemsTypes.setItemsTypesName(obj[4].toString());
+				items.setItemsTypes(itemsTypes);
+
+				assets.setItems(items);
+				assets.setAssetsName(obj[5].toString());
+
+				StatusesAssets statusesAssets = new StatusesAssets();
+				statusesAssets.setStatusesAssetsName(obj[6].toString());
+				assets.setStatusesAssets(statusesAssets);
+
+				StatusesInOut statusesInOut = new StatusesInOut();
+				statusesInOut.setStatusesInOutName(obj[7].toString());
+				assets.setStatusesInOut(statusesInOut);
+
+				if (obj[8] != null) {
+					assets.setAssetsExpired(Timestamp.valueOf(obj[8].toString()).toLocalDateTime().toLocalDate());
+				}
+
+				assets.setCreatedBy(obj[9].toString());
+				assets.setCreatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
+				assets.setVersion(Integer.valueOf(obj[11].toString()));
+
+				listAssets.add(assets);
+			});
+		}
+		return listAssets;
+	}
+
 }

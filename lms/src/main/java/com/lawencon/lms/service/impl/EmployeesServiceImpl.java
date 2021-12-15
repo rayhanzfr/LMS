@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.EmployeesDao;
+import com.lawencon.lms.dto.employees.SaveEmployeesResDto;
+import com.lawencon.lms.dto.employees.UpdateEmployeesResDto;
 import com.lawencon.lms.model.Companies;
 import com.lawencon.lms.model.Employees;
 import com.lawencon.lms.model.Users;
@@ -38,7 +40,8 @@ public class EmployeesServiceImpl extends BaseServiceImpl implements EmployeesSe
 
 
 	@Override
-	public Employees save(Employees employees) throws Exception {
+	public SaveEmployeesResDto save(Employees employees) throws Exception {
+		SaveEmployeesResDto resDto = new SaveEmployeesResDto();
 		try {
 			Users user = usersService.findByEmail(employees.getUsers().getUsersEmail());
 			employees.setUsers(user);
@@ -46,16 +49,19 @@ public class EmployeesServiceImpl extends BaseServiceImpl implements EmployeesSe
 			begin();
 			employees = employeesDao.saveOrUpdate(employees);
 			commit();
+			resDto.setId(employees.getId());
+			resDto.setMessage("INSERTED");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return employees;
+		return resDto;
 	}
 
 
 	@Override
-	public Employees update(Employees employees) throws Exception {
+	public UpdateEmployeesResDto update(Employees employees) throws Exception {
+		UpdateEmployeesResDto resDto = new UpdateEmployeesResDto();
 		try {
 			Users user = usersService.findByEmail(employees.getUsers().getUsersEmail());
 			employees.setUsers(user);
@@ -70,17 +76,36 @@ public class EmployeesServiceImpl extends BaseServiceImpl implements EmployeesSe
 			begin();
 			employees = employeesDao.saveOrUpdate(employees);
 			commit();
+			
+			resDto.setVersion(employees.getVersion());
+			resDto.setMessage("UPDATED");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return employees;
+		return resDto;
 	}
 
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return removeById(id);
+		try {
+			begin();
+			boolean delete = employeesDao.removeById(id);
+			commit();
+			
+			return delete;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollback();
+			throw new Exception(e);
+		}
+	}
+
+
+	@Override
+	public Employees findByCode(String code) throws Exception {
+		return employeesDao.findByCode(code);
 	}
 	
 }
