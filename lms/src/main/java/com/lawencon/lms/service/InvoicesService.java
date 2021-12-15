@@ -14,6 +14,8 @@ public interface InvoicesService {
 
 	Invoices findByCode(String code) throws Exception;
 
+	String generateCode() throws Exception;
+	
 	SaveInvoicesResDto save(Invoices invoices) throws Exception;
 	
 	UpdateInvoicesResDto update(Invoices invoices) throws Exception;

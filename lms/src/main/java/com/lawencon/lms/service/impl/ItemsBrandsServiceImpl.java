@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
+import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.ItemsBrandsDao;
 import com.lawencon.lms.dto.itemsbrands.SaveItemsBrandsResDto;
 import com.lawencon.lms.dto.itemsbrands.UpdateItemsBrandsResDto;
@@ -21,6 +22,7 @@ public class ItemsBrandsServiceImpl extends BaseServiceImpl implements ItemsBran
 		SaveItemsBrandsResDto saveItemsBrandsResDto = new SaveItemsBrandsResDto();
 		try {
 			begin();
+			itemsBrands.setItemsBrandsCode(generateCode());
 			itemsBrands = itemsBrandsDao.saveOrUpdate(itemsBrands);
 			commit();
 			saveItemsBrandsResDto.setId(itemsBrands.getId());
@@ -80,5 +82,10 @@ public class ItemsBrandsServiceImpl extends BaseServiceImpl implements ItemsBran
 			rollback();
 			throw new Exception(e);
 		}
+	}
+	public String generateCode()throws Exception{
+		Integer increment = itemsBrandsDao.countData();
+		String code= EnumCode.ITEMBRANDS.getCode()+increment;
+		return code;
 	}
 }

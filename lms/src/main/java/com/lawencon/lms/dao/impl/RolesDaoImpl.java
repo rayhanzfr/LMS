@@ -1,5 +1,6 @@
 package com.lawencon.lms.dao.impl;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -63,6 +64,14 @@ public class RolesDaoImpl extends BaseDaoImpl<Roles> implements RolesDao {
 	@Override
 	public Boolean removeById(String id) throws Exception {
 		return deleteById(id);
+	}
+	
+	@Override
+	public Integer countData() throws Exception {
+		String sql = "SELECT COUNT(r.id) FROM Roles r ";
+		Object result = createQuery(sql,Roles.class).getSingleResult();
+		BigInteger results = new BigInteger(result.toString());
+		return results.intValue();
 	}
 
 }

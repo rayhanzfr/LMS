@@ -90,6 +90,17 @@ public class CompaniesDaoImpl extends BaseDaoImpl<Companies> implements Companie
 	}
 
 	@Override
+	public String countData() throws Exception {
+		String lastRegist = null;
+		
+		String sql = "SELECT COUNT(c) FROM Companies as c";
+	
+		Object resultQuery = createQuery(sql, Companies.class).getSingleResult();
+		lastRegist = resultQuery.toString();
+		return lastRegist;
+	}
+	
+	@Override
 	public Boolean removeById(String id) throws Exception {
 		return deleteById(id);
 	}

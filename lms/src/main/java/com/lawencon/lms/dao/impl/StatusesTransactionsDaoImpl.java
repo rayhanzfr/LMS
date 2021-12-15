@@ -1,5 +1,6 @@
 package com.lawencon.lms.dao.impl;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.persistence.NonUniqueResultException;
 
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.StatusesTransactionsDao;
+import com.lawencon.lms.model.ItemsBrands;
 import com.lawencon.lms.model.StatusesAssets;
 import com.lawencon.lms.model.StatusesTransactions;
 
@@ -68,4 +70,5 @@ public class StatusesTransactionsDaoImpl extends BaseDaoImpl<StatusesTransaction
 	public Boolean removeById(String id) throws Exception {
 		return deleteById(id);
 	}
+	
 }

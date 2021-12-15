@@ -1,5 +1,6 @@
 package com.lawencon.lms.dao.impl;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.persistence.NonUniqueResultException;
 
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.TransactionsOutDao;
+import com.lawencon.lms.model.ItemsBrands;
 import com.lawencon.lms.model.TransactionsOut;
 
 public class TransactionsOutDaoImpl extends BaseDaoImpl<TransactionsOut> implements TransactionsOutDao {
@@ -58,5 +60,13 @@ public class TransactionsOutDaoImpl extends BaseDaoImpl<TransactionsOut> impleme
 	@Override
 	public TransactionsOut saveOrUpdate(TransactionsOut transactionsOut) throws Exception {
 		return save(transactionsOut);
+	}
+	
+	@Override
+	public Integer countData() throws Exception {
+		String sql = "SELECT COUNT(to.id) FROM TransactionsOut to ";
+		Object result = createQuery(sql,TransactionsOut.class).getSingleResult();
+		BigInteger results = new BigInteger(result.toString());
+		return results.intValue();
 	}
 }

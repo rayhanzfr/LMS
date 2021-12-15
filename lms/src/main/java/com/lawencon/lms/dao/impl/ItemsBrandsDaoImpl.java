@@ -1,5 +1,6 @@
 package com.lawencon.lms.dao.impl;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.persistence.NonUniqueResultException;
 
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.ItemsBrandsDao;
+import com.lawencon.lms.model.Items;
 import com.lawencon.lms.model.ItemsBrands;
 
 public class ItemsBrandsDaoImpl extends BaseDaoImpl<ItemsBrands> implements ItemsBrandsDao{
@@ -59,5 +61,13 @@ public class ItemsBrandsDaoImpl extends BaseDaoImpl<ItemsBrands> implements Item
 	@Override
 	public Boolean removeById(String id) throws Exception {
 		return deleteById(id);
+	}
+	
+	@Override
+	public Integer countData() throws Exception {
+		String sql = "SELECT COUNT(ib.id) FROM ItemsBrands ib ";
+		Object result = createQuery(sql,ItemsBrands.class).getSingleResult();
+		BigInteger results = new BigInteger(result.toString());
+		return results.intValue();
 	}
 }

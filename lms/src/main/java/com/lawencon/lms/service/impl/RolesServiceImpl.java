@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
+import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.RolesDao;
 import com.lawencon.lms.dto.roles.SaveRolesResDto;
 import com.lawencon.lms.dto.roles.UpdateRolesResDto;
@@ -21,6 +22,7 @@ public class RolesServiceImpl extends BaseServiceImpl implements RolesService {
 		SaveRolesResDto saveRolesResDto = new SaveRolesResDto();
 		try {
 			begin();
+			roles.setRolesCode(generateCode());
 			roles = rolesDao.saveOrUpdate(roles);
 			commit();
 			saveRolesResDto.setId(roles.getId());
@@ -80,5 +82,11 @@ public class RolesServiceImpl extends BaseServiceImpl implements RolesService {
 			rollback();
 			throw new Exception(e);
 		}
+	}
+	
+	public String generateCode()throws Exception{
+		Integer increment = rolesDao.countData();
+		String code= EnumCode.ROLES.getCode()+increment;
+		return code;
 	}
 }
