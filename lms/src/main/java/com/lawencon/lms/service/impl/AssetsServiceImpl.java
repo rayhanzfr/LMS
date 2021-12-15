@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.constant.StatusesAssetsCode;
@@ -30,6 +31,7 @@ import com.lawencon.lms.model.StatusesAssets;
 import com.lawencon.lms.model.StatusesInOut;
 import com.lawencon.lms.service.AssetsService;
 
+@Service
 public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService {
 
 	@Autowired
