@@ -2,10 +2,13 @@ package com.lawencon.lms.dao.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.FilesDao;
 import com.lawencon.lms.model.Files;
 
+@Repository
 public class FilesDaoImpl extends BaseDaoImpl<Files> implements FilesDao {
 
 	@Override

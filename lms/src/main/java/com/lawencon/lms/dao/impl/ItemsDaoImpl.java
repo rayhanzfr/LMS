@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import org.springframework.stereotype.Repository;
+
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.ItemsDao;
 import com.lawencon.lms.model.Files;
@@ -15,6 +17,7 @@ import com.lawencon.lms.model.ItemsBrands;
 import com.lawencon.lms.model.ItemsTypes;
 import com.lawencon.lms.model.Permissions;
 
+@Repository
 public class ItemsDaoImpl extends BaseDaoImpl<Items> implements ItemsDao {
 
 	@Override

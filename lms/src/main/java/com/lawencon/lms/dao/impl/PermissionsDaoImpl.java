@@ -7,13 +7,15 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import org.springframework.stereotype.Repository;
+
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.PermissionsDao;
 import com.lawencon.lms.model.Permissions;
 import com.lawencon.lms.model.Roles;
 
+@Repository
 public class PermissionsDaoImpl extends BaseDaoImpl<Permissions> implements PermissionsDao {
-
 
 	@Override
 	public Permissions findById(String id) throws Exception {

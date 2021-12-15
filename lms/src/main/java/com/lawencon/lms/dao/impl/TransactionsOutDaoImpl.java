@@ -7,14 +7,16 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import org.springframework.stereotype.Repository;
+
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.TransactionsOutDao;
 import com.lawencon.lms.model.ItemsBrands;
 import com.lawencon.lms.model.TransactionsOut;
 
+@Repository
 public class TransactionsOutDaoImpl extends BaseDaoImpl<TransactionsOut> implements TransactionsOutDao {
-
-
+	
 	@Override
 	public TransactionsOut findById(String id) throws Exception {
 		return getById(id);
