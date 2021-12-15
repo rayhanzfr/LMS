@@ -2,10 +2,13 @@ package com.lawencon.lms.dao.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.PermissionsRolesDao;
 import com.lawencon.lms.model.PermissionsRoles;
 
+@Repository
 public class PermissionsRolesDaoImpl extends BaseDaoImpl<PermissionsRoles> implements PermissionsRolesDao {
 
 	@Override
