@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
+import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.PermissionsDao;
 import com.lawencon.lms.dto.permissions.SavePermissionsResDto;
 import com.lawencon.lms.dto.permissions.UpdatePermissionsResDto;
@@ -21,6 +22,7 @@ public class PermissionsServiceImpl extends BaseServiceImpl implements Permissio
 		SavePermissionsResDto savePermissionsResDto = new SavePermissionsResDto();
 		try {
 			begin();
+			permissions.setPermissionsCode(generateCode());
 			permissions = permissionsDao.saveOrUpdate(permissions);
 			commit();
 			savePermissionsResDto.setId(permissions.getId());
@@ -80,5 +82,11 @@ public class PermissionsServiceImpl extends BaseServiceImpl implements Permissio
 			rollback();
 			throw new Exception(e);
 		}
+	}
+	
+	public String generateCode()throws Exception{
+		Integer increment = permissionsDao.countData();
+		String code= EnumCode.PERMISSIONS.getCode()+increment;
+		return code;
 	}
 }

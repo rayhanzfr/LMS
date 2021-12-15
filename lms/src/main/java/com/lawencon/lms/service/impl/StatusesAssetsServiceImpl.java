@@ -37,6 +37,7 @@ public class StatusesAssetsServiceImpl extends BaseServiceImpl implements Status
 		
 		try {
 			begin();
+			statusesAssets.setStatusesAssetsCode(null);
 			statusesAssets = statusesAssetsDao.saveOrUpdate(statusesAssets);
 			commit();
 			

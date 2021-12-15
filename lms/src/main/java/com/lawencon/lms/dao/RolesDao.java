@@ -15,4 +15,6 @@ public interface RolesDao {
 	List<Roles> findAll() throws Exception;
 	
 	Boolean removeById(String id) throws Exception;
+	
+	Integer countData() throws Exception;
 }
