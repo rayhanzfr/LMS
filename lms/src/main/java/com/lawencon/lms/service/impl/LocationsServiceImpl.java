@@ -3,6 +3,7 @@ package com.lawencon.lms.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.LocationsDao;
@@ -13,6 +14,7 @@ import com.lawencon.lms.model.Locations;
 import com.lawencon.lms.service.CompaniesService;
 import com.lawencon.lms.service.LocationsService;
 
+@Service
 public class LocationsServiceImpl extends BaseServiceImpl implements LocationsService {
 
 	@Autowired
