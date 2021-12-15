@@ -13,5 +13,7 @@ public interface LocationsDao {
 	
 	Locations saveOrUpdate(Locations locations) throws Exception;
 
+	String countData() throws Exception;
+	
 	Boolean removeById(String id) throws Exception;
 }
