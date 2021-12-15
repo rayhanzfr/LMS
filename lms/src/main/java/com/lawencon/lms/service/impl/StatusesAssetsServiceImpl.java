@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.StatusesAssetsDao;
+import com.lawencon.lms.dto.statusesassets.SaveStatusesAssetsResDto;
+import com.lawencon.lms.dto.statusesassets.UpdateStatusesAssetsResDto;
 import com.lawencon.lms.model.StatusesAssets;
 import com.lawencon.lms.service.StatusesAssetsService;
 
@@ -30,20 +32,27 @@ public class StatusesAssetsServiceImpl extends BaseServiceImpl implements Status
 	}
 
 	@Override
-	public StatusesAssets save(StatusesAssets statusesAssets) throws Exception {
+	public SaveStatusesAssetsResDto save(StatusesAssets statusesAssets) throws Exception {
+		SaveStatusesAssetsResDto saveRes = new SaveStatusesAssetsResDto();
+		
 		try {
 			begin();
 			statusesAssets = statusesAssetsDao.saveOrUpdate(statusesAssets);
 			commit();
+			
+			saveRes.setId(statusesAssets.getId());
+			saveRes.setMessage("Inserted");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return statusesAssets;
+		return saveRes;
 	}
 
 	@Override
-	public StatusesAssets update(StatusesAssets statusesAssets) throws Exception {
+	public UpdateStatusesAssetsResDto update(StatusesAssets statusesAssets) throws Exception {
+		UpdateStatusesAssetsResDto updateRes = new UpdateStatusesAssetsResDto();
+		
 		try {
 			StatusesAssets statusesAssetsDb = findById(statusesAssets.getId());	
 			statusesAssets.setCreatedAt(statusesAssetsDb.getCreatedAt());
@@ -52,11 +61,14 @@ public class StatusesAssetsServiceImpl extends BaseServiceImpl implements Status
 			begin();
 			statusesAssets = statusesAssetsDao.saveOrUpdate(statusesAssets);
 			commit();
+			
+			updateRes.setVersion(statusesAssets.getVersion());
+			updateRes.setMessage("Inserted");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return statusesAssets;
+		return updateRes;
 	}
 
 	@Override
