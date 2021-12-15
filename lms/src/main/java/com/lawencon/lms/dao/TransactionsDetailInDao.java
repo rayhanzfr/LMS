@@ -9,5 +9,7 @@ public interface TransactionsDetailInDao {
 
 	TransactionsDetailIn findById(String id) throws Exception;
 
+	List<TransactionsDetailIn> findByTransactionInCode(String code) throws Exception;
+	
 	TransactionsDetailIn saveOrUpdate(TransactionsDetailIn transactionsDetailIn) throws Exception;
 }
