@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.AssetsDao;
 import com.lawencon.lms.dao.InvoicesDao;
-import com.lawencon.lms.dao.ItemsBrandsDao;
 import com.lawencon.lms.dao.ItemsDao;
-import com.lawencon.lms.dao.ItemsTypesDao;
 import com.lawencon.lms.dao.StatusesAssetsDao;
 import com.lawencon.lms.dao.StatusesInOutDao;
 import com.lawencon.lms.dto.assets.AssetsDataDto;
@@ -26,17 +24,9 @@ import com.lawencon.lms.dto.assets.UpdateAssetsResDto;
 import com.lawencon.lms.model.Assets;
 import com.lawencon.lms.model.Invoices;
 import com.lawencon.lms.model.Items;
-import com.lawencon.lms.model.ItemsBrands;
-import com.lawencon.lms.model.ItemsTypes;
 import com.lawencon.lms.model.StatusesAssets;
 import com.lawencon.lms.model.StatusesInOut;
 import com.lawencon.lms.service.AssetsService;
-import com.lawencon.lms.service.InvoicesService;
-import com.lawencon.lms.service.ItemsBrandsService;
-import com.lawencon.lms.service.ItemsService;
-import com.lawencon.lms.service.ItemsTypesService;
-import com.lawencon.lms.service.StatusesAssetsService;
-import com.lawencon.lms.service.StatusesInOutService;
 
 public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService {
 
@@ -45,12 +35,6 @@ public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService 
 	
 	@Autowired
 	private ItemsDao itemsDao;
-	
-	@Autowired
-	private ItemsTypesDao itemsTypesDao;
-	
-	@Autowired
-	private ItemsBrandsDao itemsBrandsDao;
 	
 	@Autowired
 	private StatusesAssetsDao statusesAssetsDao;
@@ -214,6 +198,7 @@ public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService 
 		save.setIsActive(saveAssetsReqDto.getIsActive());
 		begin();
 		Assets result = assetsDao.saveOrUpdate(save);
+		commit();
 		
 		SaveAssetsDataDto resDataDto = new SaveAssetsDataDto();
 		resDataDto.setId(result.getId());
@@ -221,7 +206,6 @@ public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService 
 		SaveAssetsResDto resDto = new SaveAssetsResDto();
 		resDto.setData(resDataDto);
 		resDto.setMessage("SUCCESS");
-		commit();
 		return resDto;
 	}
 
@@ -246,6 +230,7 @@ public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService 
 		save.setVersion(updateAssetsReqDto.getVersion());
 		begin();
 		Assets result = assetsDao.saveOrUpdate(save);
+		commit();
 		
 		UpdateAssetsDataDto resDataDto = new UpdateAssetsDataDto();
 		resDataDto.setId(result.getId());
@@ -253,7 +238,6 @@ public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService 
 		UpdateAssetsResDto resDto = new UpdateAssetsResDto();
 		resDto.setData(resDataDto);
 		resDto.setMessage("SUCCESS");
-		commit();
 		return resDto;
 	}
 
@@ -270,6 +254,7 @@ public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService 
 		save.setVersion(updateAssetsReqDto.getVersion());
 		begin();
 		Assets result = assetsDao.saveOrUpdate(save);
+		commit();
 		
 		UpdateAssetsDataDto resDataDto = new UpdateAssetsDataDto();
 		resDataDto.setId(result.getId());
@@ -277,7 +262,6 @@ public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService 
 		UpdateAssetsResDto resDto = new UpdateAssetsResDto();
 		resDto.setData(resDataDto);
 		resDto.setMessage("SUCCESS");
-		commit();
 		return resDto;
 	}
 
@@ -294,6 +278,7 @@ public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService 
 		save.setVersion(updateAssetsReqDto.getVersion());
 		begin();
 		Assets result = assetsDao.saveOrUpdate(save);
+		commit();
 		
 		UpdateAssetsDataDto resDataDto = new UpdateAssetsDataDto();
 		resDataDto.setId(result.getId());
@@ -301,7 +286,6 @@ public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService 
 		UpdateAssetsResDto resDto = new UpdateAssetsResDto();
 		resDto.setData(resDataDto);
 		resDto.setMessage("SUCCESS");
-		commit();
 		return resDto;
 	}
 
@@ -309,7 +293,17 @@ public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService 
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return assetsDao.removeById(id);
+		try {
+			begin();
+			boolean delete = assetsDao.removeById(id);
+			commit();
+			
+			return delete;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollback();
+			throw new Exception(e);
+		}
 	}
 
 
