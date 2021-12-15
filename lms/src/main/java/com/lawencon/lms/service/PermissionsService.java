@@ -2,13 +2,15 @@ package com.lawencon.lms.service;
 
 import java.util.List;
 
+import com.lawencon.lms.dto.permissions.SavePermissionsResDto;
+import com.lawencon.lms.dto.permissions.UpdatePermissionsResDto;
 import com.lawencon.lms.model.Permissions;
 
 public interface PermissionsService {
 	
-	Permissions save(Permissions permissions) throws Exception;
+	SavePermissionsResDto save(Permissions permissions) throws Exception;
 	
-	Permissions update(Permissions permissions) throws Exception;
+	UpdatePermissionsResDto update(Permissions permissions) throws Exception;
 
 	Permissions findById(String id) throws Exception;
 

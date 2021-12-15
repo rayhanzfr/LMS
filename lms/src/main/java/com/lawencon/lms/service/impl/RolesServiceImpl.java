@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.RolesDao;
+import com.lawencon.lms.dto.roles.SaveRolesResDto;
+import com.lawencon.lms.dto.roles.UpdateRolesResDto;
 import com.lawencon.lms.model.Roles;
 import com.lawencon.lms.service.RolesService;
 
@@ -15,20 +17,24 @@ public class RolesServiceImpl extends BaseServiceImpl implements RolesService {
 	private RolesDao rolesDao;
 
 	@Override
-	public Roles save(Roles roles) throws Exception {
+	public SaveRolesResDto save(Roles roles) throws Exception {
+		SaveRolesResDto saveRolesResDto = new SaveRolesResDto();
 		try {
 			begin();
 			roles = rolesDao.saveOrUpdate(roles);
 			commit();
+			saveRolesResDto.setId(roles.getId());
+			saveRolesResDto.setMsg("OK");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return roles;
+		return saveRolesResDto;
 	}
 
 	@Override
-	public Roles update(Roles roles) throws Exception {
+	public UpdateRolesResDto update(Roles roles) throws Exception {
+		UpdateRolesResDto updateRolesResDto = new UpdateRolesResDto();
 		try {
 			Roles rolesDb = findByCode(roles.getRolesCode());	
 			roles.setCreatedAt(rolesDb.getCreatedAt());
@@ -37,11 +43,13 @@ public class RolesServiceImpl extends BaseServiceImpl implements RolesService {
 			begin();
 			roles = rolesDao.saveOrUpdate(roles);
 			commit();
+			updateRolesResDto.setVersion(roles.getVersion());
+			updateRolesResDto.setMsg("OK");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return roles;
+		return updateRolesResDto;
 	}
 
 	@Override
@@ -61,6 +69,16 @@ public class RolesServiceImpl extends BaseServiceImpl implements RolesService {
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return rolesDao.removeById(id);
+		try {
+			begin();
+			boolean isDeleted = rolesDao.removeById(id);
+			commit();
+
+			return isDeleted;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollback();
+			throw new Exception(e);
+		}
 	}
 }

@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.ItemsDao;
+import com.lawencon.lms.dto.items.SaveItemsResDto;
+import com.lawencon.lms.dto.items.UpdateItemsResDto;
 import com.lawencon.lms.model.Files;
 import com.lawencon.lms.model.Items;
 import com.lawencon.lms.model.ItemsBrands;
@@ -31,10 +33,11 @@ public class ItemsServiceImpl extends BaseServiceImpl implements ItemsService {
 	private ItemsBrandsService itemsBrandsService;
 
 	@Override
-	public Items save(Items items,MultipartFile file) throws Exception {
+	public SaveItemsResDto save(Items items,MultipartFile file) throws Exception {
+		SaveItemsResDto saveItemsResDto = new SaveItemsResDto();
 		try {
 			String img = file.getName();
-			String ext = img.substring(img.lastIndexOf(".")+1,ext.length());
+			String ext = img.substring(img.lastIndexOf(".")+1,img.length());
 			Files filesInsert = new Files();
 			filesInsert.setFile(file.getBytes());
 			filesInsert.setExtensions(ext);
@@ -49,15 +52,18 @@ public class ItemsServiceImpl extends BaseServiceImpl implements ItemsService {
 			items.setItemsBrands(itemsBrands);
 			items = itemsDao.saveOrUpdate(items);
 			commit();
+			saveItemsResDto.setId(itemsBrands.getId());
+			saveItemsResDto.setMsg("OK");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return items;
+		return saveItemsResDto;
 	}
 
 	@Override
-	public Items update(Items items) throws Exception {
+	public UpdateItemsResDto update(Items items) throws Exception {
+		UpdateItemsResDto updateItemsResDto = new UpdateItemsResDto();
 		try {
 			Files files = filesService.findById(items.getFiles().getId());
 			ItemsTypes itemsTypes = itemsTypesService.findByCode(items.getItemsTypes().getItemsTypesCode());
@@ -72,11 +78,13 @@ public class ItemsServiceImpl extends BaseServiceImpl implements ItemsService {
 			begin();
 			items = itemsDao.saveOrUpdate(items);
 			commit();
+			updateItemsResDto.setVersion(itemsBrands.getVersion());
+			updateItemsResDto.setMsg("OK");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return items;
+		return updateItemsResDto;
 	}
 
 	@Override
@@ -96,6 +104,16 @@ public class ItemsServiceImpl extends BaseServiceImpl implements ItemsService {
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return itemsDao.removeById(id);
+		try {
+			begin();
+			boolean isDeleted = itemsDao.removeById(id);
+			commit();
+
+			return isDeleted;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollback();
+			throw new Exception(e);
+		}
 	}
 }
