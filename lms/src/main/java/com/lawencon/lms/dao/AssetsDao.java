@@ -20,6 +20,8 @@ public interface AssetsDao {
 	List<Assets> findByStatusesAssetsCode(String statusesAssetsCode) throws Exception;
 
 	List<Assets> findByStatusesInOutCode(String statusesInOutCode) throws Exception;
+	
+	List<Assets> findByTotalReq(Integer total) throws Exception;
 
 	Assets saveOrUpdate(Assets assets) throws Exception;
 

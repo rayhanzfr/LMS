@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
+import com.lawencon.lms.constant.StatusesAssetsCode;
 import com.lawencon.lms.dao.AssetsDao;
 import com.lawencon.lms.dao.InvoicesDao;
 import com.lawencon.lms.dao.ItemsDao;
@@ -15,6 +16,7 @@ import com.lawencon.lms.dao.StatusesInOutDao;
 import com.lawencon.lms.dto.assets.AssetsDataDto;
 import com.lawencon.lms.dto.assets.GetAllAssetsDto;
 import com.lawencon.lms.dto.assets.GetByIdAssetsDto;
+import com.lawencon.lms.dto.assets.GetTotalAssetsReqDto;
 import com.lawencon.lms.dto.assets.SaveAssetsDataDto;
 import com.lawencon.lms.dto.assets.SaveAssetsReqDto;
 import com.lawencon.lms.dto.assets.SaveAssetsResDto;
@@ -304,6 +306,24 @@ public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService 
 			rollback();
 			throw new Exception(e);
 		}
+	}
+
+	@Override
+	public GetTotalAssetsReqDto getTotalreq(int total) throws Exception {
+		GetTotalAssetsReqDto getAssets = new GetTotalAssetsReqDto(); 
+		List<Assets> listAssets = assetsDao.findByStatusesAssetsCode(StatusesAssetsCode.DEPLOYABLE.getCode());
+		List<Assets> showAssets = new ArrayList<Assets>();
+		for(int i=0;i<listAssets.size();i++) {
+			if(i+1==total) {
+				break;
+			}
+			else {
+				showAssets.add(listAssets.get(i));
+			}
+		}
+		getAssets.setData(showAssets);
+		getAssets.setTotal(total);
+		return getAssets;
 	}
 
 

@@ -2,6 +2,7 @@ package com.lawencon.lms.service;
 
 import com.lawencon.lms.dto.assets.GetAllAssetsDto;
 import com.lawencon.lms.dto.assets.GetByIdAssetsDto;
+import com.lawencon.lms.dto.assets.GetTotalAssetsReqDto;
 import com.lawencon.lms.dto.assets.SaveAssetsReqDto;
 import com.lawencon.lms.dto.assets.SaveAssetsResDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsReqDto;
@@ -23,6 +24,8 @@ public interface AssetsService {
 	GetAllAssetsDto findByStatusesAssetsCode(String statusesAssetsCode) throws Exception;
 
 	GetAllAssetsDto findByStatusesInOutCode(String statusesInOutCode) throws Exception;
+	
+	GetTotalAssetsReqDto getTotalreq(int total) throws Exception;
 
 	SaveAssetsResDto save(SaveAssetsReqDto saveAssetsReqDto) throws Exception;
 	
