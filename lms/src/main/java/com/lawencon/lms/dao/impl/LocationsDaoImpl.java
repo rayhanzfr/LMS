@@ -7,11 +7,14 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import org.springframework.stereotype.Repository;
+
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.LocationsDao;
 import com.lawencon.lms.model.Companies;
 import com.lawencon.lms.model.Locations;
 
+@Repository()
 public class LocationsDaoImpl extends BaseDaoImpl<Locations> implements LocationsDao {
 
 	@Override
