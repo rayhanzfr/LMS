@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.base.BaseServiceImpl;
+import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.ItemsDao;
 import com.lawencon.lms.dto.items.SaveItemsResDto;
 import com.lawencon.lms.dto.items.UpdateItemsResDto;
@@ -47,6 +48,7 @@ public class ItemsServiceImpl extends BaseServiceImpl implements ItemsService {
 			filesDb = filesService.save(filesInsert);
 			ItemsTypes itemsTypes = itemsTypesService.findByCode(items.getItemsTypes().getItemsTypesCode());
 			ItemsBrands itemsBrands = itemsBrandsService.findByCode(items.getItemsBrands().getItemsBrandsCode());
+			items.setItemsCode(generateCode());
 			items.setFiles(filesDb);
 			items.setItemsTypes(itemsTypes);
 			items.setItemsBrands(itemsBrands);
@@ -115,5 +117,11 @@ public class ItemsServiceImpl extends BaseServiceImpl implements ItemsService {
 			rollback();
 			throw new Exception(e);
 		}
+	}
+	
+	public String generateCode()throws Exception{
+		Integer increment = itemsDao.countData();
+		String code= EnumCode.ITEMS.getCode()+increment;
+		return code;
 	}
 }

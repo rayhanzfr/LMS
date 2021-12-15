@@ -15,4 +15,6 @@ public interface PermissionsDao {
 	List<Permissions> findAll() throws Exception;
 	
 	Boolean removeById(String id) throws Exception;
+	
+	Integer countData() throws Exception;
 }
