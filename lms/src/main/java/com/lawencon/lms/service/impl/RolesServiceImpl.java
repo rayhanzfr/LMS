@@ -13,6 +13,7 @@ import com.lawencon.lms.dto.roles.UpdateRolesResDto;
 import com.lawencon.lms.model.Roles;
 import com.lawencon.lms.service.RolesService;
 
+@Service
 public class RolesServiceImpl extends BaseServiceImpl implements RolesService {
 
 	@Autowired
