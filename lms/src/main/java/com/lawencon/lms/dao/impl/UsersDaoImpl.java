@@ -48,7 +48,7 @@ public class UsersDaoImpl extends BaseDaoImpl<Users> implements UsersDao {
 				user.setUsersEmail(obj[2].toString());
 				user.setCreatedBy(obj[3].toString());
 				user.setCreatedAt(Timestamp.valueOf(obj[4].toString()).toLocalDateTime());
-				user.setVersion(Long.valueOf(obj[5].toString()));
+				user.setVersion(Integer.valueOf(obj[5].toString()));
 			}
 		} catch (NoResultException e) {
 			e.printStackTrace();
@@ -63,7 +63,7 @@ public class UsersDaoImpl extends BaseDaoImpl<Users> implements UsersDao {
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return removeById(id);
+		return deleteById(id);
 	}
 
 }

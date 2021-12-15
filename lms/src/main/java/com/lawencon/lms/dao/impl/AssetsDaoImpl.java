@@ -147,7 +147,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 
 				assets.setCreatedBy(obj[9].toString());
 				assets.setCreatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
-				assets.setVersion(Long.valueOf(obj[11].toString()));
+				assets.setVersion(Integer.valueOf(obj[11].toString()));
 
 				listAssets.add(assets);
 			});
@@ -210,7 +210,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 
 				assets.setCreatedBy(obj[9].toString());
 				assets.setCreatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
-				assets.setVersion(Long.valueOf(obj[11].toString()));
+				assets.setVersion(Integer.valueOf(obj[11].toString()));
 
 				listAssets.add(assets);
 			});
@@ -274,7 +274,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 
 				assets.setCreatedBy(obj[9].toString());
 				assets.setCreatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
-				assets.setVersion(Long.valueOf(obj[11].toString()));
+				assets.setVersion(Integer.valueOf(obj[11].toString()));
 
 				listAssets.add(assets);
 			});
@@ -339,7 +339,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 
 				assets.setCreatedBy(obj[9].toString());
 				assets.setCreatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
-				assets.setVersion(Long.valueOf(obj[11].toString()));
+				assets.setVersion(Integer.valueOf(obj[11].toString()));
 
 				listAssets.add(assets);
 			});
@@ -404,7 +404,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 
 				assets.setCreatedBy(obj[9].toString());
 				assets.setCreatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
-				assets.setVersion(Long.valueOf(obj[11].toString()));
+				assets.setVersion(Integer.valueOf(obj[11].toString()));
 
 				listAssets.add(assets);
 			});
@@ -421,7 +421,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return removeById(id);
+		return deleteById(id);
 	}
 
 }

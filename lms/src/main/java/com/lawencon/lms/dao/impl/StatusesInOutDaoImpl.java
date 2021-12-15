@@ -31,7 +31,7 @@ public class StatusesInOutDaoImpl extends BaseDaoImpl<StatusesInOut> implements 
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return removeById(id);
+		return deleteById(id);
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class StatusesInOutDaoImpl extends BaseDaoImpl<StatusesInOut> implements 
 				if (obj[6] != null) {
 					statusesInOut.setUpdatedAt(Timestamp.valueOf(obj[6].toString()).toLocalDateTime());
 				}
-				statusesInOut.setVersion(Long.valueOf(obj[7].toString()));
+				statusesInOut.setVersion(Integer.valueOf(obj[7].toString()));
 			}
 		} catch (NoResultException e) {
 			e.printStackTrace();

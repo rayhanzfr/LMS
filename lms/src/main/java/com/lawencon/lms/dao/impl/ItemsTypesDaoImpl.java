@@ -51,7 +51,7 @@ public class ItemsTypesDaoImpl extends BaseDaoImpl<ItemsTypes> implements ItemsT
 					itemsTypes.setUpdatedAt(Timestamp.valueOf(obj[6].toString()).toLocalDateTime());
 				}
 
-				itemsTypes.setVersion(Long.valueOf(obj[7].toString()));
+				itemsTypes.setVersion(Integer.valueOf(obj[7].toString()));
 			}
 		} catch (NoResultException e) {
 			e.printStackTrace();
@@ -66,7 +66,7 @@ public class ItemsTypesDaoImpl extends BaseDaoImpl<ItemsTypes> implements ItemsT
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return removeById(id);
+		return deleteById(id);
 	}
 
 }
