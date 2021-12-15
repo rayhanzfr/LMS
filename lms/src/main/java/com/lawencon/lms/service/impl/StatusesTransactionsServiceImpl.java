@@ -3,6 +3,7 @@ package com.lawencon.lms.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.StatusesTransactionsDao;
@@ -11,6 +12,7 @@ import com.lawencon.lms.dto.statusestransactions.UpdateStatusesTransactionsResDt
 import com.lawencon.lms.model.StatusesTransactions;
 import com.lawencon.lms.service.StatusesTransactionsService;
 
+@Service
 public class StatusesTransactionsServiceImpl extends BaseServiceImpl implements StatusesTransactionsService {
 
 	@Autowired

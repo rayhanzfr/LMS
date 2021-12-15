@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.AssetsDao;
@@ -29,6 +30,7 @@ import com.lawencon.lms.model.TransactionsDetailOut;
 import com.lawencon.lms.model.TransactionsOut;
 import com.lawencon.lms.service.TransactionsOutService;
 
+@Service
 public class TransactionsOutServiceImpl extends BaseServiceImpl implements TransactionsOutService {
 
 	@Autowired
