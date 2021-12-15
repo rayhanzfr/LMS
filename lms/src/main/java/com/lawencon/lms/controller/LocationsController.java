@@ -40,7 +40,7 @@ public class LocationsController {
 		return new ResponseEntity<>(listLocations, HttpStatus.OK);
 	}
 
-	@GetMapping()
+	@GetMapping("{id}")
 	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id" ) String id) {
 		Locations result = new Locations();
 		try {
@@ -52,7 +52,7 @@ public class LocationsController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@GetMapping()
+	@GetMapping("/code/{code}")
 	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) {
 		Locations result = new Locations();
 		try {

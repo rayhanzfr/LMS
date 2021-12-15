@@ -35,7 +35,7 @@ public class TransactionsInController {
 		return new ResponseEntity<>(allTransactionsIn, HttpStatus.OK);
 	}
 
-	@GetMapping()
+	@GetMapping("{id}")
 	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id" ) String id) {
 		GetByTransactionsInIdResDto result = new GetByTransactionsInIdResDto();
 		try {
@@ -47,7 +47,7 @@ public class TransactionsInController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@GetMapping()
+	@GetMapping("/code/{code}")
 	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) {
 		GetByTransactionsInCodeResDto result = new GetByTransactionsInCodeResDto();
 		try {

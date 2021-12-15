@@ -40,7 +40,7 @@ public class InvoicesController {
 		return new ResponseEntity<>(listInvoices, HttpStatus.OK);
 	}
 
-	@GetMapping()
+	@GetMapping("{id}")
 	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id" ) String id) {
 		Invoices result = new Invoices();
 		try {
@@ -52,7 +52,7 @@ public class InvoicesController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@GetMapping()
+	@GetMapping("/code/{code}")
 	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) {
 		Invoices result = new Invoices();
 		try {

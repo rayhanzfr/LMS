@@ -40,7 +40,7 @@ public class StatusesAssetsController {
 		return new ResponseEntity<>(listStatusesAssets, HttpStatus.OK);
 	}
 
-	@GetMapping()
+	@GetMapping("{id}")
 	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id") String id) {
 		StatusesAssets result = new StatusesAssets();
 		try {
@@ -52,7 +52,7 @@ public class StatusesAssetsController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@GetMapping()
+	@GetMapping("/code/{code}")
 	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) {
 		StatusesAssets result = new StatusesAssets();
 		try {
