@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.CompaniesDao;
+import com.lawencon.lms.dto.companies.SaveCompaniesResDto;
+import com.lawencon.lms.dto.companies.UpdateCompaniesResDto;
 import com.lawencon.lms.model.Companies;
 import com.lawencon.lms.model.Files;
 import com.lawencon.lms.service.CompaniesService;
@@ -36,7 +38,9 @@ public class CompaniesServiceImpl extends BaseServiceImpl implements CompaniesSe
 	}
 
 	@Override
-	public Companies save(Companies companies, MultipartFile file) throws Exception {
+	public SaveCompaniesResDto save(Companies companies, MultipartFile file) throws Exception {
+		SaveCompaniesResDto saveRes = new SaveCompaniesResDto();
+		
 		try {
 			String img = file.getName();
 			String ext = img.substring(img.lastIndexOf(".") + 1, img.length());
@@ -50,15 +54,20 @@ public class CompaniesServiceImpl extends BaseServiceImpl implements CompaniesSe
 			companies.setFiles(filesDb);
 			companies = companiesDao.saveOrUpdate(companies);
 			commit();
+			
+			saveRes.setId(companies.getId());
+			saveRes.setMessage("Inserted");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return companies;
+		return saveRes;
 	}
 
 	@Override
-	public Companies update(Companies companies) throws Exception {
+	public UpdateCompaniesResDto update(Companies companies) throws Exception {
+		UpdateCompaniesResDto updateRes = new UpdateCompaniesResDto();
+		
 		try {
 			Files files = filesService.findById(companies.getFiles().getId());
 			companies.setFiles(files);
@@ -70,11 +79,14 @@ public class CompaniesServiceImpl extends BaseServiceImpl implements CompaniesSe
 			begin();
 			companies = companiesDao.saveOrUpdate(companies);
 			commit();
+			
+			updateRes.setVersion(companies.getVersion());
+			updateRes.setMessage("Inserted");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return companies;
+		return updateRes;
 	}
 
 	@Override

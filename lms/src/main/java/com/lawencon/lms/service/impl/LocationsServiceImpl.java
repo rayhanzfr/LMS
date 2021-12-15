@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.LocationsDao;
+import com.lawencon.lms.dto.locations.SaveLocationsResDto;
+import com.lawencon.lms.dto.locations.UpdateLocationsResDto;
 import com.lawencon.lms.model.Companies;
 import com.lawencon.lms.model.Locations;
 import com.lawencon.lms.service.CompaniesService;
@@ -18,7 +20,7 @@ public class LocationsServiceImpl extends BaseServiceImpl implements LocationsSe
 
 	@Autowired
 	private CompaniesService companiesService;
-	
+
 	@Override
 	public List<Locations> findAll() throws Exception {
 		return locationsDao.findAll();
@@ -35,40 +37,49 @@ public class LocationsServiceImpl extends BaseServiceImpl implements LocationsSe
 	}
 
 	@Override
-	public Locations save(Locations locations) throws Exception {
+	public SaveLocationsResDto save(Locations locations) throws Exception {
+		SaveLocationsResDto saveRes = new SaveLocationsResDto();
+
 		try {
 			Companies companies = companiesService.findByCode(locations.getCompanies().getCompaniesCode());
 			locations.setCompanies(companies);
-			
+
 			begin();
 			locations = locationsDao.saveOrUpdate(locations);
 			commit();
-			
+
+			saveRes.setId(locations.getId());
+			saveRes.setMessage("Inserted");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return locations;
+		return saveRes;
 	}
 
 	@Override
-	public Locations update(Locations locations) throws Exception {
+	public UpdateLocationsResDto update(Locations locations) throws Exception {
+		UpdateLocationsResDto updateRes = new UpdateLocationsResDto();
+
 		try {
 			Companies companies = companiesService.findByCode(locations.getCompanies().getCompaniesCode());
 			locations.setCompanies(companies);
-			
+
 			Locations locationsDb = findByCode(locations.getLocationsCode());
 			locations.setCreatedAt(locationsDb.getCreatedAt());
 			locations.setCreatedBy(locationsDb.getCreatedBy());
-			
+
 			begin();
 			locations = locationsDao.saveOrUpdate(locations);
 			commit();
+
+			updateRes.setVersion(locations.getVersion());
+			updateRes.setMessage("Inserted");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return locations;
+		return updateRes;
 	}
 
 	@Override
