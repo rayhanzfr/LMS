@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.UsersDao;
+import com.lawencon.lms.dto.users.SaveUsersResDto;
+import com.lawencon.lms.dto.users.UpdateUsersResDto;
 import com.lawencon.lms.model.Roles;
 import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.RolesService;
@@ -35,22 +37,26 @@ public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
 	}
 
 	@Override
-	public Users save(Users users) throws Exception {
+	public SaveUsersResDto save(Users users) throws Exception {
+		SaveUsersResDto resDto = new SaveUsersResDto();
 		try {
 			Roles roles = rolesService.findByCode(users.getRoles().getRolesCode());
 			users.setRoles(roles);
 			begin();
 			users = usersDao.saveOrUpdate(users);
 			commit();
+			resDto.setId(users.getId());
+			resDto.setMessage("INSERTED");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return users;
+		return resDto;
 	}
 
 	@Override
-	public Users update(Users users) throws Exception {
+	public UpdateUsersResDto update(Users users) throws Exception {
+		UpdateUsersResDto resDto = new UpdateUsersResDto();
 		try {
 			Roles roles = rolesService.findByCode(users.getRoles().getRolesCode());
 			users.setRoles(roles);
@@ -61,16 +67,28 @@ public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
 			begin();
 			users=usersDao.saveOrUpdate(users);
 			commit();
+			resDto.setVersion(users.getVersion());
+			resDto.setMessage("UPDATED");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return users;
+		return resDto;
 	}
 
 	@Override
-	public Boolean removeById(String id) throws Exception {
-		return usersDao.removeById(id);
+	public boolean removeById(String id) throws Exception {
+		try {
+			begin();
+			boolean delete = usersDao.removeById(id);
+			commit();
+			
+			return delete;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollback();
+			throw new Exception(e);
+		}
 	}
 
 }

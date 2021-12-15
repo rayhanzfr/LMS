@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.ItemsTypesDao;
+import com.lawencon.lms.dto.itemstypes.SaveItemsTypesResDto;
+import com.lawencon.lms.dto.itemstypes.UpdateItemsTypesResDto;
 import com.lawencon.lms.model.ItemsTypes;
 import com.lawencon.lms.service.ItemsTypesService;
 
@@ -30,20 +32,24 @@ public class ItemsTypesServiceImpl extends BaseServiceImpl implements ItemsTypes
 	}
 
 	@Override
-	public ItemsTypes save(ItemsTypes itemsTypes) throws Exception {
+	public SaveItemsTypesResDto save(ItemsTypes itemsTypes) throws Exception {
+		SaveItemsTypesResDto resDto = new SaveItemsTypesResDto();
 		try {
 			begin();
 			itemsTypes = itemsTypesDao.findByCode(itemsTypes.getItemsTypesCode());
 			commit();
+			resDto.setId(itemsTypes.getId());
+			resDto.setMessage("INSERTED");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return itemsTypes;
+		return resDto;
 	}
 
 	@Override
-	public ItemsTypes update(ItemsTypes itemsTypes) throws Exception {
+	public UpdateItemsTypesResDto update(ItemsTypes itemsTypes) throws Exception {
+		UpdateItemsTypesResDto resDto = new UpdateItemsTypesResDto();
 		try {
 			ItemsTypes itemsType = itemsTypesDao.findByCode(itemsTypes.getItemsTypesCode());
 			itemsTypes.setCreatedBy(itemsType.getCreatedBy());
@@ -52,18 +58,27 @@ public class ItemsTypesServiceImpl extends BaseServiceImpl implements ItemsTypes
 			begin();
 			itemsTypes = itemsTypesDao.findByCode(itemsTypes.getItemsTypesCode());
 			commit();
+			resDto.setVersion(itemsTypes.getVersion());
+			resDto.setMessage("UPDATED");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return itemsTypes;
+		return resDto;
 	}
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return removeById(id);
+		try {
+			begin();
+			boolean delete = itemsTypesDao.removeById(id);
+			commit();
+			
+			return delete;
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollback();
+			throw new Exception(e);
+		}
 	}
-
-
-
 }
