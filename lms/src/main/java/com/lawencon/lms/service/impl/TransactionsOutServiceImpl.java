@@ -48,42 +48,65 @@ public class TransactionsOutServiceImpl extends BaseServiceImpl implements Trans
 
 	@Override
 	public SaveFullTransactionsOutResDto save(SaveFullTransactionsOutReqDto itemsReq) throws Exception {
+		SaveFullTransactionsOutResDto saveFullTransactionsOutResDto = new SaveFullTransactionsOutResDto();
+		SaveTransactionsOutResDto headerRes = new SaveTransactionsOutResDto();
+		SaveFullTransactionsOutReqDto saveFullTransactionsOutReqDto = (SaveFullTransactionsOutReqDto) itemsReq;
+		SaveTransactionsOutReqDto saveTransactionsOutReqDto = saveFullTransactionsOutReqDto.getSaveTransactionsOutReqDto();
+		List<SaveTransactionsDetailsOutReqDto> listSaveTransactionsDetailsOutReqDto = saveFullTransactionsOutReqDto.getListSaveTransactionsDetailsOutReqDto();
+		List<SaveTransactionsDetailsOutResDto> detailsRes = new ArrayList<>();
+		
+		TransactionsOut transactionsOut = new TransactionsOut();
 		try {
-			SaveFullTransactionsOutResDto saveFullTransactionsOutResDto = new SaveFullTransactionsOutResDto();
-			SaveTransactionsOutResDto headerRes = new SaveTransactionsOutResDto();
-			SaveFullTransactionsOutReqDto saveFullTransactionsOutReqDto = (SaveFullTransactionsOutReqDto) itemsReq;
-			SaveTransactionsOutReqDto saveTransactionsOutReqDto = saveFullTransactionsOutReqDto.getSaveTransactionsOutReqDto();
-			List<SaveTransactionsDetailsOutReqDto> listSaveTransactionsDetailsOutReqDto = saveFullTransactionsOutReqDto.getListSaveTransactionsDetailsOutReqDto();
-			List<SaveTransactionsDetailsOutResDto> detailsRes = new ArrayList();
-			
-			TransactionsOut transactionsOut = new TransactionsOut();
+			begin();
 			transactionsOut.setTransactionsOutCode(saveTransactionsOutReqDto.getTransactionsOutCode());
 			transactionsOut.setCheckOutDate(LocalDate.now());
 			transactionsOut.setExpiredDate(LocalDate.parse(saveTransactionsOutReqDto.getExpiredOutDate()));
-			begin();
-			transactionsOut=transactionsOutDao.saveOrUpdate(transactionsOut);
+			final TransactionsOut transactionsOutFinal=transactionsOutDao.saveOrUpdate(transactionsOut);
 			listSaveTransactionsDetailsOutReqDto.forEach(i -> {
 				SaveTransactionsDetailsOutResDto detail = new SaveTransactionsDetailsOutResDto();
 				TransactionsDetailOut transactionsDetailOut = new TransactionsDetailOut();
-				transactionsDetailOut.setTransactionsOut(transactionsOut);
-					if(i.getLocationsCode()!=null) {					
-						Locations locations = locationsDao.findByCode(i.getLocationsCode());
-						transactionsDetailOut.setLocations(locations);
+				transactionsDetailOut.setTransactionsOut(transactionsOutFinal);
+					if(i.getLocationsCode()!=null && i.getEmployeesCode()==null && i.getAssetsName()==null) {					
+						Locations locations;
+						try {
+							locations = locationsDao.findByCode(i.getLocationsCode());
+							transactionsDetailOut.setLocations(locations);
+						} catch (Exception e) {
+							e.printStackTrace();
+							rollback();
+						}
 					}
-					if(i.getEmployeesCode()!=null) {					
-						Employees employees = employeesDao.findByCode(i.getEmployeesCode());
-						transactionsDetailOut.setEmployees(employees);
+					if(i.getLocationsCode()==null && i.getEmployeesCode()!=null && i.getAssetsName()==null) {					
+						Employees employees;
+						try {
+							employees = employeesDao.findByCode(i.getEmployeesCode());
+							transactionsDetailOut.setEmployees(employees);
+						} catch (Exception e) {
+							e.printStackTrace();
+							rollback();
+						}
 					}
-					if(i.getAssetsName()!=null) {					
-						Assets assets = assetsDao.findByAssetsName(i.getAssetsName());
-						transactionsDetailOut.setAssets(assets);
+					if(i.getLocationsCode()==null && i.getEmployeesCode()==null && i.getAssetsName()!=null) {					
+						Assets assets;
+						try {
+							assets = assetsDao.findByAssetsName(i.getAssetsName());
+							transactionsDetailOut.setAssets(assets);
+						} catch (Exception e) {
+							e.printStackTrace();
+							rollback();
+						}
 					}
 				transactionsDetailOut.setTransactionDetailOutExpired(LocalDate.parse(i.getExpiredDate()));
 				transactionsDetailOut.setCreatedBy(i.getCreatedBy());
 				transactionsDetailOut.setIsActive(true);
-				transactionsDetailOut = transactionsDetailOutDao.saveOrUpdate(transactionsDetailOut);
-				detail.setId(transactionsDetailOut.getId());
-				detailsRes.add(detail);
+				try {
+					transactionsDetailOut = transactionsDetailOutDao.saveOrUpdate(transactionsDetailOut);
+					detail.setId(transactionsDetailOut.getId());
+					detailsRes.add(detail);
+				} catch (Exception e) {
+					e.printStackTrace();
+					rollback();
+				}
 			});
 			commit();
 			headerRes.setId(transactionsOut.getId());
@@ -92,11 +115,12 @@ public class TransactionsOutServiceImpl extends BaseServiceImpl implements Trans
 			});
 			saveFullTransactionsOutResDto.setSaveTransactionsOutResDto(headerRes);
 			saveFullTransactionsOutResDto.setMessage("SUCCESS");
-			return saveFullTransactionsOutResDto;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
+		return saveFullTransactionsOutResDto;
 	}
 
 	@Override

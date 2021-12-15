@@ -1,15 +1,18 @@
 package com.lawencon.lms.dto.transactionsin;
 
+import java.util.List;
+
 public class GetByTransactionsDetailInCodeResDto {
-	private GetTransactionsInDataDto getTransactionsInDataDto;
+	private List<GetTransactionsDetailsInDataDto> getTransactionsDetailsInDataDto;
 	private String message;
 
-	public GetTransactionsInDataDto getGetTransactionsInDataDto() {
-		return getTransactionsInDataDto;
+	public List<GetTransactionsDetailsInDataDto> getGetTransactionsDetailsInDataDto() {
+		return getTransactionsDetailsInDataDto;
 	}
 
-	public void setGetTransactionsInDataDto(GetTransactionsInDataDto getTransactionsInDataDto) {
-		this.getTransactionsInDataDto = getTransactionsInDataDto;
+	public void setGetTransactionsDetailsInDataDto(
+			List<GetTransactionsDetailsInDataDto> getTransactionsDetailsInDataDto) {
+		this.getTransactionsDetailsInDataDto = getTransactionsDetailsInDataDto;
 	}
 
 	public String getMessage() {

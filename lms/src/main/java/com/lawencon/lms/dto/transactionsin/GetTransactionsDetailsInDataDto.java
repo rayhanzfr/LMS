@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class GetTransactionsDetailsInDataDto {
 	private String id;
 	private String transactionsInId;
+	private String transactionsInCode;
 	private String locationsId;
 	private String locationsDeploy;
 	private String employeesId;
@@ -35,6 +36,14 @@ public class GetTransactionsDetailsInDataDto {
 
 	public void setTransactionsInId(String transactionsInId) {
 		this.transactionsInId = transactionsInId;
+	}
+
+	public String getTransactionsInCode() {
+		return transactionsInCode;
+	}
+
+	public void setTransactionsInCode(String transactionsInCode) {
+		this.transactionsInCode = transactionsInCode;
 	}
 
 	public String getLocationsId() {
