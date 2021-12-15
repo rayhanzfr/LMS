@@ -15,4 +15,6 @@ public interface ItemsDao {
 	List<Items> findAll() throws Exception;
 	
 	Boolean removeById(String id) throws Exception;
+	
+	Integer countData() throws Exception;
 }

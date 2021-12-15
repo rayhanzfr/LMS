@@ -12,4 +12,6 @@ public interface TransactionsOutDao {
 	TransactionsOut findByCode(String code) throws Exception;
 	
 	List<TransactionsOut> findAll() throws Exception;
+	
+	Integer countData() throws Exception;
 }
