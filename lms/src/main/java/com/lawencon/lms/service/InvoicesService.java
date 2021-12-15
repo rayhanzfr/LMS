@@ -2,6 +2,8 @@ package com.lawencon.lms.service;
 
 import java.util.List;
 
+import com.lawencon.lms.dto.invoices.SaveInvoicesResDto;
+import com.lawencon.lms.dto.invoices.UpdateInvoicesResDto;
 import com.lawencon.lms.model.Invoices;
 
 public interface InvoicesService {
@@ -12,9 +14,9 @@ public interface InvoicesService {
 
 	Invoices findByCode(String code) throws Exception;
 
-	Invoices save(Invoices invoices) throws Exception;
+	SaveInvoicesResDto save(Invoices invoices) throws Exception;
 	
-	Invoices update(Invoices invoices) throws Exception;
+	UpdateInvoicesResDto update(Invoices invoices) throws Exception;
 
 	Boolean removeById(String id) throws Exception;
 }
