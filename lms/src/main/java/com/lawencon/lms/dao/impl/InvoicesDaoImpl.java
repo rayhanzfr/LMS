@@ -8,10 +8,13 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import org.springframework.stereotype.Repository;
+
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.InvoicesDao;
 import com.lawencon.lms.model.Invoices;
 
+@Repository()
 public class InvoicesDaoImpl extends BaseDaoImpl<Invoices> implements InvoicesDao {
 
 	@Override
