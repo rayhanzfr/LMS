@@ -3,6 +3,7 @@ package com.lawencon.lms.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.UsersDao;
@@ -13,6 +14,7 @@ import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.RolesService;
 import com.lawencon.lms.service.UsersService;
 
+@Service
 public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
 
 	@Autowired
