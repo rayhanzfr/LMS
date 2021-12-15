@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.TransactionsDetailInDao;
@@ -12,6 +13,7 @@ import com.lawencon.lms.dto.transactionsin.GetTransactionsDetailsInDataDto;
 import com.lawencon.lms.model.TransactionsDetailIn;
 import com.lawencon.lms.service.TransactionsDetailInService;
 
+@Service
 public class TransactionsDetailInServiceImpl extends BaseServiceImpl implements TransactionsDetailInService {
 
 	@Autowired
