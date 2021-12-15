@@ -22,6 +22,7 @@ public class ItemsBrandsServiceImpl extends BaseServiceImpl implements ItemsBran
 		SaveItemsBrandsResDto saveItemsBrandsResDto = new SaveItemsBrandsResDto();
 		try {
 			begin();
+			itemsBrands.setItemsBrandsCode(generateCode());
 			itemsBrands = itemsBrandsDao.saveOrUpdate(itemsBrands);
 			commit();
 			saveItemsBrandsResDto.setId(itemsBrands.getId());
