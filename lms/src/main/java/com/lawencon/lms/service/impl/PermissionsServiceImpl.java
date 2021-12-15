@@ -3,6 +3,7 @@ package com.lawencon.lms.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.constant.EnumCode;
@@ -12,6 +13,7 @@ import com.lawencon.lms.dto.permissions.UpdatePermissionsResDto;
 import com.lawencon.lms.model.Permissions;
 import com.lawencon.lms.service.PermissionsService;
 
+@Service
 public class PermissionsServiceImpl extends BaseServiceImpl implements PermissionsService {
 
 	@Autowired

@@ -3,12 +3,14 @@ package com.lawencon.lms.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.FilesDao;
 import com.lawencon.lms.model.Files;
 import com.lawencon.lms.service.FilesService;
 
+@Service
 public class FilesServiceImpl extends BaseServiceImpl implements FilesService {
 
 	@Autowired
