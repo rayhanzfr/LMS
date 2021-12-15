@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.InvoicesDao;
+import com.lawencon.lms.dto.invoices.SaveInvoicesResDto;
+import com.lawencon.lms.dto.invoices.UpdateInvoicesResDto;
 import com.lawencon.lms.model.Invoices;
 import com.lawencon.lms.service.InvoicesService;
 
@@ -30,20 +32,27 @@ public class InvoicesServiceImpl extends BaseServiceImpl implements InvoicesServ
 	}
 
 	@Override
-	public Invoices save(Invoices invoices) throws Exception {
+	public SaveInvoicesResDto save(Invoices invoices) throws Exception {
+		SaveInvoicesResDto saveRes = new SaveInvoicesResDto();
+		
 		try {
 			begin();
 			invoices = invoicesDao.saveOrUpdate(invoices);
 			commit();
+			
+			saveRes.setId(invoices.getId());
+			saveRes.setMessage("Inserted");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return invoices;
+		return saveRes;
 	}
 
 	@Override
-	public Invoices update(Invoices invoices) throws Exception {
+	public UpdateInvoicesResDto update(Invoices invoices) throws Exception {
+		UpdateInvoicesResDto updateRes = new UpdateInvoicesResDto();
+		
 		try {
 			Invoices invoicesDb = findById(invoices.getId());	
 			invoices.setCreatedAt(invoicesDb.getCreatedAt());
@@ -52,11 +61,14 @@ public class InvoicesServiceImpl extends BaseServiceImpl implements InvoicesServ
 			begin();
 			invoices = invoicesDao.saveOrUpdate(invoices);
 			commit();
+			
+			updateRes.setVersion(invoices.getVersion());
+			updateRes.setMessage("Inserted");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
 		}
-		return invoices;
+		return updateRes;
 	}
 
 	@Override
