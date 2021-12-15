@@ -7,11 +7,14 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import org.springframework.stereotype.Repository;
+
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.CompaniesDao;
 import com.lawencon.lms.model.Companies;
 import com.lawencon.lms.model.Files;
 
+@Repository()
 public class CompaniesDaoImpl extends BaseDaoImpl<Companies> implements CompaniesDao {
 
 	@Override

@@ -7,10 +7,13 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import org.springframework.stereotype.Repository;
+
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.StatusesAssetsDao;
 import com.lawencon.lms.model.StatusesAssets;
 
+@Repository()
 public class StatusesAssetsDaoImpl extends BaseDaoImpl<StatusesAssets> implements StatusesAssetsDao {
 
 	@Override

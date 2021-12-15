@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.TransactionsDetailInDao;
 import com.lawencon.lms.model.Assets;
@@ -14,6 +16,7 @@ import com.lawencon.lms.model.StatusesTransactions;
 import com.lawencon.lms.model.TransactionsDetailIn;
 import com.lawencon.lms.model.TransactionsIn;
 
+@Repository()
 public class TransactionsDetailInDaoImpl extends BaseDaoImpl<TransactionsDetailIn> implements TransactionsDetailInDao {
 
 	@Override
