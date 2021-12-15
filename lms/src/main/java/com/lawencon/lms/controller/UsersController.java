@@ -32,13 +32,13 @@ public class UsersController {
 		return new ResponseEntity<>(user,HttpStatus.OK);
 	}
 	
-	@GetMapping("/id")
+	@GetMapping("{id}")
 	public ResponseEntity<?>findById(@RequestParam(value = "id", required = false) String id) throws Exception{
 		Users user = usersService.findById(id);
 		return new ResponseEntity<>(user,HttpStatus.OK);
 	}
 	
-	@GetMapping("/email")
+	@GetMapping("{email}")
 	public ResponseEntity<?>findByCode(@RequestParam(value = "email",required = false) String email) throws Exception{
 		Users user = usersService.findByEmail(email);
 		return new ResponseEntity<>(user,HttpStatus.OK);

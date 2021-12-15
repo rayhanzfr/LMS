@@ -12,49 +12,49 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.lawencon.lms.dto.itemstypes.SaveItemsTypesResDto;
-import com.lawencon.lms.dto.itemstypes.UpdateItemsTypesResDto;
-import com.lawencon.lms.model.ItemsTypes;
-import com.lawencon.lms.service.ItemsTypesService;
+import com.lawencon.lms.dto.statusesinout.SaveStatusesInOutResDto;
+import com.lawencon.lms.dto.statusesinout.UpdateStatusesInOutResDto;
+import com.lawencon.lms.model.StatusesInOut;
+import com.lawencon.lms.service.StatusesInOutService;
 
-public class ItemsTypesController {
-
+public class StatusesInOutController {
+	
 	@Autowired
-	private ItemsTypesService itemsTypesService;
+	private StatusesInOutService statusesInOutService;
 	
 	@GetMapping
 	public ResponseEntity<?>findAll()throws Exception{
-		List<ItemsTypes> result = itemsTypesService.findAll();
+		List<StatusesInOut> result = statusesInOutService.findAll();
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
 	@GetMapping("{id}")
 	public ResponseEntity<?>findById(@RequestParam(value = "id") String id) throws Exception{
-		ItemsTypes result=  itemsTypesService.findById(id);
+		StatusesInOut result=  statusesInOutService.findById(id);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
-	@GetMapping("code/{code}")
+	@GetMapping("/code/{code}")
 	public ResponseEntity<?>findByCode(@RequestParam(value = "code") String code) throws Exception{
-		ItemsTypes result = itemsTypesService.findByCode(code);
+		StatusesInOut result = statusesInOutService.findByCode(code);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
 	@PostMapping
-	public ResponseEntity<?>save(@RequestBody ItemsTypes itemsTypes)throws Exception{
-		SaveItemsTypesResDto save = itemsTypesService.save(itemsTypes);
+	public ResponseEntity<?>save(@RequestBody StatusesInOut statusesInOut)throws Exception{
+		SaveStatusesInOutResDto save = statusesInOutService.save(statusesInOut);
 		return new ResponseEntity<>(save,HttpStatus.ACCEPTED);
 	}
 	
 	@PutMapping
-	public ResponseEntity<?>update(@RequestBody ItemsTypes itemsTypes) throws Exception{
-		UpdateItemsTypesResDto update = itemsTypesService.update(itemsTypes);
+	public ResponseEntity<?>update(@RequestBody StatusesInOut statusesInOut) throws Exception{
+		UpdateStatusesInOutResDto update = statusesInOutService.update(statusesInOut);
 		return new ResponseEntity<>(update,HttpStatus.OK);
 	}
 	
 	@DeleteMapping("{id}")
 	public ResponseEntity<?>removeById(@RequestParam("id") String id) throws Exception{
-		boolean result = itemsTypesService.removeById(id);
+		boolean result = statusesInOutService.removeById(id);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 }

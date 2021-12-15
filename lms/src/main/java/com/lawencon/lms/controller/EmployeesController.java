@@ -32,13 +32,13 @@ public class EmployeesController {
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
-	@GetMapping
+	@GetMapping("{id}")
 	public ResponseEntity<?>findById(@RequestParam(value = "id", required = false) String id) throws Exception{
 		Employees result = employeesService.findById(id);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
-	@GetMapping("/code")
+	@GetMapping("{code}")
 	public ResponseEntity<?>findByCode(@RequestParam(value = "code",required = false) String code) throws Exception{
 		Employees result = employeesService.findByCode(code);
 		return new ResponseEntity<>(result,HttpStatus.OK);
