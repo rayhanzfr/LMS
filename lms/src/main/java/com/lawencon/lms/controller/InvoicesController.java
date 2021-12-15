@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.lawencon.lms.dto.invoices.SaveInvoicesResDto;
+import com.lawencon.lms.dto.invoices.UpdateInvoicesResDto;
 import com.lawencon.lms.model.Invoices;
 import com.lawencon.lms.service.InvoicesService;
 
@@ -64,7 +66,7 @@ public class InvoicesController {
 
 	@PostMapping
 	public ResponseEntity<?> insert(@RequestBody Invoices invoices, MultipartFile files) {
-		Invoices result = new Invoices();
+		SaveInvoicesResDto result = new SaveInvoicesResDto();
 		try {
 			result = invoicesService.save(invoices);
 		} catch (Exception e) {
@@ -76,7 +78,7 @@ public class InvoicesController {
 	
 	@PutMapping
 	public ResponseEntity<?> update(@RequestBody Invoices invoices) {
-		Invoices result = new Invoices();
+		UpdateInvoicesResDto result = new UpdateInvoicesResDto();
 		try {
 			result = invoicesService.update(invoices);
 		} catch (Exception e) {

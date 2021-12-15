@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.lawencon.lms.dto.companies.SaveCompaniesResDto;
+import com.lawencon.lms.dto.companies.UpdateCompaniesResDto;
 import com.lawencon.lms.model.Companies;
 import com.lawencon.lms.service.CompaniesService;
 
@@ -26,7 +28,6 @@ public class CompaniesController {
 	@Autowired
 	private CompaniesService companiesService;
 
-//	@ApiResponse(responseCode = "200", description = "get all medicine data", content = @Content(schema = @Schema(implementation = GetAllMedicineDto.class)))
 	@GetMapping
 	public ResponseEntity<?> findAll() {
 		List<Companies> listCompanies = new ArrayList<Companies>();
@@ -65,7 +66,7 @@ public class CompaniesController {
 
 	@PostMapping
 	public ResponseEntity<?> insert(@RequestBody Companies companies, MultipartFile files) {
-		Companies result = new Companies();
+		SaveCompaniesResDto result = new SaveCompaniesResDto();
 		try {
 			result = companiesService.save(companies, files);
 		} catch (Exception e) {
@@ -77,7 +78,7 @@ public class CompaniesController {
 	
 	@PutMapping
 	public ResponseEntity<?> update(@RequestBody Companies companies) {
-		Companies result = new Companies();
+		UpdateCompaniesResDto result = new UpdateCompaniesResDto();
 		try {
 			result = companiesService.update(companies);
 		} catch (Exception e) {
