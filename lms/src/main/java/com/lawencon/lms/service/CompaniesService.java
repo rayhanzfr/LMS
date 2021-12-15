@@ -2,6 +2,8 @@ package com.lawencon.lms.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.lawencon.lms.model.Companies;
 
 public interface CompaniesService {
@@ -11,7 +13,7 @@ public interface CompaniesService {
 
 	Companies findByCode(String code) throws Exception;
 	
-	Companies save(Companies companies) throws Exception;
+	Companies save(Companies companies, MultipartFile file) throws Exception;
 	
 	Companies update(Companies companies) throws Exception;
 
