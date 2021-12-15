@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.base.BaseServiceImpl;
+import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.CompaniesDao;
 import com.lawencon.lms.dto.companies.SaveCompaniesResDto;
 import com.lawencon.lms.dto.companies.UpdateCompaniesResDto;
@@ -37,6 +38,13 @@ public class CompaniesServiceImpl extends BaseServiceImpl implements CompaniesSe
 		return companiesDao.findByCode(code);
 	}
 
+	@Override
+	public String generateCode() throws Exception {
+		String generatedCode = companiesDao.countData() + EnumCode.COMPANIES.getCode();
+		
+		return generatedCode;
+	}
+	
 	@Override
 	public SaveCompaniesResDto save(Companies companies, MultipartFile file) throws Exception {
 		SaveCompaniesResDto saveRes = new SaveCompaniesResDto();

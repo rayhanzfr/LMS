@@ -11,7 +11,7 @@ import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.StatusesAssetsDao;
 import com.lawencon.lms.model.StatusesAssets;
 
-public class StatusesAssetsDaoImpl extends BaseDaoImpl<StatusesAssets> implements StatusesAssetsDao{
+public class StatusesAssetsDaoImpl extends BaseDaoImpl<StatusesAssets> implements StatusesAssetsDao {
 
 	@Override
 	public List<StatusesAssets> findAll() throws Exception {
@@ -26,12 +26,13 @@ public class StatusesAssetsDaoImpl extends BaseDaoImpl<StatusesAssets> implement
 	@Override
 	public StatusesAssets findByCode(String code) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT id, statuses_assets_code, statuses_assets_name, version, created_at, created_by, updated_at, updated_by, is_active  ");
+		sql.append(
+				" SELECT id, statuses_assets_code, statuses_assets_name, version, created_at, created_by, updated_at, updated_by, is_active  ");
 		sql.append(" FROM statuses_assets ");
 		sql.append(" WHERE statuses_assets_code = :statuses_assets_code ");
-		
+
 		StatusesAssets statusesAssets = null;
-		
+
 		try {
 			Object resultQuery = createNativeQuery(sql.toString()).setParameter("statuses_assets_code", code)
 					.getSingleResult();
@@ -39,7 +40,7 @@ public class StatusesAssetsDaoImpl extends BaseDaoImpl<StatusesAssets> implement
 			if (resultQuery != null) {
 				Object[] objArr = (Object[]) resultQuery;
 				statusesAssets = new StatusesAssets();
-				
+
 				String id = objArr[0].toString();
 				String statusesAssetsCode = objArr[1].toString();
 				String statusesAssetsName = objArr[2].toString();
@@ -49,7 +50,7 @@ public class StatusesAssetsDaoImpl extends BaseDaoImpl<StatusesAssets> implement
 				LocalDateTime updatedAt = Timestamp.valueOf(objArr[6].toString()).toLocalDateTime();
 				String updatedBy = objArr[7].toString();
 				Boolean isActive = Boolean.parseBoolean(objArr[8].toString());
-				
+
 				statusesAssets.setId(id);
 				statusesAssets.setStatusesAssetsCode(statusesAssetsCode);
 				statusesAssets.setStatusesAssetsName(statusesAssetsName);
@@ -65,13 +66,24 @@ public class StatusesAssetsDaoImpl extends BaseDaoImpl<StatusesAssets> implement
 		} catch (NonUniqueResultException e) {
 			e.printStackTrace();
 		}
-		
+
 		return statusesAssets;
 	}
 
 	@Override
 	public StatusesAssets saveOrUpdate(StatusesAssets companies) throws Exception {
 		return save(companies);
+	}
+
+	@Override
+	public String countData() throws Exception {
+		String lastRegist = null;
+
+		String sql = "SELECT COUNT(s) FROM StatusesAssets as s";
+
+		Object resultQuery = createQuery(sql, StatusesAssets.class).getSingleResult();
+		lastRegist = resultQuery.toString();
+		return lastRegist;
 	}
 
 	@Override

@@ -12,6 +12,8 @@ public interface CompaniesDao {
 	Companies findByCode(String code) throws Exception;
 	
 	Companies saveOrUpdate(Companies companies) throws Exception;
+	
+	String countData() throws Exception;
 
 	Boolean removeById(String id) throws Exception;
 }

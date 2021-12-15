@@ -13,6 +13,8 @@ public interface StatusesAssetsDao {
 	StatusesAssets findByCode(String code) throws Exception;
 	
 	StatusesAssets saveOrUpdate(StatusesAssets statusesAssets) throws Exception;
+	
+	String countData() throws Exception;
 
 	Boolean removeById(String id) throws Exception;
 }

@@ -81,6 +81,17 @@ public class InvoicesDaoImpl extends BaseDaoImpl<Invoices> implements InvoicesDa
 	}
 
 	@Override
+	public String countData() throws Exception {
+		String lastRegist = null;
+		
+		String sql = "SELECT COUNT(i) FROM Invoices as i";
+	
+		Object resultQuery = createQuery(sql, Invoices.class).getSingleResult();
+		lastRegist = resultQuery.toString();
+		return lastRegist;
+	}
+	
+	@Override
 	public Boolean removeById(String id) throws Exception {
 		return deleteById(id);
 	}

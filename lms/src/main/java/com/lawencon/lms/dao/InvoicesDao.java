@@ -13,5 +13,7 @@ public interface InvoicesDao {
 	
 	Invoices saveOrUpdate(Invoices invoices) throws Exception;
 	
+	String countData() throws Exception;
+	
 	Boolean removeById(String id) throws Exception;
 }
