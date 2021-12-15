@@ -3,6 +3,7 @@ package com.lawencon.lms.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.base.BaseServiceImpl;
@@ -15,6 +16,7 @@ import com.lawencon.lms.model.Files;
 import com.lawencon.lms.service.CompaniesService;
 import com.lawencon.lms.service.FilesService;
 
+@Service
 public class CompaniesServiceImpl extends BaseServiceImpl implements CompaniesService {
 
 	@Autowired
