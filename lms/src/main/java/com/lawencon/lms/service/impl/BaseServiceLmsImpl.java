@@ -13,10 +13,10 @@ public class BaseServiceLmsImpl extends BaseServiceImpl {
 		this.authPrincipal = authPrincipal;
 	}
 
-	protected Long getIdAuth() throws Exception {
+	protected String getIdAuth() throws Exception {
 		if (authPrincipal.getAuth() == null || authPrincipal.getAuth().getPrincipal() == null) {
 			throw new Exception("Invalid user");
 		}
-		return (Long) authPrincipal.getAuth().getPrincipal();
+		return (String) authPrincipal.getAuth().getPrincipal();
 	}
 }
