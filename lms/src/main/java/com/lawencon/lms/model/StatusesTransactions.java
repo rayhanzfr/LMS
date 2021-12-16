@@ -10,7 +10,7 @@ import com.lawencon.base.BaseEntity;
 @Entity
 public class StatusesTransactions extends BaseEntity {
 	@ManyToOne
-	@JoinColumn(name="statusses_assets_id")
+	@JoinColumn(name="statuses_assets_id")
 	private StatusesAssets statusesAssets;
 	
 	@Column(unique=true,nullable=false,length = 15)

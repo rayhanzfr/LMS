@@ -24,7 +24,7 @@ public class TransactionsDetailInController {
 
 	@ApiResponse(responseCode = "200", content = {
 			@Content(array = @ArraySchema(schema = @Schema(implementation = GetByTransactionsDetailInCodeResDto.class))) })
-	@GetMapping("/code/{code}")
+	@GetMapping("/{code}")
 	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) throws Exception {
 		GetByTransactionsDetailInCodeResDto allTransactionsIn = new GetByTransactionsDetailInCodeResDto();
 		allTransactionsIn = transactionsDetailInService.findByTransactionInCode(null);
