@@ -13,7 +13,7 @@ import com.lawencon.base.BaseEntity;
 public class Users extends BaseEntity{
 
 	@ManyToOne
-	@JoinColumn(nullable=false)
+	@JoinColumn(name="roles_id",nullable=false)
 	private Roles roles;
 	
 	@Column(length=50, nullable=false, unique=true)

@@ -3,6 +3,8 @@ package com.lawencon.lms.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import org.hibernate.annotations.Type;
+
 import com.lawencon.base.BaseEntity;
 
 @Entity
