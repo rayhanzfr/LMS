@@ -31,7 +31,7 @@ public class ItemsDaoImpl extends BaseDaoImpl<Items> implements ItemsDao {
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append(
-					"SELECT items.id,files_id,items_types_id,items_brands_id,items_code,items_name,items.created_by,items.created_date,items.isactive,items.update_by,items.update_date,version");
+					"SELECT items.id,files_id,items_types_id,items_brands_id,items_code,items_name,items.created_by,items.created_at,items.isactive,items.update_by,items.update_date,version");
 			sql.append(" FROM items");
 			sql.append(" INNER JOIN files f ON f.id = items.files_id");
 			sql.append(" INNER JOIN items_types it ON it.id = items.items_types_id");
