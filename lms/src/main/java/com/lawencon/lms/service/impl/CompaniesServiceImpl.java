@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.CompaniesDao;
 import com.lawencon.lms.dto.companies.SaveCompaniesResDto;
@@ -17,7 +16,7 @@ import com.lawencon.lms.service.CompaniesService;
 import com.lawencon.lms.service.FilesService;
 
 @Service
-public class CompaniesServiceImpl extends BaseServiceImpl implements CompaniesService {
+public class CompaniesServiceImpl extends BaseServiceLmsImpl implements CompaniesService {
 
 	@Autowired
 	private CompaniesDao companiesDao;

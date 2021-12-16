@@ -18,11 +18,11 @@ public class Items extends BaseEntity{
 	private Files files;
 	
 	@ManyToOne
-	@JoinColumn(name = "item_types_id")
+	@JoinColumn(name = "items_types_id")
 	private ItemsTypes itemsTypes;
 	
 	@ManyToOne
-	@JoinColumn(name = "item_brands_id")
+	@JoinColumn(name = "items_brands_id")
 	private ItemsBrands itemsBrands;
 	
 	@Column(unique = true,length = 15,nullable = false)

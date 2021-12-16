@@ -32,7 +32,7 @@ import com.lawencon.lms.model.TransactionsIn;
 import com.lawencon.lms.service.TransactionsInService;
 
 @Service
-public class TransactionsInServiceImpl extends BaseServiceImpl implements TransactionsInService {
+public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements TransactionsInService {
 
 	@Autowired
 	private TransactionsInDao transactionsInDao;

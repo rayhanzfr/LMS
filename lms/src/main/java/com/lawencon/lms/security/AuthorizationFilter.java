@@ -40,18 +40,15 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 			return;
 		}
 		
-//		String username = "";
-		Long userId = 0L;
+		String userId = "";
 		try {
 			String bodyToken = header.replace("Bearer ", "");
 			Claims claims = jwtComponent.parseClaims(bodyToken);
-//			username = (String) claims.get("username");
-			userId =  Long.valueOf(claims.get("userId").toString()) ;
+			userId =  claims.get("userId").toString() ;
 		} catch (Exception e) {
 			
 		}
 		
-//		Authentication auth = new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
 		Authentication auth = new UsernamePasswordAuthenticationToken(userId, null, new ArrayList<>());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		chain.doFilter(request, response);

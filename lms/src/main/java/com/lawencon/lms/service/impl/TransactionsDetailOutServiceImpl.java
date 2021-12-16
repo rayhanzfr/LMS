@@ -12,7 +12,7 @@ import com.lawencon.lms.dto.transactionsout.GetTransactionsDetailsOutDataDto;
 import com.lawencon.lms.model.TransactionsDetailOut;
 import com.lawencon.lms.service.TransactionsDetailOutService;
 
-public class TransactionsDetailOutServiceImpl extends BaseServiceImpl implements TransactionsDetailOutService {
+public class TransactionsDetailOutServiceImpl extends BaseServiceLmsImpl implements TransactionsDetailOutService {
 
 	@Autowired
 	private TransactionsDetailOutDao transactionsDetailOutDao;

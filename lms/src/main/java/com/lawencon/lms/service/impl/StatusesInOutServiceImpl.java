@@ -13,7 +13,7 @@ import com.lawencon.lms.model.StatusesInOut;
 import com.lawencon.lms.service.StatusesInOutService;
 
 @Service
-public class StatusesInOutServiceImpl extends BaseServiceImpl implements StatusesInOutService {
+public class StatusesInOutServiceImpl extends BaseServiceLmsImpl implements StatusesInOutService {
 
 	@Autowired
 	private StatusesInOutDao statusesInOutDao;

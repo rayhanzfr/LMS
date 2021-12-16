@@ -14,7 +14,7 @@ import com.lawencon.lms.model.ItemsBrands;
 import com.lawencon.lms.service.ItemsBrandsService;
 
 @Service
-public class ItemsBrandsServiceImpl extends BaseServiceImpl implements ItemsBrandsService {
+public class ItemsBrandsServiceImpl extends BaseServiceLmsImpl implements ItemsBrandsService {
 
 	@Autowired
 	private ItemsBrandsDao itemsBrandsDao;

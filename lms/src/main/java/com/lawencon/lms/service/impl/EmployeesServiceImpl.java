@@ -17,7 +17,7 @@ import com.lawencon.lms.service.EmployeesService;
 import com.lawencon.lms.service.UsersService;
 
 @Service
-public class EmployeesServiceImpl extends BaseServiceImpl implements EmployeesService{
+public class EmployeesServiceImpl extends BaseServiceLmsImpl implements EmployeesService{
 
 	@Autowired
 	private EmployeesDao employeesDao;

@@ -16,7 +16,7 @@ import com.lawencon.lms.service.CompaniesService;
 import com.lawencon.lms.service.LocationsService;
 
 @Service
-public class LocationsServiceImpl extends BaseServiceImpl implements LocationsService {
+public class LocationsServiceImpl extends BaseServiceLmsImpl implements LocationsService {
 
 	@Autowired
 	private LocationsDao locationsDao;

@@ -27,8 +27,8 @@ public class RolesDaoImpl extends BaseDaoImpl<Roles> implements RolesDao {
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append(
-					"SELECT id,roles_code,roles_name,created_by,created_date,isactive,update_by,update_date,version");
-			sql.append("FROM roles WHERE roles_code = :code ");
+					" SELECT id,roles_code,roles_name,created_by,created_at,is_active,updated_by,updated_at,version ");
+			sql.append(" FROM roles WHERE roles_code = :code ");
 			Object result = createNativeQuery(sql.toString()).setParameter("code", code).getSingleResult();
 			if (result != null) {
 				roles = new Roles();

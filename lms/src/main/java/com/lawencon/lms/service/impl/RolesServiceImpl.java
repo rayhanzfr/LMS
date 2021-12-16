@@ -14,7 +14,7 @@ import com.lawencon.lms.model.Roles;
 import com.lawencon.lms.service.RolesService;
 
 @Service
-public class RolesServiceImpl extends BaseServiceImpl implements RolesService {
+public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService {
 
 	@Autowired
 	private RolesDao rolesDao;

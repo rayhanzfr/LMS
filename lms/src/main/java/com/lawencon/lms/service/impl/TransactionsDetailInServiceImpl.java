@@ -14,7 +14,7 @@ import com.lawencon.lms.model.TransactionsDetailIn;
 import com.lawencon.lms.service.TransactionsDetailInService;
 
 @Service
-public class TransactionsDetailInServiceImpl extends BaseServiceImpl implements TransactionsDetailInService {
+public class TransactionsDetailInServiceImpl extends BaseServiceLmsImpl implements TransactionsDetailInService {
 
 	@Autowired
 	private TransactionsDetailInDao transactionsDetailInDao;

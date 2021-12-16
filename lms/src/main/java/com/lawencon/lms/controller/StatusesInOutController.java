@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
-@RequestMapping("statusesinout")
+@RequestMapping("statuses-in-out")
 public class StatusesInOutController {
 	
 	@Autowired
