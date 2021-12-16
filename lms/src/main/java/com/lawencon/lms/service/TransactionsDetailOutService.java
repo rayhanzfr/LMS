@@ -1,7 +1,7 @@
 package com.lawencon.lms.service;
 
-import com.lawencon.lms.model.TransactionsDetailOut;
+import com.lawencon.lms.dto.transactionsout.GetAllTransactionsDetailsOutResDto;
 
 public interface TransactionsDetailOutService {
-	TransactionsDetailOut findById() throws Exception;
+	GetAllTransactionsDetailsOutResDto findByTransactionOutCode(String code) throws Exception;
 }
