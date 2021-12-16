@@ -17,59 +17,48 @@ import com.lawencon.lms.dto.transactionsin.SaveFullTransactionsInReqDto;
 import com.lawencon.lms.dto.transactionsin.SaveFullTransactionsInResDto;
 import com.lawencon.lms.service.TransactionsInService;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 @RestController
 @RequestMapping("transactions-in")
 public class TransactionsInController {
 	@Autowired
 	private TransactionsInService transactionsInService;
 
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllTransactionsInResDto.class))) })
 	@GetMapping
-	public ResponseEntity<?> findAll() {
+	public ResponseEntity<?> findAll() throws Exception {
 		GetAllTransactionsInResDto allTransactionsIn = new GetAllTransactionsInResDto();
-		try {
-			allTransactionsIn = transactionsInService.findAll();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(allTransactionsIn, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		allTransactionsIn = transactionsInService.findAll();
 		return new ResponseEntity<>(allTransactionsIn, HttpStatus.OK);
 	}
 
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetByTransactionsInIdResDto.class)))})
 	@GetMapping("{id}")
-	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id" ) String id) {
+	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id") String id) throws Exception {
 		GetByTransactionsInIdResDto result = new GetByTransactionsInIdResDto();
-		try {
-			result = transactionsInService.findById(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = transactionsInService.findById(id);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetByTransactionsInCodeResDto.class)))})
 	@GetMapping("/code/{code}")
-	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) {
+	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) throws Exception {
 		GetByTransactionsInCodeResDto result = new GetByTransactionsInCodeResDto();
-		try {
-			result = transactionsInService.findByCode(code);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = transactionsInService.findByCode(code);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
+	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = SaveFullTransactionsInResDto.class)))})
 	@PostMapping
-	public ResponseEntity<?> insertAll(@RequestBody SaveFullTransactionsInReqDto saveFullReq) {
+	public ResponseEntity<?> insertAll(@RequestBody SaveFullTransactionsInReqDto saveFullReq) throws Exception {
 		SaveFullTransactionsInResDto result = new SaveFullTransactionsInResDto();
-		try {
-			result = transactionsInService.save(saveFullReq);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = transactionsInService.save(saveFullReq);
 		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
-	
 
 }

@@ -19,7 +19,7 @@ public interface CompaniesService {
 	
 	SaveCompaniesResDto save(Companies companies, MultipartFile file) throws Exception;
 	
-	UpdateCompaniesResDto update(Companies companies) throws Exception;
+	UpdateCompaniesResDto update(Companies companies, MultipartFile file) throws Exception;
 
 	Boolean removeById(String id) throws Exception;
 

@@ -11,23 +11,24 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lawencon.lms.dto.transactionsin.GetByTransactionsDetailInCodeResDto;
 import com.lawencon.lms.service.TransactionsDetailInService;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 @RestController
 @RequestMapping("transactions-detail-in")
 public class TransactionsDetailInController {
 	@Autowired
 	private TransactionsDetailInService transactionsDetailInService;
 
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetByTransactionsDetailInCodeResDto.class))) })
 	@GetMapping("/code/{code}")
-	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code)  {
+	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) throws Exception {
 		GetByTransactionsDetailInCodeResDto allTransactionsIn = new GetByTransactionsDetailInCodeResDto();
-		try {
-			allTransactionsIn = transactionsDetailInService.findByTransactionInCode(null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(allTransactionsIn, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		allTransactionsIn = transactionsDetailInService.findByTransactionInCode(null);
 		return new ResponseEntity<>(allTransactionsIn, HttpStatus.OK);
 	}
-	
 
 }
