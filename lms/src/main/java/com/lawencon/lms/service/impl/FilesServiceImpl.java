@@ -11,7 +11,7 @@ import com.lawencon.lms.model.Files;
 import com.lawencon.lms.service.FilesService;
 
 @Service
-public class FilesServiceImpl extends BaseServiceImpl implements FilesService {
+public class FilesServiceImpl extends BaseServiceLmsImpl implements FilesService {
 
 	@Autowired
 	private FilesDao filesDao;

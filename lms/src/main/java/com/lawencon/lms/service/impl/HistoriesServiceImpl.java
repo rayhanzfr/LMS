@@ -9,7 +9,7 @@ import com.lawencon.lms.dao.HistoriesDao;
 import com.lawencon.lms.model.Histories;
 import com.lawencon.lms.service.HistoriesService;
 
-public class HistoriesServiceImpl extends BaseServiceImpl implements HistoriesService {
+public class HistoriesServiceImpl extends BaseServiceLmsImpl implements HistoriesService {
 
 	@Autowired
 	private HistoriesDao historiesDao;

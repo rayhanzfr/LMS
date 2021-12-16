@@ -31,7 +31,7 @@ import com.lawencon.lms.model.TransactionsOut;
 import com.lawencon.lms.service.TransactionsOutService;
 
 @Service
-public class TransactionsOutServiceImpl extends BaseServiceImpl implements TransactionsOutService {
+public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements TransactionsOutService {
 
 	@Autowired
 	private TransactionsOutDao transactionsOutDao;

@@ -3,8 +3,9 @@ package com.lawencon.lms.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseDaoImpl;
+import com.lawencon.base.BaseServiceImpl;
 
-public class BaseServiceLmsImpl extends BaseDaoImpl<BaseEntity>{
+public class BaseServiceLmsImpl extends BaseServiceImpl{
 	protected AuthPrincipal authPrincipal;
 	
 	@Autowired

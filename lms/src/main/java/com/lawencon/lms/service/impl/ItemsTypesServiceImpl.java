@@ -13,7 +13,7 @@ import com.lawencon.lms.model.ItemsTypes;
 import com.lawencon.lms.service.ItemsTypesService;
 
 @Service
-public class ItemsTypesServiceImpl extends BaseServiceImpl implements ItemsTypesService{
+public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTypesService{
 
 	@Autowired
 	private ItemsTypesDao itemsTypesDao;

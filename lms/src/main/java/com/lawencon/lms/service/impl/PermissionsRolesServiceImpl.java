@@ -17,7 +17,7 @@ import com.lawencon.lms.service.PermissionsService;
 import com.lawencon.lms.service.RolesService;
 
 @Service
-public class PermissionsRolesServiceImpl extends BaseServiceImpl implements PermissionsRolesService {
+public class PermissionsRolesServiceImpl extends BaseServiceLmsImpl implements PermissionsRolesService {
 
 	@Autowired
 	private PermissionsRolesDao permissionsRolesDao;

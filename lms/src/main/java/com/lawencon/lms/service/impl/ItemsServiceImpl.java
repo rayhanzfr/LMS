@@ -21,7 +21,7 @@ import com.lawencon.lms.service.ItemsService;
 import com.lawencon.lms.service.ItemsTypesService;
 
 @Service
-public class ItemsServiceImpl extends BaseServiceImpl implements ItemsService {
+public class ItemsServiceImpl extends BaseServiceLmsImpl implements ItemsService {
 
 	@Autowired
 	private ItemsDao itemsDao;
