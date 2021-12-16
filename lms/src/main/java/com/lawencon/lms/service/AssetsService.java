@@ -1,5 +1,7 @@
 package com.lawencon.lms.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.lawencon.lms.dto.assets.GetAllAssetsDto;
 import com.lawencon.lms.dto.assets.GetByIdAssetsDto;
 import com.lawencon.lms.dto.assets.GetTotalAssetsReqDto;
@@ -28,6 +30,8 @@ public interface AssetsService {
 	GetTotalAssetsReqDto getTotalreq(String itemsCode, String itemsBrandsCode, String itemsTypesCode, String statusesAssetsCode, String statusesInOutCode,int total) throws Exception;
 
 	SaveAssetsResDto save(SaveAssetsReqDto saveAssetsReqDto) throws Exception;
+	
+	void saveFile(MultipartFile file) throws Exception;
 	
 	UpdateAssetsResDto update(UpdateAssetsReqDto updateAssetsReqDto) throws Exception;
 	

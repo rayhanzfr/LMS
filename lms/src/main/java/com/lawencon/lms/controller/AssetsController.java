@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.lawencon.lms.assets.ExcelRequest;
 import com.lawencon.lms.dto.assets.GetAllAssetsDto;
 import com.lawencon.lms.dto.assets.GetByIdAssetsDto;
 import com.lawencon.lms.dto.assets.GetTotalAssetsReqDto;
@@ -33,6 +35,9 @@ public class AssetsController {
 	
 	@Autowired
 	private AssetsService assetsService;
+	
+	@Autowired
+	private ExcelRequest excelRequest;
 	
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class)))})
 	@GetMapping
@@ -117,4 +122,22 @@ public class AssetsController {
 		boolean result = assetsService.removeById(id);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
+	
+	@PostMapping("/upload")
+	public ResponseEntity<?> saveFile(@RequestParam("file")MultipartFile file){
+		String message = "";
+		if(excelRequest.excelFormat(file)) {
+			try {
+				assetsService.saveFile(file);
+				message = "Uploaded successfully: "+file.getOriginalFilename();
+				return new ResponseEntity<>(message,HttpStatus.CREATED);
+		    } catch (Exception e) {
+		        message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+		        return new ResponseEntity<>(message,HttpStatus.EXPECTATION_FAILED);
+		      }
+		    }
+
+		    message = "Please upload an excel file!";
+		    return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
+		  }
 }

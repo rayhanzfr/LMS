@@ -6,10 +6,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.lawencon.base.BaseServiceImpl;
-import com.lawencon.lms.constant.StatusesAssetsCode;
-import com.lawencon.lms.constant.StatusesInOutCode;
+import com.lawencon.lms.assets.ExcelRequest;
 import com.lawencon.lms.dao.AssetsDao;
 import com.lawencon.lms.dao.InvoicesDao;
 import com.lawencon.lms.dao.ItemsDao;
@@ -49,6 +48,9 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	
 	@Autowired
 	private InvoicesDao invoicesDao;
+	
+	@Autowired
+	private ExcelRequest excelRequest;
 	
 	
 	private AssetsDataDto convert(Assets assets) {
@@ -320,6 +322,23 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		return getAssets;
 	}
 
-
-
+	@Override
+	public void saveFile(MultipartFile file) throws Exception {
+		try {
+			List<Assets> assets = excelRequest.excelToAssets(file.getInputStream());
+			for(Assets asset : assets) {
+				SaveAssetsReqDto req = new SaveAssetsReqDto();
+				req.setItemsName(asset.getItems().getItemsName());
+				req.setItemsCode(asset.getItems().getItemsCode());
+				req.setInvoicesCode(asset.getInvoices().getInvoicesCode());
+				req.setAssetsName(asset.getAssetsName());
+				req.setStatusesAssetsCode(asset.getStatusesAssets().getStatusesAssetsCode());
+				req.setStatusesInOutCode(asset.getStatusesInOut().getStatusesInOutCode());
+				req.setAssetsExpired(asset.getAssetsExpired().toString());
+				req.setIsActive(true);
+				save(req);
+			}
+		} catch (Exception e) {
+		}
+	}
 }
