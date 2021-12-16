@@ -15,8 +15,6 @@ public interface CompaniesService {
 
 	Companies findByCode(String code) throws Exception;
 	
-	String generateCode() throws Exception;
-	
 	SaveCompaniesResDto save(Companies companies, MultipartFile file) throws Exception;
 	
 	UpdateCompaniesResDto update(Companies companies, MultipartFile file) throws Exception;

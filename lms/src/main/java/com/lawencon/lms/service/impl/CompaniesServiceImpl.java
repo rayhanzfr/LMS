@@ -41,25 +41,21 @@ public class CompaniesServiceImpl extends BaseServiceImpl implements CompaniesSe
 	}
 
 	@Override
-	public String generateCode() throws Exception {
-		String generatedCode = companiesDao.countData() + EnumCode.COMPANIES.getCode();
-
-		return generatedCode;
-	}
-
-	@Override
 	public SaveCompaniesResDto save(Companies companies, MultipartFile file) throws Exception {
 		SaveCompaniesResDto saveRes = new SaveCompaniesResDto();
 
 		try {
+			String img = file.getOriginalFilename();
+			String ext = img.substring(img.lastIndexOf(".")+1,img.length());
+			Files filesInsert = new Files();
+			filesInsert.setFile(file.getBytes());
+			filesInsert.setExtensions(ext);
+			
 			begin();
-			Files files = new Files();
-            files.setFile(file.getBytes());
-            String ext = file.getOriginalFilename();
-            ext = ext.substring(ext.lastIndexOf(".") + 1, ext.length());
-            files.setExtensions(ext);
-            files = filesService.save(files);
-			companies.setFiles(files);
+			Files filesDb = new Files();
+			filesDb = filesService.save(filesInsert);
+			companies.setFiles(filesDb);
+			companies.setCompaniesCode(generateCode());
 			companies = companiesDao.saveOrUpdate(companies);
 			commit();
 
@@ -100,6 +96,11 @@ public class CompaniesServiceImpl extends BaseServiceImpl implements CompaniesSe
 	@Override
 	public Boolean removeById(String id) throws Exception {
 		return companiesDao.removeById(id);
+	}
+	
+	public String generateCode() throws Exception {
+		String generatedCode = companiesDao.countData() + EnumCode.COMPANIES.getCode();
+		return generatedCode;
 	}
 
 }
