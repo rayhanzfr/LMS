@@ -36,7 +36,6 @@ public class AssetsController {
 	@Autowired
 	private AssetsService assetsService;
 	
-	@Autowired
 	private ExcelRequest excelRequest;
 	
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class)))})
