@@ -19,7 +19,7 @@ import com.lawencon.lms.service.RolesService;
 import com.lawencon.lms.service.UsersService;
 
 @Service
-public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
+public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService {
 
 	@Autowired
 	private UsersDao usersDao;

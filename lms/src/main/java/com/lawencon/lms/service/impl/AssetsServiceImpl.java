@@ -33,7 +33,7 @@ import com.lawencon.lms.model.StatusesInOut;
 import com.lawencon.lms.service.AssetsService;
 
 @Service
-public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService {
+public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsService {
 
 	@Autowired
 	private AssetsDao assetsDao;

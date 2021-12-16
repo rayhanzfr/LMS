@@ -14,7 +14,7 @@ import com.lawencon.lms.model.Invoices;
 import com.lawencon.lms.service.InvoicesService;
 
 @Service
-public class InvoicesServiceImpl extends BaseServiceImpl implements InvoicesService {
+public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesService {
 
 	@Autowired
 	private InvoicesDao invoicesDao;

@@ -6,7 +6,7 @@ import com.lawencon.lms.model.Files;
 
 public interface FilesDao {
 	
-	Files saveOrUpdate(Files items) throws Exception;
+	Files saveOrUpdate(Files files) throws Exception;
 	
 	Files findById(String id) throws Exception;
 	
