@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawencon.lms.dto.items.SaveItemsResDto;
 import com.lawencon.lms.dto.items.UpdateItemsResDto;
 import com.lawencon.lms.model.Files;
@@ -62,15 +63,15 @@ public class ItemsController {
 	
 	@ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = SaveItemsResDto.class)))
 	@PostMapping
-	public ResponseEntity<?> save(@RequestPart Items data,MultipartFile file)throws Exception {
-		SaveItemsResDto result = itemsService.save(data, file);
+	public ResponseEntity<?> save(@RequestPart String data, @RequestPart MultipartFile file)throws Exception {
+		SaveItemsResDto result = itemsService.save(new ObjectMapper().readValue(data, Items.class), file);
 		return new ResponseEntity<>(result,HttpStatus.CREATED);
 	}
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UpdateItemsResDto.class)))
 	@PutMapping
-	public ResponseEntity<?> update(@RequestBody Items data) throws Exception {
-		UpdateItemsResDto result = itemsService.update(data);
+	public ResponseEntity<?> update(@RequestPart String data, @RequestPart MultipartFile file) throws Exception {
+		UpdateItemsResDto result = itemsService.update(new ObjectMapper().readValue(data, Items.class), file);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	

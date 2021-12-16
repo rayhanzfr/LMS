@@ -39,7 +39,7 @@ public class ItemsServiceImpl extends BaseServiceImpl implements ItemsService {
 	public SaveItemsResDto save(Items items,MultipartFile file) throws Exception {
 		SaveItemsResDto saveItemsResDto = new SaveItemsResDto();
 		try {
-			String img = file.getName();
+			String img = file.getOriginalFilename();
 			String ext = img.substring(img.lastIndexOf(".")+1,img.length());
 			Files filesInsert = new Files();
 			filesInsert.setFile(file.getBytes());
@@ -66,10 +66,18 @@ public class ItemsServiceImpl extends BaseServiceImpl implements ItemsService {
 	}
 
 	@Override
-	public UpdateItemsResDto update(Items items) throws Exception {
+	public UpdateItemsResDto update(Items items,MultipartFile file) throws Exception {
 		UpdateItemsResDto updateItemsResDto = new UpdateItemsResDto();
 		try {
+			String img = file.getOriginalFilename();
+			String ext = img.substring(img.lastIndexOf(".")+1,img.length());
+			Files filesInsert = new Files();
+			filesInsert.setFile(file.getBytes());
+			filesInsert.setExtensions(ext);
+			
+			begin();
 			Files files = filesService.findById(items.getFiles().getId());
+			files = filesService.update(files);
 			ItemsTypes itemsTypes = itemsTypesService.findByCode(items.getItemsTypes().getItemsTypesCode());
 			ItemsBrands itemsBrands = itemsBrandsService.findByCode(items.getItemsBrands().getItemsBrandsCode());
 			items.setFiles(files);
@@ -79,7 +87,6 @@ public class ItemsServiceImpl extends BaseServiceImpl implements ItemsService {
 			items.setCreatedAt(itemsDb.getCreatedAt());
 			items.setCreatedBy(itemsDb.getCreatedBy());
 
-			begin();
 			items = itemsDao.saveOrUpdate(items);
 			commit();
 			updateItemsResDto.setVersion(itemsBrands.getVersion());
