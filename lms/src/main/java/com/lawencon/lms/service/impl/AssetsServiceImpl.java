@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.constant.StatusesAssetsCode;
+import com.lawencon.lms.constant.StatusesInOutCode;
 import com.lawencon.lms.dao.AssetsDao;
 import com.lawencon.lms.dao.InvoicesDao;
 import com.lawencon.lms.dao.ItemsDao;
@@ -125,7 +126,7 @@ public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService 
 
 
 	@Override
-	public GetAllAssetsDto findByBrandsCode(String brandsCode) throws Exception {
+	public GetAllAssetsDto findByItemsBrandsCode(String brandsCode) throws Exception {
 		GetAllAssetsDto assetsAll = new GetAllAssetsDto();
 		List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
 		List<Assets> assets = assetsDao.findByBrandsCode(brandsCode);
@@ -311,19 +312,10 @@ public class AssetsServiceImpl extends BaseServiceImpl implements AssetsService 
 	}
 
 	@Override
-	public GetTotalAssetsReqDto getTotalreq(int total) throws Exception {
+	public GetTotalAssetsReqDto getTotalreq(String itemsCode, String itemsBrandsCode, String itemsTypesCode, String statusesAssetsCode, String statusesInOutCode,int total) throws Exception {
 		GetTotalAssetsReqDto getAssets = new GetTotalAssetsReqDto(); 
-		List<Assets> listAssets = assetsDao.findByStatusesAssetsCode(StatusesAssetsCode.DEPLOYABLE.getCode());
-		List<Assets> showAssets = new ArrayList<Assets>();
-		for(int i=0;i<listAssets.size();i++) {
-			if(i+1==total) {
-				break;
-			}
-			else {
-				showAssets.add(listAssets.get(i));
-			}
-		}
-		getAssets.setData(showAssets);
+		List<Assets> listAssets = assetsDao.findByReq(itemsCode,itemsTypesCode,itemsBrandsCode,statusesAssetsCode,statusesInOutCode,total);
+		getAssets.setData(listAssets);
 		getAssets.setTotal(total);
 		return getAssets;
 	}

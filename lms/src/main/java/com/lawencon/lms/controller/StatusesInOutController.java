@@ -10,13 +10,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.lms.dto.statusesinout.SaveStatusesInOutResDto;
 import com.lawencon.lms.dto.statusesinout.UpdateStatusesInOutResDto;
 import com.lawencon.lms.model.StatusesInOut;
 import com.lawencon.lms.service.StatusesInOutService;
 
+@RestController
+@RequestMapping("statusesinout")
 public class StatusesInOutController {
 	
 	@Autowired
