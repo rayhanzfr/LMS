@@ -35,251 +35,73 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	@Override
 	public Assets findByAssetsName(String assetsName) throws Exception {
 
-		Assets assets = null;
-		try {
-			StringBuilder sql = new StringBuilder();
-			sql.append(
-					" SELECT a.id, invoices.invoices_code, i.items_name, ib.items_brands_name, a.assets_name, sa.statuses_assets_name, sio.statuses_in_out_name, a.assets_expired ");
-			sql.append(" FROM assets as a ");
-			sql.append(" INNER JOIN items as i ON i.id = a.items_id ");
-			sql.append(" INNER JOIN items_types as it ON it.id = a.items_types_id ");
-			sql.append(" INNER JOIN items_brands as ib ON ib.id = a.items_brands_id ");
-			sql.append(" INNER JOIN invoices ON invoices.id = a.invoices_id ");
-			sql.append(" INNER JOIN statuses_assets as sa ON sa.id = a.statuses_assets_id ");
-			sql.append(" INNER JOIN statuses_in_out as sio ON sio.id = a.statuses_in_out_id ");
-			sql.append(" WHERE a.assets_name = :assetsName ");
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT a");
+		sql.append(" FROM Assets AS a ");
+		sql.append(" INNER JOIN FETCH Items AS i ");
+		sql.append(" INNER JOIN FETCH ItemsTypes AS it ");
+		sql.append(" INNER JOIN FETCH ItemsBrands AS ib ");
+		sql.append(" INNER JOIN FETCH Invoices AS invo ");
+		sql.append(" INNER JOIN FETCH StatusesAssets AS sa ");
+		sql.append(" INNER JOIN FETCH StatusesInOut AS sio ");
+		sql.append(" WHERE a.assetsName = :assetsName ");
 
-			Object resultQuery = createNativeQuery(sql.toString()).setParameter("assetsName", assetsName)
-					.getSingleResult();
-
-			if (resultQuery != null) {
-				Object[] obj = (Object[]) resultQuery;
-				assets = new Assets();
-				assets.setId(obj[0].toString());
-
-				Invoices invoices = new Invoices();
-				invoices.setInvoicesCode(obj[1].toString());
-				assets.setInvoices(invoices);
-
-				Items items = new Items();
-				items.setItemsName(obj[2].toString());
-
-				ItemsBrands itemsBrands = new ItemsBrands();
-				itemsBrands.setItemsBrandsName(obj[3].toString());
-				items.setItemsBrands(itemsBrands);
-
-				ItemsTypes itemsTypes = new ItemsTypes();
-				itemsTypes.setItemsTypesName(obj[4].toString());
-				items.setItemsTypes(itemsTypes);
-
-				assets.setItems(items);
-				assets.setAssetsName(obj[5].toString());
-
-				StatusesAssets statusesAssets = new StatusesAssets();
-				statusesAssets.setStatusesAssetsName(obj[6].toString());
-				assets.setStatusesAssets(statusesAssets);
-
-				StatusesInOut statusesInOut = new StatusesInOut();
-				statusesInOut.setStatusesInOutName(obj[7].toString());
-				assets.setStatusesInOut(statusesInOut);
-
-				if (obj[8] != null) {
-					assets.setAssetsExpired(Timestamp.valueOf(obj[8].toString()).toLocalDateTime().toLocalDate());
-				}
-			}
-		} catch (NoResultException e) {
-			e.printStackTrace();
-		}
+		Assets assets = createQuery(sql.toString(), Assets.class).setParameter("assetsName", assetsName)
+				.getSingleResult();
 		return assets;
 	}
 
 	@Override
 	public List<Assets> findByItemsCode(String itemsCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(
-				" SELECT a.id, invoices.invoices_code, i.items_name, ib.items_brands_name, a.assets_name, sa.statuses_assets_name, sio.statuses_in_out_name, a.assets_expired, a.created_by, a.created_at,a.version ");
-		sql.append(" FROM assets as a ");
-		sql.append(" INNER JOIN items as i ON i.id = a.items_id ");
-		sql.append(" INNER JOIN items_types as it ON it.id = a.items_types_id ");
-		sql.append(" INNER JOIN items_brands as ib ON ib.id = a.items_brands_id ");
-		sql.append(" INNER JOIN invoices ON invoices.id = a.invoices_id ");
-		sql.append(" INNER JOIN statuses_assets as sa ON sa.id = a.statuses_assets_id ");
-		sql.append(" INNER JOIN statuses_in_out as sio ON sio.id = a.statuses_in_out_id ");
-		sql.append(" WHERE i.items_code= :ItemsCode ");
+		sql.append(" SELECT a ");
+		sql.append(" FROM assets AS a ");
+		sql.append(" INNER JOIN FETCH Items AS i ");
+		sql.append(" INNER JOIN FETCH ItemsTypes AS it ");
+		sql.append(" INNER JOIN FETCH ItemsBrands AS ib ");
+		sql.append(" INNER JOIN FETCH Invoices AS invo ");
+		sql.append(" INNER JOIN FETCH StatusesAssets AS sa ");
+		sql.append(" INNER JOIN FETCH StatusesInOut AS sio ");
+		sql.append(" WHERE i.itemsCode = :itemsCode ");
 
-		List<?> resultQuery = createNativeQuery(sql.toString()).setParameter("assetsName", itemsCode).getResultList();
-		List<Assets> listAssets = new ArrayList<Assets>();
-		if (resultQuery != null) {
-			resultQuery.forEach(rs -> {
-				Object[] obj = (Object[]) rs;
-				Assets assets = new Assets();
-				assets.setId(obj[0].toString());
-
-				Invoices invoices = new Invoices();
-				invoices.setInvoicesCode(obj[1].toString());
-				assets.setInvoices(invoices);
-
-				Items items = new Items();
-				items.setItemsName(obj[2].toString());
-
-				ItemsBrands itemsBrands = new ItemsBrands();
-				itemsBrands.setItemsBrandsName(obj[3].toString());
-				items.setItemsBrands(itemsBrands);
-
-				ItemsTypes itemsTypes = new ItemsTypes();
-				itemsTypes.setItemsTypesName(obj[4].toString());
-				items.setItemsTypes(itemsTypes);
-
-				assets.setItems(items);
-				assets.setAssetsName(obj[5].toString());
-
-				StatusesAssets statusesAssets = new StatusesAssets();
-				statusesAssets.setStatusesAssetsName(obj[6].toString());
-				assets.setStatusesAssets(statusesAssets);
-
-				StatusesInOut statusesInOut = new StatusesInOut();
-				statusesInOut.setStatusesInOutName(obj[7].toString());
-				assets.setStatusesInOut(statusesInOut);
-
-				if (obj[8] != null) {
-					assets.setAssetsExpired(Timestamp.valueOf(obj[8].toString()).toLocalDateTime().toLocalDate());
-				}
-
-				assets.setCreatedBy(obj[9].toString());
-				assets.setCreatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
-				assets.setVersion(Integer.valueOf(obj[11].toString()));
-
-				listAssets.add(assets);
-			});
-
-		}
+		List<Assets> listAssets = createQuery(sql.toString(), Assets.class).setParameter("assetsName", itemsCode)
+				.getResultList();
 		return listAssets;
 	}
 
 	@Override
 	public List<Assets> findByBrandsCode(String brandsCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(
-				" SELECT a.id, invoices.invoices_code, i.items_name, ib.items_brands_name, a.assets_name, sa.statuses_assets_name, sio.statuses_in_out_name, a.assets_expired, a.created_by, a.created_at,a.version ");
-		sql.append(" FROM assets as a ");
-		sql.append(" INNER JOIN items as i ON i.id = a.items_id ");
-		sql.append(" INNER JOIN items_types as it ON it.id = a.items_types_id ");
-		sql.append(" INNER JOIN items_brands as ib ON ib.id = a.items_brands_id ");
-		sql.append(" INNER JOIN invoices ON invoices.id = a.invoices_id ");
-		sql.append(" INNER JOIN statuses_assets as sa ON sa.id = a.statuses_assets_id ");
-		sql.append(" INNER JOIN statuses_in_out as sio ON sio.id = a.statuses_in_out_id ");
-		sql.append(" WHERE ib.items_brands_code= :brandsCode ");
+		sql.append(" SELECT a ");
+		sql.append(" FROM assets AS a ");
+		sql.append(" INNER JOIN FETCH Items AS i ");
+		sql.append(" INNER JOIN FETCH ItemsTypes AS it ");
+		sql.append(" INNER JOIN FETCH ItemsBrands AS ib ");
+		sql.append(" INNER JOIN FETCH Invoices AS invo ");
+		sql.append(" INNER JOIN FETCH StatusesAssets AS sa ");
+		sql.append(" INNER JOIN FETCH StatusesInOut AS sio ");
+		sql.append(" WHERE ib.itemsBrandsCode= :brandsCode ");
 
-		List<?> resultQuery = createNativeQuery(sql.toString()).setParameter("brandsCode", brandsCode).getResultList();
-		List<Assets> listAssets = new ArrayList<Assets>();
-		if (resultQuery != null) {
-			resultQuery.forEach(rs -> {
-				Object[] obj = (Object[]) rs;
-				Assets assets = new Assets();
-				assets.setId(obj[0].toString());
-
-				Invoices invoices = new Invoices();
-				invoices.setInvoicesCode(obj[1].toString());
-				assets.setInvoices(invoices);
-
-				Items items = new Items();
-				items.setItemsName(obj[2].toString());
-
-				ItemsBrands itemsBrands = new ItemsBrands();
-				itemsBrands.setItemsBrandsName(obj[3].toString());
-				items.setItemsBrands(itemsBrands);
-
-				ItemsTypes itemsTypes = new ItemsTypes();
-				itemsTypes.setItemsTypesName(obj[4].toString());
-				items.setItemsTypes(itemsTypes);
-
-				assets.setItems(items);
-				assets.setAssetsName(obj[5].toString());
-
-				StatusesAssets statusesAssets = new StatusesAssets();
-				statusesAssets.setStatusesAssetsName(obj[6].toString());
-				assets.setStatusesAssets(statusesAssets);
-
-				StatusesInOut statusesInOut = new StatusesInOut();
-				statusesInOut.setStatusesInOutName(obj[7].toString());
-				assets.setStatusesInOut(statusesInOut);
-
-				if (obj[8] != null) {
-					assets.setAssetsExpired(Timestamp.valueOf(obj[8].toString()).toLocalDateTime().toLocalDate());
-				}
-
-				assets.setCreatedBy(obj[9].toString());
-				assets.setCreatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
-				assets.setVersion(Integer.valueOf(obj[11].toString()));
-
-				listAssets.add(assets);
-			});
-
-		}
+		List<Assets> listAssets = createQuery(sql.toString(), Assets.class).setParameter("brandsCode", brandsCode)
+				.getResultList();
 		return listAssets;
 	}
 
 	@Override
 	public List<Assets> findByItemsTypesCode(String itemsTypesCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(
-				" SELECT a.id, invoices.invoices_code, i.items_name, ib.items_brands_name, a.assets_name, sa.statuses_assets_name, sio.statuses_in_out_name, a.assets_expired, a.created_by, a.created_at,a.version ");
-		sql.append(" FROM assets as a ");
-		sql.append(" INNER JOIN items as i ON i.id = a.items_id ");
-		sql.append(" INNER JOIN items_types as it ON it.id = a.items_types_id ");
-		sql.append(" INNER JOIN items_brands as ib ON ib.id = a.items_brands_id ");
-		sql.append(" INNER JOIN invoices ON invoices.id = a.invoices_id ");
-		sql.append(" INNER JOIN statuses_assets as sa ON sa.id = a.statuses_assets_id ");
-		sql.append(" INNER JOIN statuses_in_out as sio ON sio.id = a.statuses_in_out_id ");
-		sql.append(" WHERE it.items_types_code= :itemsTypesCode ");
+		sql.append(" SELECT a ");
+		sql.append(" FROM assets AS a ");
+		sql.append(" INNER JOIN FETCH Items AS i ");
+		sql.append(" INNER JOIN FETCH ItemsTypes AS it ");
+		sql.append(" INNER JOIN FETCH ItemsBrands AS ib ");
+		sql.append(" INNER JOIN FETCH Invoices AS invo ");
+		sql.append(" INNER JOIN FETCH StatusesAssets AS sa ");
+		sql.append(" INNER JOIN FETCH StatusesInOut AS sio ");
+		sql.append(" WHERE it.itemsTypesCode = :itemsTypesCode ");
 
-		List<?> resultQuery = createNativeQuery(sql.toString()).setParameter("brandsCode", itemsTypesCode)
-				.getResultList();
-		List<Assets> listAssets = new ArrayList<Assets>();
-		if (resultQuery != null) {
-			resultQuery.forEach(rs -> {
-				Object[] obj = (Object[]) rs;
-				Assets assets = new Assets();
-				assets.setId(obj[0].toString());
-
-				Invoices invoices = new Invoices();
-				invoices.setInvoicesCode(obj[1].toString());
-				assets.setInvoices(invoices);
-
-				Items items = new Items();
-				items.setItemsName(obj[2].toString());
-
-				ItemsBrands itemsBrands = new ItemsBrands();
-				itemsBrands.setItemsBrandsName(obj[3].toString());
-				items.setItemsBrands(itemsBrands);
-
-				ItemsTypes itemsTypes = new ItemsTypes();
-				itemsTypes.setItemsTypesName(obj[4].toString());
-				items.setItemsTypes(itemsTypes);
-
-				assets.setItems(items);
-				assets.setAssetsName(obj[5].toString());
-
-				StatusesAssets statusesAssets = new StatusesAssets();
-				statusesAssets.setStatusesAssetsName(obj[6].toString());
-				assets.setStatusesAssets(statusesAssets);
-
-				StatusesInOut statusesInOut = new StatusesInOut();
-				statusesInOut.setStatusesInOutName(obj[7].toString());
-				assets.setStatusesInOut(statusesInOut);
-
-				if (obj[8] != null) {
-					assets.setAssetsExpired(Timestamp.valueOf(obj[8].toString()).toLocalDateTime().toLocalDate());
-				}
-
-				assets.setCreatedBy(obj[9].toString());
-				assets.setCreatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
-				assets.setVersion(Integer.valueOf(obj[11].toString()));
-
-				listAssets.add(assets);
-			});
-
-		}
+		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
+				.setParameter("itemsTypesCode", itemsTypesCode).getResultList();
 		return listAssets;
 
 	}
@@ -287,64 +109,18 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	@Override
 	public List<Assets> findByStatusesAssetsCode(String statusesAssetsCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(
-				" SELECT a.id, invoices.invoices_code, i.items_name, ib.items_brands_name, a.assets_name, sa.statuses_assets_name, sio.statuses_in_out_name, a.assets_expired, a.created_by, a.created_at,a.version ");
-		sql.append(" FROM assets as a ");
-		sql.append(" INNER JOIN items as i ON i.id = a.items_id ");
-		sql.append(" INNER JOIN items_types as it ON it.id = a.items_types_id ");
-		sql.append(" INNER JOIN items_brands as ib ON ib.id = a.items_brands_id ");
-		sql.append(" INNER JOIN invoices ON invoices.id = a.invoices_id ");
-		sql.append(" INNER JOIN statuses_assets as sa ON sa.id = a.statuses_assets_id ");
-		sql.append(" INNER JOIN statuses_in_out as sio ON sio.id = a.statuses_in_out_id ");
-		sql.append(" WHERE sa.statuses_assets_code= :statusesAssetsCode ");
+		sql.append(" SELECT a ");
+		sql.append(" FROM assets AS a ");
+		sql.append(" INNER JOIN FETCH Items AS i ");
+		sql.append(" INNER JOIN FETCH ItemsTypes AS it ");
+		sql.append(" INNER JOIN FETCH ItemsBrands AS ib ");
+		sql.append(" INNER JOIN FETCH Invoices AS invo ");
+		sql.append(" INNER JOIN FETCH StatusesAssets AS sa ");
+		sql.append(" INNER JOIN FETCH StatusesInOut AS sio ");
+		sql.append(" WHERE sa.statusesAssetsCode = :statusesAssetsCode ");
 
-		List<?> resultQuery = createNativeQuery(sql.toString()).setParameter("brandsCode", statusesAssetsCode)
-				.getResultList();
-		List<Assets> listAssets = new ArrayList<Assets>();
-		if (resultQuery != null) {
-			resultQuery.forEach(rs -> {
-				Object[] obj = (Object[]) rs;
-				Assets assets = new Assets();
-				assets.setId(obj[0].toString());
-
-				Invoices invoices = new Invoices();
-				invoices.setInvoicesCode(obj[1].toString());
-				assets.setInvoices(invoices);
-
-				Items items = new Items();
-				items.setItemsName(obj[2].toString());
-
-				ItemsBrands itemsBrands = new ItemsBrands();
-				itemsBrands.setItemsBrandsName(obj[3].toString());
-				items.setItemsBrands(itemsBrands);
-
-				ItemsTypes itemsTypes = new ItemsTypes();
-				itemsTypes.setItemsTypesName(obj[4].toString());
-				items.setItemsTypes(itemsTypes);
-
-				assets.setItems(items);
-				assets.setAssetsName(obj[5].toString());
-
-				StatusesAssets statusesAssets = new StatusesAssets();
-				statusesAssets.setStatusesAssetsName(obj[6].toString());
-				assets.setStatusesAssets(statusesAssets);
-
-				StatusesInOut statusesInOut = new StatusesInOut();
-				statusesInOut.setStatusesInOutName(obj[7].toString());
-				assets.setStatusesInOut(statusesInOut);
-
-				if (obj[8] != null) {
-					assets.setAssetsExpired(Timestamp.valueOf(obj[8].toString()).toLocalDateTime().toLocalDate());
-				}
-
-				assets.setCreatedBy(obj[9].toString());
-				assets.setCreatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
-				assets.setVersion(Integer.valueOf(obj[11].toString()));
-
-				listAssets.add(assets);
-			});
-
-		}
+		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
+				.setParameter("statusesAssetsCode", statusesAssetsCode).getResultList();
 		return listAssets;
 
 	}
@@ -352,64 +128,18 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	@Override
 	public List<Assets> findByStatusesInOutCode(String statusesInOutCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(
-				" SELECT a.id, invoices.invoices_code, i.items_name, ib.items_brands_name, a.assets_name, sa.statuses_assets_name, sio.statuses_in_out_name, a.assets_expired, a.created_by, a.created_at,a.version ");
-		sql.append(" FROM assets as a ");
-		sql.append(" INNER JOIN items as i ON i.id = a.items_id ");
-		sql.append(" INNER JOIN items_types as it ON it.id = a.items_types_id ");
-		sql.append(" INNER JOIN items_brands as ib ON ib.id = a.items_brands_id ");
-		sql.append(" INNER JOIN invoices ON invoices.id = a.invoices_id ");
-		sql.append(" INNER JOIN statuses_assets as sa ON sa.id = a.statuses_assets_id ");
-		sql.append(" INNER JOIN statuses_in_out as sio ON sio.id = a.statuses_in_out_id ");
-		sql.append(" WHERE sio.statuses_in_out_code= :statusesInOutCode ");
+		sql.append(" SELECT a ");
+		sql.append(" FROM assets AS a ");
+		sql.append(" INNER JOIN FETCH Items AS i ");
+		sql.append(" INNER JOIN FETCH ItemsTypes AS it ");
+		sql.append(" INNER JOIN FETCH ItemsBrands AS ib ");
+		sql.append(" INNER JOIN FETCH Invoices AS invo ");
+		sql.append(" INNER JOIN FETCH StatusesAssets AS sa ");
+		sql.append(" INNER JOIN FETCH StatusesInOut AS sio ");
+		sql.append(" WHERE sio.statusesInOutCode= :statusesInOutCode ");
 
-		List<?> resultQuery = createNativeQuery(sql.toString()).setParameter("statusesInOutCode", statusesInOutCode)
-				.getResultList();
-		List<Assets> listAssets = new ArrayList<Assets>();
-		if (resultQuery != null) {
-			resultQuery.forEach(rs -> {
-				Object[] obj = (Object[]) rs;
-				Assets assets = new Assets();
-				assets.setId(obj[0].toString());
-
-				Invoices invoices = new Invoices();
-				invoices.setInvoicesCode(obj[1].toString());
-				assets.setInvoices(invoices);
-
-				Items items = new Items();
-				items.setItemsName(obj[2].toString());
-
-				ItemsBrands itemsBrands = new ItemsBrands();
-				itemsBrands.setItemsBrandsName(obj[3].toString());
-				items.setItemsBrands(itemsBrands);
-
-				ItemsTypes itemsTypes = new ItemsTypes();
-				itemsTypes.setItemsTypesName(obj[4].toString());
-				items.setItemsTypes(itemsTypes);
-
-				assets.setItems(items);
-				assets.setAssetsName(obj[5].toString());
-
-				StatusesAssets statusesAssets = new StatusesAssets();
-				statusesAssets.setStatusesAssetsName(obj[6].toString());
-				assets.setStatusesAssets(statusesAssets);
-
-				StatusesInOut statusesInOut = new StatusesInOut();
-				statusesInOut.setStatusesInOutName(obj[7].toString());
-				assets.setStatusesInOut(statusesInOut);
-
-				if (obj[8] != null) {
-					assets.setAssetsExpired(Timestamp.valueOf(obj[8].toString()).toLocalDateTime().toLocalDate());
-				}
-
-				assets.setCreatedBy(obj[9].toString());
-				assets.setCreatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
-				assets.setVersion(Integer.valueOf(obj[11].toString()));
-
-				listAssets.add(assets);
-			});
-
-		}
+		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
+				.setParameter("statusesInOutCode", statusesInOutCode).getResultList();
 		return listAssets;
 
 	}
@@ -425,67 +155,36 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	}
 
 	@Override
-	public List<Assets> findByTotalReq(Integer total) throws Exception {
+	public List<Assets> findByReq(String itemsCode, String itemsTypesCode, String itemsBrandsCode,
+			String statusesAssetsCode, String statusesInOutCode, Integer total) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(
-				" SELECT a.id, invoices.invoices_code, i.items_name, ib.items_brands_name, a.assets_name, sa.statuses_assets_name, sio.statuses_in_out_name, a.assets_expired, a.created_by, a.created_at,a.version ");
-		sql.append(" FROM assets as a ");
-		sql.append(" INNER JOIN items as i ON i.id = a.items_id ");
-		sql.append(" INNER JOIN items_types as it ON it.id = a.items_types_id ");
-		sql.append(" INNER JOIN items_brands as ib ON ib.id = a.items_brands_id ");
-		sql.append(" INNER JOIN invoices ON invoices.id = a.invoices_id ");
-		sql.append(" INNER JOIN statuses_assets as sa ON sa.id = a.statuses_assets_id ");
-		sql.append(" INNER JOIN statuses_in_out as sio ON sio.id = a.statuses_in_out_id ");
+		sql.append(" SELECT a ");
+		sql.append(" FROM assets AS a ");
+		sql.append(" INNER JOIN FETCH Items AS i ");
+		sql.append(" INNER JOIN FETCH ItemsTypes AS it ");
+		sql.append(" INNER JOIN FETCH ItemsBrands AS ib ");
+		sql.append(" INNER JOIN FETCH Invoices AS invo ");
+		sql.append(" INNER JOIN FETCH StatusesAssets AS sa ");
+		sql.append(" INNER JOIN FETCH StatusesInOut AS sio ");
+		sql.append(" WHERE i.itemsCode= :itemsCode ");
+		sql.append(" WHERE it.itemsTypesCode= :itemsTypesCode ");
+		sql.append(" WHERE ib.itemsBrandsCode= :itemsBrandsCode ");
+		sql.append(" WHERE sa.statusesAssetsCode= :statusesAssetsCode ");
+		sql.append(" WHERE sio.statusesInOutCode= :statusesInOutCode ");
 		sql.append(" LIMIT :total ");
 
-		List<?> resultQuery = createNativeQuery(sql.toString())
-				.setParameter("total", total)
-				.getResultList();
-		List<Assets> listAssets = new ArrayList<Assets>();
-		if (resultQuery != null) {
-			resultQuery.forEach(rs -> {
-				Object[] obj = (Object[]) rs;
-				Assets assets = new Assets();
-				assets.setId(obj[0].toString());
-
-				Invoices invoices = new Invoices();
-				invoices.setInvoicesCode(obj[1].toString());
-				assets.setInvoices(invoices);
-
-				Items items = new Items();
-				items.setItemsName(obj[2].toString());
-
-				ItemsBrands itemsBrands = new ItemsBrands();
-				itemsBrands.setItemsBrandsName(obj[3].toString());
-				items.setItemsBrands(itemsBrands);
-
-				ItemsTypes itemsTypes = new ItemsTypes();
-				itemsTypes.setItemsTypesName(obj[4].toString());
-				items.setItemsTypes(itemsTypes);
-
-				assets.setItems(items);
-				assets.setAssetsName(obj[5].toString());
-
-				StatusesAssets statusesAssets = new StatusesAssets();
-				statusesAssets.setStatusesAssetsName(obj[6].toString());
-				assets.setStatusesAssets(statusesAssets);
-
-				StatusesInOut statusesInOut = new StatusesInOut();
-				statusesInOut.setStatusesInOutName(obj[7].toString());
-				assets.setStatusesInOut(statusesInOut);
-
-				if (obj[8] != null) {
-					assets.setAssetsExpired(Timestamp.valueOf(obj[8].toString()).toLocalDateTime().toLocalDate());
-				}
-
-				assets.setCreatedBy(obj[9].toString());
-				assets.setCreatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
-				assets.setVersion(Integer.valueOf(obj[11].toString()));
-
-				listAssets.add(assets);
-			});
-		}
+		List<Assets> listAssets = createQuery(sql.toString(), Assets.class).setParameter("itemsCode", itemsCode)
+				.setParameter("itemsTypesCode", itemsTypesCode).setParameter("itemsBrandsCode", itemsBrandsCode)
+				.setParameter("statusesAssetsCode", statusesAssetsCode)
+				.setParameter("statusesInOutCode", statusesInOutCode).setParameter("total", total).getResultList();
 		return listAssets;
+	}
+
+	@Override
+	public String countData() throws Exception {
+		Object resultQuery = createQuery("SELECT COUNT(a.id) FROM Assets a", Assets.class).getSingleResult();
+		String count = resultQuery.toString();
+		return count;
 	}
 
 }
