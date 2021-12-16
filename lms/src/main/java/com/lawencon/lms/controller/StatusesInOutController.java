@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.lms.dto.statusesinout.SaveStatusesInOutResDto;
 import com.lawencon.lms.dto.statusesinout.UpdateStatusesInOutResDto;
-import com.lawencon.lms.model.ItemsTypes;
 import com.lawencon.lms.model.StatusesInOut;
 import com.lawencon.lms.service.StatusesInOutService;
 
