@@ -30,7 +30,7 @@ public class UsersDaoImpl extends BaseDaoImpl<Users> implements UsersDao {
 		Users user = null;
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append(" SELECT u.id r.roles_name, u.users_email, u.created_by, u.created_at, u.version ");
+			sql.append(" SELECT u.id, r.roles_code, r.roles_name, u.users_email, u.created_by, u.created_at, u.version ");
 			sql.append(" FROM users as u ");
 			sql.append(" INNER JOIN roles as r ON r.id = u.roles_id ");
 			sql.append(" WHERE u.email = :email ");
@@ -42,13 +42,14 @@ public class UsersDaoImpl extends BaseDaoImpl<Users> implements UsersDao {
 				user.setId(obj[0].toString());
 
 				Roles roles = new Roles();
-				roles.setRolesName(obj[1].toString());
+				roles.setRolesCode(obj[1].toString());
+				roles.setRolesName(obj[2].toString());
 				user.setRoles(roles);
 
-				user.setUsersEmail(obj[2].toString());
-				user.setCreatedBy(obj[3].toString());
-				user.setCreatedAt(Timestamp.valueOf(obj[4].toString()).toLocalDateTime());
-				user.setVersion(Integer.valueOf(obj[5].toString()));
+				user.setUsersEmail(obj[3].toString());
+				user.setCreatedBy(obj[4].toString());
+				user.setCreatedAt(Timestamp.valueOf(obj[5].toString()).toLocalDateTime());
+				user.setVersion(Integer.valueOf(obj[6].toString()));
 			}
 		} catch (NoResultException e) {
 			e.printStackTrace();
