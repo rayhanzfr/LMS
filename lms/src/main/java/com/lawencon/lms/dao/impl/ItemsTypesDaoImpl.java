@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 
 import org.springframework.stereotype.Repository;
 
@@ -55,6 +56,10 @@ public class ItemsTypesDaoImpl extends BaseDaoImpl<ItemsTypes> implements ItemsT
 			}
 		} catch (NoResultException e) {
 			e.printStackTrace();
+			throw new NoResultException("Not Found");
+		} catch (NonUniqueResultException e) {
+			e.printStackTrace();
+			throw new NoResultException("Found more than one");
 		}
 		return itemsTypes;
 	}
