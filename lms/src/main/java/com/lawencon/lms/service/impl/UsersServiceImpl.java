@@ -1,8 +1,12 @@
 package com.lawencon.lms.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
@@ -91,6 +95,18 @@ public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
 			rollback();
 			throw new Exception(e);
 		}
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String arg0) throws UsernameNotFoundException {
+		Users user = null;
+		try {
+			user = usersDao.findByEmail(arg0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new UsernameNotFoundException(e.getMessage());
+		}
+		return new User(user.getUsersEmail(), user.getUsersPassword(), new ArrayList<>());
 	}
 
 }

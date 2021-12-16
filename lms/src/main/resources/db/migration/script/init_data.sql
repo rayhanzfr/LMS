@@ -1,4 +1,4 @@
-INSERT INTO roles (roles_code,roles_name,"version",created_by,created_date,is_active)VALUES
+INSERT INTO roles (roles_code,roles_name,"version",created_by,created_at,is_active)VALUES
 ('ROLES001','SUPER-ADMIN',0,'1',now(),true);
 
 INSERT INTO users(roles_id, users_email,users_password,"version",created_by,created_at,is_active)
@@ -6,10 +6,10 @@ VALUES (roles_id,"superadmin@gmail.com","superadmin",0,"1",now(),TRUE),
 (roles_id,"admin@gmail.com","admin",0,"1",now(),TRUE),
 (roles_id,"nonadmin@gmail.com","nonadmin",0,"1",now(),TRUE);
 
-INSERT INTO permissions (permissions_code,permissions_name,"version",created_by,created_date,is_active)VALUES
+INSERT INTO permissions (permissions_code,permissions_name,"version",created_by,created_at,is_active)VALUES
 ('PERMISSIONS001','ROLES-READ',0,'1',now(),true);
 
-INSERT INTO permissions_roles (permissions_id,roles_id,"version",created_by,created_date,is_active)VALUES
+INSERT INTO permissions_roles (permissions_id,roles_id,"version",created_by,created_at,is_active)VALUES
 ('permissions_id_x','roles_id_x',0,'1',now(),true);
 
 INSERT INTO employees (users_id, employees_fullname, employees_address,employees_phone_number,"version",created_by,created_at,is_active)

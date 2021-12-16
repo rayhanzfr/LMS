@@ -2,11 +2,13 @@ package com.lawencon.lms.service;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import com.lawencon.lms.dto.users.SaveUsersResDto;
 import com.lawencon.lms.dto.users.UpdateUsersResDto;
 import com.lawencon.lms.model.Users;
 
-public interface UsersService {
+public interface UsersService extends UserDetailsService{
 	List<Users> findAll() throws Exception;
 
 	Users findById(String id) throws Exception;

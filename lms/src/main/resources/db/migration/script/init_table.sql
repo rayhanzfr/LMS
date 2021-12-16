@@ -64,6 +64,8 @@ CREATE TABLE permissions_roles (
 CREATE TABLE employees(
 	id uuid DEFAULT  uuid_generate_v4(),
 	users_id uuid NOT null,
+	companies_id uuid NOT null,
+	employees_code varchar(15)  unique not null,
 	employees_fullname TEXT NOT NULL,
 	employees_address TEXT,
 	employees_phone_number varchar(14) unique NOT NULL,
@@ -77,6 +79,7 @@ CREATE TABLE employees(
 	FOREIGN KEY (users_id)
 		REFERENCES users(id)
 );
+
 
 CREATE TABLE items_types(
 	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
