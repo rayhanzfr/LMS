@@ -17,7 +17,7 @@ public interface AssetsService {
 
 	GetAllAssetsDto findByItemsCode(String itemsCode) throws Exception;
 
-	GetAllAssetsDto findByBrandsCode(String brandsCode) throws Exception;
+	GetAllAssetsDto findByItemsBrandsCode(String brandsCode) throws Exception;
 
 	GetAllAssetsDto findByItemsTypesCode(String itemsTypesCode) throws Exception;
 
@@ -25,7 +25,7 @@ public interface AssetsService {
 
 	GetAllAssetsDto findByStatusesInOutCode(String statusesInOutCode) throws Exception;
 	
-	GetTotalAssetsReqDto getTotalreq(int total) throws Exception;
+	GetTotalAssetsReqDto getTotalreq(String itemsCode, String itemsBrandsCode, String itemsTypesCode, String statusesAssetsCode, String statusesInOutCode,int total) throws Exception;
 
 	SaveAssetsResDto save(SaveAssetsReqDto saveAssetsReqDto) throws Exception;
 	
