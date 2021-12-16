@@ -1,2 +1,3 @@
 /core/target
 /lms/target
+/lms/src/main/resources/application.properties
