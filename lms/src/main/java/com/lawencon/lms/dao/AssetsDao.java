@@ -21,7 +21,7 @@ public interface AssetsDao {
 
 	List<Assets> findByStatusesInOutCode(String statusesInOutCode) throws Exception;
 	
-	List<Assets> findByTotalReq(Integer total) throws Exception;
+	List<Assets> findByReq(String itemsCode,String itemsTypesCode,String itemsBrandsCode, String statusesAssetsCode, String statusesInOutCode,Integer total) throws Exception;
 
 	Assets saveOrUpdate(Assets assets) throws Exception;
 
