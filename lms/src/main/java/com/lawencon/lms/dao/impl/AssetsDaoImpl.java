@@ -180,4 +180,11 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		return listAssets;
 	}
 
+	@Override
+	public String countData() throws Exception {
+		Object resultQuery = createQuery("SELECT COUNT(a.id) FROM Assets a", Assets.class).getSingleResult();
+		String count = resultQuery.toString();
+		return count;
+	}
+
 }

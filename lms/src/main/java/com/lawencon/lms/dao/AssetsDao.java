@@ -23,6 +23,8 @@ public interface AssetsDao {
 	
 	List<Assets> findByReq(String itemsCode,String itemsTypesCode,String itemsBrandsCode, String statusesAssetsCode, String statusesInOutCode,Integer total) throws Exception;
 
+	String countData() throws Exception;
+	
 	Assets saveOrUpdate(Assets assets) throws Exception;
 
 	Boolean removeById(String id) throws Exception;
