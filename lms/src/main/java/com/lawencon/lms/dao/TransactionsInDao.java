@@ -12,4 +12,6 @@ public interface TransactionsInDao {
 	TransactionsIn findByCode(String code) throws Exception;
 	
 	TransactionsIn saveOrUpdate(TransactionsIn transactionsIn) throws Exception;
+	
+	String countData() throws Exception;
 }

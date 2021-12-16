@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
+import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.AssetsDao;
 import com.lawencon.lms.dao.EmployeesDao;
 import com.lawencon.lms.dao.LocationsDao;
@@ -131,7 +132,7 @@ public class TransactionsInServiceImpl extends BaseServiceImpl implements Transa
 
 		try {
 			begin();
-			transactionsIn.setTransactionsInCode(saveFullReq.getSaveTransactionsInReqDto().getTransactionsInCode());
+			transactionsIn.setTransactionsInCode(generateCode());
 			transactionsIn.setTransactionsInDate(LocalDateTime.now());
 
 			TransactionsIn tin = transactionsInDao.saveOrUpdate(transactionsIn);
@@ -163,6 +164,11 @@ public class TransactionsInServiceImpl extends BaseServiceImpl implements Transa
 		
 
 		return saveFullResDto;
+	}
+	
+	public String generateCode() throws Exception {
+		String generatedCode = transactionsInDao.countData() + EnumCode.INVOICES.getCode();
+		return generatedCode;
 	}
 
 }

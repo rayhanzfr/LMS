@@ -35,17 +35,12 @@ public class InvoicesServiceImpl extends BaseServiceImpl implements InvoicesServ
 	}
 
 	@Override
-	public String generateCode() throws Exception {
-		String generatedCode = invoicesDao.countData() + EnumCode.INVOICES.getCode();
-		return generatedCode;
-	}
-
-	@Override
 	public SaveInvoicesResDto save(Invoices invoices) throws Exception {
 		SaveInvoicesResDto saveRes = new SaveInvoicesResDto();
 
 		try {
 			begin();
+			invoices.setInvoicesCode(generateCode());
 			invoices = invoicesDao.saveOrUpdate(invoices);
 			commit();
 
@@ -83,6 +78,11 @@ public class InvoicesServiceImpl extends BaseServiceImpl implements InvoicesServ
 	@Override
 	public Boolean removeById(String id) throws Exception {
 		return invoicesDao.removeById(id);
+	}
+	
+	public String generateCode() throws Exception {
+		String generatedCode = invoicesDao.countData() + EnumCode.INVOICES.getCode();
+		return generatedCode;
 	}
 
 }

@@ -1,3 +1,7 @@
 /core/target
 /lms/target
+<<<<<<< HEAD
 /lms/src/main/resources/application.properties
+=======
+/lms/src/main/resources/application.properties
+>>>>>>> 72327c6cd7f7801b94f7daad0f71bda08e49bc7e

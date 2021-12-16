@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.lms.dto.locations.SaveLocationsResDto;
 import com.lawencon.lms.dto.locations.UpdateLocationsResDto;
 import com.lawencon.lms.model.Locations;
 import com.lawencon.lms.service.LocationsService;
+
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("locations")
@@ -28,76 +32,54 @@ public class LocationsController {
 	@Autowired
 	private LocationsService locationsService;
 
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Locations.class)))})
 	@GetMapping
-	public ResponseEntity<?> findAll() {
+	public ResponseEntity<?> findAll() throws Exception {
 		List<Locations> listLocations = new ArrayList<Locations>();
-		try {
-			listLocations = locationsService.findAll();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(listLocations, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		listLocations = locationsService.findAll();
 		return new ResponseEntity<>(listLocations, HttpStatus.OK);
 	}
 
-	@GetMapping()
-	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id" ) String id) {
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Locations.class)))})
+	@GetMapping("{id}")
+	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id") String id) throws Exception {
 		Locations result = new Locations();
-		try {
-			result = locationsService.findById(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = locationsService.findById(id);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@GetMapping()
-	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) {
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Locations.class)))})
+	@GetMapping("/code/{code}")
+	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) throws Exception {
 		Locations result = new Locations();
-		try {
-			result = locationsService.findByCode(code);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = locationsService.findByCode(code);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
+	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = SaveLocationsResDto.class)))})
 	@PostMapping
-	public ResponseEntity<?> insert(@RequestBody Locations locations, MultipartFile files) {
+	public ResponseEntity<?> insert(@RequestBody Locations locations) throws Exception {
 		SaveLocationsResDto result = new SaveLocationsResDto();
-		try {
-			result = locationsService.save(locations);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = locationsService.save(locations);
 		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
-	
+
+	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = UpdateLocationsResDto.class)))})
 	@PutMapping
-	public ResponseEntity<?> update(@RequestBody Locations locations) {
+	public ResponseEntity<?> update(@RequestBody Locations locations) throws Exception {
 		UpdateLocationsResDto result = new UpdateLocationsResDto();
-		try {
-			result = locationsService.update(locations);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = locationsService.update(locations);
 		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
-	
+
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Locations.class)))})
 	@DeleteMapping("{id}")
-	public ResponseEntity<?> removeById(@PathVariable String id){
-		Boolean result = null;
-		try {
-			result = locationsService.removeById(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-			
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<?> removeById(@PathVariable String id) throws Exception {
+		Boolean result = locationsService.removeById(id);
+		if (result == false) {
+			return new ResponseEntity<>("FAILED", HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
 		}
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	} 
+	}
 }

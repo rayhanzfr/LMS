@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.lms.dto.statusesassets.SaveStatusesAssetsResDto;
 import com.lawencon.lms.dto.statusesassets.UpdateStatusesAssetsResDto;
 import com.lawencon.lms.model.StatusesAssets;
 import com.lawencon.lms.service.StatusesAssetsService;
+
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("statuses-assets")
@@ -28,76 +32,54 @@ public class StatusesAssetsController {
 	@Autowired
 	private StatusesAssetsService statusesAssetsService;
 
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = StatusesAssets.class)))})
 	@GetMapping
-	public ResponseEntity<?> findAll() {
+	public ResponseEntity<?> findAll() throws Exception {
 		List<StatusesAssets> listStatusesAssets = new ArrayList<StatusesAssets>();
-		try {
-			listStatusesAssets = statusesAssetsService.findAll();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(listStatusesAssets, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		listStatusesAssets = statusesAssetsService.findAll();
 		return new ResponseEntity<>(listStatusesAssets, HttpStatus.OK);
 	}
 
-	@GetMapping()
-	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id") String id) {
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = StatusesAssets.class)))})
+	@GetMapping("{id}")
+	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id") String id) throws Exception {
 		StatusesAssets result = new StatusesAssets();
-		try {
-			result = statusesAssetsService.findById(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = statusesAssetsService.findById(id);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@GetMapping()
-	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) {
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = StatusesAssets.class)))})
+	@GetMapping("/code/{code}")
+	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) throws Exception {
 		StatusesAssets result = new StatusesAssets();
-		try {
-			result = statusesAssetsService.findByCode(code);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = statusesAssetsService.findByCode(code);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
+	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = SaveStatusesAssetsResDto.class)))})
 	@PostMapping
-	public ResponseEntity<?> insert(@RequestBody StatusesAssets statusesAssets, MultipartFile files) {
+	public ResponseEntity<?> insert(@RequestBody StatusesAssets statusesAssets) throws Exception {
 		SaveStatusesAssetsResDto result = new SaveStatusesAssetsResDto();
-		try {
-			result = statusesAssetsService.save(statusesAssets);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = statusesAssetsService.save(statusesAssets);
 		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
 
+	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = UpdateStatusesAssetsResDto.class)))})
 	@PutMapping
-	public ResponseEntity<?> update(@RequestBody StatusesAssets statusesAssets) {
+	public ResponseEntity<?> update(@RequestBody StatusesAssets statusesAssets) throws Exception {
 		UpdateStatusesAssetsResDto result = new UpdateStatusesAssetsResDto();
-		try {
-			result = statusesAssetsService.update(statusesAssets);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = statusesAssetsService.update(statusesAssets);
 		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
 
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = StatusesAssets.class)))})
 	@DeleteMapping("{id}")
-	public ResponseEntity<?> removeById(@PathVariable String id) {
-		Boolean result = null;
-		try {
-			result = statusesAssetsService.removeById(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<?> removeById(@PathVariable String id) throws Exception {
+		Boolean result = statusesAssetsService.removeById(id);
+		if (result == false) {
+			return new ResponseEntity<>("FAILED", HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
 		}
-		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 }
