@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
@@ -27,6 +28,9 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 	@Autowired
 	private RolesService rolesService;
 	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
 	@Override
 	public List<Users> findAll() throws Exception {
 		return usersDao.findAll();
@@ -38,7 +42,7 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 	}
 
 	@Override
-	public Users findByEmail(String email) throws Exception {
+	public Users findByEmail(String email) throws Exception { 
 		return usersDao.findByEmail(email);
 	}
 
@@ -47,7 +51,9 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 		SaveUsersResDto resDto = new SaveUsersResDto();
 		try {
 			Roles roles = rolesService.findByCode(users.getRoles().getRolesCode());
+			users.setCreatedBy(roles.getId());
 			users.setRoles(roles);
+			users.setUsersPassword(bCryptPasswordEncoder.encode(users.getUsersPassword()));
 			begin();
 			users = usersDao.saveOrUpdate(users);
 			commit();

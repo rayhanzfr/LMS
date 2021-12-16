@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
-@RequestMapping("itemsBrands")
+@RequestMapping("items-brands")
 public class ItemsBrandsController extends ConnHandler {
 	
 	@Autowired
