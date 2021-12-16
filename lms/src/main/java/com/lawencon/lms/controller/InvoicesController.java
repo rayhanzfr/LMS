@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.lms.dto.invoices.SaveInvoicesResDto;
 import com.lawencon.lms.dto.invoices.UpdateInvoicesResDto;
 import com.lawencon.lms.model.Invoices;
 import com.lawencon.lms.service.InvoicesService;
+
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("invoices")
@@ -28,76 +32,54 @@ public class InvoicesController {
 	@Autowired
 	private InvoicesService invoicesService;
 
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Invoices.class)))})
 	@GetMapping
-	public ResponseEntity<?> findAll() {
+	public ResponseEntity<?> findAll() throws Exception {
 		List<Invoices> listInvoices = new ArrayList<Invoices>();
-		try {
-			listInvoices = invoicesService.findAll();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(listInvoices, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		listInvoices = invoicesService.findAll();
 		return new ResponseEntity<>(listInvoices, HttpStatus.OK);
 	}
 
-	@GetMapping()
-	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id" ) String id) {
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Invoices.class)))})
+	@GetMapping("{id}")
+	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id") String id) throws Exception {
 		Invoices result = new Invoices();
-		try {
-			result = invoicesService.findById(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = invoicesService.findById(id);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@GetMapping()
-	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) {
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Invoices.class)))})
+	@GetMapping("/code/{code}")
+	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) throws Exception {
 		Invoices result = new Invoices();
-		try {
-			result = invoicesService.findByCode(code);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = invoicesService.findByCode(code);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
+	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = SaveInvoicesResDto.class)))})
 	@PostMapping
-	public ResponseEntity<?> insert(@RequestBody Invoices invoices, MultipartFile files) {
+	public ResponseEntity<?> insert(@RequestBody Invoices invoices) throws Exception {
 		SaveInvoicesResDto result = new SaveInvoicesResDto();
-		try {
-			result = invoicesService.save(invoices);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = invoicesService.save(invoices);
 		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
-	
+
+	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = UpdateInvoicesResDto.class)))})
 	@PutMapping
-	public ResponseEntity<?> update(@RequestBody Invoices invoices) {
+	public ResponseEntity<?> update(@RequestBody Invoices invoices) throws Exception {
 		UpdateInvoicesResDto result = new UpdateInvoicesResDto();
-		try {
-			result = invoicesService.update(invoices);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = invoicesService.update(invoices);
 		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
-	
+
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Invoices.class)))})
 	@DeleteMapping("{id}")
-	public ResponseEntity<?> removeById(@PathVariable String id){
-		Boolean result = null;
-		try {
-			result = invoicesService.removeById(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-			
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<?> removeById(@PathVariable String id) throws Exception {
+		Boolean result = invoicesService.removeById(id);
+		if (result == false) {
+			return new ResponseEntity<>("FAILED", HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
 		}
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	} 
+	}
 }

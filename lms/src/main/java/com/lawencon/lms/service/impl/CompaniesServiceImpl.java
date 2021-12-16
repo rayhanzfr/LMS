@@ -41,30 +41,24 @@ public class CompaniesServiceImpl extends BaseServiceImpl implements CompaniesSe
 	}
 
 	@Override
-	public String generateCode() throws Exception {
-		String generatedCode = companiesDao.countData() + EnumCode.COMPANIES.getCode();
-		
-		return generatedCode;
-	}
-	
-	@Override
 	public SaveCompaniesResDto save(Companies companies, MultipartFile file) throws Exception {
 		SaveCompaniesResDto saveRes = new SaveCompaniesResDto();
-		
+
 		try {
-			String img = file.getName();
-			String ext = img.substring(img.lastIndexOf(".") + 1, img.length());
+			String img = file.getOriginalFilename();
+			String ext = img.substring(img.lastIndexOf(".")+1,img.length());
 			Files filesInsert = new Files();
 			filesInsert.setFile(file.getBytes());
 			filesInsert.setExtensions(ext);
-
+			
 			begin();
 			Files filesDb = new Files();
 			filesDb = filesService.save(filesInsert);
 			companies.setFiles(filesDb);
+			companies.setCompaniesCode(generateCode());
 			companies = companiesDao.saveOrUpdate(companies);
 			commit();
-			
+
 			saveRes.setId(companies.getId());
 			saveRes.setMessage("Inserted");
 		} catch (Exception e) {
@@ -75,9 +69,9 @@ public class CompaniesServiceImpl extends BaseServiceImpl implements CompaniesSe
 	}
 
 	@Override
-	public UpdateCompaniesResDto update(Companies companies) throws Exception {
+	public UpdateCompaniesResDto update(Companies companies, MultipartFile file) throws Exception {
 		UpdateCompaniesResDto updateRes = new UpdateCompaniesResDto();
-		
+
 		try {
 			Files files = filesService.findById(companies.getFiles().getId());
 			companies.setFiles(files);
@@ -89,7 +83,7 @@ public class CompaniesServiceImpl extends BaseServiceImpl implements CompaniesSe
 			begin();
 			companies = companiesDao.saveOrUpdate(companies);
 			commit();
-			
+
 			updateRes.setVersion(companies.getVersion());
 			updateRes.setMessage("Inserted");
 		} catch (Exception e) {
@@ -102,6 +96,11 @@ public class CompaniesServiceImpl extends BaseServiceImpl implements CompaniesSe
 	@Override
 	public Boolean removeById(String id) throws Exception {
 		return companiesDao.removeById(id);
+	}
+	
+	public String generateCode() throws Exception {
+		String generatedCode = companiesDao.countData() + EnumCode.COMPANIES.getCode();
+		return generatedCode;
 	}
 
 }

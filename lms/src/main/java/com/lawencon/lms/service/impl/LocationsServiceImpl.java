@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
+import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.LocationsDao;
 import com.lawencon.lms.dto.locations.SaveLocationsResDto;
 import com.lawencon.lms.dto.locations.UpdateLocationsResDto;
@@ -47,6 +48,7 @@ public class LocationsServiceImpl extends BaseServiceImpl implements LocationsSe
 			locations.setCompanies(companies);
 
 			begin();
+			locations.setLocationsCode(generateCode());
 			locations = locationsDao.saveOrUpdate(locations);
 			commit();
 
@@ -89,4 +91,8 @@ public class LocationsServiceImpl extends BaseServiceImpl implements LocationsSe
 		return locationsDao.removeById(id);
 	}
 
+	public String generateCode() throws Exception {
+		String generatedCode = locationsDao.countData() + EnumCode.LOCATIONS.getCode();
+		return generatedCode;
+	}
 }

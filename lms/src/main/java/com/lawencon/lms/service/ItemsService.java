@@ -13,7 +13,7 @@ public interface ItemsService {
 	
 	Items findById(String id) throws Exception;
 	
-	UpdateItemsResDto update(Items itemsBrands) throws Exception;
+	UpdateItemsResDto update(Items items, MultipartFile file) throws Exception;
 	
 	Items findByCode(String code) throws Exception;
 	
