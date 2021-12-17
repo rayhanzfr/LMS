@@ -1,23 +1,12 @@
 package com.lawencon.lms.dao.impl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
-import org.bouncycastle.asn1.cms.TimeStampAndCRL;
 import org.springframework.stereotype.Repository;
 
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.AssetsDao;
 import com.lawencon.lms.model.Assets;
-import com.lawencon.lms.model.Invoices;
-import com.lawencon.lms.model.Items;
-import com.lawencon.lms.model.ItemsBrands;
-import com.lawencon.lms.model.ItemsTypes;
-import com.lawencon.lms.model.StatusesAssets;
-import com.lawencon.lms.model.StatusesInOut;
 
 @Repository
 public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
