@@ -143,7 +143,7 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 				Locations location = locationsDao.findByCode(saveDet.getLocationsId());
 				Employees employees = employeesDao.findById(saveDet.getEmployeesId());
 				Assets assets = assetsDao.findByAssetsName(saveDet.getAssetsId());
-				StatusesTransactions statusesTransactions = statusesTransactionsDao.findByCode(saveDet.getAssetsId());
+				StatusesTransactions statusesTransactions = statusesTransactionsDao.findById(saveDet.getAssetsId());
 				
 				tdin.setTransactionsIn(tin);
 				tdin.setLocations(location);
@@ -153,6 +153,8 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 				tdin.setReturnDate(LocalDateTime.now());
 				
 				transactionsDetailInDao.saveOrUpdate(tdin);
+				
+//				manggil update si assets (update assets)
 			}
 			saveFullResDto.setSaveTransactionsInResDto(saveResDto);
 			saveFullResDto.setMessage("Sukses");
