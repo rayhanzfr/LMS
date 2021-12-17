@@ -1,7 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE roles (
-   id uuid  PRIMARY KEY DEFAULT  uuid_generate_v4(),
+   id varchar(36)  PRIMARY KEY DEFAULT  uuid_generate_v4(),
    roles_code varchar(15) UNIQUE NOT NULL,
    roles_name varchar(30) NOT NULL,
    "version" integer NOT NULL,
@@ -14,8 +14,8 @@ CREATE TABLE roles (
 
 
 CREATE TABLE users (
-	id uuid DEFAULT  uuid_generate_v4(),
-	roles_id uuid NOT NULL,
+	id varchar(36) DEFAULT  uuid_generate_v4(),
+	roles_id varchar(36) NOT NULL,
 	users_email varchar(50) UNIQUE NOT null,
 	users_password TEXT NOT null,
 	"version" integer NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE users (
 
 
 CREATE TABLE permissions (
-   id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+   id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
    permissions_code varchar(15) UNIQUE NOT NULL,
    permissions_name varchar(30) NOT NULL,
    "version" integer NOT NULL,
@@ -44,9 +44,9 @@ CREATE TABLE permissions (
 
 
 CREATE TABLE permissions_roles (
-   id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
-   permissions_id uuid NOT NULL,
-   roles_id uuid NOT NULL,
+   id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
+   permissions_id varchar(36) NOT NULL,
+   roles_id varchar(36) NOT NULL,
    "version" integer NOT NULL,
    created_by text NOT NULL,
    created_at timestamp without time zone NOT NULL,
@@ -62,9 +62,9 @@ CREATE TABLE permissions_roles (
 
 
 CREATE TABLE employees(
-	id uuid DEFAULT  uuid_generate_v4(),
-	users_id uuid NOT null,
-	companies_id uuid NOT null,
+	id varchar(36) DEFAULT  uuid_generate_v4(),
+	users_id varchar(36) NOT null,
+	companies_id varchar(36) NOT null,
 	employees_code varchar(15)  unique not null,
 	employees_fullname TEXT NOT NULL,
 	employees_address TEXT,
@@ -82,7 +82,7 @@ CREATE TABLE employees(
 
 
 CREATE TABLE items_types(
-	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
 	items_types_code varchar(15) UNIQUE NOT NULL,
 	items_types_name varchar(50) UNIQUE NOT NULL,
 	"version" integer NOT NULL,
@@ -94,7 +94,7 @@ CREATE TABLE items_types(
 );
 
 CREATE TABLE files(
-	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
 	file bytea NOT NULL,
 	extensions varchar(5) NOT NULL,
 	created_by text NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE files(
 );
 
 CREATE TABLE items_brands(
-	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
 	items_brands_code varchar(15) UNIQUE NOT NULL,
 	items_brands_name varchar(50) UNIQUE NOT NULL,
 	"version" integer NOT NULL,
@@ -117,10 +117,10 @@ CREATE TABLE items_brands(
 );
 
 CREATE TABLE items (
-   id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
-   files_id uuid NOT NULL,
-   items_types_id uuid NOT NULL,
-   items_brands_id uuid NOT NULL,
+   id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
+   files_id varchar(36) NOT NULL,
+   items_types_id varchar(36) NOT NULL,
+   items_brands_id varchar(36) NOT NULL,
    items_code varchar(15) UNIQUE NOT NULL,
    items_name varchar(30) NOT NULL,
    "version" integer NOT NULL,
@@ -139,12 +139,12 @@ CREATE TABLE items (
 
 
 CREATE TABLE companies(
-	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
 	companies_code varchar(10) UNIQUE NOT NULL,
 	companies_name varchar(255) NOT NULL,
 	companies_phone varchar(14) NOT NULL,
 	companies_address text NOT NULL,
-	files_id uuid NOT NULL,
+	files_id varchar(36) NOT NULL,
 	"version" integer NOT NULL,
 	created_at timestamp WITHOUT time ZONE NOT NULL,
 	created_by text NOT NULL,
@@ -155,10 +155,10 @@ CREATE TABLE companies(
 
 
 CREATE TABLE locations(
-	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
 	locations_code varchar(10) UNIQUE NOT NULL,
 	locations_deploy text,
-	companies_id uuid NOT NULL,
+	companies_id varchar(36) NOT NULL,
 	"version" integer NOT NULL,
 	created_at timestamp WITHOUT time ZONE NOT NULL,
 	created_by text NOT NULL,
@@ -168,7 +168,7 @@ CREATE TABLE locations(
 );
 
 CREATE TABLE invoices(
-	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
 	invoices_code varchar(10) UNIQUE NOT NULL,
 	invoices_date timestamp WITHOUT time ZONE NOT NULL,
 	store_name varchar(50) NOT NULL,
@@ -182,7 +182,7 @@ CREATE TABLE invoices(
 );
 
 CREATE TABLE statuses_in_out(
-	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
 	statuses_in_out_code varchar (15) UNIQUE NOT NULL,
 	statuses_in_out_name varchar(50) NOT NULL,
 	"version" integer NOT NULL,
@@ -195,7 +195,7 @@ CREATE TABLE statuses_in_out(
 
 
 CREATE TABLE statuses_assets(
-	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
 	statuses_assets_code varchar(5) UNIQUE NOT NULL,
 	statuses_assets_name varchar(15) NOT NULL,
 	"version" integer NOT NULL,
@@ -207,12 +207,12 @@ CREATE TABLE statuses_assets(
 );
 
 CREATE TABLE assets(
-	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
-	items_id uuid NOT null,
-	invoices_id uuid NOT null,
+	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	items_id varchar(36) NOT null,
+	invoices_id varchar(36) NOT null,
 	assets_name varchar(50) unique not null,
-	statuses_assets_id uuid NOT NULL,
-	statuses_in_out_id uuid NOT NULL,
+	statuses_assets_id varchar(36) NOT NULL,
+	statuses_in_out_id varchar(36) NOT NULL,
 	assets_expired date,
 	"version" integer NOT NULL,
 	created_by text NOT NULL,
@@ -233,8 +233,8 @@ CREATE TABLE assets(
 
 
 CREATE TABLE statuses_transactions (
-   id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
-   statuses_assets_id uuid NOT NULL,
+   id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
+   statuses_assets_id varchar(36) NOT NULL,
    statuses_transactions_code varchar(15) UNIQUE NOT NULL,
    statuses_transactions_name varchar(30) NOT NULL,
    "version" integer NOT NULL,
@@ -249,10 +249,10 @@ CREATE TABLE statuses_transactions (
 
 
 CREATE TABLE transactions_out (
-   id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
-   trasanctions_out_code varchar(15) UNIQUE NOT NULL, 
+   id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
+   transactions_out_code varchar(15) UNIQUE NOT NULL, 
    check_out_date timestamp without time zone NOT NULL,
-   expired_date timestamp without time zone NOT NULL,
+   expired_date date NOT NULL,
    "version" integer NOT NULL,
    created_by text NOT NULL,
    created_at timestamp without time zone NOT NULL,
@@ -264,11 +264,11 @@ CREATE TABLE transactions_out (
 
 
 CREATE TABLE transactions_detail_out(
-	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
-	transactions_out_id uuid NOT NULL,
-	locations_id uuid,
-   	employees_id uuid,
-	assets_id uuid NOT NULL,
+	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	transactions_out_id varchar(36) NOT NULL,
+	locations_id varchar(36),
+   	employees_id varchar(36),
+	assets_id varchar(36) NOT NULL,
 	transaction_detail_out_expired date NOT NULL,
 	"version" integer NOT NULL,
 	created_by text NOT NULL,
@@ -288,10 +288,10 @@ CREATE TABLE transactions_detail_out(
 
 
 CREATE TABLE transactions_in(
-	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
 	transactions_code varchar(15) UNIQUE NOT NULL,
 	transactions_date timestamp WITHOUT time ZONE NOT NULL,
-	transactions_out_id uuid NOT NULL,
+	transactions_out_id varchar(36) NOT NULL,
 	"version" integer NOT NULL,
 	created_at timestamp WITHOUT time ZONE NOT NULL,
 	created_by text NOT NULL,
@@ -301,12 +301,12 @@ CREATE TABLE transactions_in(
 );
 
 CREATE TABLE transactions_detail_in(
-	id uuid PRIMARY KEY DEFAULT  uuid_generate_v4(),
-	transactions_in_id uuid NOT NULL,
-	locations_id uuid,
-   	employees_id uuid,
-	assets_id uuid NOT NULL,
-	statuses_transactions_id uuid NOT NULL,
+	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
+	transactions_in_id varchar(36) NOT NULL,
+	locations_id varchar(36),
+   	employees_id varchar(36),
+	assets_id varchar(36) NOT NULL,
+	statuses_transactions_id varchar(36) NOT NULL,
 	return_date timestamp WITHOUT time ZONE,
 	"version" integer NOT NULL,
 	created_at timestamp WITHOUT time ZONE NOT NULL,
@@ -314,6 +314,24 @@ CREATE TABLE transactions_detail_in(
 	updated_at timestamp WITHOUT time ZONE,
 	updated_by text,
 	is_active bool NOT NULL
+);
+
+CREATE TABLE histories(
+	id varchar(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+	users_id varchar(36) NOT NULL,
+	assets_id varchar(36) NOT NULL,
+	activity_name varchar(30) NOT NULL,
+	"version" integer NOT NULL,
+	created_at timestamp WITHOUT time ZONE NOT NULL,
+	created_by text NOT NULL,
+	updated_at timestamp WITHOUT time ZONE,
+	updated_by text,
+	is_active bool NOT NULL,
+	FOREIGN KEY (users_id)
+      REFERENCES users (id),
+   	FOREIGN KEY (assets_id)
+      REFERENCES assets (id)
+	
 );
 
 ALTER TABLE locations
