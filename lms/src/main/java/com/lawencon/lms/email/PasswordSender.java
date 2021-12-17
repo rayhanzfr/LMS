@@ -20,7 +20,9 @@ public class PasswordSender {
 
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
+
 		helper.setFrom("bahrul.faizi@gmail.com");
+
 		helper.setTo(to);
 		helper.setSubject(subject);
 		helper.setText("<b>" + text + "</b>", true);
