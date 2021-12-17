@@ -53,8 +53,14 @@ public class InvoicesDaoImpl extends BaseDaoImpl<Invoices> implements InvoicesDa
 				Integer version = (Integer) objArr[5];
 				LocalDateTime createdAt = Timestamp.valueOf(objArr[6].toString()).toLocalDateTime();
 				String createdBy = objArr[7].toString();
-				LocalDateTime updatedAt = Timestamp.valueOf(objArr[8].toString()).toLocalDateTime();
-				String updatedBy = objArr[9].toString();
+				if(objArr[8]!=null) {
+					LocalDateTime updatedAt = Timestamp.valueOf(objArr[8].toString()).toLocalDateTime();
+					invoices.setUpdatedAt(updatedAt);
+				}
+				if(objArr[9]!=null) {
+					String updatedBy = objArr[9].toString();
+					invoices.setUpdatedBy(updatedBy);
+				}
 				Boolean isActive = Boolean.parseBoolean(objArr[10].toString());
 
 				invoices.setId(id);
@@ -65,8 +71,8 @@ public class InvoicesDaoImpl extends BaseDaoImpl<Invoices> implements InvoicesDa
 				invoices.setVersion(version);
 				invoices.setCreatedAt(createdAt);
 				invoices.setCreatedBy(createdBy);
-				invoices.setUpdatedAt(updatedAt);
-				invoices.setUpdatedBy(updatedBy);
+
+				
 				invoices.setIsActive(isActive);
 			}
 		} catch (NoResultException e) {

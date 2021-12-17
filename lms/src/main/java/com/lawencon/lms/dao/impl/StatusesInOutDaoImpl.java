@@ -43,7 +43,10 @@ public class StatusesInOutDaoImpl extends BaseDaoImpl<StatusesInOut> implements 
 			sql.append(
 					" SELECT id, statuses_in_out_code, statuses_in_out_name, created_by, created_at, updated_by, updated_at, version ");
 			sql.append(" FROM statuses_in_out ");
-			Object resultQuery = createNativeQuery(sql.toString()).getSingleResult();
+			sql.append(" WHERE statuses_in_out_code = :code ");
+			Object resultQuery = createNativeQuery(sql.toString())
+			.setParameter("code", code)
+			.getSingleResult();
 			if (resultQuery != null) {
 				Object[] obj = (Object[]) resultQuery;
 				statusesInOut = new StatusesInOut();

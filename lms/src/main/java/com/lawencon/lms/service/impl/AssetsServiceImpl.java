@@ -1,6 +1,7 @@
 package com.lawencon.lms.service.impl;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -196,9 +197,11 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		save.setAssetsName(saveAssetsReqDto.getAssetsName());
 		save.setStatusesAssets(statusesAssets);
 		save.setStatusesInOut(statusesInOut);
-		save.setAssetsExpired(LocalDate.parse(saveAssetsReqDto.getAssetsExpired()));
-		save.setCreatedBy(saveAssetsReqDto.getCreatedBy());
-		save.setIsActive(saveAssetsReqDto.getIsActive());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		LocalDate  localDate = LocalDate.parse(saveAssetsReqDto.getAssetsExpired(), formatter);
+		save.setAssetsExpired(localDate);
+		save.setCreatedBy(getIdAuth());
+		save.setIsActive(true);
 		begin();
 		Assets result = assetsDao.saveOrUpdate(save);
 		commit();
@@ -323,8 +326,14 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		try {
 			List<SaveAssetsReqDto> assets = ExcelRequest.excelToAssets(file.getInputStream());
 			for(SaveAssetsReqDto asset : assets) {
-//				save(asset);
-				System.out.println(asset.getAssetsName());
+				SaveAssetsReqDto save = new SaveAssetsReqDto();
+				save.setItemsCode(asset.getItemsCode());
+				save.setInvoicesCode(asset.getInvoicesCode());
+				save.setAssetsName(asset.getAssetsName());
+				save.setStatusesAssetsCode(asset.getStatusesAssetsCode());
+				save.setStatusesInOutCode(asset.getStatusesInOutCode());
+				save.setAssetsExpired(asset.getAssetsExpired());
+				save(save);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
