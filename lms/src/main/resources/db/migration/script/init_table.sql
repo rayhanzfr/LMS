@@ -321,7 +321,7 @@ CREATE TABLE histories(
 	users_id varchar(36) NOT NULL,
 	assets_id varchar(36) NOT NULL,
 	activity_name varchar(30) NOT NULL,
-	"version" integer NOT NULL,
+--	"version" integer NOT NULL,
 	created_at timestamp WITHOUT time ZONE NOT NULL,
 	created_by text NOT NULL,
 	updated_at timestamp WITHOUT time ZONE,
