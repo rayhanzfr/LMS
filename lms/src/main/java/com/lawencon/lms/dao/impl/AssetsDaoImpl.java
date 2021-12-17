@@ -63,12 +63,12 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM assets AS a ");
-		sql.append(" INNER JOIN FETCH Items AS i ");
-		sql.append(" INNER JOIN FETCH ItemsTypes AS it ");
-		sql.append(" INNER JOIN FETCH ItemsBrands AS ib ");
-		sql.append(" INNER JOIN FETCH Invoices AS invo ");
-		sql.append(" INNER JOIN FETCH StatusesAssets AS sa ");
-		sql.append(" INNER JOIN FETCH StatusesInOut AS sio ");
+		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH i.itemstypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
+		sql.append(" INNER JOIN FETCH a.invoices ");
+		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
+		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE ib.itemsBrandsCode= :brandsCode ");
 
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class).setParameter("brandsCode", brandsCode)
@@ -81,12 +81,12 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM assets AS a ");
-		sql.append(" INNER JOIN FETCH Items AS i ");
-		sql.append(" INNER JOIN FETCH ItemsTypes AS it ");
-		sql.append(" INNER JOIN FETCH ItemsBrands AS ib ");
-		sql.append(" INNER JOIN FETCH Invoices AS invo ");
-		sql.append(" INNER JOIN FETCH StatusesAssets AS sa ");
-		sql.append(" INNER JOIN FETCH StatusesInOut AS sio ");
+		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH i.itemstypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
+		sql.append(" INNER JOIN FETCH a.invoices ");
+		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
+		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE it.itemsTypesCode = :itemsTypesCode ");
 
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
@@ -100,12 +100,12 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM assets AS a ");
-		sql.append(" INNER JOIN FETCH Items AS i ");
-		sql.append(" INNER JOIN FETCH ItemsTypes AS it ");
-		sql.append(" INNER JOIN FETCH ItemsBrands AS ib ");
-		sql.append(" INNER JOIN FETCH Invoices AS invo ");
-		sql.append(" INNER JOIN FETCH StatusesAssets AS sa ");
-		sql.append(" INNER JOIN FETCH StatusesInOut AS sio ");
+		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH i.itemstypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
+		sql.append(" INNER JOIN FETCH a.invoices ");
+		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
+		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE sa.statusesAssetsCode = :statusesAssetsCode ");
 
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
