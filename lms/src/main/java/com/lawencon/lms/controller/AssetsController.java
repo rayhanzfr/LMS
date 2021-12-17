@@ -36,8 +36,6 @@ public class AssetsController {
 	@Autowired
 	private AssetsService assetsService;
 	
-	private ExcelRequest excelRequest;
-	
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class)))})
 	@GetMapping
 	public ResponseEntity<?>findAll()throws Exception{
@@ -131,7 +129,7 @@ public class AssetsController {
 	@PostMapping("/upload")
 	public ResponseEntity<?> saveFile(@RequestParam("file")MultipartFile file){
 		String message = "";
-		if(excelRequest.excelFormat(file)) {
+		if(ExcelRequest.excelFormat(file)) {
 			try {
 				assetsService.saveFile(file);
 				message = "Uploaded successfully: "+file.getOriginalFilename();

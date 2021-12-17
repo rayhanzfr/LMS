@@ -9,6 +9,8 @@ public interface EmployeesDao {
 	List<Employees> findAll() throws Exception;
 
 	Employees findById(String id) throws Exception;
+	
+	Employees findByUserId (String id) throws Exception;
 
 	Employees findByCode(String Code) throws Exception;
 

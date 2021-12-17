@@ -16,22 +16,22 @@ import com.lawencon.base.BaseEntity;
 public class Assets extends BaseEntity{
 
 	@ManyToOne
-	@JoinColumn(name = "item_types_id",nullable=false)
+	@JoinColumn(name = "items_id",nullable=false)
 	private Items items;
 	
 	@ManyToOne
-	@JoinColumn(nullable=false)
+	@JoinColumn(name="invoices_id",nullable=false)
 	private Invoices invoices;
 	
 	@Column(nullable=false)
 	private String assetsName;
 	
 	@ManyToOne
-	@JoinColumn(nullable=false)
+	@JoinColumn(name="statuses_assets_id",nullable=false)
 	private StatusesAssets statusesAssets;
 	
 	@ManyToOne
-	@JoinColumn(nullable=false)
+	@JoinColumn(name="statuses_in_out_id",nullable=false)
 	private StatusesInOut statusesInOut;
 	
 	@Column

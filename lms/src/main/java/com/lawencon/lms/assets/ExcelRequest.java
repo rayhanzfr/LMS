@@ -14,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.lawencon.lms.dto.assets.SaveAssetsReqDto;
 import com.lawencon.lms.model.Assets;
 import com.lawencon.lms.model.Invoices;
 import com.lawencon.lms.model.Items;
@@ -26,37 +27,26 @@ import com.lawencon.lms.service.StatusesInOutService;
 
 public class ExcelRequest {
 	
-	@Autowired
-	private ItemsService itemsService;
-	
-	@Autowired
-	private InvoicesService invoicesService;
-	
-	@Autowired
-	private StatusesAssetsService statusesAssetsService;
-	
-	@Autowired
-	private StatusesInOutService statusesInOutService;
 
-	String type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-	String[] headers = {"items_code","invoices_code","assets_name","statuses_assets_code","statuses_in_out_code","assets_expired"};
-	String sheets = "Assets";
+	static String type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+	static String[] headers = {"items_code","invoices_code","assets_name","statuses_assets_code","statuses_in_out_code","assets_expired"};
+	static String sheets = "Sheet1";
 	
-	public boolean excelFormat(MultipartFile file) {
+	public static boolean excelFormat(MultipartFile file) {
 		if(!type.equals(file.getContentType())) {
 			return false;
 		}
 		return true;
 	}
 	
-	public List<Assets> excelToAssets (InputStream input){
+	public static List<SaveAssetsReqDto> excelToAssets (InputStream input){
 		try {
 			Workbook workbook = new XSSFWorkbook(input);
 			
 			Sheet sheet = workbook.getSheet(sheets);
 			Iterator<Row> rows = sheet.iterator();
 			
-			List<Assets> assets = new ArrayList<Assets>();
+			List<SaveAssetsReqDto> assets = new ArrayList<SaveAssetsReqDto>();
 			int rowNum = 0;
 			while(rows.hasNext()) {
 				Row row = rows.next();
@@ -68,32 +58,28 @@ public class ExcelRequest {
 				
 				Iterator<Cell> cellInRow = row.iterator();
 				
-				Assets asset = new Assets();
+				SaveAssetsReqDto asset = new SaveAssetsReqDto();
 				
 				int cellIndex =0;
 				while(cellInRow.hasNext()) {
 					Cell cell = cellInRow.next();
 					switch(cellIndex) {
 					case 0:
-						Items item = itemsService.findByCode(cell.getStringCellValue());
-						asset.setItems(item);
+						asset.setItemsCode(cell.getStringCellValue());
 						break;
 					case 1:
-						Invoices invoices = invoicesService.findByCode(cell.getStringCellValue());
-						asset.setInvoices(invoices);
+						asset.setInvoicesCode(cell.getStringCellValue());
 						break;
 					case 2:
 						asset.setAssetsName(cell.getStringCellValue());
 						break;
 					case 3:
-						StatusesAssets statusesAssets = statusesAssetsService.findByCode(cell.getStringCellValue());
-						asset.setStatusesAssets(statusesAssets);
+						asset.setStatusesAssetsCode(cell.getStringCellValue());
 						break;
 					case 4:
-						StatusesInOut statusesInOut = statusesInOutService.findByCode(cell.getStringCellValue());
-						asset.setStatusesInOut(statusesInOut);
+						asset.setStatusesInOutCode(cell.getStringCellValue());
 					case 5:
-						asset.setAssetsExpired(LocalDate.parse(cell.getStringCellValue()));
+						asset.setAssetsExpired(cell.getStringCellValue());
 						default :
 							break;
 					}
