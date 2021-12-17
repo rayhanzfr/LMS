@@ -49,7 +49,6 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	@Autowired
 	private InvoicesDao invoicesDao;
 	
-	@Autowired
 	private ExcelRequest excelRequest;
 	
 	
