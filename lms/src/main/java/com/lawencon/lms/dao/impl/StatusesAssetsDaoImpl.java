@@ -50,8 +50,14 @@ public class StatusesAssetsDaoImpl extends BaseDaoImpl<StatusesAssets> implement
 				Integer version = (Integer) objArr[3];
 				LocalDateTime createdAt = Timestamp.valueOf(objArr[4].toString()).toLocalDateTime();
 				String createdBy = objArr[5].toString();
-				LocalDateTime updatedAt = Timestamp.valueOf(objArr[6].toString()).toLocalDateTime();
-				String updatedBy = objArr[7].toString();
+				if(objArr[6]!=null) {
+					LocalDateTime updatedAt = Timestamp.valueOf(objArr[6].toString()).toLocalDateTime();
+					statusesAssets.setUpdatedAt(updatedAt);
+				}
+				if(objArr[7]!=null) {
+					String updatedBy = objArr[7].toString();
+					statusesAssets.setUpdatedBy(updatedBy);
+				}
 				Boolean isActive = Boolean.parseBoolean(objArr[8].toString());
 
 				statusesAssets.setId(id);
@@ -60,8 +66,6 @@ public class StatusesAssetsDaoImpl extends BaseDaoImpl<StatusesAssets> implement
 				statusesAssets.setVersion(version);
 				statusesAssets.setCreatedAt(createdAt);
 				statusesAssets.setCreatedBy(createdBy);
-				statusesAssets.setUpdatedAt(updatedAt);
-				statusesAssets.setUpdatedBy(updatedBy);
 				statusesAssets.setIsActive(isActive);
 			}
 		} catch (NoResultException e) {

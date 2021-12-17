@@ -1,6 +1,7 @@
 package com.lawencon.lms.service.impl;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,9 +49,6 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	
 	@Autowired
 	private InvoicesDao invoicesDao;
-	
-	private ExcelRequest excelRequest;
-	
 	
 	private AssetsDataDto convert(Assets assets) {
 		AssetsDataDto data = new AssetsDataDto();
@@ -199,9 +197,11 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		save.setAssetsName(saveAssetsReqDto.getAssetsName());
 		save.setStatusesAssets(statusesAssets);
 		save.setStatusesInOut(statusesInOut);
-		save.setAssetsExpired(LocalDate.parse(saveAssetsReqDto.getAssetsExpired()));
-		save.setCreatedBy(saveAssetsReqDto.getCreatedBy());
-		save.setIsActive(saveAssetsReqDto.getIsActive());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		LocalDate  localDate = LocalDate.parse(saveAssetsReqDto.getAssetsExpired(), formatter);
+		save.setAssetsExpired(localDate);
+		save.setCreatedBy(getIdAuth());
+		save.setIsActive(true);
 		begin();
 		Assets result = assetsDao.saveOrUpdate(save);
 		commit();
@@ -324,20 +324,19 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	@Override
 	public void saveFile(MultipartFile file) throws Exception {
 		try {
-			List<Assets> assets = excelRequest.excelToAssets(file.getInputStream());
-			for(Assets asset : assets) {
-				SaveAssetsReqDto req = new SaveAssetsReqDto();
-				req.setItemsName(asset.getItems().getItemsName());
-				req.setItemsCode(asset.getItems().getItemsCode());
-				req.setInvoicesCode(asset.getInvoices().getInvoicesCode());
-				req.setAssetsName(asset.getAssetsName());
-				req.setStatusesAssetsCode(asset.getStatusesAssets().getStatusesAssetsCode());
-				req.setStatusesInOutCode(asset.getStatusesInOut().getStatusesInOutCode());
-				req.setAssetsExpired(asset.getAssetsExpired().toString());
-				req.setIsActive(true);
-				save(req);
+			List<SaveAssetsReqDto> assets = ExcelRequest.excelToAssets(file.getInputStream());
+			for(SaveAssetsReqDto asset : assets) {
+				SaveAssetsReqDto save = new SaveAssetsReqDto();
+				save.setItemsCode(asset.getItemsCode());
+				save.setInvoicesCode(asset.getInvoicesCode());
+				save.setAssetsName(asset.getAssetsName());
+				save.setStatusesAssetsCode(asset.getStatusesAssetsCode());
+				save.setStatusesInOutCode(asset.getStatusesInOutCode());
+				save.setAssetsExpired(asset.getAssetsExpired());
+				save(save);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

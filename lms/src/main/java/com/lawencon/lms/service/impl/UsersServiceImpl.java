@@ -81,6 +81,7 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 			Roles roles = rolesService.findByCode(users.getRoles().getRolesCode());
 			users.setRoles(roles);
 			Users user = findByEmail(users.getUsersEmail());
+			users.setUsersPassword(bCryptPasswordEncoder.encode(users.getUsersPassword()));
 			users.setCreatedAt(user.getCreatedAt());
 			users.setCreatedBy(user.getCreatedBy());
 
