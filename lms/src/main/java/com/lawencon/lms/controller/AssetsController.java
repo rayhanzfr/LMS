@@ -36,13 +36,18 @@ public class AssetsController {
 	@Autowired
 	private AssetsService assetsService;
 	
-	@Autowired
 	private ExcelRequest excelRequest;
 	
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class)))})
 	@GetMapping
 	public ResponseEntity<?>findAll()throws Exception{
-		GetAllAssetsDto result = assetsService.findAll();
+		GetAllAssetsDto result = new GetAllAssetsDto();
+		try {
+			result = assetsService.findAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
