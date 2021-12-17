@@ -36,7 +36,7 @@
 		<queryString language="SQL">
 			<![CDATA[SELECT r.roles_name , u.users_email, u.is_active 
 FROM users u 
-INNER JOIN roles r ON r.id = u.roles_id ]]>
+INNER JOIN roles r ON r.id = u.roles_id]]>
 		</queryString>
 		<field name="roles_name" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.name" value="roles_name"/>
@@ -81,17 +81,6 @@ INNER JOIN roles r ON r.id = u.roles_id]]>
 		<band height="89" splitType="Stretch">
 			<frame>
 				<reportElement mode="Opaque" x="-20" y="0" width="595" height="70" backcolor="#FFFFFF" uuid="32b3abb0-2f1d-46f1-94a2-07f8111cd42c"/>
-				<image>
-					<reportElement isPrintRepeatedValues="false" mode="Transparent" x="29" y="10" width="150" height="50" uuid="34135ecc-fdc0-42bd-904b-b5c740d94ed9"/>
-					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
-						<pen lineWidth="0.0"/>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<imageExpression><![CDATA["D:/logoLMS 1.svg"]]></imageExpression>
-				</image>
 				<staticText>
 					<reportElement x="190" y="0" width="220" height="70" uuid="f1d4bc89-0429-47e0-8f25-7e5ae2b5e55b"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
@@ -99,6 +88,10 @@ INNER JOIN roles r ON r.id = u.roles_id]]>
 					</textElement>
 					<text><![CDATA[Users]]></text>
 				</staticText>
+				<image>
+					<reportElement x="40" y="10" width="110" height="50" uuid="5ba7cc4c-89a4-4d72-bebd-45e0370ae392"/>
+					<imageExpression><![CDATA["logoLMS 1.svg"]]></imageExpression>
+				</image>
 			</frame>
 		</band>
 	</title>
