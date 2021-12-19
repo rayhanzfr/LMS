@@ -28,6 +28,7 @@ import com.lawencon.lms.dto.assets.UpdateAssetsResDto;
 import com.lawencon.lms.model.Assets;
 import com.lawencon.lms.model.Invoices;
 import com.lawencon.lms.model.Items;
+import com.lawencon.lms.model.JasperAssets;
 import com.lawencon.lms.model.StatusesAssets;
 import com.lawencon.lms.model.StatusesInOut;
 import com.lawencon.lms.service.AssetsService;
@@ -338,5 +339,23 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public List<JasperAssets> getAssetsExpired() throws Exception {
+		List<Assets> assets = assetsDao.getExpiredAssets();
+		List<JasperAssets> data = new ArrayList<JasperAssets>();
+		for(Assets asset : assets) {
+			JasperAssets jp = new JasperAssets();
+			jp.setAssetsName(asset.getAssetsName());
+			jp.setItemsName(asset.getItems().getItemsName());
+			jp.setItemsTypesName(asset.getItems().getItemsTypes().getItemsTypesName());
+			jp.setItemsBrandsName(asset.getItems().getItemsBrands().getItemsBrandsName());
+			jp.setStatusesAssetsName(asset.getStatusesAssets().getStatusesAssetsName());
+			jp.setStatusesInOutName(asset.getStatusesInOut().getStatusesInOutName());
+			jp.setAssetsExpired(asset.getAssetsExpired());
+			data.add(jp);
+		}
+		return data;
 	}
 }

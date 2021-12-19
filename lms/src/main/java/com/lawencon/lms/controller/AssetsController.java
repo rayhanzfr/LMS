@@ -1,7 +1,15 @@
 package com.lawencon.lms.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +30,9 @@ import com.lawencon.lms.dto.assets.SaveAssetsResDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsReqDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsResDto;
 import com.lawencon.lms.model.Assets;
+import com.lawencon.lms.model.JasperAssets;
 import com.lawencon.lms.service.AssetsService;
+import com.lawencon.util.JasperUtil;
 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -32,13 +42,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 @RestController
 @RequestMapping("assets")
 public class AssetsController {
-	
+
 	@Autowired
 	private AssetsService assetsService;
-	
-	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class)))})
+
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class))) })
 	@GetMapping
-	public ResponseEntity<?>findAll()throws Exception{
+	public ResponseEntity<?> findAll() throws Exception {
 		GetAllAssetsDto result = new GetAllAssetsDto();
 		try {
 			result = assetsService.findAll();
@@ -46,101 +57,148 @@ public class AssetsController {
 			e.printStackTrace();
 			return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(result,HttpStatus.OK);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
-	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetByIdAssetsDto.class)))})
+	@GetMapping("/expired")
+	public ResponseEntity<?> getAssetsExpired() throws Exception {
+		List<JasperAssets> result = new ArrayList<JasperAssets>();
+		try {
+			result = assetsService.getAssetsExpired();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetByIdAssetsDto.class))) })
 	@GetMapping("{id}")
-	public ResponseEntity<?>findById(@RequestParam(value="id")String id)throws Exception{
+	public ResponseEntity<?> findById(@RequestParam(value = "id") String id) throws Exception {
 		GetByIdAssetsDto result = assetsService.findById(id);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
-	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetByIdAssetsDto.class)))})
+
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetByIdAssetsDto.class))) })
 	@GetMapping("{assetsName}")
-	public ResponseEntity<?>findByAssetsName(@RequestParam(value="assetsName") String assetsName)throws Exception{
+	public ResponseEntity<?> findByAssetsName(@RequestParam(value = "assetsName") String assetsName) throws Exception {
 		GetByIdAssetsDto result = assetsService.findByAssetsName(assetsName);
-		return new ResponseEntity<>(result,HttpStatus.OK);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
-	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class)))})
+
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class))) })
 	@GetMapping("/items")
-	public ResponseEntity<?>findByItemsCode(@RequestParam(value="itemsCode") String itemsCode) throws Exception{
+	public ResponseEntity<?> findByItemsCode(@RequestParam(value = "itemsCode") String itemsCode) throws Exception {
 		GetAllAssetsDto result = assetsService.findByItemsCode(itemsCode);
-		return new ResponseEntity<>(result,HttpStatus.OK);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
-	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class)))})
+
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class))) })
 	@GetMapping("/itemsBrands")
-	public ResponseEntity<?>findByItemsBrandsCode(@RequestParam(value="itemsBrandsCode") String itemsBrandsCode)throws Exception{
+	public ResponseEntity<?> findByItemsBrandsCode(@RequestParam(value = "itemsBrandsCode") String itemsBrandsCode)
+			throws Exception {
 		GetAllAssetsDto result = assetsService.findByItemsBrandsCode(itemsBrandsCode);
-		return new ResponseEntity<>(result,HttpStatus.OK);	
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
-	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class)))})
+
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class))) })
 	@GetMapping("/itemsTypes")
-	public ResponseEntity<?>findByItemsTypesCode(@RequestParam(value="itemsTypesCode") String itemsTypesCode)throws Exception{
+	public ResponseEntity<?> findByItemsTypesCode(@RequestParam(value = "itemsTypesCode") String itemsTypesCode)
+			throws Exception {
 		GetAllAssetsDto result = assetsService.findByItemsTypesCode(itemsTypesCode);
-		return new ResponseEntity<>(result,HttpStatus.OK);	
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
-	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class)))})
+
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class))) })
 	@GetMapping("/statusesAssets")
-	public ResponseEntity<?>findByStatusesAssetsCode(@RequestParam(value="statusesAssetsCode") String statusesAssetsCode)throws Exception{
+	public ResponseEntity<?> findByStatusesAssetsCode(
+			@RequestParam(value = "statusesAssetsCode") String statusesAssetsCode) throws Exception {
 		GetAllAssetsDto result = assetsService.findByStatusesAssetsCode(statusesAssetsCode);
-		return new ResponseEntity<>(result,HttpStatus.OK);	
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
-	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class)))})
+
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class))) })
 	@GetMapping("/statusesInOut")
-	public ResponseEntity<?>findByStatusesInOutCode(@RequestParam(value="statusesInOutCode") String statusesInOutCode)throws Exception{
+	public ResponseEntity<?> findByStatusesInOutCode(
+			@RequestParam(value = "statusesInOutCode") String statusesInOutCode) throws Exception {
 		GetAllAssetsDto result = assetsService.findByStatusesInOutCode(statusesInOutCode);
-		return new ResponseEntity<>(result,HttpStatus.OK);	
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
-	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class)))})
+
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class))) })
 	@GetMapping("/req")
-	public ResponseEntity<?>findByReq(@RequestParam(value="itemsCode", required = false) String itemsCode, @RequestParam(value="itemsTypesCode",required = false) String itemsTypesCode, @RequestParam(value="itemsBrandsCode",required = false) String itemsBrandsCode,@RequestParam(value="statusesAssetsCode",required = false) String statusesAssetsCode,  @RequestParam(value="statusesInOutCode",required = false) String statusesInOutCode, @RequestParam(value="total",required = false) Integer total)throws Exception{
-		GetTotalAssetsReqDto result = assetsService.getTotalreq(itemsCode,itemsBrandsCode,itemsTypesCode,statusesAssetsCode,statusesInOutCode,total);
-		return new ResponseEntity<>(result,HttpStatus.OK);	
+	public ResponseEntity<?> findByReq(@RequestParam(value = "itemsCode", required = false) String itemsCode,
+			@RequestParam(value = "itemsTypesCode", required = false) String itemsTypesCode,
+			@RequestParam(value = "itemsBrandsCode", required = false) String itemsBrandsCode,
+			@RequestParam(value = "statusesAssetsCode", required = false) String statusesAssetsCode,
+			@RequestParam(value = "statusesInOutCode", required = false) String statusesInOutCode,
+			@RequestParam(value = "total", required = false) Integer total) throws Exception {
+		GetTotalAssetsReqDto result = assetsService.getTotalreq(itemsCode, itemsBrandsCode, itemsTypesCode,
+				statusesAssetsCode, statusesInOutCode, total);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
-	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = SaveAssetsResDto.class)))})
+
+	@ApiResponse(responseCode = "201", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = SaveAssetsResDto.class))) })
 	@PostMapping
-	public ResponseEntity<?>save(@RequestBody SaveAssetsReqDto save)throws Exception{
+	public ResponseEntity<?> save(@RequestBody SaveAssetsReqDto save) throws Exception {
 		SaveAssetsResDto result = assetsService.save(save);
-		return new ResponseEntity<>(result,HttpStatus.CREATED);
+		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
-	
-	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = UpdateAssetsResDto.class)))})
+
+	@ApiResponse(responseCode = "201", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = UpdateAssetsResDto.class))) })
 	@PutMapping
-	public ResponseEntity<?>update(@RequestBody UpdateAssetsReqDto update) throws Exception{
+	public ResponseEntity<?> update(@RequestBody UpdateAssetsReqDto update) throws Exception {
 		UpdateAssetsResDto result = assetsService.update(update);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
-	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Assets.class)))})
+
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = Assets.class))) })
 	@DeleteMapping()
-	public ResponseEntity<?> removeById(@RequestParam(value="id")String id)throws Exception{
+	public ResponseEntity<?> removeById(@RequestParam(value = "id") String id) throws Exception {
 		boolean result = assetsService.removeById(id);
-		return new ResponseEntity<>(result,HttpStatus.OK);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/upload")
-	public ResponseEntity<?> saveFile(@RequestParam("file")MultipartFile file){
+	public ResponseEntity<?> saveFile(@RequestParam("file") MultipartFile file) {
 		String message = "";
-		if(ExcelRequest.excelFormat(file)) {
+		if (ExcelRequest.excelFormat(file)) {
 			try {
 				assetsService.saveFile(file);
-				message = "Uploaded successfully: "+file.getOriginalFilename();
-				return new ResponseEntity<>(message,HttpStatus.CREATED);
-		    } catch (Exception e) {
-		        message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-		        return new ResponseEntity<>(message,HttpStatus.EXPECTATION_FAILED);
-		      }
-		    }
+				message = "Uploaded successfully: " + file.getOriginalFilename();
+				return new ResponseEntity<>(message, HttpStatus.CREATED);
+			} catch (Exception e) {
+				message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+				return new ResponseEntity<>(message, HttpStatus.EXPECTATION_FAILED);
+			}
+		}
 
-		    message = "Please upload an excel file!";
-		    return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
-		  }
+		message = "Please upload an excel file!";
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+	}
+	
+	@GetMapping("/download")
+	public HttpEntity<?> reportSample() throws Exception {
+		List<JasperAssets> data = assetsService.getAssetsExpired();
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("company", "items");
+
+		byte[] out = JasperUtil.responseToByteArray(data, "assets-report", map);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_PDF);
+		return new HttpEntity<>(out, headers);
+	}
 }

@@ -23,16 +23,17 @@ public class JasperUtil {
 			throws Exception {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
-			File files = ResourceUtils.getFile("classpath:report/" + jrxmlName + ".jrxml");
+			File files = ResourceUtils.getFile("classpath:reports/" + jrxmlName + ".jrxml");
 			JasperReport jasper = JasperCompileManager.compileReport(files.getAbsolutePath());
 			JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(datas);
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, mapParams, ds);
 			JasperExportManager.exportReportToPdfStream(jasperPrint, out);
+			
+			return out.toByteArray();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
-		return out.toByteArray();
 	}
 
 }
