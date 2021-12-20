@@ -43,7 +43,7 @@ public class ItemsBrandsController extends ConnHandler {
 	}
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = ItemsBrands.class)))
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?> getById(@RequestParam("id") String id)throws Exception {
 		ItemsBrands result = new ItemsBrands();
 		result = itemsBrandsService.findById(id);
@@ -51,7 +51,7 @@ public class ItemsBrandsController extends ConnHandler {
 	}
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = ItemsBrands.class)))
-	@GetMapping("/code/{code}")
+	@GetMapping("/code")
 	public ResponseEntity<?> getByCode(@RequestParam("code") String code)throws Exception {
 		ItemsBrands result = new ItemsBrands();
 		result = itemsBrandsService.findByCode(code);

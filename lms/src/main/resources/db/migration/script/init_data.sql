@@ -42,8 +42,7 @@ INSERT INTO statuses_assets (statuses_assets_code, statuses_assets_name, "versio
 	('PEND', 'PENDING', 0, now(), (select id from roles where roles_code = 'ROLES1'), true);
 
 INSERT INTO files (file,extensions,created_by,created_at,is_active,"version")VALUES
-(bytea_import('D:\logoLMS.svg'),'svg',(select id from roles where roles_code = 'ROLES1'),now(),true,0);
-
+(bytea_import('D:\logo.png'),'svg',(select id from roles where roles_code = 'ROLES1'),now(),true,0);
 
 INSERT INTO items_brands (items_brands_code,items_brands_name,"version",created_by,created_at,is_active)VALUES
 ('ITMBRANDS1','LENOVO',0,(select id from roles where roles_code = 'ROLES1'),now(),true);

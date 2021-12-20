@@ -77,8 +77,10 @@ public class LocationsDaoImpl extends BaseDaoImpl<Locations> implements Location
 			}
 		} catch (NoResultException e) {
 			e.printStackTrace();
+			throw new NoResultException("Not Found");
 		} catch (NonUniqueResultException e) {
 			e.printStackTrace();
+			throw new NonUniqueResultException("Found more than one");
 		}
 
 		return locations;

@@ -11,12 +11,11 @@ import org.springframework.stereotype.Repository;
 
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.TransactionsOutDao;
-import com.lawencon.lms.model.ItemsBrands;
 import com.lawencon.lms.model.TransactionsOut;
 
 @Repository
 public class TransactionsOutDaoImpl extends BaseDaoImpl<TransactionsOut> implements TransactionsOutDao {
-	
+
 	@Override
 	public TransactionsOut findById(String id) throws Exception {
 		return getById(id);
@@ -42,9 +41,9 @@ public class TransactionsOutDaoImpl extends BaseDaoImpl<TransactionsOut> impleme
 				transactionsOut.setCreatedBy(objArr[4].toString());
 				transactionsOut.setCreatedAt(((Timestamp) objArr[5]).toLocalDateTime());
 				transactionsOut.setIsActive((Boolean) objArr[6]);
-				transactionsOut.setVersion((Integer)objArr[9]);
+				transactionsOut.setVersion((Integer) objArr[9]);
 			}
-		}catch (NoResultException e) {
+		} catch (NoResultException e) {
 			e.printStackTrace();
 			throw new NoResultException("Not Found");
 		} catch (NonUniqueResultException e) {
@@ -56,19 +55,19 @@ public class TransactionsOutDaoImpl extends BaseDaoImpl<TransactionsOut> impleme
 	@Override
 	public List<TransactionsOut> findAll() throws Exception {
 		return getAll();
-    }
-
+	}
 
 	@Override
 	public TransactionsOut saveOrUpdate(TransactionsOut transactionsOut) throws Exception {
 		return save(transactionsOut);
 	}
-	
+
 	@Override
 	public Integer countData() throws Exception {
-		String sql = "SELECT COUNT(to.id) FROM TransactionsOut to ";
-		Object result = createQuery(sql,TransactionsOut.class).getSingleResult();
+		String sql = "SELECT COUNT(to.id) FROM transactions_out to ";
+		Object result = createNativeQuery(sql).getSingleResult();
 		BigInteger results = new BigInteger(result.toString());
-		return results.intValue();
+		Integer resultsInteger = results.intValue();
+		return resultsInteger;
 	}
 }
