@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lawencon.lms.dto.transactionsout.GetAllTransactionsDetailsOutResDto;
 import com.lawencon.lms.dto.transactionsoutexpired.TransactionsOutExpired;
-import com.lawencon.lms.model.JasperAssets;
 import com.lawencon.lms.service.TransactionsDetailOutService;
 import com.lawencon.util.JasperUtil;
 

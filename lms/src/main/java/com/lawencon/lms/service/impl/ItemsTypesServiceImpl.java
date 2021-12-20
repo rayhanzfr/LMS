@@ -1,5 +1,6 @@
 package com.lawencon.lms.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,14 @@ public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTy
 	public SaveItemsTypesResDto save(ItemsTypes itemsTypes) throws Exception {
 		SaveItemsTypesResDto resDto = new SaveItemsTypesResDto();
 		try {
+			
+			ItemsTypes itemType = new ItemsTypes();
+			itemType.setCreatedBy(getIdAuth());
+			itemType.setItemsTypesCode(itemsTypes.getItemsTypesCode());
+			itemType.setItemsTypesName(itemsTypes.getItemsTypesName());
+			itemType.setIsActive(true);
 			begin();
-			itemsTypes = itemsTypesDao.findByCode(itemsTypes.getItemsTypesCode());
+			itemsTypes = itemsTypesDao.saveOrUpdate(itemType);
 			commit();
 			resDto.setId(itemsTypes.getId());
 			resDto.setMessage("INSERTED");
@@ -48,17 +55,18 @@ public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTy
 		}
 		return resDto;
 	}
-
+	
 	@Override
 	public UpdateItemsTypesResDto update(ItemsTypes itemsTypes) throws Exception {
 		UpdateItemsTypesResDto resDto = new UpdateItemsTypesResDto();
 		try {
-			ItemsTypes itemsType = itemsTypesDao.findByCode(itemsTypes.getItemsTypesCode());
-			itemsTypes.setCreatedBy(itemsType.getCreatedBy());
-			itemsTypes.setCreatedAt(itemsType.getCreatedAt());
+			ItemsTypes itemsType = itemsTypesDao.findById(itemsTypes.getId());
+			itemsType.setItemsTypesName(itemsTypes.getItemsTypesName());
+			itemsType.setUpdatedBy(getIdAuth());
+			itemsType.setUpdatedAt(LocalDateTime.now());
 			
 			begin();
-			itemsTypes = itemsTypesDao.findByCode(itemsTypes.getItemsTypesCode());
+			itemsTypes = itemsTypesDao.saveOrUpdate(itemsType);
 			commit();
 			resDto.setVersion(itemsTypes.getVersion());
 			resDto.setMessage("UPDATED");

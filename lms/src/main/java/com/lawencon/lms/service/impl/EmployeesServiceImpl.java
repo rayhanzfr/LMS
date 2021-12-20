@@ -1,5 +1,6 @@
 package com.lawencon.lms.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 		try {
 			Users user = usersService.findByEmail(employees.getUsers().getUsersEmail());
 			employees.setUsers(user);
-			Companies company = companiesService.findById(employees.getCompanies().getId());
+			Companies company = companiesService.findByCode(employees.getCompanies().getCompaniesCode());
 			employees.setCompanies(company);
 			employees.setCreatedBy(getIdAuth());
 			begin();
@@ -73,11 +74,15 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 			Companies companies = companiesService.findByCode(employees.getCompanies().getCompaniesCode());
 			employees.setCompanies(companies);
 			
-			Employees employee = employeesDao.findByCode(employees.getEmployeesCode());
-			employees.setCreatedBy(getIdAuth());
+			Employees employee = employeesDao.findById(employees.getId());
+			employee.setEmployeesFullname(employees.getEmployeesFullname());
+			employee.setEmployeesAddress(employees.getEmployeesAddress());
+			employee.setUpdatedAt(LocalDateTime.now());
+			employee.setUpdatedBy(getIdAuth());
+			employee.setVersion(employee.getVersion());
 			
 			begin();
-			employees = employeesDao.saveOrUpdate(employees);
+			employees = employeesDao.saveOrUpdate(employee);
 			commit();
 			
 			resDto.setVersion(employees.getVersion());

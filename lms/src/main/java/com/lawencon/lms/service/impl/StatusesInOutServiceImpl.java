@@ -1,5 +1,6 @@
 package com.lawencon.lms.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,11 +56,13 @@ public class StatusesInOutServiceImpl extends BaseServiceLmsImpl implements Stat
 		UpdateStatusesInOutResDto resDto = new UpdateStatusesInOutResDto();
 		try {
 			StatusesInOut statusesInAndOut = statusesInOutDao.findByCode(statusesInOut.getStatusesInOutCode());
-			statusesInOut.setCreatedBy(statusesInAndOut.getCreatedBy());
-			statusesInOut.setCreatedAt(statusesInAndOut.getCreatedAt());
+			statusesInAndOut.setUpdatedAt(LocalDateTime.now());
+			statusesInAndOut.setUpdatedBy(getIdAuth());
+			statusesInAndOut.setStatusesInOutName(statusesInOut.getStatusesInOutName());
+			statusesInAndOut.setVersion(statusesInAndOut.getVersion());
 			
 			begin();
-			statusesInOut = statusesInOutDao.saveOrUpdate(statusesInOut);
+			statusesInOut = statusesInOutDao.saveOrUpdate(statusesInAndOut);
 			commit();
 			resDto.setVersion(statusesInAndOut.getVersion());
 			resDto.setMessage("UPDATED");
