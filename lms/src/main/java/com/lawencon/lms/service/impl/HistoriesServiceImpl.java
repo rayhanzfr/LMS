@@ -78,17 +78,17 @@ public class HistoriesServiceImpl extends BaseServiceLmsImpl implements Historie
 				Users users = new Users();
 				try {
 					users = usersDao.findById(i.getUsers().getId());
+					historiesReportResDto.setUsersEmail(users.getUsersEmail());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				Employees employees = new Employees();
 				try {
-					employees = employeesDao.findById(users.getId());
+					employees = employeesDao.findByUserId(users.getId());
+					historiesReportResDto.setEmployeesCode(employees.getEmployeesCode());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				historiesReportResDto.setUsersEmail(users.getUsersEmail());
-				historiesReportResDto.setEmployeesCode(employees.getId());
 				historiesReportResDto.setActivityName(i.getActivityName());
 				listHistoriesReportResDto.add(historiesReportResDto);
 			});
