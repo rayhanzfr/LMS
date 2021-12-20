@@ -1,11 +1,13 @@
 package com.lawencon.lms.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.lms.dao.StatusesAssetsDao;
+import com.lawencon.lms.dao.UsersDao;
 import com.lawencon.lms.dto.statusesassets.SaveStatusesAssetsResDto;
 import com.lawencon.lms.dto.statusesassets.UpdateStatusesAssetsResDto;
 import com.lawencon.lms.model.StatusesAssets;
@@ -17,7 +19,7 @@ import com.lawencon.lms.service.UsersService;
 public class StatusesAssetsServiceImpl extends BaseServiceLmsImpl implements StatusesAssetsService {
 
 	@Autowired
-	private UsersService usersService;
+	private UsersDao usersDao;
 
 	@Autowired
 	private StatusesAssetsDao statusesAssetsDao;
@@ -43,13 +45,14 @@ public class StatusesAssetsServiceImpl extends BaseServiceLmsImpl implements Sta
 
 		try {
 
-			Users users = usersService.findById(statusesAssets.getCreatedBy());
+			
+			Users users = usersDao.findById("80d0a70b-feee-4292-870b-ccec44bb064d");
 			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
 				throw new IllegalAccessException("only superAdmin can Insert data!");
 			}
 
 			begin();
-			statusesAssets.setStatusesAssetsCode(null);
+			statusesAssets.setCreatedBy(getIdAuth());
 			statusesAssets = statusesAssetsDao.saveOrUpdate(statusesAssets);
 			commit();
 
@@ -68,16 +71,18 @@ public class StatusesAssetsServiceImpl extends BaseServiceLmsImpl implements Sta
 
 		try {
 			StatusesAssets statusesAssetsDb = findById(statusesAssets.getId());
-			statusesAssets.setCreatedAt(statusesAssetsDb.getCreatedAt());
-			statusesAssets.setCreatedBy(statusesAssetsDb.getCreatedBy());
+			statusesAssetsDb.setUpdatedAt(LocalDateTime.now());
+			statusesAssetsDb.setUpdatedBy(getIdAuth());
+			statusesAssetsDb.setStatusesAssetsName(statusesAssets.getStatusesAssetsName());
 
-			Users users = usersService.findById(statusesAssets.getUpdatedBy());
+			Users users = new Users();
+			users = usersDao.findById(getIdAuth());
 			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
 				throw new IllegalAccessException("only superAdmin can Update data!");
 			}
 			
 			begin();
-			statusesAssets = statusesAssetsDao.saveOrUpdate(statusesAssets);
+			statusesAssets = statusesAssetsDao.saveOrUpdate(statusesAssetsDb);
 			commit();
 
 			updateRes.setVersion(statusesAssets.getVersion());

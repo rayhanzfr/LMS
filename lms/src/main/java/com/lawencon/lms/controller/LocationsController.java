@@ -41,7 +41,7 @@ public class LocationsController {
 	}
 
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Locations.class)))})
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id") String id) throws Exception {
 		Locations result = new Locations();
 		result = locationsService.findById(id);
@@ -49,7 +49,7 @@ public class LocationsController {
 	}
 
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Locations.class)))})
-	@GetMapping("/code/{code}")
+	@GetMapping("/code")
 	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) throws Exception {
 		Locations result = new Locations();
 		result = locationsService.findByCode(code);

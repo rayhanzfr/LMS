@@ -97,6 +97,7 @@ CREATE TABLE files(
 	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
 	file bytea NOT NULL,
 	extensions varchar(5) NOT NULL,
+	"version" integer NOT NULL,
 	created_by text NOT NULL,
 	created_at timestamp WITHOUT time ZONE NOT null,
 	updated_by text,
