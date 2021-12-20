@@ -38,7 +38,7 @@ public class TransactionsInController {
 	}
 
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetByTransactionsInIdResDto.class)))})
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id") String id) throws Exception {
 		GetByTransactionsInIdResDto result = new GetByTransactionsInIdResDto();
 		result = transactionsInService.findById(id);
@@ -46,7 +46,7 @@ public class TransactionsInController {
 	}
 
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetByTransactionsInCodeResDto.class)))})
-	@GetMapping("/code/{code}")
+	@GetMapping("/code")
 	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) throws Exception {
 		GetByTransactionsInCodeResDto result = new GetByTransactionsInCodeResDto();
 		result = transactionsInService.findByCode(code);

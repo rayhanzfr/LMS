@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.RolesDao;
 import com.lawencon.lms.dto.roles.SaveRolesResDto;
@@ -24,6 +23,7 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 		SaveRolesResDto saveRolesResDto = new SaveRolesResDto();
 		try {
 			begin();
+			roles.setCreatedBy(getIdAuth());
 			roles.setRolesCode(generateCode());
 			roles = rolesDao.saveOrUpdate(roles);
 			commit();
@@ -40,9 +40,10 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 	public UpdateRolesResDto update(Roles roles) throws Exception {
 		UpdateRolesResDto updateRolesResDto = new UpdateRolesResDto();
 		try {
-			Roles rolesDb = findByCode(roles.getRolesCode());	
+			Roles rolesDb = findByCode(roles.getRolesCode());
 			roles.setCreatedAt(rolesDb.getCreatedAt());
 			roles.setCreatedBy(rolesDb.getCreatedBy());
+			roles.setUpdatedBy(getIdAuth());
 
 			begin();
 			roles = rolesDao.saveOrUpdate(roles);
@@ -85,10 +86,10 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 			throw new Exception(e);
 		}
 	}
-	
-	public String generateCode()throws Exception{
-		Integer increment = rolesDao.countData();
-		String code= EnumCode.ROLES.getCode()+increment;
+
+	public String generateCode() throws Exception {
+		Integer increment = rolesDao.countData() + 1;
+		String code = EnumCode.ROLES.getCode() + increment;
 		return code;
 	}
 }

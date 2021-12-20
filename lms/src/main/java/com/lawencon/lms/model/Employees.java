@@ -14,7 +14,7 @@ import com.lawencon.base.BaseEntity;
 public class Employees extends BaseEntity{
 
 	@OneToOne
-	@JoinColumn(nullable=false)
+	@JoinColumn(nullable=false,name ="users_id")
 	private Users users;
 	
 	@ManyToOne

@@ -5,16 +5,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.InvoicesDao;
 import com.lawencon.lms.dto.invoices.SaveInvoicesResDto;
 import com.lawencon.lms.dto.invoices.UpdateInvoicesResDto;
 import com.lawencon.lms.model.Invoices;
+import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.InvoicesService;
+import com.lawencon.lms.service.UsersService;
 
 @Service
 public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesService {
+
+	@Autowired
+	private UsersService usersService;
 
 	@Autowired
 	private InvoicesDao invoicesDao;
@@ -39,6 +43,12 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 		SaveInvoicesResDto saveRes = new SaveInvoicesResDto();
 
 		try {
+
+			Users users = usersService.findById(invoices.getCreatedBy());
+			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+				throw new IllegalAccessException("only superAdmin can Insert data!");
+			}
+
 			begin();
 			invoices.setInvoicesCode(generateCode());
 			invoices = invoicesDao.saveOrUpdate(invoices);
@@ -62,6 +72,11 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 			invoices.setCreatedAt(invoicesDb.getCreatedAt());
 			invoices.setCreatedBy(invoicesDb.getCreatedBy());
 
+			Users users = usersService.findById(invoices.getUpdatedBy());
+			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+				throw new IllegalAccessException("only superAdmin can Update data!");
+			}
+
 			begin();
 			invoices = invoicesDao.saveOrUpdate(invoices);
 			commit();
@@ -79,7 +94,7 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 	public Boolean removeById(String id) throws Exception {
 		return invoicesDao.removeById(id);
 	}
-	
+
 	public String generateCode() throws Exception {
 		String generatedCode = invoicesDao.countData() + EnumCode.INVOICES.getCode();
 		return generatedCode;
