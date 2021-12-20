@@ -5,19 +5,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.LocationsDao;
 import com.lawencon.lms.dto.locations.SaveLocationsResDto;
 import com.lawencon.lms.dto.locations.UpdateLocationsResDto;
 import com.lawencon.lms.model.Companies;
 import com.lawencon.lms.model.Locations;
+import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.CompaniesService;
 import com.lawencon.lms.service.LocationsService;
+import com.lawencon.lms.service.UsersService;
 
 @Service
 public class LocationsServiceImpl extends BaseServiceLmsImpl implements LocationsService {
 
+	@Autowired
+	private UsersService usersService;
+	
 	@Autowired
 	private LocationsDao locationsDao;
 
@@ -47,6 +51,11 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 			Companies companies = companiesService.findByCode(locations.getCompanies().getCompaniesCode());
 			locations.setCompanies(companies);
 
+			Users users = usersService.findById(locations.getCreatedBy());
+			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+				throw new IllegalAccessException("only superAdmin can Insert data!");
+			}
+			
 			begin();
 			locations.setLocationsCode(generateCode());
 			locations = locationsDao.saveOrUpdate(locations);
@@ -73,6 +82,11 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 			locations.setCreatedAt(locationsDb.getCreatedAt());
 			locations.setCreatedBy(locationsDb.getCreatedBy());
 
+			Users users = usersService.findById(locations.getUpdatedBy());
+			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+				throw new IllegalAccessException("only superAdmin can Update data!");
+			}
+			
 			begin();
 			locations = locationsDao.saveOrUpdate(locations);
 			commit();
