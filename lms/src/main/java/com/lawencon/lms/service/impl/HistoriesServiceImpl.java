@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.AssetsDao;
 import com.lawencon.lms.dao.EmployeesDao;
 import com.lawencon.lms.dao.HistoriesDao;
@@ -24,13 +22,13 @@ public class HistoriesServiceImpl extends BaseServiceLmsImpl implements Historie
 
 	@Autowired
 	private HistoriesDao historiesDao;
-	
+
 	@Autowired
 	private AssetsDao assetsDao;
-	
+
 	@Autowired
 	private UsersDao usersDao;
-	
+
 	@Autowired
 	private EmployeesDao employeesDao;
 
@@ -66,35 +64,33 @@ public class HistoriesServiceImpl extends BaseServiceLmsImpl implements Historie
 	public List<HistoriesReportResDto> findHistoriesReport() throws Exception {
 		List<Histories> listHistories = historiesDao.findAll();
 		List<HistoriesReportResDto> listHistoriesReportResDto = new ArrayList<HistoriesReportResDto>();
-			listHistories.forEach(i->{
-				HistoriesReportResDto historiesReportResDto = new HistoriesReportResDto();
-				Assets assets = new Assets();
-				try {
-					assets = assetsDao.findById(i.getAssets().getId());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				historiesReportResDto.setAssetsName(assets.getAssetsName());
-				Users users = new Users();
-				try {
-					users = usersDao.findById(i.getUsers().getId());
-					historiesReportResDto.setUsersEmail(users.getUsersEmail());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				Employees employees = new Employees();
-				try {
-					employees = employeesDao.findByUserId(users.getId());
-					historiesReportResDto.setEmployeesCode(employees.getEmployeesCode());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				historiesReportResDto.setActivityName(i.getActivityName());
-				listHistoriesReportResDto.add(historiesReportResDto);
-			});
+		listHistories.forEach(i -> {
+			HistoriesReportResDto historiesReportResDto = new HistoriesReportResDto();
+			Assets assets = new Assets();
+			try {
+				assets = assetsDao.findById(i.getAssets().getId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			historiesReportResDto.setAssetsName(assets.getAssetsName());
+			Users users = new Users();
+			try {
+				users = usersDao.findById(i.getUsers().getId());
+				historiesReportResDto.setUsersEmail(users.getUsersEmail());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Employees employees = new Employees();
+			try {
+				employees = employeesDao.findByUserId(users.getId());
+				historiesReportResDto.setEmployeesCode(employees.getEmployeesCode());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			historiesReportResDto.setActivityName(i.getActivityName());
+			listHistoriesReportResDto.add(historiesReportResDto);
+		});
 		return listHistoriesReportResDto;
 	}
-	
-	
-	
+
 }

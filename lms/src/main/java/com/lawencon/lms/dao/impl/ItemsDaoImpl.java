@@ -15,7 +15,6 @@ import com.lawencon.lms.model.Files;
 import com.lawencon.lms.model.Items;
 import com.lawencon.lms.model.ItemsBrands;
 import com.lawencon.lms.model.ItemsTypes;
-import com.lawencon.lms.model.Permissions;
 
 @Repository
 public class ItemsDaoImpl extends BaseDaoImpl<Items> implements ItemsDao {

@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.StatusesTransactionsDao;
 import com.lawencon.lms.dto.statusestransactions.SaveStatusesTransactionsResDto;
 import com.lawencon.lms.dto.statusestransactions.UpdateStatusesTransactionsResDto;
@@ -39,7 +38,8 @@ public class StatusesTransactionsServiceImpl extends BaseServiceLmsImpl implemen
 	public UpdateStatusesTransactionsResDto update(StatusesTransactions statusesTransactions) throws Exception {
 		UpdateStatusesTransactionsResDto updateStatusesTransactionsResDto = new UpdateStatusesTransactionsResDto();
 		try {
-			StatusesTransactions statusesTransactionsDb = findByCode(statusesTransactions.getStatusesTransactionsCode());	
+			StatusesTransactions statusesTransactionsDb = findByCode(
+					statusesTransactions.getStatusesTransactionsCode());
 			statusesTransactions.setCreatedAt(statusesTransactionsDb.getCreatedAt());
 			statusesTransactions.setCreatedBy(statusesTransactionsDb.getCreatedBy());
 			statusesTransactions.setUpdatedBy(getIdAuth());

@@ -1,6 +1,5 @@
 package com.lawencon.lms.dao.impl;
 
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.StatusesTransactionsDao;
-import com.lawencon.lms.model.ItemsBrands;
 import com.lawencon.lms.model.StatusesAssets;
 import com.lawencon.lms.model.StatusesTransactions;
 
@@ -46,9 +44,9 @@ public class StatusesTransactionsDaoImpl extends BaseDaoImpl<StatusesTransaction
 				statusesTransactions.setCreatedBy(objArr[4].toString());
 				statusesTransactions.setCreatedAt(((Timestamp) objArr[5]).toLocalDateTime());
 				statusesTransactions.setIsActive((Boolean) objArr[6]);
-				statusesTransactions.setVersion((Integer)objArr[9]);
+				statusesTransactions.setVersion((Integer) objArr[9]);
 			}
-		}catch (NoResultException e) {
+		} catch (NoResultException e) {
 			e.printStackTrace();
 			throw new NoResultException("Not Found");
 		} catch (NonUniqueResultException e) {
@@ -60,17 +58,16 @@ public class StatusesTransactionsDaoImpl extends BaseDaoImpl<StatusesTransaction
 	@Override
 	public List<StatusesTransactions> findAll() throws Exception {
 		return getAll();
-    }
-
+	}
 
 	@Override
 	public StatusesTransactions saveOrUpdate(StatusesTransactions statusesTransactions) throws Exception {
 		return save(statusesTransactions);
 	}
-	
+
 	@Override
 	public Boolean removeById(String id) throws Exception {
 		return deleteById(id);
 	}
-	
+
 }
