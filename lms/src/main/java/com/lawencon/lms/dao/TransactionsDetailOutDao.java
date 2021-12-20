@@ -10,4 +10,6 @@ public interface TransactionsDetailOutDao {
 	List<TransactionsDetailOut> findByTransactionOutCode(String tansactionOutCode) throws Exception;
 	
 	TransactionsDetailOut saveOrUpdate(TransactionsDetailOut transactionsDetailOut) throws Exception;
+	
+	List<TransactionsDetailOut> findMoreThanExpiredDate() throws Exception;
 }

@@ -88,4 +88,10 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 		return save(transactionsDetailOut);
 	}
 
+	@Override
+	public List<TransactionsDetailOut> findMoreThanExpiredDate() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
