@@ -66,9 +66,10 @@ public class TransactionsOutDaoImpl extends BaseDaoImpl<TransactionsOut> impleme
 	
 	@Override
 	public Integer countData() throws Exception {
-		String sql = "SELECT COUNT(to.id) FROM TransactionsOut to ";
-		Object result = createQuery(sql,TransactionsOut.class).getSingleResult();
+		String sql = "SELECT COUNT(to.id) FROM transactions_out to ";
+		Object result = createNativeQuery(sql).getSingleResult();
 		BigInteger results = new BigInteger(result.toString());
-		return results.intValue();
+		Integer resultsInteger = results.intValue();
+		return resultsInteger;
 	}
 }

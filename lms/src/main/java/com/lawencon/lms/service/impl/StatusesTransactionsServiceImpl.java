@@ -22,6 +22,7 @@ public class StatusesTransactionsServiceImpl extends BaseServiceLmsImpl implemen
 	public SaveStatusesTransactionsResDto save(StatusesTransactions statusesTransactions) throws Exception {
 		SaveStatusesTransactionsResDto saveStatusesTransactionsResDto = new SaveStatusesTransactionsResDto();
 		try {
+			statusesTransactions.setCreatedBy(getIdAuth());
 			begin();
 			statusesTransactions = statusesTransactionsDao.saveOrUpdate(statusesTransactions);
 			commit();
@@ -41,6 +42,7 @@ public class StatusesTransactionsServiceImpl extends BaseServiceLmsImpl implemen
 			StatusesTransactions statusesTransactionsDb = findByCode(statusesTransactions.getStatusesTransactionsCode());	
 			statusesTransactions.setCreatedAt(statusesTransactionsDb.getCreatedAt());
 			statusesTransactions.setCreatedBy(statusesTransactionsDb.getCreatedBy());
+			statusesTransactions.setUpdatedBy(getIdAuth());
 
 			begin();
 			statusesTransactions = statusesTransactionsDao.saveOrUpdate(statusesTransactions);

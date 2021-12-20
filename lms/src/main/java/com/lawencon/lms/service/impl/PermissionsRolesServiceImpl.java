@@ -36,6 +36,7 @@ public class PermissionsRolesServiceImpl extends BaseServiceLmsImpl implements P
 			Roles roles = rolesService.findByCode(permissionsRoles.getRoles().getRolesCode());
 			permissionsRoles.setPermissions(permissions);
 			permissionsRoles.setRoles(roles);
+			permissionsRoles.setCreatedBy(getIdAuth());
 			begin();
 			permissionsRoles = permissionsRolesDao.saveOrUpdate(permissionsRoles);
 			commit();
@@ -59,6 +60,7 @@ public class PermissionsRolesServiceImpl extends BaseServiceLmsImpl implements P
 			PermissionsRoles permissionsRolesDb = findById(permissionsRoles.getId());
 			permissionsRoles.setCreatedAt(permissionsRolesDb.getCreatedAt());
 			permissionsRoles.setCreatedBy(permissionsRolesDb.getCreatedBy());
+			permissionsRoles.setUpdatedBy(getIdAuth());
 			begin();
 			permissionsRoles = permissionsRolesDao.saveOrUpdate(permissionsRoles);
 			commit();

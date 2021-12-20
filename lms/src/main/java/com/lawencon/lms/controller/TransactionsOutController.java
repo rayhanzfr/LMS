@@ -35,7 +35,7 @@ public class TransactionsOutController {
 	}
 
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = GetByTransactionsOutIdResDto.class)))
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?> findById(@RequestParam("id") String id) throws Exception {
 		GetByTransactionsOutIdResDto result = transactionsOutService.findById(id);
 		return new ResponseEntity<>(result, HttpStatus.OK);

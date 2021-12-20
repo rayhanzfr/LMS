@@ -24,6 +24,7 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 		SaveRolesResDto saveRolesResDto = new SaveRolesResDto();
 		try {
 			begin();
+			roles.setCreatedBy(getIdAuth());
 			roles.setRolesCode(generateCode());
 			roles = rolesDao.saveOrUpdate(roles);
 			commit();
@@ -43,6 +44,7 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 			Roles rolesDb = findByCode(roles.getRolesCode());	
 			roles.setCreatedAt(rolesDb.getCreatedAt());
 			roles.setCreatedBy(rolesDb.getCreatedBy());
+			roles.setUpdatedBy(getIdAuth());
 
 			begin();
 			roles = rolesDao.saveOrUpdate(roles);
@@ -87,7 +89,7 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 	}
 	
 	public String generateCode()throws Exception{
-		Integer increment = rolesDao.countData();
+		Integer increment = rolesDao.countData()+1;
 		String code= EnumCode.ROLES.getCode()+increment;
 		return code;
 	}

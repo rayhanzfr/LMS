@@ -46,7 +46,7 @@ public class ItemsController {
 	}
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Items.class)))
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?> getById(@RequestParam("id") String id)throws Exception {
 		Items result = new Items();
 		result = itemsService.findById(id);
@@ -54,7 +54,7 @@ public class ItemsController {
 	}
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Items.class)))
-	@GetMapping("/code/{code}")
+	@GetMapping("/code")
 	public ResponseEntity<?> getByCode(@RequestParam("code") String code)throws Exception {
 		Items result = new Items();
 		result = itemsService.findByCode(code);

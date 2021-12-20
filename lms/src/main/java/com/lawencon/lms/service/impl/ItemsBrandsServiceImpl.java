@@ -25,6 +25,7 @@ public class ItemsBrandsServiceImpl extends BaseServiceLmsImpl implements ItemsB
 		try {
 			begin();
 			itemsBrands.setItemsBrandsCode(generateCode());
+			itemsBrands.setCreatedBy(getIdAuth());
 			itemsBrands = itemsBrandsDao.saveOrUpdate(itemsBrands);
 			commit();
 			saveItemsBrandsResDto.setId(itemsBrands.getId());
@@ -43,7 +44,7 @@ public class ItemsBrandsServiceImpl extends BaseServiceLmsImpl implements ItemsB
 			ItemsBrands itemsBrandsDb = findByCode(itemsBrands.getItemsBrandsCode());	
 			itemsBrands.setCreatedAt(itemsBrandsDb.getCreatedAt());
 			itemsBrands.setCreatedBy(itemsBrandsDb.getCreatedBy());
-
+			itemsBrands.setUpdatedBy(getIdAuth());
 			begin();
 			itemsBrands = itemsBrandsDao.saveOrUpdate(itemsBrands);
 			commit();
@@ -86,7 +87,7 @@ public class ItemsBrandsServiceImpl extends BaseServiceLmsImpl implements ItemsB
 		}
 	}
 	public String generateCode()throws Exception{
-		Integer increment = itemsBrandsDao.countData();
+		Integer increment = itemsBrandsDao.countData()+1;
 		String code= EnumCode.ITEMBRANDS.getCode()+increment;
 		return code;
 	}
