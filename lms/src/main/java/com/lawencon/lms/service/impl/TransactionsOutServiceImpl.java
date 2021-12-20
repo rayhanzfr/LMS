@@ -8,11 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
+import com.lawencon.lms.constant.StatusesAssetsCode;
+import com.lawencon.lms.constant.StatusesInOutCode;
 import com.lawencon.lms.dao.AssetsDao;
 import com.lawencon.lms.dao.EmployeesDao;
+import com.lawencon.lms.dao.HistoriesDao;
 import com.lawencon.lms.dao.LocationsDao;
+import com.lawencon.lms.dao.StatusesAssetsDao;
+import com.lawencon.lms.dao.StatusesInOutDao;
 import com.lawencon.lms.dao.TransactionsDetailOutDao;
 import com.lawencon.lms.dao.TransactionsOutDao;
+import com.lawencon.lms.dao.UsersDao;
 import com.lawencon.lms.dto.transactionsout.GetAllTransactionsOutResDto;
 import com.lawencon.lms.dto.transactionsout.GetByTransactionsOutCodeResDto;
 import com.lawencon.lms.dto.transactionsout.GetByTransactionsOutIdResDto;
@@ -25,14 +31,24 @@ import com.lawencon.lms.dto.transactionsout.SaveTransactionsOutReqDto;
 import com.lawencon.lms.dto.transactionsout.SaveTransactionsOutResDto;
 import com.lawencon.lms.model.Assets;
 import com.lawencon.lms.model.Employees;
+import com.lawencon.lms.model.Histories;
 import com.lawencon.lms.model.Locations;
+import com.lawencon.lms.model.StatusesAssets;
+import com.lawencon.lms.model.StatusesInOut;
 import com.lawencon.lms.model.TransactionsDetailOut;
 import com.lawencon.lms.model.TransactionsOut;
+import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.TransactionsOutService;
 
 @Service
 public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements TransactionsOutService {
 
+	@Autowired
+	private UsersDao usersDao;
+	
+	@Autowired
+	private HistoriesDao historiesDao;
+	
 	@Autowired
 	private TransactionsOutDao transactionsOutDao;
 	
@@ -46,6 +62,12 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 	private AssetsDao assetsDao;
 	
 	@Autowired
+	private StatusesInOutDao statusesInOutDao;
+	
+	@Autowired
+	private StatusesAssetsDao statusesAssetsDao;
+	
+	@Autowired
 	private TransactionsDetailOutDao transactionsDetailOutDao;
 
 	@Override
@@ -56,7 +78,6 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 		SaveTransactionsOutReqDto saveTransactionsOutReqDto = saveFullTransactionsOutReqDto.getSaveTransactionsOutReqDto();
 		List<SaveTransactionsDetailsOutReqDto> listSaveTransactionsDetailsOutReqDto = saveFullTransactionsOutReqDto.getListSaveTransactionsDetailsOutReqDto();
 		List<SaveTransactionsDetailsOutResDto> detailsRes = new ArrayList<>();
-		
 		TransactionsOut transactionsOut = new TransactionsOut();
 		try {
 			begin();
@@ -79,6 +100,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 						}
 					}
 					if(i.getLocationsCode()==null && i.getEmployeesCode()!=null && i.getAssetsName()==null) {					
+
 						Employees employees;
 						try {
 							employees = employeesDao.findByCode(i.getEmployeesCode());
@@ -99,15 +121,43 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 						}
 					}
 				transactionsDetailOut.setTransactionDetailOutExpired(LocalDate.parse(i.getExpiredDate()));
-				transactionsDetailOut.setCreatedBy(i.getCreatedBy());
+				try {
+					transactionsDetailOut.setCreatedBy(getIdAuth());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				transactionsDetailOut.setIsActive(true);
 				try {
 					transactionsDetailOut = transactionsDetailOutDao.saveOrUpdate(transactionsDetailOut);
+					StatusesInOut statusesInOut = new StatusesInOut();
+					statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKOUT.getCode());
+					StatusesAssets statusesAssets = new StatusesAssets();
+					statusesAssets = statusesAssetsDao.findByCode(StatusesAssetsCode.UNDEPLOYABLE.getCode());
+					Assets assetsUpdate = transactionsDetailOut.getAssets();
+					assetsUpdate.setStatusesInOut(statusesInOut);
+					assetsUpdate.setStatusesAssets(statusesAssets);
+					transactionsDetailOut.setAssets(assetsDao.saveOrUpdate(assetsUpdate));
 					detail.setId(transactionsDetailOut.getId());
 					detailsRes.add(detail);
 				} catch (Exception e) {
 					e.printStackTrace();
 					rollback();
+				}
+				Histories histories = new Histories();
+				Users users = new Users();
+				try {
+					users = usersDao.findById(getIdAuth());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				histories.setAssets(transactionsDetailOut.getAssets());
+				histories.setUsers(users);
+				histories.setActivityName(StatusesInOutCode.CHECKIN.getCode());
+				try {
+					histories = historiesDao.saveOrUpdate(histories);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			});
 			commit();

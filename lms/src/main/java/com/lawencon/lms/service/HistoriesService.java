@@ -2,6 +2,7 @@ package com.lawencon.lms.service;
 
 import java.util.List;
 
+import com.lawencon.lms.dto.histories.HistoriesReportResDto;
 import com.lawencon.lms.model.Histories;
 
 public interface HistoriesService {
@@ -12,4 +13,6 @@ public interface HistoriesService {
 	Histories save(Histories files) throws Exception;
 	
 	List<Histories> findByUsersId(String usersId) throws Exception;
+	
+	List<HistoriesReportResDto> findHistoriesReport() throws Exception;
 }
