@@ -227,16 +227,16 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		StatusesAssets statusesAssets = statusesAssetsDao.findByCode(updateAssetsReqDto.getStatusesAssetsCode());
 		StatusesInOut statusesInOut = statusesInOutDao.findByCode(updateAssetsReqDto.getStatusesInOutCode());
 		
-		Assets save = new Assets();
+		Assets save = assetsDao.findById(updateAssetsReqDto.getId());
 		save.setItems(item);
 		save.setInvoices(invoice);
 		save.setAssetsName(updateAssetsReqDto.getAssetsName());
 		save.setStatusesAssets(statusesAssets);
 		save.setStatusesInOut(statusesInOut);
 		save.setAssetsExpired(LocalDate.parse(updateAssetsReqDto.getAssetsExpired()));
-		save.setUpdatedBy(updateAssetsReqDto.getUpdatedBy());
+		save.setUpdatedBy(getIdAuth());
 		save.setIsActive(updateAssetsReqDto.getIsActive());
-		save.setVersion(updateAssetsReqDto.getVersion());
+		save.setVersion(save.getVersion());
 		begin();
 		Assets result = assetsDao.saveOrUpdate(save);
 		commit();
@@ -256,11 +256,11 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	public UpdateAssetsResDto updateStatusAssets(UpdateAssetsReqDto updateAssetsReqDto) throws Exception {
 		StatusesAssets statusesAssets = statusesAssetsDao.findByCode(updateAssetsReqDto.getStatusesAssetsCode());
 		
-		Assets save = new Assets();
+		Assets save = assetsDao.findById(updateAssetsReqDto.getId());
 		save.setStatusesAssets(statusesAssets);
-		save.setUpdatedBy(updateAssetsReqDto.getUpdatedBy());
+		save.setUpdatedBy(getIdAuth());
 		save.setIsActive(updateAssetsReqDto.getIsActive());
-		save.setVersion(updateAssetsReqDto.getVersion());
+		save.setVersion(save.getVersion());
 		begin();
 		Assets result = assetsDao.saveOrUpdate(save);
 		commit();
@@ -282,9 +282,9 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		
 		Assets save = new Assets();
 		save.setStatusesInOut(statusesInOut);
-		save.setUpdatedBy(updateAssetsReqDto.getUpdatedBy());
+		save.setUpdatedBy(getIdAuth());
 		save.setIsActive(updateAssetsReqDto.getIsActive());
-		save.setVersion(updateAssetsReqDto.getVersion());
+		save.setVersion(save.getVersion());
 		begin();
 		Assets result = assetsDao.saveOrUpdate(save);
 		commit();

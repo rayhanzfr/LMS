@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.parsing.Location;
 import org.springframework.stereotype.Repository;
 
 import com.lawencon.base.BaseDaoImpl;
@@ -90,8 +91,48 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 
 	@Override
 	public List<TransactionsDetailOut> findMoreThanExpiredDate() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT tdo.id tro.transactions_out_code,a.assets_name, l.locations_deploy, e.employees_fullname, tdo.transaction_detail_out_expired  ");
+		sql.append(" FROM transactions_detail_out tdo ");
+		sql.append(" INNER JOIN transactions_out tro ON tro.id = tdo.transactions_out_id ");
+		sql.append(" INNER JOIN locations l ON l.id = tdo.locations_id  ");
+		sql.append(" INNER JOIN employees e ON e.id =tdo.employees_id  ");
+		sql.append(" INNER JOIN assets a ON a.id = tdo.assets_id ");
+		sql.append(" WHERE tdo.transaction_detail_out_expired IS NOT NULL AND tdo.transaction_detail_out_expired <= DATE(NOW()) ");
+		
+		List<?>result = createNativeQuery(sql.toString())
+				.getResultList();
+		List<TransactionsDetailOut>listTO = new ArrayList<TransactionsDetailOut>();
+		result.forEach(rs->{
+			Object[] obj = (Object[])rs;
+			
+			TransactionsDetailOut TDO = new TransactionsDetailOut();
+			TDO.setId(obj[0].toString());
+			
+			TransactionsOut transOut = new TransactionsOut();
+			transOut.setTransactionsOutCode(obj[1].toString());
+			
+			Assets assets = new Assets();
+			assets.setAssetsName(obj[2].toString());
+			
+			Locations location = new Locations();
+			location.setLocationsDeploy(obj[3].toString());
+			
+			Employees employe = new Employees();
+			employe.setEmployeesFullname(obj[4].toString());
+			
+			TDO.setTransactionsOut(transOut);
+			TDO.setAssets(assets);
+			TDO.setLocations(location);
+			TDO.setEmployees(employe);
+			if(obj[5]!=null) {
+				TDO.setTransactionDetailOutExpired(Timestamp.valueOf(obj[5].toString()).toLocalDateTime().toLocalDate());
+			}
+			
+			listTO.add(TDO);
+		});
+		
+		return listTO;
 	}
 
 }

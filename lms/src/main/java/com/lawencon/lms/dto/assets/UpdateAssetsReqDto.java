@@ -2,6 +2,7 @@ package com.lawencon.lms.dto.assets;
 
 public class UpdateAssetsReqDto {
 	
+	private String id;
 	private String itemsCode;
 	private String invoicesCode;
 	private String assetsName;
@@ -12,6 +13,13 @@ public class UpdateAssetsReqDto {
 	private boolean isActive;
 	private Integer version;
 	
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getItemsCode() {
 		return itemsCode;
 	}

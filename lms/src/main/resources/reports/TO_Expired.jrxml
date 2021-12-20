@@ -3,24 +3,6 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TO_Expired" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1447ef52-b14f-44d2-bd11-bc62b1418b9b">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
-	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
-		<box>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
-		<box>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
 	<subDataset name="tdo" uuid="bd10dc85-1491-4da6-88a7-4e5d20492e9b">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
@@ -68,158 +50,123 @@ INNER JOIN employees e ON e.id =tdo.employees_id
 INNER JOIN assets a ON a.id = tdo.assets_id 
 WHERE tdo.transaction_detail_out_expired < DATE(NOW())]]>
 	</queryString>
-	<field name="transactions_out_code" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="transactions_out_code"/>
-		<property name="com.jaspersoft.studio.field.label" value="transactions_out_code"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="transactions_out"/>
-	</field>
-	<field name="assets_name" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="assets_name"/>
-		<property name="com.jaspersoft.studio.field.label" value="assets_name"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="assets"/>
-	</field>
-	<field name="locations_deploy" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="locations_deploy"/>
-		<property name="com.jaspersoft.studio.field.label" value="locations_deploy"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="locations"/>
-	</field>
-	<field name="employees_fullname" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="employees_fullname"/>
-		<property name="com.jaspersoft.studio.field.label" value="employees_fullname"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="employees"/>
-	</field>
-	<field name="transaction_detail_out_expired" class="java.sql.Date">
-		<property name="com.jaspersoft.studio.field.name" value="transaction_detail_out_expired"/>
-		<property name="com.jaspersoft.studio.field.label" value="transaction_detail_out_expired"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="transactions_detail_out"/>
-	</field>
+	<field name="assetsName" class="java.lang.String"/>
+	<field name="transactionsOutCode" class="java.lang.String"/>
+	<field name="employeesFullname" class="java.lang.String"/>
+	<field name="locationsDeploy" class="java.lang.String"/>
+	<field name="transactionsDetailOutExpired" class="java.time.LocalDate"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="103" splitType="Stretch">
+			<staticText>
+				<reportElement x="130" y="19" width="300" height="25" forecolor="#FA840D" uuid="99c3a1c0-e9bc-4ce9-bc3d-6f64f416cb5c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PT. Lawencon International]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="131" y="40" width="300" height="27" forecolor="#1B82CD" uuid="e52e1843-0f07-4cf4-a634-891eb3900b96">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI" size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lawencon Management System]]></text>
+			</staticText>
+			<image>
+				<reportElement x="10" y="20" width="100" height="33" uuid="b6647009-d944-49a6-bf01-442448b494d3"/>
+				<imageExpression><![CDATA["src/main/resources/reports/logoLMS.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="2" y="80" width="550" height="1" uuid="ddce8be1-2571-432f-a07b-395882d57bf6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+		</band>
 	</title>
 	<pageHeader>
 		<band height="35" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch"/>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="28" height="30" uuid="dc50761b-4e72-4c0a-a34f-b735080db4bc"/>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="0" width="111" height="30" uuid="62eaf1fa-729b-4fab-bf41-e6e3064d53ba">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12ee288b-11e0-4d8d-8242-5047ec71d377"/>
+				</reportElement>
+				<text><![CDATA[assetsName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="0" width="82" height="30" uuid="c1d6d624-4bf6-407c-8c38-dd8218ff6485">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9ab554b3-2507-40f0-8468-051022be7a23"/>
+				</reportElement>
+				<text><![CDATA[transactionsOutCode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="0" width="111" height="30" uuid="108a174b-28d4-4dbe-9a69-58a6e8e7b0a9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8b539511-bbbf-48fe-a48e-b797e63fb43f"/>
+				</reportElement>
+				<text><![CDATA[employeesFullname]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="333" y="0" width="111" height="30" uuid="dc524d9e-eac6-4f59-a4f3-ca92aa293a03">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fb879087-4ba3-41e2-ae08-76780565ca3e"/>
+				</reportElement>
+				<text><![CDATA[locationsDeploy]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="0" width="111" height="30" uuid="3ec842f1-3da9-4015-a344-fadf41f50fc7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dbadfb4b-a9f4-490c-8e18-d077a9599a48"/>
+				</reportElement>
+				<text><![CDATA[transactionsDetailOutExpired]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
-		<band height="220" splitType="Stretch">
-			<componentElement>
-				<reportElement x="4" y="1" width="545" height="200" uuid="12fed04a-99be-4e8e-aa9a-14d688bd4aec">
-					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
-					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
-					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
-					<property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="28" height="30" uuid="425b3762-8389-4b89-8e7a-7914a1f6ae9b"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="0" width="111" height="30" uuid="54e0638f-6ffc-47ee-884d-ab49a3d69597">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12ee288b-11e0-4d8d-8242-5047ec71d377"/>
 				</reportElement>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
-					<datasetRun subDataset="tdo" uuid="47b0a177-a86e-42dd-bc5d-256a0051febb">
-						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					</datasetRun>
-					<jr:column width="111" uuid="c9f382f1-a62c-400a-a249-9463fc375911">
-						<jr:columnHeader style="Table_CH" height="30">
-							<staticText>
-								<reportElement x="0" y="0" width="111" height="30" uuid="6820519e-b70d-42a0-8c57-16040e1b9625"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="12" isBold="true"/>
-								</textElement>
-								<text><![CDATA[Transaction Code]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="111" height="30" uuid="da4b4a6d-6099-4f19-99bb-05d7edf275c7"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{transactions_out_code}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="111" uuid="03f63d48-57b9-4b7f-a36d-c062754a6f00">
-						<jr:columnHeader style="Table_CH" height="30">
-							<staticText>
-								<reportElement x="0" y="0" width="111" height="30" uuid="44530909-4188-4a33-a560-ebc3fa7855ec"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font isBold="true"/>
-								</textElement>
-								<text><![CDATA[Assets Name]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="111" height="30" uuid="c790309d-0e6d-4373-b85b-9f3978ec28ff"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{assets_name}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="109" uuid="f538bf0f-bc01-4a4e-b062-d947aa5e66df">
-						<jr:columnHeader style="Table_CH" height="30">
-							<staticText>
-								<reportElement x="0" y="0" width="109" height="30" uuid="6fe54671-4b89-499b-bd6c-1908c5ae2eec"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font isBold="true"/>
-								</textElement>
-								<text><![CDATA[Locations Deploy]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="109" height="30" uuid="7bfecb2e-08bc-48d5-af13-635e8792b745"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{locations_deploy}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="107" uuid="6e005b16-7306-4700-97d5-939f5b34527c">
-						<jr:columnHeader style="Table_CH" height="30">
-							<staticText>
-								<reportElement x="0" y="0" width="107" height="30" uuid="3b865f3d-c2ca-4b2a-94c7-b90bd6d04037"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font isBold="true"/>
-								</textElement>
-								<text><![CDATA[Employee]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="107" height="30" uuid="ce8ff332-ef4e-43f6-a76f-4f54b01ddf1f"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{employees_fullname}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="107" uuid="7974e91c-5531-43ab-be4a-d42393b2bfb7">
-						<jr:columnHeader style="Table_CH" height="30">
-							<staticText>
-								<reportElement x="0" y="0" width="107" height="30" uuid="70aa5f20-d2f5-4b70-9c74-99648717a627"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font isBold="true"/>
-								</textElement>
-								<text><![CDATA[Date Expired]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="107" height="30" uuid="df8f52b2-ba13-4311-95d5-36b80626bc51"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{transaction_detail_out_expired}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-				</jr:table>
-			</componentElement>
+				<textFieldExpression><![CDATA[$F{assetsName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="28" y="0" width="82" height="30" uuid="d2bc5500-68ff-4eb4-afdf-e539480aa1d9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9ab554b3-2507-40f0-8468-051022be7a23"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{transactionsOutCode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="221" y="0" width="111" height="30" uuid="d30e8695-9269-460c-a569-8ea6d97a2135">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8b539511-bbbf-48fe-a48e-b797e63fb43f"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{employeesFullname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="333" y="0" width="111" height="30" uuid="3c644d1b-8fb5-45c7-aa70-6073576c5dc8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fb879087-4ba3-41e2-ae08-76780565ca3e"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{locationsDeploy}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="444" y="0" width="111" height="30" uuid="817dac67-792a-453d-a988-40d58a62e767">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dbadfb4b-a9f4-490c-8e18-d077a9599a48"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{transactionsDetailOutExpired}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>
