@@ -41,7 +41,7 @@ public class InvoicesController {
 	}
 
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Invoices.class)))})
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id") String id) throws Exception {
 		Invoices result = new Invoices();
 		result = invoicesService.findById(id);
@@ -49,7 +49,7 @@ public class InvoicesController {
 	}
 
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Invoices.class)))})
-	@GetMapping("/code/{code}")
+	@GetMapping("/code")
 	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) throws Exception {
 		Invoices result = new Invoices();
 		result = invoicesService.findByCode(code);

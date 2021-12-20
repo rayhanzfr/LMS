@@ -86,7 +86,7 @@ public class CompaniesDaoImpl extends BaseDaoImpl<Companies> implements Companie
 			throw new NoResultException("Not Found");
 		} catch (NonUniqueResultException e) {
 			e.printStackTrace();
-			throw new NoResultException("Found more than one");
+			throw new NonUniqueResultException("Found more than one");
 		}
 
 		return companies;
