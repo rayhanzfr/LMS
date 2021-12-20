@@ -30,6 +30,7 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 	private CompaniesService companiesService;
 	
 	
+	
 	@Override
 	public List<Employees> findAll() throws Exception {
 		return employeesDao.findAll();
@@ -46,6 +47,10 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 	public SaveEmployeesResDto save(Employees employees) throws Exception {
 		SaveEmployeesResDto resDto = new SaveEmployeesResDto();
 		try {
+			Users users = usersService.findById(getIdAuth());
+			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+				throw new IllegalAccessException("only superAdmin can Insert data!");
+			}
 			Users user = usersService.findByEmail(employees.getUsers().getUsersEmail());
 			employees.setUsers(user);
 			Companies company = companiesService.findByCode(employees.getCompanies().getCompaniesCode());
