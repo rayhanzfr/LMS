@@ -55,12 +55,19 @@ public class CompaniesDaoImpl extends BaseDaoImpl<Companies> implements Companie
 				Integer version = (Integer) objArr[6];
 				LocalDateTime createdAt = Timestamp.valueOf(objArr[7].toString()).toLocalDateTime();
 				String createdBy = objArr[8].toString();
-				LocalDateTime updatedAt = Timestamp.valueOf(objArr[9].toString()).toLocalDateTime();
-				String updatedBy = objArr[10].toString();
+
+				if (objArr[9] != null) {
+					LocalDateTime updatedAt = Timestamp.valueOf(objArr[9].toString()).toLocalDateTime();
+					String updatedBy = objArr[10].toString();
+					companies.setUpdatedAt(updatedAt);
+					companies.setUpdatedBy(updatedBy);
+				}
+
 				Boolean isActive = Boolean.parseBoolean(objArr[11].toString());
 
 				Files files = new Files();
-				files.setId(filesId);;
+				files.setId(filesId);
+				;
 
 				companies.setId(id);
 				companies.setCompaniesCode(companiesCode);
@@ -71,8 +78,6 @@ public class CompaniesDaoImpl extends BaseDaoImpl<Companies> implements Companie
 				companies.setVersion(version);
 				companies.setCreatedAt(createdAt);
 				companies.setCreatedBy(createdBy);
-				companies.setUpdatedAt(updatedAt);
-				companies.setUpdatedBy(updatedBy);
 				companies.setIsActive(isActive);
 
 			}
@@ -95,14 +100,14 @@ public class CompaniesDaoImpl extends BaseDaoImpl<Companies> implements Companie
 	@Override
 	public String countData() throws Exception {
 		String lastRegist = null;
-		
+
 		String sql = "SELECT COUNT(c) FROM Companies as c";
-	
+
 		Object resultQuery = createQuery(sql, Companies.class).getSingleResult();
 		lastRegist = resultQuery.toString();
 		return lastRegist;
 	}
-	
+
 	@Override
 	public Boolean removeById(String id) throws Exception {
 		return deleteById(id);
