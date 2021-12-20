@@ -36,7 +36,7 @@ public class ObjectConfig {
 		springLiquibase.setDataSource(dataSource);
 		springLiquibase.setChangeLog("/db/migration/script/init_data.sql");
 		return springLiquibase;
-//	}
+	}
 
 	@Bean
 	public BCryptPasswordEncoder passEncoder(){
