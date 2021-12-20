@@ -63,12 +63,20 @@ public class ExcelRequest {
 
 						//change cell type to string
 						CellType type = cell.getCellType();
-						if(type == CellType.STRING) {
-							data = cell.getStringCellValue();
-						}else if(type == CellType.NUMERIC) {
-							data = String.valueOf(cell.getNumericCellValue());
-						}else if(type == CellType.BOOLEAN) {
-							data = String.valueOf(cell.getBooleanCellValue());
+						if(cellInRow!=null) {
+							if(type == CellType.STRING) {
+								data = cell.getStringCellValue();
+							}else if(type == CellType.NUMERIC) {
+								data = String.valueOf(cell.getNumericCellValue());
+							}else if(type == CellType.BOOLEAN) {
+								data = String.valueOf(cell.getBooleanCellValue());
+							}
+							else if(type==CellType.BLANK) {
+								data = null;
+							}
+						}
+						else {
+							data = null;
 						}
 						
 						switch(cellIndex) {

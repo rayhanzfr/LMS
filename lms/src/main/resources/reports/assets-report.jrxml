@@ -13,111 +13,6 @@
 			<rightPen lineWidth="1.0" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
-		<box>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
-		<box>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<subDataset name="assets" uuid="7dbff665-231d-4802-a04e-ccf21d7e66ad">
-		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
-		<queryString language="SQL">
-			<![CDATA[select * from assets]]>
-		</queryString>
-		<field name="items_id" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.name" value="items_id"/>
-			<property name="com.jaspersoft.studio.field.label" value="items_id"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="assets"/>
-		</field>
-		<field name="invoices_id" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.name" value="invoices_id"/>
-			<property name="com.jaspersoft.studio.field.label" value="invoices_id"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="assets"/>
-		</field>
-		<field name="assets_name" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.name" value="assets_name"/>
-			<property name="com.jaspersoft.studio.field.label" value="assets_name"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="assets"/>
-		</field>
-		<field name="statuses_assets_id" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.name" value="statuses_assets_id"/>
-			<property name="com.jaspersoft.studio.field.label" value="statuses_assets_id"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="assets"/>
-		</field>
-		<field name="statuses_in_out_id" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.name" value="statuses_in_out_id"/>
-			<property name="com.jaspersoft.studio.field.label" value="statuses_in_out_id"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="assets"/>
-		</field>
-		<field name="assets_expired" class="java.sql.Date">
-			<property name="com.jaspersoft.studio.field.name" value="assets_expired"/>
-			<property name="com.jaspersoft.studio.field.label" value="assets_expired"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="assets"/>
-		</field>
-	</subDataset>
-	<subDataset name="expiredassets" uuid="ae5e8b3b-32cf-43c3-87f9-e914fb6a219e">
-		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
-		<queryString language="SQL">
-			<![CDATA[SELECT a.assets_name, i.items_name , ib.items_brands_name, it.items_types_name , sa.statuses_assets_name , sio.statuses_in_out_name , to_char(assets_expired,'dd-mm-yyyy') AS expired_asset
-FROM assets a 
-INNER JOIN items i ON i.id = a.items_id 
-INNER JOIN files f ON f.id = i.files_id
-INNER JOIN items_types it ON it.id = i.items_types_id 
-INNER JOIN items_brands ib ON ib.id = i.items_brands_id 
-INNER JOIN invoices invo ON invo.id = a.invoices_id 
-INNER JOIN statuses_assets sa ON sa.id = a.statuses_assets_id 
-INNER JOIN statuses_in_out sio ON sio.id = a.statuses_in_out_id 
-WHERE a.assets_expired <= DATE(NOW())]]>
-		</queryString>
-		<field name="assets_name" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.name" value="assets_name"/>
-			<property name="com.jaspersoft.studio.field.label" value="assets_name"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="assets"/>
-		</field>
-		<field name="items_name" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.name" value="items_name"/>
-			<property name="com.jaspersoft.studio.field.label" value="items_name"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="items"/>
-		</field>
-		<field name="items_brands_name" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.name" value="items_brands_name"/>
-			<property name="com.jaspersoft.studio.field.label" value="items_brands_name"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="items_brands"/>
-		</field>
-		<field name="items_types_name" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.name" value="items_types_name"/>
-			<property name="com.jaspersoft.studio.field.label" value="items_types_name"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="items_types"/>
-		</field>
-		<field name="statuses_assets_name" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.name" value="statuses_assets_name"/>
-			<property name="com.jaspersoft.studio.field.label" value="statuses_assets_name"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="statuses_assets"/>
-		</field>
-		<field name="statuses_in_out_name" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.name" value="statuses_in_out_name"/>
-			<property name="com.jaspersoft.studio.field.label" value="statuses_in_out_name"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="statuses_in_out"/>
-		</field>
-		<field name="expired_asset" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.name" value="expired_asset"/>
-			<property name="com.jaspersoft.studio.field.label" value="expired_asset"/>
-		</field>
-	</subDataset>
 	<queryString>
 		<![CDATA[SELECT a.assets_name, i.items_name , ib.items_brands_name, it.items_types_name , sa.statuses_assets_name , sio.statuses_in_out_name , to_char(assets_expired,'dd-mm-yyyy') AS expired_asset
 FROM assets a 
@@ -130,40 +25,13 @@ INNER JOIN statuses_assets sa ON sa.id = a.statuses_assets_id
 INNER JOIN statuses_in_out sio ON sio.id = a.statuses_in_out_id 
 WHERE a.assets_expired <= DATE(NOW())]]>
 	</queryString>
-	<field name="assets_name" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="assets_name"/>
-		<property name="com.jaspersoft.studio.field.label" value="assets_name"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="assets"/>
-	</field>
-	<field name="items_name" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="items_name"/>
-		<property name="com.jaspersoft.studio.field.label" value="items_name"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="items"/>
-	</field>
-	<field name="items_brands_name" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="items_brands_name"/>
-		<property name="com.jaspersoft.studio.field.label" value="items_brands_name"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="items_brands"/>
-	</field>
-	<field name="items_types_name" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="items_types_name"/>
-		<property name="com.jaspersoft.studio.field.label" value="items_types_name"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="items_types"/>
-	</field>
-	<field name="statuses_assets_name" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="statuses_assets_name"/>
-		<property name="com.jaspersoft.studio.field.label" value="statuses_assets_name"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="statuses_assets"/>
-	</field>
-	<field name="statuses_in_out_name" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="statuses_in_out_name"/>
-		<property name="com.jaspersoft.studio.field.label" value="statuses_in_out_name"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="statuses_in_out"/>
-	</field>
-	<field name="expired_asset" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="expired_asset"/>
-		<property name="com.jaspersoft.studio.field.label" value="expired_asset"/>
-	</field>
+	<field name="assetsName" class="java.lang.String"/>
+	<field name="itemsName" class="java.lang.String"/>
+	<field name="itemsTypesName" class="java.lang.String"/>
+	<field name="itemsBrandsName" class="java.lang.String"/>
+	<field name="statusesAssetsName" class="java.lang.String"/>
+	<field name="statusesInOutName" class="java.lang.String"/>
+	<field name="assetsExpired" class="java.time.LocalDate"/>
 	<title>
 		<band height="125" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -176,10 +44,6 @@ WHERE a.assets_expired <= DATE(NOW())]]>
 				</textElement>
 				<text><![CDATA[PT. Lawencon International]]></text>
 			</staticText>
-			<image>
-				<reportElement x="40" y="19" width="106" height="40" uuid="ca917c78-1d7a-4a1b-9e8f-5835574b0832"/>
-				<imageExpression><![CDATA["logoLMS 1.svg"]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement x="251" y="40" width="300" height="27" forecolor="#1B82CD" uuid="d572afdf-cb6e-451c-bdfc-90d2e85b5ea3">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -195,10 +59,14 @@ WHERE a.assets_expired <= DATE(NOW())]]>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 			</line>
+			<image>
+				<reportElement x="22" y="19" width="148" height="60" uuid="23cea3da-8879-455b-9143-d547bb3ee075"/>
+				<imageExpression><![CDATA["logoLMS 1.svg"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="159">
+		<band height="117">
 			<staticText>
 				<reportElement x="286" y="5" width="236" height="30" uuid="b4554098-0daf-468f-9716-883746a3f60f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -216,121 +84,95 @@ WHERE a.assets_expired <= DATE(NOW())]]>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="44"/>
+		<band height="30">
+			<staticText>
+				<reportElement x="0" y="0" width="118" height="30" uuid="4a6708fd-1c41-45e4-8fcb-734689dfe054">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f046dce6-ce49-4ea0-a49a-75949e4462b7"/>
+				</reportElement>
+				<text><![CDATA[assetsName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="118" y="0" width="114" height="30" uuid="e350a6de-95f9-4c4d-b3e1-9fffd80cb124">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b9fbffff-96dc-48b7-8de8-7a47d9ae38c6"/>
+				</reportElement>
+				<text><![CDATA[itemsName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="232" y="0" width="114" height="30" uuid="f1da0ed7-14c5-47d2-bc5f-0a713e923b50">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bcdd3f4d-88ea-4d39-a614-c01e7611a611"/>
+				</reportElement>
+				<text><![CDATA[itemsTypesName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="346" y="0" width="114" height="30" uuid="8f87ba15-33e3-4276-a346-fad7008b80f4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5d210277-b484-45eb-afa9-5449e18aa5ef"/>
+				</reportElement>
+				<text><![CDATA[itemsBrandsName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="0" width="114" height="30" uuid="ed53e10d-6f17-4708-a4f3-ed9cea7a4ab5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="adc8a5b4-d537-4564-ba80-5d89aedcbd36"/>
+				</reportElement>
+				<text><![CDATA[statusesAssetsName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="574" y="0" width="114" height="30" uuid="0d26fc80-19c8-4210-bbef-cbdf3de94031">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3fe5106e-6d23-43e2-9558-c54c7e03d3a5"/>
+				</reportElement>
+				<text><![CDATA[statusesInOutName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="688" y="0" width="114" height="30" uuid="79b22e69-43cf-41d8-9893-e58552cb429c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5a5a0098-d32c-451d-8c19-41f616507fdd"/>
+				</reportElement>
+				<text><![CDATA[assetsExpired]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
-		<band height="256">
-			<componentElement>
-				<reportElement x="1" y="0" width="800" height="200" uuid="fc752bff-1a54-4d70-96f3-482eb65b0fcb">
-					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
-					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
-					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+		<band height="30">
+			<textField>
+				<reportElement x="0" y="0" width="118" height="30" uuid="e892c7a1-0663-4a5e-b05a-10247883061f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f046dce6-ce49-4ea0-a49a-75949e4462b7"/>
 				</reportElement>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="expiredassets" uuid="230847c3-d459-412a-9219-1398e16dc8b4">
-						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					</datasetRun>
-					<jr:column width="115" uuid="e1364810-918e-493d-8600-cc34802079fd">
-						<jr:columnHeader style="Table_CH" height="30">
-							<staticText>
-								<reportElement x="0" y="0" width="115" height="30" uuid="4234dac5-66a5-4c70-bde6-a01fb1f3223a"/>
-								<text><![CDATA[assets_name]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="115" height="30" uuid="b64eec9c-a89d-48a4-af21-4ac9c5d146ee"/>
-								<textFieldExpression><![CDATA[$F{assets_name}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="115" uuid="21ecc6f8-15ca-4470-89ca-5512b246d441">
-						<jr:columnHeader style="Table_CH" height="30">
-							<staticText>
-								<reportElement x="0" y="0" width="115" height="30" uuid="48ed8339-8930-4bd7-9833-845774aed865"/>
-								<text><![CDATA[items_name]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="115" height="30" uuid="23dd8533-3bb9-4263-9eb5-c644dcad2686"/>
-								<textFieldExpression><![CDATA[$F{items_name}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="114" uuid="310f4851-2abd-4d3d-9f94-a0d035ca6ff0">
-						<jr:columnHeader style="Table_CH" height="30">
-							<staticText>
-								<reportElement x="0" y="0" width="114" height="30" uuid="0a554210-aea5-4607-9f7f-aed4052b4205"/>
-								<text><![CDATA[items_brands_name]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="114" height="30" uuid="6b5ff67b-a1ac-4474-85b6-c2025f7b9153"/>
-								<textFieldExpression><![CDATA[$F{items_brands_name}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="114" uuid="e7feba20-8df4-48cf-8588-2323c0d930aa">
-						<jr:columnHeader style="Table_CH" height="30">
-							<staticText>
-								<reportElement x="0" y="0" width="114" height="30" uuid="228341db-951b-4835-98d1-49c25b20cdf1"/>
-								<text><![CDATA[items_types_name]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="114" height="30" uuid="98285432-261a-4f1d-85a1-724981368019"/>
-								<textFieldExpression><![CDATA[$F{items_types_name}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="114" uuid="d6207258-2deb-49bd-93ca-8d2704d94254">
-						<jr:columnHeader style="Table_CH" height="30">
-							<staticText>
-								<reportElement x="0" y="0" width="114" height="30" uuid="d712cdad-a4bc-4d75-92fd-f7524fbfd2dd"/>
-								<text><![CDATA[statuses_assets_name]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="114" height="30" uuid="9350fcf1-e31a-45d7-9155-892bd4f51281"/>
-								<textFieldExpression><![CDATA[$F{statuses_assets_name}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="114" uuid="8a1e90f8-3d8c-497b-aae3-bae2d6c7e1b1">
-						<jr:columnHeader style="Table_CH" height="30">
-							<staticText>
-								<reportElement x="0" y="0" width="114" height="30" uuid="a2a1e5ca-1507-4e5b-bea9-2b2e677fe78f"/>
-								<text><![CDATA[statuses_in_out_name]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="114" height="30" uuid="559ab76c-b17a-48e9-aca7-26c62fb38e60"/>
-								<textFieldExpression><![CDATA[$F{statuses_in_out_name}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="114" uuid="1669276f-8a47-48e8-ad3c-0dcba8a18dfc">
-						<jr:columnHeader style="Table_CH" height="30">
-							<staticText>
-								<reportElement x="0" y="0" width="114" height="30" uuid="c4d853c4-00bb-4ca3-a5ea-d171c444213d"/>
-								<text><![CDATA[expired_asset]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="114" height="30" uuid="538ea73b-f2c8-4f49-bc64-64765e55c011"/>
-								<textFieldExpression><![CDATA[$F{expired_asset}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-				</jr:table>
-			</componentElement>
+				<textFieldExpression><![CDATA[$F{assetsName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="0" width="114" height="30" uuid="93876e49-1cfb-4f6a-b722-773b738c3f41">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b9fbffff-96dc-48b7-8de8-7a47d9ae38c6"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{itemsName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="232" y="0" width="114" height="30" uuid="4a752384-0a65-4124-8bf0-50fffe7459c1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bcdd3f4d-88ea-4d39-a614-c01e7611a611"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{itemsTypesName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="346" y="0" width="114" height="30" uuid="08446481-1dd6-4d32-9b14-0f0dfe53be18">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5d210277-b484-45eb-afa9-5449e18aa5ef"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{itemsBrandsName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="0" width="114" height="30" uuid="46e0e920-b927-47ef-8920-e62f743bad9d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="adc8a5b4-d537-4564-ba80-5d89aedcbd36"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{statusesAssetsName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="574" y="0" width="114" height="30" uuid="f161b7e8-0dc1-403c-8870-81f46792e79b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3fe5106e-6d23-43e2-9558-c54c7e03d3a5"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{statusesInOutName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="688" y="0" width="114" height="30" uuid="3a59d64b-a303-47a6-9247-7dbd53cca663">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5a5a0098-d32c-451d-8c19-41f616507fdd"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{assetsExpired}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>
