@@ -33,7 +33,7 @@ public class TransactionsDetailInDaoImpl extends BaseDaoImpl<TransactionsDetailI
 	public List<TransactionsDetailIn> findByTransactionInCode(String code) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(
-				" SELECT tdin.id, tdin.transactions_in_code, tdin.locations_deploy, tdin.employees_fullname, tdin.assets_name, tdin.statuses_transactions_name, tdin.return_date, tdin.version, tdin.created_at, tdin.created_by ");
+				" SELECT tdin.id, tdin.transactions_in_code, tdin.locations_deploy, tdin.employees_fullname, tdin.assets_name, tdin.statuses_transactions_name, tdin.return_date, tdin.version, tdin.created_at, tdin.created_by, tdin.updated_at, tdin.updated_by, tdin.is_active ");
 		sql.append(" FROM transactions_detail_in as tdin");
 		sql.append(" INNER JOIN transactions_in as tin ON tin.id = tdin.transactions_in_id ");
 		sql.append(" INNER JOIN locations as l ON l.id = tin.locations_id ");
@@ -42,14 +42,13 @@ public class TransactionsDetailInDaoImpl extends BaseDaoImpl<TransactionsDetailI
 		sql.append(" INNER JOIN statuses_transactions as st ON st.id = tin.statuses_transactions_id ");
 		sql.append(" WHERE companies_code = :companies_code ");
 
-
 		List<?> resultQuery = createNativeQuery(sql.toString()).setParameter("companies_code", code).getResultList();
 
 		List<TransactionsDetailIn> resultDetail = new ArrayList<>();
 		resultQuery.forEach(rq -> {
 			TransactionsDetailIn transactionsDetailIn = new TransactionsDetailIn();
 			Object[] objArr = (Object[]) rq;
-			
+
 			String id = objArr[0].toString();
 			String transactionsInCode = objArr[1].toString();
 			String locationsDeploy = objArr[2].toString();
@@ -60,6 +59,13 @@ public class TransactionsDetailInDaoImpl extends BaseDaoImpl<TransactionsDetailI
 			Integer version = (Integer) objArr[7];
 			LocalDateTime createdAt = Timestamp.valueOf(objArr[8].toString()).toLocalDateTime();
 			String createdBy = objArr[9].toString();
+
+			if (objArr[10] != null) {
+				LocalDateTime updatedAt = Timestamp.valueOf(objArr[10].toString()).toLocalDateTime();
+				String updatedBy = objArr[11].toString();
+				transactionsDetailIn.setUpdatedAt(updatedAt);
+				transactionsDetailIn.setUpdatedBy(updatedBy);
+			}
 
 			TransactionsIn tin = new TransactionsIn();
 			tin.setTransactionsInCode(transactionsInCode);
@@ -86,7 +92,7 @@ public class TransactionsDetailInDaoImpl extends BaseDaoImpl<TransactionsDetailI
 			transactionsDetailIn.setVersion(version);
 			transactionsDetailIn.setCreatedAt(createdAt);
 			transactionsDetailIn.setCreatedBy(createdBy);
-			
+
 			resultDetail.add(transactionsDetailIn);
 		});
 
