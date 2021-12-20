@@ -1,7 +1,7 @@
 package com.lawencon.lms.constant;
 
 public enum StatusesInOutCode {
-	DEPLOYABLE("DEP"), UNDEPLOYABLE("UNDEP"), ARCHIVED("ARCHV"), PENDING("PEND");
+	CHECKIN("CHECKIN"),CHECKOUT("CHECKOUT");
 
 	private String code;
 
