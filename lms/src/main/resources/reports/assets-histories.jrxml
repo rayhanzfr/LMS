@@ -49,19 +49,37 @@ INNER JOIN employees e ON u.id = e.users_id;]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="70" splitType="Stretch">
-			<image>
-				<reportElement x="20" y="17" width="103" height="50" uuid="98a37e4d-85ba-4f0f-9589-56dac8636a2f"/>
-				<imageExpression><![CDATA["logoLMS 1.svg"]]></imageExpression>
+		<band height="86" splitType="Stretch">
+			<staticText>
+				<reportElement x="127" y="10" width="300" height="25" forecolor="#FA840D" uuid="fee954b3-4480-4ff4-9d1e-8fd60c777e39">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PT. Lawencon International]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="128" y="31" width="300" height="27" forecolor="#1B82CD" uuid="c683bd1f-4f44-4b6a-a57f-953c1ea9c4ab">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe UI" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lawencon Management System]]></text>
+			</staticText>
+			<image isLazy="true" onErrorType="Blank">
+				<reportElement x="0" y="10" width="126" height="50" uuid="43115f28-285f-41c2-b72a-02bb1e5a1847"/>
+				<imageExpression><![CDATA["repo:logoLMS 1.svg"]]></imageExpression>
 			</image>
 		</band>
 	</title>
 	<pageHeader>
 		<band height="67" splitType="Stretch">
 			<staticText>
-				<reportElement x="172" y="7" width="210" height="53" uuid="8da6e55e-fbbd-4665-8927-6dcbedcb64d1"/>
+				<reportElement x="184" y="0" width="188" height="43" uuid="8da6e55e-fbbd-4665-8927-6dcbedcb64d1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-					<font fontName="Segoe UI" size="28" isBold="true"/>
+					<font fontName="Segoe UI" size="20" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Activity Users]]></text>
 			</staticText>

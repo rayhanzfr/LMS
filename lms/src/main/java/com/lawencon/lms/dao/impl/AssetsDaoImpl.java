@@ -27,12 +27,12 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a");
 		sql.append(" FROM Assets AS a ");
-		sql.append(" INNER JOIN FETCH Items AS i ");
-		sql.append(" INNER JOIN FETCH ItemsTypes AS it ");
-		sql.append(" INNER JOIN FETCH ItemsBrands AS ib ");
-		sql.append(" INNER JOIN FETCH Invoices AS invo ");
-		sql.append(" INNER JOIN FETCH StatusesAssets AS sa ");
-		sql.append(" INNER JOIN FETCH StatusesInOut AS sio ");
+		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH i.itemstypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
+		sql.append(" INNER JOIN FETCH a.invoices ");
+		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
+		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE a.assetsName = :assetsName ");
 
 		Assets assets = createQuery(sql.toString(), Assets.class).setParameter("assetsName", assetsName)
@@ -44,13 +44,13 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	public List<Assets> findByItemsCode(String itemsCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
-		sql.append(" FROM assets AS a ");
-		sql.append(" INNER JOIN FETCH Items AS i ");
-		sql.append(" INNER JOIN FETCH ItemsTypes AS it ");
-		sql.append(" INNER JOIN FETCH ItemsBrands AS ib ");
-		sql.append(" INNER JOIN FETCH Invoices AS invo ");
-		sql.append(" INNER JOIN FETCH StatusesAssets AS sa ");
-		sql.append(" INNER JOIN FETCH StatusesInOut AS sio ");
+		sql.append(" FROM Assets AS a ");
+		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH i.itemstypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
+		sql.append(" INNER JOIN FETCH a.invoices ");
+		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
+		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE i.itemsCode = :itemsCode ");
 
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class).setParameter("assetsName", itemsCode)
@@ -62,7 +62,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	public List<Assets> findByBrandsCode(String brandsCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
-		sql.append(" FROM assets AS a ");
+		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
 		sql.append(" INNER JOIN FETCH i.itemstypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
@@ -99,7 +99,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	public List<Assets> findByStatusesAssetsCode(String statusesAssetsCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
-		sql.append(" FROM assets AS a ");
+		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
 		sql.append(" INNER JOIN FETCH i.itemstypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
@@ -118,13 +118,13 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	public List<Assets> findByStatusesInOutCode(String statusesInOutCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
-		sql.append(" FROM assets AS a ");
-		sql.append(" INNER JOIN FETCH Items AS i ");
-		sql.append(" INNER JOIN FETCH ItemsTypes AS it ");
-		sql.append(" INNER JOIN FETCH ItemsBrands AS ib ");
-		sql.append(" INNER JOIN FETCH Invoices AS invo ");
-		sql.append(" INNER JOIN FETCH StatusesAssets AS sa ");
-		sql.append(" INNER JOIN FETCH StatusesInOut AS sio ");
+		sql.append(" FROM Assets AS a ");
+		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH i.itemstypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
+		sql.append(" INNER JOIN FETCH a.invoices ");
+		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
+		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE sio.statusesInOutCode= :statusesInOutCode ");
 
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
@@ -148,13 +148,13 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 			String statusesAssetsCode, String statusesInOutCode, Integer total) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
-		sql.append(" FROM assets AS a ");
-		sql.append(" INNER JOIN FETCH Items AS i ");
-		sql.append(" INNER JOIN FETCH ItemsTypes AS it ");
-		sql.append(" INNER JOIN FETCH ItemsBrands AS ib ");
-		sql.append(" INNER JOIN FETCH Invoices AS invo ");
-		sql.append(" INNER JOIN FETCH StatusesAssets AS sa ");
-		sql.append(" INNER JOIN FETCH StatusesInOut AS sio ");
+		sql.append(" FROM Assets AS a ");
+		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH i.itemstypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
+		sql.append(" INNER JOIN FETCH a.invoices ");
+		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
+		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE i.itemsCode= :itemsCode ");
 		sql.append(" WHERE it.itemsTypesCode= :itemsTypesCode ");
 		sql.append(" WHERE ib.itemsBrandsCode= :itemsBrandsCode ");
@@ -174,6 +174,24 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		Object resultQuery = createQuery("SELECT COUNT(a.id) FROM Assets a", Assets.class).getSingleResult();
 		String count = resultQuery.toString();
 		return count;
+	}
+
+	@Override
+	public List<Assets> getExpiredAssets() throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT a ");
+		sql.append(" FROM Assets AS a ");
+		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH i.files as f");
+		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
+		sql.append(" INNER JOIN FETCH a.invoices ");
+		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
+		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
+		sql.append(" WHERE a.assetsExpired <= DATE(NOW()) ");
+		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
+				.getResultList();
+		return listAssets;
 	}
 
 }

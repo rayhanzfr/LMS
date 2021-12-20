@@ -152,7 +152,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 				}
 				histories.setAssets(transactionsDetailOut.getAssets());
 				histories.setUsers(users);
-				histories.setActivityName(StatusesInOutCode.CHECKIN.getCode());
+				histories.setActivityName(StatusesInOutCode.CHECKOUT.getCode());
 				try {
 					histories = historiesDao.saveOrUpdate(histories);
 				} catch (Exception e) {
