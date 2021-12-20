@@ -11,12 +11,11 @@ import org.springframework.stereotype.Repository;
 
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.ItemsBrandsDao;
-import com.lawencon.lms.model.Items;
 import com.lawencon.lms.model.ItemsBrands;
 
 @Repository
-public class ItemsBrandsDaoImpl extends BaseDaoImpl<ItemsBrands> implements ItemsBrandsDao{
-	
+public class ItemsBrandsDaoImpl extends BaseDaoImpl<ItemsBrands> implements ItemsBrandsDao {
+
 	@Override
 	public ItemsBrands findById(String id) throws Exception {
 		return getById(id);
@@ -40,9 +39,9 @@ public class ItemsBrandsDaoImpl extends BaseDaoImpl<ItemsBrands> implements Item
 				itemsBrands.setCreatedBy(objArr[3].toString());
 				itemsBrands.setCreatedAt(((Timestamp) objArr[4]).toLocalDateTime());
 				itemsBrands.setIsActive((Boolean) objArr[5]);
-				itemsBrands.setVersion((Integer)objArr[8]);
+				itemsBrands.setVersion((Integer) objArr[8]);
 			}
-		}catch (NoResultException e) {
+		} catch (NoResultException e) {
 			e.printStackTrace();
 			throw new NoResultException("Not Found");
 		} catch (NonUniqueResultException e) {
@@ -54,18 +53,18 @@ public class ItemsBrandsDaoImpl extends BaseDaoImpl<ItemsBrands> implements Item
 	@Override
 	public List<ItemsBrands> findAll() throws Exception {
 		return getAll();
-    }
+	}
 
 	@Override
 	public ItemsBrands saveOrUpdate(ItemsBrands itemsBrands) throws Exception {
 		return save(itemsBrands);
 	}
-	
+
 	@Override
 	public Boolean removeById(String id) throws Exception {
 		return deleteById(id);
 	}
-	
+
 	@Override
 	public Integer countData() throws Exception {
 		String sql = "SELECT COUNT(ib.id) FROM items_brands ib ";

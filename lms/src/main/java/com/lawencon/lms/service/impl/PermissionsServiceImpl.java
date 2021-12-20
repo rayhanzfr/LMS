@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.PermissionsDao;
 import com.lawencon.lms.dto.permissions.SavePermissionsResDto;
@@ -41,7 +40,7 @@ public class PermissionsServiceImpl extends BaseServiceLmsImpl implements Permis
 	public UpdatePermissionsResDto update(Permissions permissions) throws Exception {
 		UpdatePermissionsResDto updatePermissionsResDto = new UpdatePermissionsResDto();
 		try {
-			Permissions permissionsDb = findByCode(permissions.getPermissionsCode());	
+			Permissions permissionsDb = findByCode(permissions.getPermissionsCode());
 			permissions.setCreatedAt(permissionsDb.getCreatedAt());
 			permissions.setCreatedBy(permissionsDb.getCreatedBy());
 			permissions.setUpdatedBy(getIdAuth());
@@ -86,10 +85,10 @@ public class PermissionsServiceImpl extends BaseServiceLmsImpl implements Permis
 			throw new Exception(e);
 		}
 	}
-	
-	public String generateCode()throws Exception{
-		Integer increment = permissionsDao.countData()+1;
-		String code= EnumCode.PERMISSIONS.getCode()+increment;
+
+	public String generateCode() throws Exception {
+		Integer increment = permissionsDao.countData() + 1;
+		String code = EnumCode.PERMISSIONS.getCode() + increment;
 		return code;
 	}
 }
