@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TO_Expired" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1447ef52-b14f-44d2-bd11-bc62b1418b9b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="tdo" uuid="bd10dc85-1491-4da6-88a7-4e5d20492e9b">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT tro.transactions_out_code,a.assets_name, l.locations_deploy, e.employees_fullname, tdo.transaction_detail_out_expired 
+FROM transactions_detail_out tdo 
+INNER JOIN transactions_out tro ON tro.id = tdo.transactions_out_id 
+INNER JOIN locations l ON l.id = tdo.locations_id 
+INNER JOIN employees e ON e.id =tdo.employees_id 
+INNER JOIN assets a ON a.id = tdo.assets_id 
+WHERE tdo.transaction_detail_out_expired < DATE(NOW())]]>
+		</queryString>
+		<field name="transactions_out_code" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="transactions_out_code"/>
+			<property name="com.jaspersoft.studio.field.label" value="transactions_out_code"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="transactions_out"/>
+		</field>
+		<field name="assets_name" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="assets_name"/>
+			<property name="com.jaspersoft.studio.field.label" value="assets_name"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="assets"/>
+		</field>
+		<field name="locations_deploy" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="locations_deploy"/>
+			<property name="com.jaspersoft.studio.field.label" value="locations_deploy"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="locations"/>
+		</field>
+		<field name="employees_fullname" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="employees_fullname"/>
+			<property name="com.jaspersoft.studio.field.label" value="employees_fullname"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="employees"/>
+		</field>
+		<field name="transaction_detail_out_expired" class="java.sql.Date">
+			<property name="com.jaspersoft.studio.field.name" value="transaction_detail_out_expired"/>
+			<property name="com.jaspersoft.studio.field.label" value="transaction_detail_out_expired"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="transactions_detail_out"/>
+		</field>
+	</subDataset>
+	<queryString language="SQL">
+		<![CDATA[SELECT tro.transactions_out_code,a.assets_name, l.locations_deploy, e.employees_fullname, tdo.transaction_detail_out_expired 
+FROM transactions_detail_out tdo 
+INNER JOIN transactions_out tro ON tro.id = tdo.transactions_out_id 
+INNER JOIN locations l ON l.id = tdo.locations_id 
+INNER JOIN employees e ON e.id =tdo.employees_id 
+INNER JOIN assets a ON a.id = tdo.assets_id 
+WHERE tdo.transaction_detail_out_expired < DATE(NOW())]]>
+	</queryString>
+	<field name="transactions_out_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="transactions_out_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="transactions_out_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="transactions_out"/>
+	</field>
+	<field name="assets_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="assets_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="assets_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="assets"/>
+	</field>
+	<field name="locations_deploy" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="locations_deploy"/>
+		<property name="com.jaspersoft.studio.field.label" value="locations_deploy"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locations"/>
+	</field>
+	<field name="employees_fullname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employees_fullname"/>
+		<property name="com.jaspersoft.studio.field.label" value="employees_fullname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="employees"/>
+	</field>
+	<field name="transaction_detail_out_expired" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="transaction_detail_out_expired"/>
+		<property name="com.jaspersoft.studio.field.label" value="transaction_detail_out_expired"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="transactions_detail_out"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="220" splitType="Stretch">
+			<componentElement>
+				<reportElement x="4" y="1" width="545" height="200" uuid="12fed04a-99be-4e8e-aa9a-14d688bd4aec">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+					<property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="tdo" uuid="47b0a177-a86e-42dd-bc5d-256a0051febb">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="111" uuid="c9f382f1-a62c-400a-a249-9463fc375911">
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="30" uuid="6820519e-b70d-42a0-8c57-16040e1b9625"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Transaction Code]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="111" height="30" uuid="da4b4a6d-6099-4f19-99bb-05d7edf275c7"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{transactions_out_code}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="111" uuid="03f63d48-57b9-4b7f-a36d-c062754a6f00">
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="111" height="30" uuid="44530909-4188-4a33-a560-ebc3fa7855ec"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Assets Name]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="111" height="30" uuid="c790309d-0e6d-4373-b85b-9f3978ec28ff"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{assets_name}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="109" uuid="f538bf0f-bc01-4a4e-b062-d947aa5e66df">
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="109" height="30" uuid="6fe54671-4b89-499b-bd6c-1908c5ae2eec"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Locations Deploy]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="109" height="30" uuid="7bfecb2e-08bc-48d5-af13-635e8792b745"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{locations_deploy}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="107" uuid="6e005b16-7306-4700-97d5-939f5b34527c">
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="107" height="30" uuid="3b865f3d-c2ca-4b2a-94c7-b90bd6d04037"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Employee]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="107" height="30" uuid="ce8ff332-ef4e-43f6-a76f-4f54b01ddf1f"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{employees_fullname}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="107" uuid="7974e91c-5531-43ab-be4a-d42393b2bfb7">
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="107" height="30" uuid="70aa5f20-d2f5-4b70-9c74-99648717a627"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Date Expired]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="107" height="30" uuid="df8f52b2-ba13-4311-95d5-36b80626bc51"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{transaction_detail_out_expired}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
