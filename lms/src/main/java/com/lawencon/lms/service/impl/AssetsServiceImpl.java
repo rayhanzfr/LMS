@@ -198,9 +198,11 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		save.setAssetsName(saveAssetsReqDto.getAssetsName());
 		save.setStatusesAssets(statusesAssets);
 		save.setStatusesInOut(statusesInOut);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		LocalDate  localDate = LocalDate.parse(saveAssetsReqDto.getAssetsExpired(), formatter);
-		save.setAssetsExpired(localDate);
+		if(saveAssetsReqDto.getAssetsExpired()!=null) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			LocalDate  localDate = LocalDate.parse(saveAssetsReqDto.getAssetsExpired(), formatter);
+			save.setAssetsExpired(localDate);
+		}
 		save.setCreatedBy(getIdAuth());
 		save.setIsActive(true);
 		begin();
