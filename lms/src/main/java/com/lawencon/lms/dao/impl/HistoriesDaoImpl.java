@@ -7,12 +7,15 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import org.springframework.stereotype.Repository;
+
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.HistoriesDao;
 import com.lawencon.lms.model.Assets;
 import com.lawencon.lms.model.Histories;
 import com.lawencon.lms.model.Users;
 
+@Repository
 public class HistoriesDaoImpl extends BaseDaoImpl<Histories> implements HistoriesDao {
 
 	@Override
