@@ -47,7 +47,9 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 		try {
 			Users user = usersService.findByEmail(employees.getUsers().getUsersEmail());
 			employees.setUsers(user);
-			
+			Companies company = companiesService.findById(employees.getCompanies().getId());
+			employees.setCompanies(company);
+			employees.setCreatedBy(getIdAuth());
 			begin();
 			employees = employeesDao.saveOrUpdate(employees);
 			commit();
@@ -72,8 +74,7 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 			employees.setCompanies(companies);
 			
 			Employees employee = employeesDao.findByCode(employees.getEmployeesCode());
-			employees.setCreatedAt(employee.getCreatedAt());
-			employees.setCreatedBy(employee.getCreatedBy());
+			employees.setCreatedBy(getIdAuth());
 			
 			begin();
 			employees = employeesDao.saveOrUpdate(employees);
