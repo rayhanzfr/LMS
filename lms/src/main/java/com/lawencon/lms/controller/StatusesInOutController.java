@@ -38,14 +38,14 @@ public class StatusesInOutController {
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = StatusesInOut.class)))})	
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?>findById(@RequestParam(value = "id") String id) throws Exception{
 		StatusesInOut result=  statusesInOutService.findById(id);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = StatusesInOut.class)))})
-	@GetMapping("/code/{code}")
+	@GetMapping("/code")
 	public ResponseEntity<?>findByCode(@RequestParam(value = "code") String code) throws Exception{
 		StatusesInOut result = statusesInOutService.findByCode(code);
 		return new ResponseEntity<>(result,HttpStatus.OK);

@@ -82,7 +82,7 @@ public class AssetsController {
 
 	@ApiResponse(responseCode = "200", content = {
 			@Content(array = @ArraySchema(schema = @Schema(implementation = GetByIdAssetsDto.class))) })
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?> findById(@RequestParam(value = "id") String id) throws Exception {
 		GetByIdAssetsDto result = assetsService.findById(id);
 		return new ResponseEntity<>(result, HttpStatus.OK);
@@ -90,7 +90,7 @@ public class AssetsController {
 
 	@ApiResponse(responseCode = "200", content = {
 			@Content(array = @ArraySchema(schema = @Schema(implementation = GetByIdAssetsDto.class))) })
-	@GetMapping("{assetsName}")
+	@GetMapping("/assetsName")
 	public ResponseEntity<?> findByAssetsName(@RequestParam(value = "assetsName") String assetsName) throws Exception {
 		GetByIdAssetsDto result = assetsService.findByAssetsName(assetsName);
 		return new ResponseEntity<>(result, HttpStatus.OK);

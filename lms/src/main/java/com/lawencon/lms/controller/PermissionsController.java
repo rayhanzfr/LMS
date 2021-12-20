@@ -44,7 +44,7 @@ public class PermissionsController extends ConnHandler {
 	}
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Permissions.class)))
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?> getById(@RequestParam("id") String id)throws Exception {
 		Permissions result = new Permissions();
 		result = permissionsService.findById(id);
@@ -52,7 +52,7 @@ public class PermissionsController extends ConnHandler {
 	}
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Roles.class)))
-	@GetMapping("/code/{code}")
+	@GetMapping("/code")
 	public ResponseEntity<?> getByCode(@RequestParam("code") String code)throws Exception {
 		Permissions result = new Permissions();
 		result = permissionsService.findByCode(code);

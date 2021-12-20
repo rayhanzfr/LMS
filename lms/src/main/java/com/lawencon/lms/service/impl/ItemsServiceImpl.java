@@ -54,6 +54,7 @@ public class ItemsServiceImpl extends BaseServiceLmsImpl implements ItemsService
 			items.setFiles(filesDb);
 			items.setItemsTypes(itemsTypes);
 			items.setItemsBrands(itemsBrands);
+			items.setCreatedBy(getIdAuth());
 			items = itemsDao.saveOrUpdate(items);
 			commit();
 			saveItemsResDto.setId(itemsBrands.getId());
@@ -86,6 +87,7 @@ public class ItemsServiceImpl extends BaseServiceLmsImpl implements ItemsService
 			Items itemsDb = findByCode(items.getItemsCode());	
 			items.setCreatedAt(itemsDb.getCreatedAt());
 			items.setCreatedBy(itemsDb.getCreatedBy());
+			items.setUpdatedBy(getIdAuth());
 
 			items = itemsDao.saveOrUpdate(items);
 			commit();
@@ -129,7 +131,7 @@ public class ItemsServiceImpl extends BaseServiceLmsImpl implements ItemsService
 	}
 	
 	public String generateCode()throws Exception{
-		Integer increment = itemsDao.countData();
+		Integer increment = itemsDao.countData()+1;
 		String code= EnumCode.ITEMS.getCode()+increment;
 		return code;
 	}

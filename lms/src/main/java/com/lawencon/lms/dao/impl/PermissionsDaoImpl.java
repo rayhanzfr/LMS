@@ -70,8 +70,9 @@ public class PermissionsDaoImpl extends BaseDaoImpl<Permissions> implements Perm
 	@Override
 	public Integer countData() throws Exception {
 		String sql = "SELECT COUNT(r.id) FROM Permissions r ";
-		Object result = createQuery(sql,Permissions.class).getSingleResult();
+		Object result = createNativeQuery(sql).getSingleResult();
 		BigInteger results = new BigInteger(result.toString());
-		return results.intValue();
+		Integer resultsInteger = results.intValue();
+		return resultsInteger;
 	}
 }

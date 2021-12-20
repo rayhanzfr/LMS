@@ -40,14 +40,14 @@ public class EmployeesController {
 	}
 	
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Employees.class)))})
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?>findById(@RequestParam(value = "id", required = false) String id) throws Exception{
 		Employees result = employeesService.findById(id);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Employees.class)))})
-	@GetMapping("{code}")
+	@GetMapping("/code")
 	public ResponseEntity<?>findByCode(@RequestParam(value = "code",required = false) String code) throws Exception{
 		Employees result = employeesService.findByCode(code);
 		return new ResponseEntity<>(result,HttpStatus.OK);

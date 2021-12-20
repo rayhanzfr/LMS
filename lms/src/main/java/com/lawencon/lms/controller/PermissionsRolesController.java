@@ -41,7 +41,7 @@ public class PermissionsRolesController {
 	}
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PermissionsRoles.class)))
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?> getById(@RequestParam("id") String id)throws Exception {
 		PermissionsRoles result = new PermissionsRoles();
 		result = permissionsRolesService.findById(id);

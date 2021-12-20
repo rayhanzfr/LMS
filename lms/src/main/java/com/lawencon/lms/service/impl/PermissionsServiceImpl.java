@@ -25,6 +25,7 @@ public class PermissionsServiceImpl extends BaseServiceLmsImpl implements Permis
 		try {
 			begin();
 			permissions.setPermissionsCode(generateCode());
+			permissions.setCreatedBy(getIdAuth());
 			permissions = permissionsDao.saveOrUpdate(permissions);
 			commit();
 			savePermissionsResDto.setId(permissions.getId());
@@ -43,7 +44,7 @@ public class PermissionsServiceImpl extends BaseServiceLmsImpl implements Permis
 			Permissions permissionsDb = findByCode(permissions.getPermissionsCode());	
 			permissions.setCreatedAt(permissionsDb.getCreatedAt());
 			permissions.setCreatedBy(permissionsDb.getCreatedBy());
-
+			permissions.setUpdatedBy(getIdAuth());
 			begin();
 			permissions = permissionsDao.saveOrUpdate(permissions);
 			commit();
@@ -87,7 +88,7 @@ public class PermissionsServiceImpl extends BaseServiceLmsImpl implements Permis
 	}
 	
 	public String generateCode()throws Exception{
-		Integer increment = permissionsDao.countData();
+		Integer increment = permissionsDao.countData()+1;
 		String code= EnumCode.PERMISSIONS.getCode()+increment;
 		return code;
 	}

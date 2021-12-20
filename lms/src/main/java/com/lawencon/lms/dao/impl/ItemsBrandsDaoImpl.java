@@ -68,9 +68,10 @@ public class ItemsBrandsDaoImpl extends BaseDaoImpl<ItemsBrands> implements Item
 	
 	@Override
 	public Integer countData() throws Exception {
-		String sql = "SELECT COUNT(ib.id) FROM ItemsBrands ib ";
-		Object result = createQuery(sql,ItemsBrands.class).getSingleResult();
+		String sql = "SELECT COUNT(ib.id) FROM items_brands ib ";
+		Object result = createNativeQuery(sql).getSingleResult();
 		BigInteger results = new BigInteger(result.toString());
-		return results.intValue();
+		Integer resultsInteger = results.intValue();
+		return resultsInteger;
 	}
 }
