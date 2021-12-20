@@ -53,11 +53,11 @@ public class InvoicesDaoImpl extends BaseDaoImpl<Invoices> implements InvoicesDa
 				Integer version = (Integer) objArr[5];
 				LocalDateTime createdAt = Timestamp.valueOf(objArr[6].toString()).toLocalDateTime();
 				String createdBy = objArr[7].toString();
-				if(objArr[8]!=null) {
+				if (objArr[8] != null) {
 					LocalDateTime updatedAt = Timestamp.valueOf(objArr[8].toString()).toLocalDateTime();
 					invoices.setUpdatedAt(updatedAt);
 				}
-				if(objArr[9]!=null) {
+				if (objArr[9] != null) {
 					String updatedBy = objArr[9].toString();
 					invoices.setUpdatedBy(updatedBy);
 				}
@@ -72,7 +72,6 @@ public class InvoicesDaoImpl extends BaseDaoImpl<Invoices> implements InvoicesDa
 				invoices.setCreatedAt(createdAt);
 				invoices.setCreatedBy(createdBy);
 
-				
 				invoices.setIsActive(isActive);
 			}
 		} catch (NoResultException e) {
@@ -92,14 +91,14 @@ public class InvoicesDaoImpl extends BaseDaoImpl<Invoices> implements InvoicesDa
 	@Override
 	public String countData() throws Exception {
 		String lastRegist = null;
-		
+
 		String sql = "SELECT COUNT(i) FROM Invoices as i";
-	
+
 		Object resultQuery = createQuery(sql, Invoices.class).getSingleResult();
 		lastRegist = resultQuery.toString();
 		return lastRegist;
 	}
-	
+
 	@Override
 	public Boolean removeById(String id) throws Exception {
 		return deleteById(id);

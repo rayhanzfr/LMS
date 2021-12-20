@@ -54,11 +54,16 @@ public class TransactionsInDaoImpl extends BaseDaoImpl<TransactionsIn> implement
 				Integer version = (Integer) objArr[5];
 				LocalDateTime createdAt = Timestamp.valueOf(objArr[6].toString()).toLocalDateTime();
 				String createdBy = objArr[7].toString();
-				LocalDateTime updatedAt = Timestamp.valueOf(objArr[8].toString()).toLocalDateTime();
-				String updatedBy = objArr[9].toString();
+
+				if (objArr[8] != null) {
+					LocalDateTime updatedAt = Timestamp.valueOf(objArr[8].toString()).toLocalDateTime();
+					String updatedBy = objArr[9].toString();
+					transactionsIn.setUpdatedAt(updatedAt);
+					transactionsIn.setUpdatedBy(updatedBy);
+				}
+
 				Boolean isActive = Boolean.parseBoolean(objArr[10].toString());
-				
-				
+
 				TransactionsOut transactionsOut = new TransactionsOut();
 				transactionsOut.setId(toutId);
 				transactionsOut.setTransactionsOutCode(toutCode);
@@ -70,8 +75,7 @@ public class TransactionsInDaoImpl extends BaseDaoImpl<TransactionsIn> implement
 				transactionsIn.setVersion(version);
 				transactionsIn.setCreatedAt(createdAt);
 				transactionsIn.setCreatedBy(createdBy);
-				transactionsIn.setUpdatedAt(updatedAt);
-				transactionsIn.setUpdatedBy(updatedBy);
+
 				transactionsIn.setIsActive(isActive);
 
 			}
@@ -92,9 +96,9 @@ public class TransactionsInDaoImpl extends BaseDaoImpl<TransactionsIn> implement
 	@Override
 	public String countData() throws Exception {
 		String lastRegist = null;
-		
+
 		String sql = "SELECT COUNT(tin) FROM TransactionsIn as tin";
-	
+
 		Object resultQuery = createQuery(sql, TransactionsIn.class).getSingleResult();
 		lastRegist = resultQuery.toString();
 		return lastRegist;

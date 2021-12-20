@@ -53,8 +53,14 @@ public class LocationsDaoImpl extends BaseDaoImpl<Locations> implements Location
 				Integer version = (Integer) objArr[4];
 				LocalDateTime createdAt = Timestamp.valueOf(objArr[5].toString()).toLocalDateTime();
 				String createdBy = objArr[6].toString();
-				LocalDateTime updatedAt = Timestamp.valueOf(objArr[7].toString()).toLocalDateTime();
-				String updatedBy = objArr[8].toString();
+
+				if (objArr[7] != null) {
+					LocalDateTime updatedAt = Timestamp.valueOf(objArr[7].toString()).toLocalDateTime();
+					String updatedBy = objArr[8].toString();
+					locations.setUpdatedAt(updatedAt);
+					locations.setUpdatedBy(updatedBy);
+				}
+
 				Boolean isActive = Boolean.parseBoolean(objArr[9].toString());
 
 				Companies companies = new Companies();
@@ -67,8 +73,6 @@ public class LocationsDaoImpl extends BaseDaoImpl<Locations> implements Location
 				locations.setVersion(version);
 				locations.setCreatedAt(createdAt);
 				locations.setCreatedBy(createdBy);
-				locations.setUpdatedAt(updatedAt);
-				locations.setUpdatedBy(updatedBy);
 				locations.setIsActive(isActive);
 			}
 		} catch (NoResultException e) {
@@ -88,14 +92,14 @@ public class LocationsDaoImpl extends BaseDaoImpl<Locations> implements Location
 	@Override
 	public String countData() throws Exception {
 		String lastRegist = null;
-		
+
 		String sql = "SELECT COUNT(l) FROM Locations as l";
-	
+
 		Object resultQuery = createQuery(sql, Locations.class).getSingleResult();
 		lastRegist = resultQuery.toString();
 		return lastRegist;
 	}
-	
+
 	@Override
 	public Boolean removeById(String id) throws Exception {
 		return deleteById(id);

@@ -42,7 +42,9 @@ INSERT INTO statuses_assets (statuses_assets_code, statuses_assets_name, "versio
 	('PEND', 'PENDING', 0, now(), (select id from roles where roles_code = 'ROLES1'), true);
 
 INSERT INTO files (file,extensions,created_by,created_at,is_active,"version")VALUES
+
 (bytea_import('D:\Lawencon\FINAL PRJ\backend\LMS-main\LMS-main\bootcamp\lms\src\main\resources\reports\logoLMS 1.svg'),'svg',(select id from roles where roles_code = 'ROLES1'),now(),true,0);
+
 
 
 INSERT INTO items_brands (items_brands_code,items_brands_name,"version",created_by,created_at,is_active)VALUES
@@ -72,3 +74,4 @@ INSERT INTO statuses_in_out (statuses_in_out_code,statuses_in_out_name,"version"
 VALUES 
 ('CIN','Check In',0,(select id from roles where roles_code = 'ROLES1'),now(),TRUE),
 ('COUT','Check Out',0,(select id from roles where roles_code = 'ROLES1'),now(),TRUE);
+
