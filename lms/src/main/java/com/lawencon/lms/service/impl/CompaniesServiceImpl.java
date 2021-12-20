@@ -12,11 +12,16 @@ import com.lawencon.lms.dto.companies.SaveCompaniesResDto;
 import com.lawencon.lms.dto.companies.UpdateCompaniesResDto;
 import com.lawencon.lms.model.Companies;
 import com.lawencon.lms.model.Files;
+import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.CompaniesService;
 import com.lawencon.lms.service.FilesService;
+import com.lawencon.lms.service.UsersService;
 
 @Service
 public class CompaniesServiceImpl extends BaseServiceLmsImpl implements CompaniesService {
+
+	@Autowired
+	private UsersService usersService;
 
 	@Autowired
 	private CompaniesDao companiesDao;
@@ -45,11 +50,16 @@ public class CompaniesServiceImpl extends BaseServiceLmsImpl implements Companie
 
 		try {
 			String img = file.getOriginalFilename();
-			String ext = img.substring(img.lastIndexOf(".")+1,img.length());
+			String ext = img.substring(img.lastIndexOf(".") + 1, img.length());
 			Files filesInsert = new Files();
 			filesInsert.setFile(file.getBytes());
 			filesInsert.setExtensions(ext);
-			
+
+			Users users = usersService.findById(companies.getCreatedBy());
+			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+				throw new IllegalAccessException("only superAdmin can Insert data!");
+			}
+
 			begin();
 			Files filesDb = new Files();
 			filesDb = filesService.save(filesInsert);
@@ -79,6 +89,11 @@ public class CompaniesServiceImpl extends BaseServiceLmsImpl implements Companie
 			companies.setCreatedAt(companiesDb.getCreatedAt());
 			companies.setCreatedBy(companiesDb.getCreatedBy());
 
+			Users users = usersService.findById(companies.getUpdatedBy());
+			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+				throw new IllegalAccessException("only superAdmin can Update data!");
+			}
+
 			begin();
 			companies = companiesDao.saveOrUpdate(companies);
 			commit();
@@ -96,7 +111,7 @@ public class CompaniesServiceImpl extends BaseServiceLmsImpl implements Companie
 	public Boolean removeById(String id) throws Exception {
 		return companiesDao.removeById(id);
 	}
-	
+
 	public String generateCode() throws Exception {
 		String generatedCode = companiesDao.countData() + EnumCode.COMPANIES.getCode();
 		return generatedCode;

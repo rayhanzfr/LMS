@@ -42,9 +42,7 @@ INSERT INTO statuses_assets (statuses_assets_code, statuses_assets_name, "versio
 	('PEND', 'PENDING', 0, now(), (select id from roles where roles_code = 'ROLES1'), true);
 
 INSERT INTO files (file,extensions,created_by,created_at,is_active,"version")VALUES
-
-(bytea_import('D:\Lawencon\FINAL PRJ\backend\LMS-main\LMS-main\bootcamp\lms\src\main\resources\reports\logoLMS 1.svg'),'svg',(select id from roles where roles_code = 'ROLES1'),now(),true,0);
-
+(bytea_import('D:\logo.png'),'svg',(select id from roles where roles_code = 'ROLES1'),now(),true,0);
 
 
 INSERT INTO items_brands (items_brands_code,items_brands_name,"version",created_by,created_at,is_active)VALUES
@@ -63,7 +61,6 @@ INSERT INTO locations (locations_code, locations_deploy, companies_id, "version"
 
 INSERT INTO statuses_transactions (statuses_assets_id,statuses_transactions_code,statuses_transactions_name,"version",created_by,created_at,is_active)VALUES
 ((select id from statuses_assets where statuses_assets_code= 'DEP'),'READY','Ready To Deploy',0,(select id from roles where roles_code = 'ROLES1'),now(),true);
-
 INSERT INTO employees (users_id,companies_id, employees_code, employees_fullname, employees_address,employees_phone_number,"version",created_by,created_at,is_active)
 VALUES 
 ((select id from users where users_email = 'superadmin@gmail.com'),(select id from companies where companies_code = 'COMP1'),'EMP1','super admin','jatinegara','0823123945',0,(select id from roles where roles_code = 'ROLES1'),now(),true),
@@ -74,4 +71,3 @@ INSERT INTO statuses_in_out (statuses_in_out_code,statuses_in_out_name,"version"
 VALUES 
 ('CIN','Check In',0,(select id from roles where roles_code = 'ROLES1'),now(),TRUE),
 ('COUT','Check Out',0,(select id from roles where roles_code = 'ROLES1'),now(),TRUE);
-

@@ -41,7 +41,7 @@ public class StatusesAssetsController {
 	}
 
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = StatusesAssets.class)))})
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?> findById(@RequestParam(required = false, name = "id") String id) throws Exception {
 		StatusesAssets result = new StatusesAssets();
 		result = statusesAssetsService.findById(id);
@@ -49,7 +49,7 @@ public class StatusesAssetsController {
 	}
 
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = StatusesAssets.class)))})
-	@GetMapping("/code/{code}")
+	@GetMapping("/code")
 	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) throws Exception {
 		StatusesAssets result = new StatusesAssets();
 		result = statusesAssetsService.findByCode(code);
