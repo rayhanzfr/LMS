@@ -1,11 +1,13 @@
 package com.lawencon.lms.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.lawencon.base.BaseEntity;
 
+@Entity
 public class Histories extends BaseEntity{
 	@ManyToOne
 	@JoinColumn(name = "users_id")

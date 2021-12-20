@@ -42,7 +42,7 @@ public class StatusesTransactionsController {
 	}
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = StatusesTransactions.class)))
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?> getById(@RequestParam("id") String id)throws Exception {
 		StatusesTransactions result = new StatusesTransactions();
 		result = statusesTransactionsService.findById(id);
@@ -50,7 +50,7 @@ public class StatusesTransactionsController {
 	}
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = StatusesTransactions.class)))
-	@GetMapping("/code/{code}")
+	@GetMapping("/code")
 	public ResponseEntity<?> getByCode(@RequestParam("code") String code)throws Exception {
 		StatusesTransactions result = new StatusesTransactions();
 		result = statusesTransactionsService.findByCode(code);

@@ -43,10 +43,10 @@ public class HistoriesController {
         
         HashMap<String, Object> map = new HashMap<>();
         
-        byte[] data = JasperUtil.responseToByteArray(historiesService.findAll(), "assets-histories", map);
+        byte[] data = JasperUtil.responseToByteArray(historiesService.findHistoriesReport(), "assets-histories", map);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=track-asset.pdf");
+        headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=assets-histories.pdf");
 
         return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
     }

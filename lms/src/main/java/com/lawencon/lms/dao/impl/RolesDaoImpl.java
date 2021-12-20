@@ -69,9 +69,10 @@ public class RolesDaoImpl extends BaseDaoImpl<Roles> implements RolesDao {
 	@Override
 	public Integer countData() throws Exception {
 		String sql = "SELECT COUNT(r.id) FROM Roles r ";
-		Object result = createQuery(sql,Roles.class).getSingleResult();
+		Object result = createNativeQuery(sql).getSingleResult();
 		BigInteger results = new BigInteger(result.toString());
-		return results.intValue();
+		Integer resultsInteger = results.intValue();
+		return resultsInteger;
 	}
 
 }

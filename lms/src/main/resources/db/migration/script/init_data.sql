@@ -61,7 +61,6 @@ INSERT INTO locations (locations_code, locations_deploy, companies_id, "version"
 
 INSERT INTO statuses_transactions (statuses_assets_id,statuses_transactions_code,statuses_transactions_name,"version",created_by,created_at,is_active)VALUES
 ((select id from statuses_assets where statuses_assets_code= 'DEP'),'READY','Ready To Deploy',0,(select id from roles where roles_code = 'ROLES1'),now(),true);
-
 INSERT INTO employees (users_id,companies_id, employees_code, employees_fullname, employees_address,employees_phone_number,"version",created_by,created_at,is_active)
 VALUES 
 ((select id from users where users_email = 'superadmin@gmail.com'),(select id from companies where companies_code = 'COMP1'),'EMP1','super admin','jatinegara','0823123945',0,(select id from roles where roles_code = 'ROLES1'),now(),true),

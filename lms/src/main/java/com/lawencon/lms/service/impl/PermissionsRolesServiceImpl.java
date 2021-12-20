@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.PermissionsRolesDao;
 import com.lawencon.lms.dto.permissionsroles.SavePermissionsRolesResDto;
 import com.lawencon.lms.dto.permissionsroles.UpdatePermissionsRolesResDto;
@@ -32,10 +31,12 @@ public class PermissionsRolesServiceImpl extends BaseServiceLmsImpl implements P
 	public SavePermissionsRolesResDto save(PermissionsRoles permissionsRoles) throws Exception {
 		SavePermissionsRolesResDto savePermissionsRolesResDto = new SavePermissionsRolesResDto();
 		try {
-			Permissions permissions = permissionsService.findByCode(permissionsRoles.getPermissions().getPermissionsCode());
+			Permissions permissions = permissionsService
+					.findByCode(permissionsRoles.getPermissions().getPermissionsCode());
 			Roles roles = rolesService.findByCode(permissionsRoles.getRoles().getRolesCode());
 			permissionsRoles.setPermissions(permissions);
 			permissionsRoles.setRoles(roles);
+			permissionsRoles.setCreatedBy(getIdAuth());
 			begin();
 			permissionsRoles = permissionsRolesDao.saveOrUpdate(permissionsRoles);
 			commit();
@@ -52,13 +53,15 @@ public class PermissionsRolesServiceImpl extends BaseServiceLmsImpl implements P
 	public UpdatePermissionsRolesResDto update(PermissionsRoles permissionsRoles) throws Exception {
 		UpdatePermissionsRolesResDto updatePermissionsRolesResDto = new UpdatePermissionsRolesResDto();
 		try {
-			Permissions permissions = permissionsService.findByCode(permissionsRoles.getPermissions().getPermissionsCode());
+			Permissions permissions = permissionsService
+					.findByCode(permissionsRoles.getPermissions().getPermissionsCode());
 			Roles roles = rolesService.findByCode(permissionsRoles.getRoles().getRolesCode());
 			permissionsRoles.setPermissions(permissions);
 			permissionsRoles.setRoles(roles);
 			PermissionsRoles permissionsRolesDb = findById(permissionsRoles.getId());
 			permissionsRoles.setCreatedAt(permissionsRolesDb.getCreatedAt());
 			permissionsRoles.setCreatedBy(permissionsRolesDb.getCreatedBy());
+			permissionsRoles.setUpdatedBy(getIdAuth());
 			begin();
 			permissionsRoles = permissionsRolesDao.saveOrUpdate(permissionsRoles);
 			commit();

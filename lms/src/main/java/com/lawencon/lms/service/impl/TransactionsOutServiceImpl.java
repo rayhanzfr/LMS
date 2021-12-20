@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.constant.StatusesAssetsCode;
 import com.lawencon.lms.constant.StatusesInOutCode;
 import com.lawencon.lms.dao.AssetsDao;
@@ -45,28 +44,28 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 
 	@Autowired
 	private UsersDao usersDao;
-	
+
 	@Autowired
 	private HistoriesDao historiesDao;
-	
+
 	@Autowired
 	private TransactionsOutDao transactionsOutDao;
-	
+
 	@Autowired
 	private LocationsDao locationsDao;
-	
+
 	@Autowired
 	private EmployeesDao employeesDao;
-	
+
 	@Autowired
 	private AssetsDao assetsDao;
-	
+
 	@Autowired
 	private StatusesInOutDao statusesInOutDao;
-	
+
 	@Autowired
 	private StatusesAssetsDao statusesAssetsDao;
-	
+
 	@Autowired
 	private TransactionsDetailOutDao transactionsDetailOutDao;
 
@@ -75,8 +74,10 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 		SaveFullTransactionsOutResDto saveFullTransactionsOutResDto = new SaveFullTransactionsOutResDto();
 		SaveTransactionsOutResDto headerRes = new SaveTransactionsOutResDto();
 		SaveFullTransactionsOutReqDto saveFullTransactionsOutReqDto = (SaveFullTransactionsOutReqDto) itemsReq;
-		SaveTransactionsOutReqDto saveTransactionsOutReqDto = saveFullTransactionsOutReqDto.getSaveTransactionsOutReqDto();
-		List<SaveTransactionsDetailsOutReqDto> listSaveTransactionsDetailsOutReqDto = saveFullTransactionsOutReqDto.getListSaveTransactionsDetailsOutReqDto();
+		SaveTransactionsOutReqDto saveTransactionsOutReqDto = saveFullTransactionsOutReqDto
+				.getSaveTransactionsOutReqDto();
+		List<SaveTransactionsDetailsOutReqDto> listSaveTransactionsDetailsOutReqDto = saveFullTransactionsOutReqDto
+				.getListSaveTransactionsDetailsOutReqDto();
 		List<SaveTransactionsDetailsOutResDto> detailsRes = new ArrayList<>();
 		TransactionsOut transactionsOut = new TransactionsOut();
 		try {
@@ -84,42 +85,42 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 			transactionsOut.setTransactionsOutCode(saveTransactionsOutReqDto.getTransactionsOutCode());
 			transactionsOut.setCheckOutDate(LocalDate.now());
 			transactionsOut.setExpiredDate(LocalDate.parse(saveTransactionsOutReqDto.getExpiredOutDate()));
-			final TransactionsOut transactionsOutFinal=transactionsOutDao.saveOrUpdate(transactionsOut);
+			final TransactionsOut transactionsOutFinal = transactionsOutDao.saveOrUpdate(transactionsOut);
 			listSaveTransactionsDetailsOutReqDto.forEach(i -> {
 				SaveTransactionsDetailsOutResDto detail = new SaveTransactionsDetailsOutResDto();
 				TransactionsDetailOut transactionsDetailOut = new TransactionsDetailOut();
 				transactionsDetailOut.setTransactionsOut(transactionsOutFinal);
-					if(i.getLocationsCode()!=null && i.getEmployeesCode()==null && i.getAssetsName()==null) {					
-						Locations locations;
-						try {
-							locations = locationsDao.findByCode(i.getLocationsCode());
-							transactionsDetailOut.setLocations(locations);
-						} catch (Exception e) {
-							e.printStackTrace();
-							rollback();
-						}
+				if (i.getLocationsCode() != null && i.getEmployeesCode() == null && i.getAssetsName() == null) {
+					Locations locations;
+					try {
+						locations = locationsDao.findByCode(i.getLocationsCode());
+						transactionsDetailOut.setLocations(locations);
+					} catch (Exception e) {
+						e.printStackTrace();
+						rollback();
 					}
-					if(i.getLocationsCode()==null && i.getEmployeesCode()!=null && i.getAssetsName()==null) {					
+				}
+				if (i.getLocationsCode() == null && i.getEmployeesCode() != null && i.getAssetsName() == null) {
 
-						Employees employees;
-						try {
-							employees = employeesDao.findByCode(i.getEmployeesCode());
-							transactionsDetailOut.setEmployees(employees);
-						} catch (Exception e) {
-							e.printStackTrace();
-							rollback();
-						}
+					Employees employees;
+					try {
+						employees = employeesDao.findByCode(i.getEmployeesCode());
+						transactionsDetailOut.setEmployees(employees);
+					} catch (Exception e) {
+						e.printStackTrace();
+						rollback();
 					}
-					if(i.getLocationsCode()==null && i.getEmployeesCode()==null && i.getAssetsName()!=null) {					
-						Assets assets;
-						try {
-							assets = assetsDao.findByAssetsName(i.getAssetsName());
-							transactionsDetailOut.setAssets(assets);
-						} catch (Exception e) {
-							e.printStackTrace();
-							rollback();
-						}
+				}
+				if (i.getLocationsCode() == null && i.getEmployeesCode() == null && i.getAssetsName() != null) {
+					Assets assets;
+					try {
+						assets = assetsDao.findByAssetsName(i.getAssetsName());
+						transactionsDetailOut.setAssets(assets);
+					} catch (Exception e) {
+						e.printStackTrace();
+						rollback();
 					}
+				}
 				transactionsDetailOut.setTransactionDetailOutExpired(LocalDate.parse(i.getExpiredDate()));
 				try {
 					transactionsDetailOut.setCreatedBy(getIdAuth());
@@ -152,7 +153,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 				}
 				histories.setAssets(transactionsDetailOut.getAssets());
 				histories.setUsers(users);
-				histories.setActivityName(StatusesInOutCode.CHECKIN.getCode());
+				histories.setActivityName(StatusesInOutCode.CHECKOUT.getCode());
 				try {
 					histories = historiesDao.saveOrUpdate(histories);
 				} catch (Exception e) {
@@ -162,12 +163,12 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 			});
 			commit();
 			headerRes.setId(transactionsOut.getId());
-			detailsRes.forEach(i->{				
+			detailsRes.forEach(i -> {
 				headerRes.setListDetail(i);
 			});
 			saveFullTransactionsOutResDto.setSaveTransactionsOutResDto(headerRes);
 			saveFullTransactionsOutResDto.setMessage("SUCCESS");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
@@ -216,7 +217,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 		GetAllTransactionsOutResDto headerRes = new GetAllTransactionsOutResDto();
 		List<GetTransactionsOutDataDto> listHeader = new ArrayList<>();
 		List<TransactionsOut> listHeaderDb = transactionsOutDao.findAll();
-		listHeaderDb.forEach(i->{
+		listHeaderDb.forEach(i -> {
 			GetTransactionsOutDataDto header = new GetTransactionsOutDataDto();
 			header.setTransactionsInCode(i.getTransactionsOutCode());
 			header.setCheckOutDate(i.getCheckOutDate());

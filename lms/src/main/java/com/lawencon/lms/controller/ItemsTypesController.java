@@ -36,14 +36,14 @@ public class ItemsTypesController {
 	}
 	
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = ItemsTypes.class)))})
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?>findById(@RequestParam(value = "id") String id) throws Exception{
 		ItemsTypes result=  itemsTypesService.findById(id);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = ItemsTypes.class)))})
-	@GetMapping("code/{code}")
+	@GetMapping("/code")
 	public ResponseEntity<?>findByCode(@RequestParam(value = "code") String code) throws Exception{
 		ItemsTypes result = itemsTypesService.findByCode(code);
 		return new ResponseEntity<>(result,HttpStatus.OK);

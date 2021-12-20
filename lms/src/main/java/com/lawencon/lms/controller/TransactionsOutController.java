@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("transactions-out")
-public class TransactionsOut {
+public class TransactionsOutController {
 	@Autowired
 	private TransactionsOutService transactionsOutService;
 
@@ -35,7 +35,7 @@ public class TransactionsOut {
 	}
 
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = GetByTransactionsOutIdResDto.class)))
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?> findById(@RequestParam("id") String id) throws Exception {
 		GetByTransactionsOutIdResDto result = transactionsOutService.findById(id);
 		return new ResponseEntity<>(result, HttpStatus.OK);

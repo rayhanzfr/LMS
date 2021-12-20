@@ -43,7 +43,7 @@ public class RolesController extends ConnHandler {
 	}
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Roles.class)))
-	@GetMapping("{id}")
+	@GetMapping("/id")
 	public ResponseEntity<?> getById(@RequestParam("id") String id)throws Exception {
 		Roles result = new Roles();
 		result = rolesService.findById(id);
@@ -51,7 +51,7 @@ public class RolesController extends ConnHandler {
 	}
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Roles.class)))
-	@GetMapping("/code/{code}")
+	@GetMapping("/code")
 	public ResponseEntity<?> getByCode(@RequestParam("code") String code)throws Exception {
 		Roles result = new Roles();
 		result = rolesService.findByCode(code);
