@@ -344,18 +344,18 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	@Override
 	public List<JasperAssets> getAssetsExpired() throws Exception {
 		List<Assets> assets = assetsDao.getExpiredAssets();
-		List<JasperAssets> data = new ArrayList<JasperAssets>();
+		List<JasperAssets> showJasper = new ArrayList<JasperAssets>();
 		for(Assets asset : assets) {
 			JasperAssets jp = new JasperAssets();
 			jp.setAssetsName(asset.getAssetsName());
+			jp.setItemsBrandsName(asset.getItems().getItemsBrands().getItemsBrandsName());
 			jp.setItemsName(asset.getItems().getItemsName());
 			jp.setItemsTypesName(asset.getItems().getItemsTypes().getItemsTypesName());
-			jp.setItemsBrandsName(asset.getItems().getItemsBrands().getItemsBrandsName());
 			jp.setStatusesAssetsName(asset.getStatusesAssets().getStatusesAssetsName());
 			jp.setStatusesInOutName(asset.getStatusesInOut().getStatusesInOutName());
 			jp.setAssetsExpired(asset.getAssetsExpired());
-			data.add(jp);
+			showJasper.add(jp);
 		}
-		return data;
+		return showJasper;
 	}
 }
