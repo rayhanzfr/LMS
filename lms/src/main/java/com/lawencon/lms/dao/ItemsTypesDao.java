@@ -13,5 +13,7 @@ public interface ItemsTypesDao {
 
 	ItemsTypes saveOrUpdate(ItemsTypes itemsTypes) throws Exception;
 
+	String count()throws Exception;
+	
 	Boolean removeById(String id) throws Exception;
 }

@@ -41,7 +41,7 @@ public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTy
 			
 			ItemsTypes itemType = new ItemsTypes();
 			itemType.setCreatedBy(getIdAuth());
-			itemType.setItemsTypesCode(itemsTypes.getItemsTypesCode());
+//			itemType.setItemsTypesCode();
 			itemType.setItemsTypesName(itemsTypes.getItemsTypesName());
 			itemType.setIsActive(true);
 			begin();
