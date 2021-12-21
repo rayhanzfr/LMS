@@ -90,10 +90,11 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 		UpdateInvoicesResDto updateRes = new UpdateInvoicesResDto();
 
 		try {
-			Invoices invoicesDb = findById(invoices.getId());
-			invoices.setCreatedAt(invoicesDb.getCreatedAt());
-			invoices.setCreatedBy(invoicesDb.getCreatedBy());
-
+			Invoices invoicesDb = findByCode(invoices.getInvoicesCode());
+			invoicesDb.setUpdatedBy(getIdAuth());
+			invoicesDb.setStoreName(invoices.getStoreName());
+			invoicesDb.setPrice(invoices.getPrice());
+			
 			Users users = usersService.findById(getIdAuth());
 
 			if (users == null) {
@@ -106,8 +107,7 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 
 			else {
 				begin();
-				invoices.setUpdatedBy(getIdAuth());
-				invoices = invoicesDao.saveOrUpdate(invoices);
+				invoices = invoicesDao.saveOrUpdate(invoicesDb);
 				commit();
 				updateRes.setVersion(invoices.getVersion());
 				updateRes.setMessage("Inserted");
