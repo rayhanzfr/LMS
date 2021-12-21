@@ -4,12 +4,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
+import com.lawencon.lms.dao.PermissionsDao;
+import com.lawencon.lms.dao.PermissionsRolesDao;
+import com.lawencon.lms.dao.RolesDao;
 import com.lawencon.lms.dao.StatusesInOutDao;
+import com.lawencon.lms.dao.UsersDao;
 import com.lawencon.lms.dto.statusesinout.SaveStatusesInOutResDto;
 import com.lawencon.lms.dto.statusesinout.UpdateStatusesInOutResDto;
+import com.lawencon.lms.model.Permissions;
+import com.lawencon.lms.model.PermissionsRoles;
+import com.lawencon.lms.model.Roles;
 import com.lawencon.lms.model.StatusesInOut;
 import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.StatusesInOutService;
@@ -20,82 +28,140 @@ public class StatusesInOutServiceImpl extends BaseServiceLmsImpl implements Stat
 
 	@Autowired
 	private StatusesInOutDao statusesInOutDao;
-	
 
 	@Autowired
 	private UsersService usersService;
-	
+
+	@Autowired
+	private RolesDao rolesDao;
+
+	@Autowired
+	private PermissionsDao permissionsDao;
+
+	@Autowired
+	private PermissionsRolesDao permissionRolesDao;
+
+	@Autowired
+	private UsersDao usersDao;
+
 	@Override
 	public List<StatusesInOut> findAll() throws Exception {
-		return statusesInOutDao.findAll();
+		String permissionCode = "PERMSN49";
+		boolean validation = validation(permissionCode);
+		if (validation) {
+			return statusesInOutDao.findAll();
+		} else {
+			throw new Exception("Access Denied");
+		}
 	}
 
 	@Override
 	public StatusesInOut findById(String id) throws Exception {
-		return statusesInOutDao.findById(id);
+		String permissionCode = "PERMSN49";
+		boolean validation = validation(permissionCode);
+		if (validation) {
+			return statusesInOutDao.findById(id);
+		} else {
+			throw new Exception("Access Denied");
+		}
 	}
 
 	@Override
 	public StatusesInOut findByCode(String code) throws Exception {
-		return statusesInOutDao.findByCode(code);
+		String permissionCode = "PERMSN49";
+		boolean validation = validation(permissionCode);
+		if (validation) {
+			return statusesInOutDao.findByCode(code);
+		} else {
+			throw new Exception("Access Denied");
+		}
 	}
 
 	@Override
 	public SaveStatusesInOutResDto save(StatusesInOut statusesInOut) throws Exception {
 		SaveStatusesInOutResDto resDto = new SaveStatusesInOutResDto();
-		try {
-			Users users = usersService.findById(getIdAuth());
-			if(users==null) {
-				throw new IllegalAccessException("must login first");
-			}
-			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
-				throw new IllegalAccessException("only superAdmin can Insert data!");
-			}
-			else {
+		String permissionCode = "PERMSN50";
+		boolean validation = validation(permissionCode);
+		if (validation) {
+			try {
 				begin();
 				statusesInOut = statusesInOutDao.saveOrUpdate(statusesInOut);
 				commit();
 				resDto.setId(statusesInOut.getId());
 				resDto.setMesssage("INSERTED");
+			} catch (Exception e) {
+				e.printStackTrace();
+				rollback();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			rollback();
+			return resDto;
+		} else {
+			throw new Exception("Access Denied");
 		}
-		return resDto;
 	}
 
 	@Override
 	public UpdateStatusesInOutResDto update(StatusesInOut statusesInOut) throws Exception {
-		UpdateStatusesInOutResDto resDto = new UpdateStatusesInOutResDto();
-		try {
-			StatusesInOut statusesInAndOut = statusesInOutDao.findByCode(statusesInOut.getStatusesInOutCode());
-			statusesInAndOut.setUpdatedBy(getIdAuth());
-			statusesInAndOut.setStatusesInOutName(statusesInOut.getStatusesInOutName());
-			
-			begin();
-			statusesInOut = statusesInOutDao.saveOrUpdate(statusesInAndOut);
-			commit();
-			resDto.setVersion(statusesInOut.getVersion());
-			resDto.setMessage("UPDATED");
-		} catch (Exception e) {
-			e.printStackTrace();
-			rollback();
+		String permissionCode = "PERMSN51";
+		boolean validation = validation(permissionCode);
+		if (validation) {
+			UpdateStatusesInOutResDto resDto = new UpdateStatusesInOutResDto();
+			try {
+				StatusesInOut statusesInAndOut = statusesInOutDao.findByCode(statusesInOut.getStatusesInOutCode());
+				statusesInAndOut.setUpdatedBy(getIdAuth());
+				statusesInAndOut.setStatusesInOutName(statusesInOut.getStatusesInOutName());
+
+				begin();
+				statusesInOut = statusesInOutDao.saveOrUpdate(statusesInAndOut);
+				commit();
+				resDto.setVersion(statusesInOut.getVersion());
+				resDto.setMessage("UPDATED");
+			} catch (Exception e) {
+				e.printStackTrace();
+				rollback();
+			}
+			return resDto;
+		} else {
+			throw new Exception("Access Denied");
 		}
-		return resDto;
 	}
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
+		String permissionCode = "PERMSN52";
+		boolean validation = validation(permissionCode);
+		if (validation) {
+			try {
+				begin();
+				boolean delete = statusesInOutDao.removeById(id);
+				commit();
+
+				return delete;
+			} catch (Exception e) {
+				e.printStackTrace();
+				rollback();
+				throw new Exception(e);
+			}
+		} else {
+			throw new Exception("Access Denied");
+		}
+	}
+
+	public boolean validation(String permissionsCode) throws Exception {
 		try {
-			begin();
-			boolean delete = statusesInOutDao.removeById(id);
-			commit();
-			
-			return delete;
-		} catch (Exception e) {
-			e.printStackTrace();
-			rollback();
+			boolean check = false;
+			Users users = usersDao.findById(getIdAuth());
+			Roles roles = rolesDao.findById(users.getRoles().getId());
+			Permissions permissions = permissionsDao.findByCode(permissionsCode);
+			List<PermissionsRoles> listPermissionsRoles = permissionRolesDao.findAll();
+			for (int i = 0; i < listPermissionsRoles.size(); i++) {
+				if (listPermissionsRoles.get(i).getPermissions().getId().equals(permissions.getId())) {
+					if (listPermissionsRoles.get(i).getRoles().getId().equals(roles.getId())) {
+						check = true;
+					}
+				}
+			}
+			return check;
+		} catch (NotFoundException e) {
 			throw new Exception(e);
 		}
 	}
