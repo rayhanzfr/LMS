@@ -13,6 +13,9 @@ import com.lawencon.lms.assets.ExcelRequest;
 import com.lawencon.lms.dao.AssetsDao;
 import com.lawencon.lms.dao.InvoicesDao;
 import com.lawencon.lms.dao.ItemsDao;
+import com.lawencon.lms.dao.PermissionsDao;
+import com.lawencon.lms.dao.PermissionsRolesDao;
+import com.lawencon.lms.dao.RolesDao;
 import com.lawencon.lms.dao.StatusesAssetsDao;
 import com.lawencon.lms.dao.StatusesInOutDao;
 import com.lawencon.lms.dto.assets.AssetsDataDto;
@@ -29,9 +32,11 @@ import com.lawencon.lms.model.Assets;
 import com.lawencon.lms.model.Invoices;
 import com.lawencon.lms.model.Items;
 import com.lawencon.lms.model.JasperAssets;
+import com.lawencon.lms.model.PermissionsRoles;
 import com.lawencon.lms.model.StatusesAssets;
 import com.lawencon.lms.model.StatusesInOut;
 import com.lawencon.lms.service.AssetsService;
+import com.lawencon.lms.service.RolesService;
 
 @Service
 public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsService {
@@ -50,6 +55,15 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	
 	@Autowired
 	private InvoicesDao invoicesDao;
+	
+	@Autowired
+	private RolesDao rolesDao;
+	
+	@Autowired
+	private PermissionsDao permissionsDao;
+	
+	@Autowired
+	private PermissionsRolesDao permissRolesDao;
 	
 	private AssetsDataDto convert(Assets assets) {
 		AssetsDataDto data = new AssetsDataDto();
@@ -357,5 +371,10 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 			showJasper.add(jp);
 		}
 		return showJasper;
+	}
+	
+	public boolean validation()throws Exception{
+		
+		return true;
 	}
 }
