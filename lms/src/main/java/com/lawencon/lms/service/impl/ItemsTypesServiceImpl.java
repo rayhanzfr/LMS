@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.constant.EnumCode;
+
 import com.lawencon.lms.dao.ItemsTypesDao;
 import com.lawencon.lms.dto.itemstypes.SaveItemsTypesResDto;
 import com.lawencon.lms.dto.itemstypes.UpdateItemsTypesResDto;
@@ -17,14 +18,14 @@ import com.lawencon.lms.service.ItemsTypesService;
 import com.lawencon.lms.service.UsersService;
 
 @Service
-public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTypesService{
+public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTypesService {
 
 	@Autowired
 	private ItemsTypesDao itemsTypesDao;
-	
+
 	@Autowired
 	private UsersService usersService;
-	
+
 	@Override
 	public List<ItemsTypes> findAll() throws Exception {
 		return itemsTypesDao.findAll();
@@ -45,13 +46,11 @@ public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTy
 		SaveItemsTypesResDto resDto = new SaveItemsTypesResDto();
 		try {
 			Users users = usersService.findById(getIdAuth());
-			if(users==null) {
+			if (users == null) {
 				throw new IllegalAccessException("must login first");
-			}
-			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+			} else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
 				throw new IllegalAccessException("only superAdmin can Insert data!");
-			}
-			else {
+			} else {
 				ItemsTypes itemType = new ItemsTypes();
 				itemType.setCreatedBy(getIdAuth());
 				itemType.setItemsTypesCode(countData());
@@ -69,7 +68,7 @@ public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTy
 		}
 		return resDto;
 	}
-	
+
 	@Override
 	public UpdateItemsTypesResDto update(ItemsTypes itemsTypes) throws Exception {
 		UpdateItemsTypesResDto resDto = new UpdateItemsTypesResDto();
@@ -95,7 +94,7 @@ public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTy
 			begin();
 			boolean delete = itemsTypesDao.removeById(id);
 			commit();
-			
+
 			return delete;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -106,7 +105,7 @@ public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTy
 
 	@Override
 	public String countData() throws Exception {
-		int count = itemsTypesDao.count()+1;
+		int count = itemsTypesDao.count() + 1;
 		String result = EnumCode.ITEMSTYPE.getCode() + count;
 		return result;
 	}
