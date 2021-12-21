@@ -280,8 +280,8 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 			Permissions permissions = permissionsDao.findByCode(permissionsCode);
 			List<PermissionsRoles> listPermissionsRoles = permissionsRolesDao.findAll();
 			for (int i = 0; i < listPermissionsRoles.size(); i++) {
-				if (listPermissionsRoles.get(i).getPermissions().getId() == permissions.getId()) {
-					if (listPermissionsRoles.get(i).getRoles().getId() == roles.getId()) {
+				if (listPermissionsRoles.get(i).getPermissions().getId().equals(permissions.getId())) {
+					if (listPermissionsRoles.get(i).getRoles().getId().equals(roles.getId())) {
 						return true;
 					}
 				}
@@ -290,6 +290,6 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 		} catch (NotFoundException e) {
 			throw new Exception(e);
 		}
-	}
+	} 
 
 }
