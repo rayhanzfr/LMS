@@ -189,6 +189,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE a.assetsExpired <= DATE(NOW()) ");
+		sql.append(" AND it.itemsTypesName = 'LICENSES' ");
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
 				.getResultList();
 		return listAssets;

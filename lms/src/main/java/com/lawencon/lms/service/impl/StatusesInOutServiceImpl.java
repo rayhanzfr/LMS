@@ -1,5 +1,6 @@
 package com.lawencon.lms.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import com.lawencon.lms.dao.StatusesInOutDao;
 import com.lawencon.lms.dto.statusesinout.SaveStatusesInOutResDto;
 import com.lawencon.lms.dto.statusesinout.UpdateStatusesInOutResDto;
 import com.lawencon.lms.model.StatusesInOut;
+import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.StatusesInOutService;
+import com.lawencon.lms.service.UsersService;
 
 @Service
 public class StatusesInOutServiceImpl extends BaseServiceLmsImpl implements StatusesInOutService {
@@ -18,6 +21,9 @@ public class StatusesInOutServiceImpl extends BaseServiceLmsImpl implements Stat
 	@Autowired
 	private StatusesInOutDao statusesInOutDao;
 	
+
+	@Autowired
+	private UsersService usersService;
 	
 	@Override
 	public List<StatusesInOut> findAll() throws Exception {
@@ -38,6 +44,10 @@ public class StatusesInOutServiceImpl extends BaseServiceLmsImpl implements Stat
 	public SaveStatusesInOutResDto save(StatusesInOut statusesInOut) throws Exception {
 		SaveStatusesInOutResDto resDto = new SaveStatusesInOutResDto();
 		try {
+			Users users = usersService.findById(getIdAuth());
+			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+				throw new IllegalAccessException("only superAdmin can Insert data!");
+			}
 			begin();
 			statusesInOut = statusesInOutDao.saveOrUpdate(statusesInOut);
 			commit();
@@ -55,11 +65,13 @@ public class StatusesInOutServiceImpl extends BaseServiceLmsImpl implements Stat
 		UpdateStatusesInOutResDto resDto = new UpdateStatusesInOutResDto();
 		try {
 			StatusesInOut statusesInAndOut = statusesInOutDao.findByCode(statusesInOut.getStatusesInOutCode());
-			statusesInOut.setCreatedBy(statusesInAndOut.getCreatedBy());
-			statusesInOut.setCreatedAt(statusesInAndOut.getCreatedAt());
+			statusesInAndOut.setUpdatedAt(LocalDateTime.now());
+			statusesInAndOut.setUpdatedBy(getIdAuth());
+			statusesInAndOut.setStatusesInOutName(statusesInOut.getStatusesInOutName());
+			statusesInAndOut.setVersion(statusesInAndOut.getVersion());
 			
 			begin();
-			statusesInOut = statusesInOutDao.saveOrUpdate(statusesInOut);
+			statusesInOut = statusesInOutDao.saveOrUpdate(statusesInAndOut);
 			commit();
 			resDto.setVersion(statusesInAndOut.getVersion());
 			resDto.setMessage("UPDATED");
