@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,7 @@ import com.lawencon.lms.dao.PermissionsRolesDao;
 import com.lawencon.lms.dao.RolesDao;
 import com.lawencon.lms.dao.StatusesAssetsDao;
 import com.lawencon.lms.dao.StatusesInOutDao;
+import com.lawencon.lms.dao.UsersDao;
 import com.lawencon.lms.dto.assets.AssetsDataDto;
 import com.lawencon.lms.dto.assets.GetAllAssetsDto;
 import com.lawencon.lms.dto.assets.GetByIdAssetsDto;
@@ -32,9 +34,12 @@ import com.lawencon.lms.model.Assets;
 import com.lawencon.lms.model.Invoices;
 import com.lawencon.lms.model.Items;
 import com.lawencon.lms.model.JasperAssets;
+import com.lawencon.lms.model.Permissions;
 import com.lawencon.lms.model.PermissionsRoles;
+import com.lawencon.lms.model.Roles;
 import com.lawencon.lms.model.StatusesAssets;
 import com.lawencon.lms.model.StatusesInOut;
+import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.AssetsService;
 import com.lawencon.lms.service.RolesService;
 
@@ -63,7 +68,10 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	private PermissionsDao permissionsDao;
 	
 	@Autowired
-	private PermissionsRolesDao permissRolesDao;
+	private PermissionsRolesDao permissionRolesDao;
+	
+	@Autowired
+	private UsersDao usersDao;
 	
 	private AssetsDataDto convert(Assets assets) {
 		AssetsDataDto data = new AssetsDataDto();
@@ -373,8 +381,23 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		return showJasper;
 	}
 	
-	public boolean validation()throws Exception{
-		
-		return true;
+	public boolean validation(String permissionsCode)throws Exception{
+		try {
+			boolean check = false;
+			Users users = usersDao.findById(getIdAuth());
+			Roles roles = rolesDao.findById(users.getRoles().getId());
+			Permissions permissions = permissionsDao.findByCode(permissionsCode);
+			List<PermissionsRoles> listPermissionsRoles = permissionRolesDao.findAll();
+			for (int i = 0; i < listPermissionsRoles.size(); i++) {
+				if (listPermissionsRoles.get(i).getPermissions().getId().equals(permissions.getId())) {
+					if (listPermissionsRoles.get(i).getRoles().getId().equals(roles.getId())) {
+						check = true;
+					}
+				}
+			}
+			return check;
+		} catch (NotFoundException e) {
+			throw new Exception(e);
+		}
 	}
 }
