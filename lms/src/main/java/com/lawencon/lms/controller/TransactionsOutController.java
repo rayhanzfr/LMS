@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("transactions-out")
-public class TransactionsOutController {
+public class TransactionsOutController extends BaseController{
 	@Autowired
 	private TransactionsOutService transactionsOutService;
 

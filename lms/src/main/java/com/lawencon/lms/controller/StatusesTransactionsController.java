@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("statuses-transactions")
-public class StatusesTransactionsController {
+public class StatusesTransactionsController extends BaseController {
 	
 	@Autowired
 	private StatusesTransactionsService statusesTransactionsService;

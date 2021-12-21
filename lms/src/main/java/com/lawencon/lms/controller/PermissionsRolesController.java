@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("permissions-roles")
-public class PermissionsRolesController {
+public class PermissionsRolesController extends BaseController{
 	@Autowired
 	private PermissionsRolesService permissionsRolesService;
 	
