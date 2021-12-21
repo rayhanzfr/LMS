@@ -76,6 +76,7 @@ public class PermissionsRolesServiceImpl extends BaseServiceLmsImpl implements P
 
 	@Override
 	public PermissionsRoles findById(String id) throws Exception {
+		
 		return permissionsRolesDao.findById(id);
 	}
 

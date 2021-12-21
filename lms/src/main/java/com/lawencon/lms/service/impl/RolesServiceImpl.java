@@ -87,7 +87,8 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 	public Roles findById(String id) throws Exception {
 		String permissionsCode = "PERMSN1";
 		Boolean validation = validationUsers(permissionsCode);
-		if (validation) return rolesDao.findById(id);
+		if (validation)
+			return rolesDao.findById(id);
 		throw new Exception("Access Denied");
 	}
 
@@ -96,7 +97,8 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 		String permissionsCode = "PERMSN1";
 		validationUsers(permissionsCode);
 		Boolean validation = validationUsers(permissionsCode);
-		if (validation) return rolesDao.findAll();
+		if (validation)
+			return rolesDao.findAll();
 		throw new Exception("Access Denied");
 	}
 
@@ -104,7 +106,8 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 	public Roles findByCode(String code) throws Exception {
 		String permissionsCode = "PERMSN1";
 		Boolean validation = validationUsers(permissionsCode);
-		if (validation)	return rolesDao.findByCode(code);
+		if (validation)
+			return rolesDao.findByCode(code);
 		throw new Exception("Access Denied");
 	}
 
@@ -136,8 +139,8 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 			Permissions permissions = permissionsDao.findByCode(permissionsCode);
 			List<PermissionsRoles> listPermissionsRoles = permissionRolesDao.findAll();
 			for (int i = 0; i < listPermissionsRoles.size(); i++) {
-				if (listPermissionsRoles.get(i).getRoles().getId() == roles.getId()) {
-					if (listPermissionsRoles.get(i).getPermissions().getId() == permissions.getId()) {
+				if (listPermissionsRoles.get(i).getPermissions().getId() == permissions.getId()) {
+					if (listPermissionsRoles.get(i).getRoles().getId() == roles.getId()) {
 						return true;
 					}
 				}
