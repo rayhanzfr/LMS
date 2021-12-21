@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lawencon.base.BaseServiceImpl;
 import com.lawencon.lms.dao.ItemsTypesDao;
 import com.lawencon.lms.dto.itemstypes.SaveItemsTypesResDto;
 import com.lawencon.lms.dto.itemstypes.UpdateItemsTypesResDto;
@@ -41,7 +40,7 @@ public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTy
 			
 			ItemsTypes itemType = new ItemsTypes();
 			itemType.setCreatedBy(getIdAuth());
-//			itemType.setItemsTypesCode();
+			itemType.setItemsTypesCode(itemsTypes.getItemsTypesCode());
 			itemType.setItemsTypesName(itemsTypes.getItemsTypesName());
 			itemType.setIsActive(true);
 			begin();

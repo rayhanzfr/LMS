@@ -25,7 +25,7 @@ import net.sf.jasperreports.engine.JRException;
 
 @RestController
 @RequestMapping("histories")
-public class HistoriesController {
+public class HistoriesController extends BaseController {
 	
 	@Autowired
 	private HistoriesService historiesService;

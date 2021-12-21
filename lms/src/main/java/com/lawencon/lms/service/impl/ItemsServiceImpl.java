@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.lms.constant.EnumCode;
+import com.lawencon.lms.dao.FilesDao;
 import com.lawencon.lms.dao.ItemsDao;
 import com.lawencon.lms.dto.items.SaveItemsResDto;
 import com.lawencon.lms.dto.items.UpdateItemsResDto;
@@ -26,7 +27,7 @@ public class ItemsServiceImpl extends BaseServiceLmsImpl implements ItemsService
 	private ItemsDao itemsDao;
 	
 	@Autowired
-	private FilesService filesService;
+	private FilesDao filesDao;
 	
 	@Autowired
 	private ItemsTypesService itemsTypesService;
@@ -43,12 +44,12 @@ public class ItemsServiceImpl extends BaseServiceLmsImpl implements ItemsService
 			Files filesInsert = new Files();
 			filesInsert.setFile(file.getBytes());
 			filesInsert.setExtensions(ext);
-			
+			filesInsert.setCreatedBy(getIdAuth());
 			begin();
 			Files filesDb = new Files();
-			filesDb = filesService.save(filesInsert);
-			ItemsTypes itemsTypes = itemsTypesService.findByCode(items.getItemsTypes().getItemsTypesCode());
-			ItemsBrands itemsBrands = itemsBrandsService.findByCode(items.getItemsBrands().getItemsBrandsCode());
+			filesDb = filesDao.saveOrUpdate(filesInsert);
+			ItemsTypes itemsTypes = itemsTypesService.findById(items.getItemsTypes().getId());
+			ItemsBrands itemsBrands = itemsBrandsService.findById(items.getItemsBrands().getId());
 			items.setItemsCode(generateCode());
 			items.setFiles(filesDb);
 			items.setItemsTypes(itemsTypes);
@@ -76,8 +77,8 @@ public class ItemsServiceImpl extends BaseServiceLmsImpl implements ItemsService
 			filesInsert.setExtensions(ext);
 			
 			begin();
-			Files files = filesService.findById(items.getFiles().getId());
-			files = filesService.update(files);
+			Files files = filesDao.findById(items.getFiles().getId());
+			files = filesDao.saveOrUpdate(files);
 			ItemsTypes itemsTypes = itemsTypesService.findByCode(items.getItemsTypes().getItemsTypesCode());
 			ItemsBrands itemsBrands = itemsBrandsService.findByCode(items.getItemsBrands().getItemsBrandsCode());
 			items.setFiles(files);

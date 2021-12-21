@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lawencon.base.ConnHandler;
 import com.lawencon.lms.dto.permissions.SavePermissionsResDto;
 import com.lawencon.lms.dto.permissions.UpdatePermissionsResDto;
 import com.lawencon.lms.model.Permissions;
@@ -30,7 +29,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("permissions")
-public class PermissionsController extends ConnHandler {
+public class PermissionsController extends BaseController {
 	
 	@Autowired
 	private PermissionsService permissionsService;
