@@ -27,8 +27,8 @@ public class PermissionsDaoImpl extends BaseDaoImpl<Permissions> implements Perm
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append(
-					"SELECT id,permissions_code,permissions_name,created_by,created_at,isactive,updated_by,updated_at,version");
-			sql.append("FROM permissions WHERE permissions_code = :code ");
+					" SELECT id,permissions_code,permissions_name,created_by,created_at,is_active,updated_by,updated_at,version ");
+			sql.append(" FROM permissions WHERE permissions_code = :code ");
 			Object result = createNativeQuery(sql.toString()).setParameter("code", code).getSingleResult();
 			if (result != null) {
 				permissions = new Permissions();
