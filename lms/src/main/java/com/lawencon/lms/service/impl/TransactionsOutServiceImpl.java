@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.lms.constant.StatusesAssetsCode;
@@ -13,6 +14,9 @@ import com.lawencon.lms.dao.AssetsDao;
 import com.lawencon.lms.dao.EmployeesDao;
 import com.lawencon.lms.dao.HistoriesDao;
 import com.lawencon.lms.dao.LocationsDao;
+import com.lawencon.lms.dao.PermissionsDao;
+import com.lawencon.lms.dao.PermissionsRolesDao;
+import com.lawencon.lms.dao.RolesDao;
 import com.lawencon.lms.dao.StatusesAssetsDao;
 import com.lawencon.lms.dao.StatusesInOutDao;
 import com.lawencon.lms.dao.TransactionsDetailOutDao;
@@ -32,6 +36,9 @@ import com.lawencon.lms.model.Assets;
 import com.lawencon.lms.model.Employees;
 import com.lawencon.lms.model.Histories;
 import com.lawencon.lms.model.Locations;
+import com.lawencon.lms.model.Permissions;
+import com.lawencon.lms.model.PermissionsRoles;
+import com.lawencon.lms.model.Roles;
 import com.lawencon.lms.model.StatusesAssets;
 import com.lawencon.lms.model.StatusesInOut;
 import com.lawencon.lms.model.TransactionsDetailOut;
@@ -69,169 +76,220 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 	@Autowired
 	private TransactionsDetailOutDao transactionsDetailOutDao;
 
+	@Autowired
+	private PermissionsDao permissionsDao;
+
+	@Autowired
+	private RolesDao rolesDao;
+
+	@Autowired
+	private PermissionsRolesDao permissionsRolesDao;
+
 	@Override
 	public SaveFullTransactionsOutResDto save(SaveFullTransactionsOutReqDto itemsReq) throws Exception {
-		SaveFullTransactionsOutResDto saveFullTransactionsOutResDto = new SaveFullTransactionsOutResDto();
-		SaveTransactionsOutResDto headerRes = new SaveTransactionsOutResDto();
-		SaveFullTransactionsOutReqDto saveFullTransactionsOutReqDto = (SaveFullTransactionsOutReqDto) itemsReq;
-		SaveTransactionsOutReqDto saveTransactionsOutReqDto = saveFullTransactionsOutReqDto
-				.getSaveTransactionsOutReqDto();
-		List<SaveTransactionsDetailsOutReqDto> listSaveTransactionsDetailsOutReqDto = saveFullTransactionsOutReqDto
-				.getListSaveTransactionsDetailsOutReqDto();
-		List<SaveTransactionsDetailsOutResDto> detailsRes = new ArrayList<>();
-		TransactionsOut transactionsOut = new TransactionsOut();
-		try {
-			begin();
-			transactionsOut.setTransactionsOutCode(saveTransactionsOutReqDto.getTransactionsOutCode());
-			transactionsOut.setCheckOutDate(LocalDate.now());
-			transactionsOut.setExpiredDate(LocalDate.parse(saveTransactionsOutReqDto.getExpiredOutDate()));
-			final TransactionsOut transactionsOutFinal = transactionsOutDao.saveOrUpdate(transactionsOut);
-			listSaveTransactionsDetailsOutReqDto.forEach(i -> {
-				SaveTransactionsDetailsOutResDto detail = new SaveTransactionsDetailsOutResDto();
-				TransactionsDetailOut transactionsDetailOut = new TransactionsDetailOut();
-				transactionsDetailOut.setTransactionsOut(transactionsOutFinal);
-				if (i.getLocationsCode() != null && i.getEmployeesCode() == null && i.getAssetsName() == null) {
-					Locations locations;
-					try {
-						locations = locationsDao.findByCode(i.getLocationsCode());
-						transactionsDetailOut.setLocations(locations);
-					} catch (Exception e) {
-						e.printStackTrace();
-						rollback();
+		String permissionsCode = "PERMSN34";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation) {
+			SaveFullTransactionsOutResDto saveFullTransactionsOutResDto = new SaveFullTransactionsOutResDto();
+			SaveTransactionsOutResDto headerRes = new SaveTransactionsOutResDto();
+			SaveFullTransactionsOutReqDto saveFullTransactionsOutReqDto = (SaveFullTransactionsOutReqDto) itemsReq;
+			SaveTransactionsOutReqDto saveTransactionsOutReqDto = saveFullTransactionsOutReqDto
+					.getSaveTransactionsOutReqDto();
+			List<SaveTransactionsDetailsOutReqDto> listSaveTransactionsDetailsOutReqDto = saveFullTransactionsOutReqDto
+					.getListSaveTransactionsDetailsOutReqDto();
+			List<SaveTransactionsDetailsOutResDto> detailsRes = new ArrayList<>();
+			TransactionsOut transactionsOut = new TransactionsOut();
+			try {
+				begin();
+				transactionsOut.setTransactionsOutCode(saveTransactionsOutReqDto.getTransactionsOutCode());
+				transactionsOut.setCheckOutDate(LocalDate.now());
+				transactionsOut.setExpiredDate(LocalDate.parse(saveTransactionsOutReqDto.getExpiredOutDate()));
+				final TransactionsOut transactionsOutFinal = transactionsOutDao.saveOrUpdate(transactionsOut);
+				listSaveTransactionsDetailsOutReqDto.forEach(i -> {
+					SaveTransactionsDetailsOutResDto detail = new SaveTransactionsDetailsOutResDto();
+					TransactionsDetailOut transactionsDetailOut = new TransactionsDetailOut();
+					transactionsDetailOut.setTransactionsOut(transactionsOutFinal);
+					if (i.getLocationsCode() != null && i.getEmployeesCode() == null && i.getAssetsName() == null) {
+						Locations locations;
+						try {
+							locations = locationsDao.findByCode(i.getLocationsCode());
+							transactionsDetailOut.setLocations(locations);
+						} catch (Exception e) {
+							e.printStackTrace();
+							rollback();
+						}
 					}
-				}
-				if (i.getLocationsCode() == null && i.getEmployeesCode() != null && i.getAssetsName() == null) {
+					if (i.getLocationsCode() == null && i.getEmployeesCode() != null && i.getAssetsName() == null) {
 
-					Employees employees;
+						Employees employees;
+						try {
+							employees = employeesDao.findByCode(i.getEmployeesCode());
+							transactionsDetailOut.setEmployees(employees);
+						} catch (Exception e) {
+							e.printStackTrace();
+							rollback();
+						}
+					}
+					if (i.getLocationsCode() == null && i.getEmployeesCode() == null && i.getAssetsName() != null) {
+						Assets assets;
+						try {
+							assets = assetsDao.findByAssetsName(i.getAssetsName());
+							transactionsDetailOut.setAssets(assets);
+						} catch (Exception e) {
+							e.printStackTrace();
+							rollback();
+						}
+					}
+					transactionsDetailOut.setTransactionDetailOutExpired(LocalDate.parse(i.getExpiredDate()));
 					try {
-						employees = employeesDao.findByCode(i.getEmployeesCode());
-						transactionsDetailOut.setEmployees(employees);
+						transactionsDetailOut.setCreatedBy(getIdAuth());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					transactionsDetailOut.setIsActive(true);
+					try {
+						transactionsDetailOut = transactionsDetailOutDao.saveOrUpdate(transactionsDetailOut);
+						StatusesInOut statusesInOut = new StatusesInOut();
+						statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKOUT.getCode());
+						StatusesAssets statusesAssets = new StatusesAssets();
+						statusesAssets = statusesAssetsDao.findByCode(StatusesAssetsCode.UNDEPLOYABLE.getCode());
+						Assets assetsUpdate = transactionsDetailOut.getAssets();
+						assetsUpdate.setStatusesInOut(statusesInOut);
+						assetsUpdate.setStatusesAssets(statusesAssets);
+						transactionsDetailOut.setAssets(assetsDao.saveOrUpdate(assetsUpdate));
+						detail.setId(transactionsDetailOut.getId());
+						detailsRes.add(detail);
 					} catch (Exception e) {
 						e.printStackTrace();
 						rollback();
 					}
-				}
-				if (i.getLocationsCode() == null && i.getEmployeesCode() == null && i.getAssetsName() != null) {
-					Assets assets;
+					Histories histories = new Histories();
+					Users users = new Users();
 					try {
-						assets = assetsDao.findByAssetsName(i.getAssetsName());
-						transactionsDetailOut.setAssets(assets);
+						users = usersDao.findById(getIdAuth());
 					} catch (Exception e) {
 						e.printStackTrace();
-						rollback();
 					}
-				}
-				transactionsDetailOut.setTransactionDetailOutExpired(LocalDate.parse(i.getExpiredDate()));
-				try {
-					transactionsDetailOut.setCreatedBy(getIdAuth());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				transactionsDetailOut.setIsActive(true);
-				try {
-					transactionsDetailOut = transactionsDetailOutDao.saveOrUpdate(transactionsDetailOut);
-					StatusesInOut statusesInOut = new StatusesInOut();
-					statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKOUT.getCode());
-					StatusesAssets statusesAssets = new StatusesAssets();
-					statusesAssets = statusesAssetsDao.findByCode(StatusesAssetsCode.UNDEPLOYABLE.getCode());
-					Assets assetsUpdate = transactionsDetailOut.getAssets();
-					assetsUpdate.setStatusesInOut(statusesInOut);
-					assetsUpdate.setStatusesAssets(statusesAssets);
-					transactionsDetailOut.setAssets(assetsDao.saveOrUpdate(assetsUpdate));
-					detail.setId(transactionsDetailOut.getId());
-					detailsRes.add(detail);
-				} catch (Exception e) {
-					e.printStackTrace();
-					rollback();
-				}
-				Histories histories = new Histories();
-				Users users = new Users();
-				try {
-					users = usersDao.findById(getIdAuth());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				histories.setAssets(transactionsDetailOut.getAssets());
-				histories.setUsers(users);
-				histories.setActivityName(StatusesInOutCode.CHECKOUT.getCode());
-				try {
-					histories = historiesDao.saveOrUpdate(histories);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
-			commit();
-			headerRes.setId(transactionsOut.getId());
-			detailsRes.forEach(i -> {
-				headerRes.setListDetail(i);
-			});
-			saveFullTransactionsOutResDto.setSaveTransactionsOutResDto(headerRes);
-			saveFullTransactionsOutResDto.setMessage("SUCCESS");
+					histories.setAssets(transactionsDetailOut.getAssets());
+					histories.setUsers(users);
+					histories.setActivityName(StatusesInOutCode.CHECKOUT.getCode());
+					try {
+						histories = historiesDao.saveOrUpdate(histories);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				});
+				commit();
+				headerRes.setId(transactionsOut.getId());
+				detailsRes.forEach(i -> {
+					headerRes.setListDetail(i);
+				});
+				saveFullTransactionsOutResDto.setSaveTransactionsOutResDto(headerRes);
+				saveFullTransactionsOutResDto.setMessage("SUCCESS");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			rollback();
+			} catch (Exception e) {
+				e.printStackTrace();
+				rollback();
+			}
+			return saveFullTransactionsOutResDto;
 		}
-		return saveFullTransactionsOutResDto;
+		throw new Exception("Access Denied");
 	}
 
 	@Override
 	public GetByTransactionsOutIdResDto findById(String id) throws Exception {
-		GetByTransactionsOutIdResDto headerRes = new GetByTransactionsOutIdResDto();
-		GetTransactionsOutDataDto header = new GetTransactionsOutDataDto();
-		TransactionsOut headerDb = transactionsOutDao.findById(id);
-		header.setTransactionsInCode(headerDb.getTransactionsOutCode());
-		header.setCheckOutDate(headerDb.getCheckOutDate());
-		header.setExpiredDate(headerDb.getExpiredDate());
-		header.setVersion(headerDb.getVersion());
-		header.setCreatedBy(headerDb.getCreatedBy());
-		header.setCreatedAt(headerDb.getCreatedAt());
-		header.setUpdatedBy(headerDb.getUpdatedBy());
-		header.setUpdatedAt(headerDb.getUpdatedAt());
-		headerRes.setGetTransactionsOutDataDto(header);
-		headerRes.setMessage("SUCCESS");
-		return headerRes;
+		String permissionsCode = "PERMSN33";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation) {
+
+			GetByTransactionsOutIdResDto headerRes = new GetByTransactionsOutIdResDto();
+			GetTransactionsOutDataDto header = new GetTransactionsOutDataDto();
+			TransactionsOut headerDb = transactionsOutDao.findById(id);
+			header.setTransactionsInCode(headerDb.getTransactionsOutCode());
+			header.setCheckOutDate(headerDb.getCheckOutDate());
+			header.setExpiredDate(headerDb.getExpiredDate());
+			header.setVersion(headerDb.getVersion());
+			header.setCreatedBy(headerDb.getCreatedBy());
+			header.setCreatedAt(headerDb.getCreatedAt());
+			header.setUpdatedBy(headerDb.getUpdatedBy());
+			header.setUpdatedAt(headerDb.getUpdatedAt());
+			headerRes.setGetTransactionsOutDataDto(header);
+			headerRes.setMessage("SUCCESS");
+			return headerRes;
+		}
+		throw new Exception("Access Denied");
 	}
 
 	@Override
 	public GetByTransactionsOutCodeResDto findByCode(String code) throws Exception {
-		GetByTransactionsOutCodeResDto headerRes = new GetByTransactionsOutCodeResDto();
-		GetTransactionsOutDataDto header = new GetTransactionsOutDataDto();
-		TransactionsOut headerDb = transactionsOutDao.findByCode(code);
-		header.setTransactionsInCode(headerDb.getTransactionsOutCode());
-		header.setCheckOutDate(headerDb.getCheckOutDate());
-		header.setExpiredDate(headerDb.getExpiredDate());
-		header.setVersion(headerDb.getVersion());
-		header.setCreatedBy(headerDb.getCreatedBy());
-		header.setCreatedAt(headerDb.getCreatedAt());
-		header.setUpdatedBy(headerDb.getUpdatedBy());
-		header.setUpdatedAt(headerDb.getUpdatedAt());
-		headerRes.setData(header);
-		headerRes.setMessage("SUCCESS");
-		return headerRes;
+		String permissionsCode = "PERMSN33";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation) {
+
+			GetByTransactionsOutCodeResDto headerRes = new GetByTransactionsOutCodeResDto();
+			GetTransactionsOutDataDto header = new GetTransactionsOutDataDto();
+			TransactionsOut headerDb = transactionsOutDao.findByCode(code);
+			header.setTransactionsInCode(headerDb.getTransactionsOutCode());
+			header.setCheckOutDate(headerDb.getCheckOutDate());
+			header.setExpiredDate(headerDb.getExpiredDate());
+			header.setVersion(headerDb.getVersion());
+			header.setCreatedBy(headerDb.getCreatedBy());
+			header.setCreatedAt(headerDb.getCreatedAt());
+			header.setUpdatedBy(headerDb.getUpdatedBy());
+			header.setUpdatedAt(headerDb.getUpdatedAt());
+			headerRes.setData(header);
+			headerRes.setMessage("SUCCESS");
+			return headerRes;
+		}
+		throw new Exception("Access Denied");
 	}
 
 	@Override
 	public GetAllTransactionsOutResDto findAll() throws Exception {
-		GetAllTransactionsOutResDto headerRes = new GetAllTransactionsOutResDto();
-		List<GetTransactionsOutDataDto> listHeader = new ArrayList<>();
-		List<TransactionsOut> listHeaderDb = transactionsOutDao.findAll();
-		listHeaderDb.forEach(i -> {
-			GetTransactionsOutDataDto header = new GetTransactionsOutDataDto();
-			header.setTransactionsInCode(i.getTransactionsOutCode());
-			header.setCheckOutDate(i.getCheckOutDate());
-			header.setExpiredDate(i.getExpiredDate());
-			header.setVersion(i.getVersion());
-			header.setCreatedBy(i.getCreatedBy());
-			header.setCreatedAt(i.getCreatedAt());
-			header.setUpdatedBy(i.getUpdatedBy());
-			header.setUpdatedAt(i.getUpdatedAt());
-			listHeader.add(header);
-		});
-		headerRes.setGetTransactionsOutDataDto(listHeader);
-		headerRes.setMessage("SUCCESS");
-		return headerRes;
+		String permissionsCode = "PERMSN33";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation) {
+
+			GetAllTransactionsOutResDto headerRes = new GetAllTransactionsOutResDto();
+			List<GetTransactionsOutDataDto> listHeader = new ArrayList<>();
+			List<TransactionsOut> listHeaderDb = transactionsOutDao.findAll();
+			listHeaderDb.forEach(i -> {
+				GetTransactionsOutDataDto header = new GetTransactionsOutDataDto();
+				header.setTransactionsInCode(i.getTransactionsOutCode());
+				header.setCheckOutDate(i.getCheckOutDate());
+				header.setExpiredDate(i.getExpiredDate());
+				header.setVersion(i.getVersion());
+				header.setCreatedBy(i.getCreatedBy());
+				header.setCreatedAt(i.getCreatedAt());
+				header.setUpdatedBy(i.getUpdatedBy());
+				header.setUpdatedAt(i.getUpdatedAt());
+				listHeader.add(header);
+			});
+			headerRes.setGetTransactionsOutDataDto(listHeader);
+			headerRes.setMessage("SUCCESS");
+			return headerRes;
+		}
+		throw new Exception("Access Denied");
+	}
+
+	public Boolean validationUsers(String permissionsCode) throws Exception {
+		try {
+			Users users = usersDao.findById(getIdAuth());
+			Roles roles = rolesDao.findById(users.getRoles().getId());
+			Permissions permissions = permissionsDao.findByCode(permissionsCode);
+			List<PermissionsRoles> listPermissionsRoles = permissionsRolesDao.findAll();
+			for (int i = 0; i < listPermissionsRoles.size(); i++) {
+				if (listPermissionsRoles.get(i).getPermissions().getId() == permissions.getId()) {
+					if (listPermissionsRoles.get(i).getRoles().getId() == roles.getId()) {
+						return true;
+					}
+				}
+			}
+			return false;
+		} catch (NotFoundException e) {
+			throw new Exception(e);
+		}
 	}
 
 }
