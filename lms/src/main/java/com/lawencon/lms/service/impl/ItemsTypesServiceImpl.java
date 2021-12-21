@@ -7,17 +7,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseServiceImpl;
+import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.ItemsTypesDao;
 import com.lawencon.lms.dto.itemstypes.SaveItemsTypesResDto;
 import com.lawencon.lms.dto.itemstypes.UpdateItemsTypesResDto;
 import com.lawencon.lms.model.ItemsTypes;
+import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.ItemsTypesService;
+import com.lawencon.lms.service.UsersService;
 
 @Service
 public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTypesService{
 
 	@Autowired
 	private ItemsTypesDao itemsTypesDao;
+	
+	@Autowired
+	private UsersService usersService;
 	
 	@Override
 	public List<ItemsTypes> findAll() throws Exception {
@@ -38,17 +44,25 @@ public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTy
 	public SaveItemsTypesResDto save(ItemsTypes itemsTypes) throws Exception {
 		SaveItemsTypesResDto resDto = new SaveItemsTypesResDto();
 		try {
-			
-			ItemsTypes itemType = new ItemsTypes();
-			itemType.setCreatedBy(getIdAuth());
-//			itemType.setItemsTypesCode();
-			itemType.setItemsTypesName(itemsTypes.getItemsTypesName());
-			itemType.setIsActive(true);
-			begin();
-			itemsTypes = itemsTypesDao.saveOrUpdate(itemType);
-			commit();
-			resDto.setId(itemsTypes.getId());
-			resDto.setMessage("INSERTED");
+			Users users = usersService.findById(getIdAuth());
+			if(users==null) {
+				throw new IllegalAccessException("must login first");
+			}
+			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+				throw new IllegalAccessException("only superAdmin can Insert data!");
+			}
+			else {
+				ItemsTypes itemType = new ItemsTypes();
+				itemType.setCreatedBy(getIdAuth());
+				itemType.setItemsTypesCode(countData());
+				itemType.setItemsTypesName(itemsTypes.getItemsTypesName());
+				begin();
+				itemsTypes = itemsTypesDao.saveOrUpdate(itemType);
+				commit();
+				resDto.setId(itemsTypes.getId());
+				resDto.setMessage("INSERTED");
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
@@ -60,11 +74,9 @@ public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTy
 	public UpdateItemsTypesResDto update(ItemsTypes itemsTypes) throws Exception {
 		UpdateItemsTypesResDto resDto = new UpdateItemsTypesResDto();
 		try {
-			ItemsTypes itemsType = itemsTypesDao.findById(itemsTypes.getId());
+			ItemsTypes itemsType = itemsTypesDao.findByCode(itemsTypes.getItemsTypesCode());
 			itemsType.setItemsTypesName(itemsTypes.getItemsTypesName());
 			itemsType.setUpdatedBy(getIdAuth());
-			itemsType.setUpdatedAt(LocalDateTime.now());
-			
 			begin();
 			itemsTypes = itemsTypesDao.saveOrUpdate(itemsType);
 			commit();
@@ -90,5 +102,12 @@ public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTy
 			rollback();
 			throw new Exception(e);
 		}
+	}
+
+	@Override
+	public String countData() throws Exception {
+		int count = itemsTypesDao.count()+1;
+		String result = EnumCode.ITEMSTYPE.getCode() + count;
+		return result;
 	}
 }

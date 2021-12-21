@@ -235,8 +235,6 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		save.setStatusesInOut(statusesInOut);
 		save.setAssetsExpired(LocalDate.parse(updateAssetsReqDto.getAssetsExpired()));
 		save.setUpdatedBy(getIdAuth());
-		save.setIsActive(updateAssetsReqDto.getIsActive());
-		save.setVersion(save.getVersion());
 		begin();
 		Assets result = assetsDao.saveOrUpdate(save);
 		commit();

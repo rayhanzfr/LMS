@@ -48,19 +48,24 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 		SaveEmployeesResDto resDto = new SaveEmployeesResDto();
 		try {
 			Users users = usersService.findById(getIdAuth());
-			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+			if(users==null) {
+				throw new IllegalAccessException("must login first");
+			}
+			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
 				throw new IllegalAccessException("only superAdmin can Insert data!");
 			}
-			Users user = usersService.findByEmail(employees.getUsers().getUsersEmail());
-			employees.setUsers(user);
-			Companies company = companiesService.findByCode(employees.getCompanies().getCompaniesCode());
-			employees.setCompanies(company);
-			employees.setCreatedBy(getIdAuth());
-			begin();
-			employees = employeesDao.saveOrUpdate(employees);
-			commit();
-			resDto.setId(employees.getId());
-			resDto.setMessage("INSERTED");
+			else {
+				Users user = usersService.findByEmail(employees.getUsers().getUsersEmail());
+				employees.setUsers(user);
+				Companies company = companiesService.findByCode(employees.getCompanies().getCompaniesCode());
+				employees.setCompanies(company);
+				employees.setCreatedBy(getIdAuth());
+				begin();
+				employees = employeesDao.saveOrUpdate(employees);
+				commit();
+				resDto.setId(employees.getId());
+				resDto.setMessage("INSERTED");	
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
@@ -82,9 +87,7 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 			Employees employee = employeesDao.findById(employees.getId());
 			employee.setEmployeesFullname(employees.getEmployeesFullname());
 			employee.setEmployeesAddress(employees.getEmployeesAddress());
-			employee.setUpdatedAt(LocalDateTime.now());
 			employee.setUpdatedBy(getIdAuth());
-			employee.setVersion(employee.getVersion());
 			
 			begin();
 			employees = employeesDao.saveOrUpdate(employee);

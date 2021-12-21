@@ -45,14 +45,19 @@ public class StatusesInOutServiceImpl extends BaseServiceLmsImpl implements Stat
 		SaveStatusesInOutResDto resDto = new SaveStatusesInOutResDto();
 		try {
 			Users users = usersService.findById(getIdAuth());
-			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+			if(users==null) {
+				throw new IllegalAccessException("must login first");
+			}
+			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
 				throw new IllegalAccessException("only superAdmin can Insert data!");
 			}
-			begin();
-			statusesInOut = statusesInOutDao.saveOrUpdate(statusesInOut);
-			commit();
-			resDto.setId(statusesInOut.getId());
-			resDto.setMesssage("INSERTED");
+			else {
+				begin();
+				statusesInOut = statusesInOutDao.saveOrUpdate(statusesInOut);
+				commit();
+				resDto.setId(statusesInOut.getId());
+				resDto.setMesssage("INSERTED");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
@@ -65,15 +70,13 @@ public class StatusesInOutServiceImpl extends BaseServiceLmsImpl implements Stat
 		UpdateStatusesInOutResDto resDto = new UpdateStatusesInOutResDto();
 		try {
 			StatusesInOut statusesInAndOut = statusesInOutDao.findByCode(statusesInOut.getStatusesInOutCode());
-			statusesInAndOut.setUpdatedAt(LocalDateTime.now());
 			statusesInAndOut.setUpdatedBy(getIdAuth());
 			statusesInAndOut.setStatusesInOutName(statusesInOut.getStatusesInOutName());
-			statusesInAndOut.setVersion(statusesInAndOut.getVersion());
 			
 			begin();
 			statusesInOut = statusesInOutDao.saveOrUpdate(statusesInAndOut);
 			commit();
-			resDto.setVersion(statusesInAndOut.getVersion());
+			resDto.setVersion(statusesInOut.getVersion());
 			resDto.setMessage("UPDATED");
 		} catch (Exception e) {
 			e.printStackTrace();
