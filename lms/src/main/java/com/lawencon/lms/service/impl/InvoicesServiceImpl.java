@@ -4,39 +4,69 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.InvoicesDao;
+import com.lawencon.lms.dao.PermissionsDao;
+import com.lawencon.lms.dao.PermissionsRolesDao;
+import com.lawencon.lms.dao.RolesDao;
+import com.lawencon.lms.dao.UsersDao;
 import com.lawencon.lms.dto.invoices.SaveInvoicesResDto;
 import com.lawencon.lms.dto.invoices.UpdateInvoicesResDto;
 import com.lawencon.lms.model.Invoices;
+import com.lawencon.lms.model.Permissions;
+import com.lawencon.lms.model.PermissionsRoles;
+import com.lawencon.lms.model.Roles;
 import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.InvoicesService;
-import com.lawencon.lms.service.UsersService;
 
 @Service
 public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesService {
 
 	@Autowired
-	private UsersService usersService;
+	private InvoicesDao invoicesDao;
 
 	@Autowired
-	private InvoicesDao invoicesDao;
+	private UsersDao usersDao;
+
+	@Autowired
+	private RolesDao rolesDao;
+
+	@Autowired
+	private PermissionsDao permissionsDao;
+
+	@Autowired
+	private PermissionsRolesDao permissionsRolesDao;
 
 	@Override
 	public List<Invoices> findAll() throws Exception {
-		return invoicesDao.findAll();
+
+		String permissionsCode = "PERMSN21";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation)
+			return invoicesDao.findAll();
+		throw new Exception("Access Denied");
 	}
 
 	@Override
 	public Invoices findById(String id) throws Exception {
-		return invoicesDao.findById(id);
+		String permissionsCode = "PERMSN21";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation)
+			return invoicesDao.findById(id);
+		throw new Exception("Access Denied");
 	}
 
 	@Override
 	public Invoices findByCode(String code) throws Exception {
-		return invoicesDao.findByCode(code);
+
+		String permissionsCode = "PERMSN21";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation)
+			return invoicesDao.findByCode(code);
+		throw new Exception("Access Denied");
 	}
 
 	@Override
@@ -45,14 +75,10 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 
 		try {
 
-			Users users = usersService.findById(getIdAuth());
-			if (users == null) {
-				throw new IllegalAccessException("You need to login first");
-			}
-
-			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
-				saveRes.setMessage("only superAdmin can Insert data!");
-				throw new IllegalAccessException("only superAdmin can Insert data!");
+			String permissionsCode = "PERMSN22";
+			Boolean validation = validationUsers(permissionsCode);
+			if (!validation) {
+				throw new Exception("Access Denied");
 			}
 
 			else {
@@ -94,15 +120,11 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 			invoicesDb.setUpdatedBy(getIdAuth());
 			invoicesDb.setStoreName(invoices.getStoreName());
 			invoicesDb.setPrice(invoices.getPrice());
-			
-			Users users = usersService.findById(getIdAuth());
 
-			if (users == null) {
-				throw new IllegalAccessException("You need to login first!");
-			}
-
-			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
-				throw new IllegalAccessException("only superAdmin can Update data!");
+			String permissionsCode = "PERMSN23";
+			Boolean validation = validationUsers(permissionsCode);
+			if (!validation) {
+				throw new Exception("Access Denied");
 			}
 
 			else {
@@ -122,12 +144,46 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return invoicesDao.removeById(id);
+		String permissionsCode = "PERMSN24";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation) {
+			try {
+				begin();
+				boolean isDeleted = invoicesDao.removeById(id);
+				commit();
+				return isDeleted;
+			} catch (Exception e) {
+				e.printStackTrace();
+				rollback();
+				throw new Exception(e);
+			}
+		}
+
+		throw new Exception("Access Denied");
 	}
 
 	public String generateCode() throws Exception {
 		String generatedCode = EnumCode.INVOICES.getCode() + (invoicesDao.countData() + 1);
 		return generatedCode;
+	}
+
+	public Boolean validationUsers(String permissionsCode) throws Exception {
+		try {
+			Users users = usersDao.findById(getIdAuth());
+			Roles roles = rolesDao.findById(users.getRoles().getId());
+			Permissions permissions = permissionsDao.findByCode(permissionsCode);
+			List<PermissionsRoles> listPermissionsRoles = permissionsRolesDao.findAll();
+			for (int i = 0; i < listPermissionsRoles.size(); i++) {
+				if (listPermissionsRoles.get(i).getPermissions().getId().equals(permissions.getId())) {
+					if (listPermissionsRoles.get(i).getRoles().getId().equals(roles.getId())) {
+						return true;
+					}
+				}
+			}
+			return false;
+		} catch (NotFoundException e) {
+			throw new Exception(e);
+		}
 	}
 
 }
