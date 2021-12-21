@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.lms.dto.itemstypes.SaveItemsTypesResDto;
 import com.lawencon.lms.dto.itemstypes.UpdateItemsTypesResDto;
-import com.lawencon.lms.model.Employees;
 import com.lawencon.lms.model.ItemsTypes;
 import com.lawencon.lms.service.ItemsTypesService;
 
@@ -27,7 +26,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("items-types")
-public class ItemsTypesController {
+public class ItemsTypesController extends BaseController {
 
 	@Autowired
 	private ItemsTypesService itemsTypesService;

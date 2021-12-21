@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lawencon.lms.dto.assets.GetAllAssetsDto;
 import com.lawencon.lms.dto.employees.SaveEmployeesResDto;
 import com.lawencon.lms.dto.employees.UpdateEmployeesResDto;
 import com.lawencon.lms.model.Employees;
@@ -27,7 +26,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("employees")
-public class EmployeesController {
+public class EmployeesController extends BaseController {
 
 	@Autowired
 	private EmployeesService employeesService;
