@@ -32,7 +32,7 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 	private PermissionsDao permissionsDao;
 
 	@Autowired
-	private PermissionsRolesDao permissionRolesDao;
+	private PermissionsRolesDao permissionsRolesDao;
 
 	@Override
 	public SaveRolesResDto save(Roles roles) throws Exception {
@@ -149,5 +149,5 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 		} catch (NotFoundException e) {
 			throw new Exception(e);
 		}
-	} 
+	}
 }
