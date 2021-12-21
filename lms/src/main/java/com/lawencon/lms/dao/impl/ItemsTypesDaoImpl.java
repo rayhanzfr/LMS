@@ -74,4 +74,10 @@ public class ItemsTypesDaoImpl extends BaseDaoImpl<ItemsTypes> implements ItemsT
 		return deleteById(id);
 	}
 
+	@Override
+	public String count() throws Exception {
+		
+		return null;
+	}
+
 }

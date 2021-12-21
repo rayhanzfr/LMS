@@ -84,7 +84,8 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 			users.setUsersPassword(bCryptPasswordEncoder.encode(users.getUsersPassword()));
 			users.setCreatedAt(user.getCreatedAt());
 			users.setCreatedBy(user.getCreatedBy());
-
+			users.setUpdatedBy(getIdAuth());
+			
 			begin();
 			users = usersDao.saveOrUpdate(users);
 			commit();
