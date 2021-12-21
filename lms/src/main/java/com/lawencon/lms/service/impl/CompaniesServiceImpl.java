@@ -102,13 +102,18 @@ public class CompaniesServiceImpl extends BaseServiceLmsImpl implements Companie
 		UpdateCompaniesResDto updateRes = new UpdateCompaniesResDto();
 
 		try {
-			Files files = filesDao.findById(companies.getFiles().getId());
-			companies.setFiles(files);
-
+			String img = file.getOriginalFilename();
+			String ext = img.substring(img.lastIndexOf(".") + 1, img.length());
+			Files filesUpdate = new Files();
+			filesUpdate.setFile(file.getBytes());
+			filesUpdate.setExtensions(ext);
+			
+			
 			Companies companiesDb = findByCode(companies.getCompaniesCode());
-			companies.setCreatedAt(companiesDb.getCreatedAt());
-			companies.setCreatedBy(companiesDb.getCreatedBy());
-			companies.setUpdatedBy(getIdAuth());
+			companiesDb.setUpdatedBy(getIdAuth());
+			companiesDb.setCompaniesName(companies.getCompaniesName());
+			companiesDb.setCompaniesPhone(companies.getCompaniesPhone());
+			companiesDb.setCompaniesAddress(companies.getCompaniesAddress());
 
 			Users users = usersService.findById(getIdAuth());
 
@@ -123,7 +128,12 @@ public class CompaniesServiceImpl extends BaseServiceLmsImpl implements Companie
 
 			else {
 				begin();
-				companies = companiesDao.saveOrUpdate(companies);
+				Files filesDb = new Files();
+				filesUpdate.setCreatedBy(getIdAuth());
+				filesDb = filesDao.saveOrUpdate(filesUpdate);
+				companiesDb.setFiles(filesDb);
+				
+				companies = companiesDao.saveOrUpdate(companiesDb);
 				commit();
 
 				updateRes.setVersion(companies.getVersion());

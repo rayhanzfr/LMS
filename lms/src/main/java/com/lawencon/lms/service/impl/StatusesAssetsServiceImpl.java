@@ -1,6 +1,5 @@
 package com.lawencon.lms.service.impl;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,8 +87,7 @@ public class StatusesAssetsServiceImpl extends BaseServiceLmsImpl implements Sta
 		UpdateStatusesAssetsResDto updateRes = new UpdateStatusesAssetsResDto();
 
 		try {
-			StatusesAssets statusesAssetsDb = findById(statusesAssets.getId());
-			statusesAssetsDb.setUpdatedAt(LocalDateTime.now());
+			StatusesAssets statusesAssetsDb = findByCode(statusesAssets.getStatusesAssetsCode());
 			statusesAssetsDb.setUpdatedBy(getIdAuth());
 			statusesAssetsDb.setStatusesAssetsName(statusesAssets.getStatusesAssetsName());
 

@@ -93,13 +93,12 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 		UpdateLocationsResDto updateRes = new UpdateLocationsResDto();
 
 		try {
-			Companies companies = companiesService.findByCode(locations.getCompanies().getCompaniesCode());
-			locations.setCompanies(companies);
-
 			Locations locationsDb = findByCode(locations.getLocationsCode());
-			locations.setCreatedAt(locationsDb.getCreatedAt());
-			locations.setCreatedBy(locationsDb.getCreatedBy());
-
+			Companies companies = companiesService.findByCode(locations.getCompanies().getCompaniesCode());
+			locationsDb.setCompanies(companies);
+			locationsDb.setUpdatedBy(getIdAuth());
+			locationsDb.setLocationsDeploy(locations.getLocationsDeploy());
+			
 			Users users = usersService.findById(getIdAuth());
 			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
 				updateRes.setMessage("only superAdmin can Update data!");
@@ -108,8 +107,7 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 
 			else {
 				begin();
-				locations.setUpdatedBy(getIdAuth());
-				locations = locationsDao.saveOrUpdate(locations);
+				locations = locationsDao.saveOrUpdate(locationsDb);
 				commit();
 				updateRes.setVersion(locations.getVersion());
 				updateRes.setMessage("Inserted");
