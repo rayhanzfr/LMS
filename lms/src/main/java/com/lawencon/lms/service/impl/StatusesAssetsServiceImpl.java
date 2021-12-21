@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.lms.dao.StatusesAssetsDao;
-import com.lawencon.lms.dao.UsersDao;
 import com.lawencon.lms.dto.statusesassets.SaveStatusesAssetsResDto;
 import com.lawencon.lms.dto.statusesassets.UpdateStatusesAssetsResDto;
 import com.lawencon.lms.model.StatusesAssets;
@@ -19,7 +18,7 @@ import com.lawencon.lms.service.UsersService;
 public class StatusesAssetsServiceImpl extends BaseServiceLmsImpl implements StatusesAssetsService {
 
 	@Autowired
-	private UsersDao usersDao;
+	private UsersService usersService;
 
 	@Autowired
 	private StatusesAssetsDao statusesAssetsDao;
@@ -45,19 +44,26 @@ public class StatusesAssetsServiceImpl extends BaseServiceLmsImpl implements Sta
 
 		try {
 
+			System.out.println("IDAUTH: " + "93c3361c-8c19-4653-af7f-79f5ea9887e7");
 			
-			Users users = usersDao.findById("80d0a70b-feee-4292-870b-ccec44bb064d");
-			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+			Users users = usersService.findById("93c3361c-8c19-4653-af7f-79f5ea9887e7");
+			
+			System.out.println("roles Name: " + users.getRoles().getRolesName());
+			
+			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
+				saveRes.setMessage("only superAdmin can Insert data!");		
 				throw new IllegalAccessException("only superAdmin can Insert data!");
 			}
 
-			begin();
-			statusesAssets.setCreatedBy(getIdAuth());
-			statusesAssets = statusesAssetsDao.saveOrUpdate(statusesAssets);
-			commit();
-
-			saveRes.setId(statusesAssets.getId());
-			saveRes.setMessage("Inserted");
+			else {
+				begin();
+				statusesAssets.setCreatedBy(getIdAuth());
+				statusesAssets = statusesAssetsDao.saveOrUpdate(statusesAssets);
+				commit();
+				
+				saveRes.setId(statusesAssets.getId());
+				saveRes.setMessage("Inserted");				
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
@@ -76,7 +82,7 @@ public class StatusesAssetsServiceImpl extends BaseServiceLmsImpl implements Sta
 			statusesAssetsDb.setStatusesAssetsName(statusesAssets.getStatusesAssetsName());
 
 			Users users = new Users();
-			users = usersDao.findById(getIdAuth());
+			users = usersService.findById(getIdAuth());
 			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
 				throw new IllegalAccessException("only superAdmin can Update data!");
 			}
