@@ -123,5 +123,4 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 	public Employees findByCode(String code) throws Exception {
 		return employeesDao.findByCode(code);
 	}
-	
 }
