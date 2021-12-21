@@ -1,5 +1,6 @@
 package com.lawencon.lms.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,18 +45,39 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 
 		try {
 
-			Users users = usersService.findById(invoices.getCreatedBy());
-			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+			Users users = usersService.findById(getIdAuth());
+			if (users == null) {
+				throw new IllegalAccessException("You need to login first");
+			}
+
+			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
+				saveRes.setMessage("only superAdmin can Insert data!");
 				throw new IllegalAccessException("only superAdmin can Insert data!");
 			}
 
-			begin();
-			invoices.setInvoicesCode(generateCode());
-			invoices = invoicesDao.saveOrUpdate(invoices);
-			commit();
+			else {
+				if (invoices.getStoreName() == null || invoices.getStoreName().length() > 50) {
+					throw new Exception("storeName required and not longer than 50 character length");
+				}
 
-			saveRes.setId(invoices.getId());
-			saveRes.setMessage("Inserted");
+				else if (invoices.getPrice() == null) {
+					throw new Exception("price required");
+				}
+
+				else {
+					begin();
+					invoices.setInvoicesDate(LocalDateTime.now());
+					invoices.setInvoicesCode(generateCode());
+					invoices.setCreatedBy(getIdAuth());
+					invoices = invoicesDao.saveOrUpdate(invoices);
+					commit();
+
+					saveRes.setId(invoices.getId());
+					saveRes.setMessage("Inserted");
+				}
+
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
@@ -72,17 +94,25 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 			invoices.setCreatedAt(invoicesDb.getCreatedAt());
 			invoices.setCreatedBy(invoicesDb.getCreatedBy());
 
-			Users users = usersService.findById(invoices.getUpdatedBy());
-			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+			Users users = usersService.findById(getIdAuth());
+
+			if (users == null) {
+				throw new IllegalAccessException("You need to login first!");
+			}
+
+			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
 				throw new IllegalAccessException("only superAdmin can Update data!");
 			}
 
-			begin();
-			invoices = invoicesDao.saveOrUpdate(invoices);
-			commit();
+			else {
+				begin();
+				invoices.setUpdatedBy(getIdAuth());
+				invoices = invoicesDao.saveOrUpdate(invoices);
+				commit();
+				updateRes.setVersion(invoices.getVersion());
+				updateRes.setMessage("Inserted");
+			}
 
-			updateRes.setVersion(invoices.getVersion());
-			updateRes.setMessage("Inserted");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
@@ -96,7 +126,7 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 	}
 
 	public String generateCode() throws Exception {
-		String generatedCode = invoicesDao.countData() + EnumCode.INVOICES.getCode();
+		String generatedCode = EnumCode.INVOICES.getCode() + (invoicesDao.countData() + 1);
 		return generatedCode;
 	}
 

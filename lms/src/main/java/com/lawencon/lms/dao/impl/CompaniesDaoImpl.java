@@ -31,7 +31,7 @@ public class CompaniesDaoImpl extends BaseDaoImpl<Companies> implements Companie
 	public Companies findByCode(String code) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(
-				" SELECT c.id, c.companies_code, c.companies_name, c.companies_phone, c.companies_address, c.file, c.version, c.created_at, c.created_by, c.updated_at, c.updated_by, c.is_active ");
+				" SELECT c.id, c.companies_code, c.companies_name, c.companies_phone, c.companies_address, c.files_id, c.version, c.created_at, c.created_by, c.updated_at, c.updated_by, c.is_active ");
 		sql.append(" FROM companies as c");
 		sql.append(" INNER JOIN files as f ON f.id = c.files_id ");
 		sql.append(" WHERE companies_code = :companies_code ");
@@ -98,14 +98,11 @@ public class CompaniesDaoImpl extends BaseDaoImpl<Companies> implements Companie
 	}
 
 	@Override
-	public String countData() throws Exception {
-		String lastRegist = null;
-
+	public Integer countData() throws Exception {
 		String sql = "SELECT COUNT(c) FROM Companies as c";
-
-		Object resultQuery = createQuery(sql, Companies.class).getSingleResult();
-		lastRegist = resultQuery.toString();
-		return lastRegist;
+		Object result = createNativeQuery(sql).getSingleResult();
+		Integer results = Integer.valueOf(result.toString());
+		return results;
 	}
 
 	@Override

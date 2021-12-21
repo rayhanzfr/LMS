@@ -44,26 +44,38 @@ public class StatusesAssetsServiceImpl extends BaseServiceLmsImpl implements Sta
 
 		try {
 
-			System.out.println("IDAUTH: " + "93c3361c-8c19-4653-af7f-79f5ea9887e7");
-			
-			Users users = usersService.findById("93c3361c-8c19-4653-af7f-79f5ea9887e7");
-			
-			System.out.println("roles Name: " + users.getRoles().getRolesName());
-			
-			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
-				saveRes.setMessage("only superAdmin can Insert data!");		
+			Users users = usersService.findById(getIdAuth());
+
+			if (users == null) {
+				throw new IllegalAccessException("You need to login first!");
+			}
+
+			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
+				saveRes.setMessage("only superAdmin can Insert data!");
 				throw new IllegalAccessException("only superAdmin can Insert data!");
 			}
 
 			else {
-				begin();
-				statusesAssets.setCreatedBy(getIdAuth());
-				statusesAssets = statusesAssetsDao.saveOrUpdate(statusesAssets);
-				commit();
-				
-				saveRes.setId(statusesAssets.getId());
-				saveRes.setMessage("Inserted");				
+				if (statusesAssets.getStatusesAssetsName() == null
+						|| statusesAssets.getStatusesAssetsName().length() > 15) {
+					throw new Exception("statusesAssetsName required and not longer than 15 character length");
+				}
+
+				else if (statusesAssets.getStatusesAssetsCode() == null
+						|| statusesAssets.getStatusesAssetsCode().length() > 5) {
+					throw new Exception("statusesAssetsCode required and not longer than 5 character length");
+				}
+
+				else {
+					statusesAssets.setCreatedBy(getIdAuth());
+					begin();
+					statusesAssets = statusesAssetsDao.saveOrUpdate(statusesAssets);
+					commit();
+					saveRes.setId(statusesAssets.getId());
+					saveRes.setMessage("Inserted");
+				}
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
@@ -81,18 +93,26 @@ public class StatusesAssetsServiceImpl extends BaseServiceLmsImpl implements Sta
 			statusesAssetsDb.setUpdatedBy(getIdAuth());
 			statusesAssetsDb.setStatusesAssetsName(statusesAssets.getStatusesAssetsName());
 
-			Users users = new Users();
-			users = usersService.findById(getIdAuth());
-			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+			Users users = usersService.findById(getIdAuth());
+
+			if (users == null) {
+				throw new IllegalAccessException("You need to Login first!");
+			}
+
+			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
+				updateRes.setMessage("only superAdmin can Update data!");
 				throw new IllegalAccessException("only superAdmin can Update data!");
 			}
-			
-			begin();
-			statusesAssets = statusesAssetsDao.saveOrUpdate(statusesAssetsDb);
-			commit();
 
-			updateRes.setVersion(statusesAssets.getVersion());
-			updateRes.setMessage("Inserted");
+			else {
+				begin();
+				statusesAssets.setUpdatedBy(getIdAuth());
+				statusesAssets = statusesAssetsDao.saveOrUpdate(statusesAssetsDb);
+				commit();
+				updateRes.setVersion(statusesAssets.getVersion());
+				updateRes.setMessage("Inserted");
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();

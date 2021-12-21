@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -61,9 +60,15 @@ public class CompaniesController {
 
 	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = SaveCompaniesResDto.class)))})
 	@PostMapping
-	public ResponseEntity<?> insert(@RequestBody Companies companies, MultipartFile files) throws Exception {
+	public ResponseEntity<?> insert(@RequestPart String data, @RequestPart MultipartFile file) throws Exception {
+		SaveCompaniesResDto companies = companiesService.save(new ObjectMapper().readValue(data, Companies.class), file);
 		SaveCompaniesResDto result = new SaveCompaniesResDto();
-		result = companiesService.save(companies, files);
+		
+		SaveCompaniesResDto id = new SaveCompaniesResDto();
+		id.setId(companies.getId());
+		
+		result.setId(id.getId());
+		result.setMessage("SUCCESS");
 		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
 

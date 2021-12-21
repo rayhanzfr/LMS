@@ -21,7 +21,7 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 
 	@Autowired
 	private UsersService usersService;
-	
+
 	@Autowired
 	private LocationsDao locationsDao;
 
@@ -51,18 +51,36 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 			Companies companies = companiesService.findByCode(locations.getCompanies().getCompaniesCode());
 			locations.setCompanies(companies);
 
-			Users users = usersService.findById(locations.getCreatedBy());
-			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+			Users users = usersService.findById(getIdAuth());
+
+			if (users == null) {
+				throw new IllegalAccessException("You need to login first!");
+			}
+
+			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
+				saveRes.setMessage("only superAdmin can Insert data!");
 				throw new IllegalAccessException("only superAdmin can Insert data!");
 			}
-			
-			begin();
-			locations.setLocationsCode(generateCode());
-			locations = locationsDao.saveOrUpdate(locations);
-			commit();
+
+			else {
+
+				if (locations.getLocationsDeploy() == null) {
+					throw new Exception("locationsDeploy required");
+				}
+
+				else {
+					begin();
+					locations.setCreatedBy(getIdAuth());
+					locations.setLocationsCode(generateCode());
+					locations = locationsDao.saveOrUpdate(locations);
+					commit();
+				}
+
+			}
 
 			saveRes.setId(locations.getId());
 			saveRes.setMessage("Inserted");
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
@@ -82,17 +100,21 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 			locations.setCreatedAt(locationsDb.getCreatedAt());
 			locations.setCreatedBy(locationsDb.getCreatedBy());
 
-			Users users = usersService.findById(locations.getUpdatedBy());
-			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
+			Users users = usersService.findById(getIdAuth());
+			if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
+				updateRes.setMessage("only superAdmin can Update data!");
 				throw new IllegalAccessException("only superAdmin can Update data!");
 			}
-			
-			begin();
-			locations = locationsDao.saveOrUpdate(locations);
-			commit();
 
-			updateRes.setVersion(locations.getVersion());
-			updateRes.setMessage("Inserted");
+			else {
+				begin();
+				locations.setUpdatedBy(getIdAuth());
+				locations = locationsDao.saveOrUpdate(locations);
+				commit();
+				updateRes.setVersion(locations.getVersion());
+				updateRes.setMessage("Inserted");
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
@@ -106,7 +128,7 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 	}
 
 	public String generateCode() throws Exception {
-		String generatedCode = locationsDao.countData() + EnumCode.LOCATIONS.getCode();
+		String generatedCode = EnumCode.LOCATIONS.getCode() + (locationsDao.countData() + 1);
 		return generatedCode;
 	}
 }

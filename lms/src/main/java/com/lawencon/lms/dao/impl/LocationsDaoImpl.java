@@ -92,14 +92,11 @@ public class LocationsDaoImpl extends BaseDaoImpl<Locations> implements Location
 	}
 
 	@Override
-	public String countData() throws Exception {
-		String lastRegist = null;
-
+	public Integer countData() throws Exception {
 		String sql = "SELECT COUNT(l) FROM Locations as l";
-
-		Object resultQuery = createQuery(sql, Locations.class).getSingleResult();
-		lastRegist = resultQuery.toString();
-		return lastRegist;
+		Object result = createNativeQuery(sql).getSingleResult();
+		Integer results = Integer.valueOf(result.toString());
+		return results;
 	}
 
 	@Override
