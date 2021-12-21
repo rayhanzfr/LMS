@@ -4,13 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.lawencon.base.BaseServiceImpl;
+import com.lawencon.lms.dao.PermissionsDao;
+import com.lawencon.lms.dao.PermissionsRolesDao;
+import com.lawencon.lms.dao.RolesDao;
 import com.lawencon.lms.dao.TransactionsDetailInDao;
+import com.lawencon.lms.dao.UsersDao;
 import com.lawencon.lms.dto.transactionsin.GetByTransactionsDetailInCodeResDto;
 import com.lawencon.lms.dto.transactionsin.GetTransactionsDetailsInDataDto;
+import com.lawencon.lms.model.Permissions;
+import com.lawencon.lms.model.PermissionsRoles;
+import com.lawencon.lms.model.Roles;
 import com.lawencon.lms.model.TransactionsDetailIn;
+import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.TransactionsDetailInService;
 
 @Service
@@ -19,31 +27,68 @@ public class TransactionsDetailInServiceImpl extends BaseServiceLmsImpl implemen
 	@Autowired
 	private TransactionsDetailInDao transactionsDetailInDao;
 
+	@Autowired
+	private UsersDao usersDao;
+
+	@Autowired
+	private PermissionsDao permissionsDao;
+
+	@Autowired
+	private RolesDao rolesDao;
+
+	@Autowired
+	private PermissionsRolesDao permissionsRolesDao;
+
 	@Override
 	public GetByTransactionsDetailInCodeResDto findByTransactionInCode(String code) throws Exception {
-		GetByTransactionsDetailInCodeResDto findByCodeTransactionInDto = new GetByTransactionsDetailInCodeResDto();
-		List<GetTransactionsDetailsInDataDto> listTdinDataDto = new ArrayList<>();
-		List<TransactionsDetailIn> listTdin = transactionsDetailInDao.findByTransactionInCode(code);
-		
-		listTdin.forEach(listDetail ->{
-			GetTransactionsDetailsInDataDto tdinDataDto = new GetTransactionsDetailsInDataDto();
-			tdinDataDto.setId(listDetail.getId());
-			tdinDataDto.setTransactionsInCode(listDetail.getTransactionsIn().getTransactionsInCode());
-			tdinDataDto.setVersion(listDetail.getVersion());
-			tdinDataDto.setCreatedAt(listDetail.getCreatedAt());
-			tdinDataDto.setCreatedBy(listDetail.getCreatedBy());
-			tdinDataDto.setUpdatedAt(listDetail.getUpdatedAt());
-			tdinDataDto.setUpdatedBy(listDetail.getUpdatedBy());
-			tdinDataDto.setIsActive(listDetail.getIsActive());
-			
-			listTdinDataDto.add(tdinDataDto);
-		});
-		
-		
 
-		findByCodeTransactionInDto.setGetTransactionsDetailsInDataDto(listTdinDataDto);
-		findByCodeTransactionInDto.setMessage("Sukses");
+		String permissionsCode = "PERMSN35";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation) {
 
-		return findByCodeTransactionInDto;
+			GetByTransactionsDetailInCodeResDto findByCodeTransactionInDto = new GetByTransactionsDetailInCodeResDto();
+			List<GetTransactionsDetailsInDataDto> listTdinDataDto = new ArrayList<>();
+			List<TransactionsDetailIn> listTdin = transactionsDetailInDao.findByTransactionInCode(code);
+
+			listTdin.forEach(listDetail -> {
+				GetTransactionsDetailsInDataDto tdinDataDto = new GetTransactionsDetailsInDataDto();
+				tdinDataDto.setId(listDetail.getId());
+				tdinDataDto.setTransactionsInCode(listDetail.getTransactionsIn().getTransactionsInCode());
+				tdinDataDto.setVersion(listDetail.getVersion());
+				tdinDataDto.setCreatedAt(listDetail.getCreatedAt());
+				tdinDataDto.setCreatedBy(listDetail.getCreatedBy());
+				tdinDataDto.setUpdatedAt(listDetail.getUpdatedAt());
+				tdinDataDto.setUpdatedBy(listDetail.getUpdatedBy());
+				tdinDataDto.setIsActive(listDetail.getIsActive());
+
+				listTdinDataDto.add(tdinDataDto);
+			});
+
+			findByCodeTransactionInDto.setGetTransactionsDetailsInDataDto(listTdinDataDto);
+			findByCodeTransactionInDto.setMessage("SUCCESS");
+
+			return findByCodeTransactionInDto;
+		}
+		throw new Exception("Access Denied");
+
+	}
+
+	public Boolean validationUsers(String permissionsCode) throws Exception {
+		try {
+			Users users = usersDao.findById(getIdAuth());
+			Roles roles = rolesDao.findById(users.getRoles().getId());
+			Permissions permissions = permissionsDao.findByCode(permissionsCode);
+			List<PermissionsRoles> listPermissionsRoles = permissionsRolesDao.findAll();
+			for (int i = 0; i < listPermissionsRoles.size(); i++) {
+				if (listPermissionsRoles.get(i).getPermissions().getId().equals(permissions.getId())) {
+					if (listPermissionsRoles.get(i).getRoles().getId().equals(roles.getId())) {
+						return true;
+					}
+				}
+			}
+			return false;
+		} catch (NotFoundException e) {
+			throw new Exception(e);
+		}
 	}
 }
