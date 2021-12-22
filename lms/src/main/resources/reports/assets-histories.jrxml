@@ -51,7 +51,7 @@ INNER JOIN employees e ON u.id = e.users_id;]]>
 	<title>
 		<band height="86" splitType="Stretch">
 			<staticText>
-				<reportElement x="127" y="10" width="300" height="25" forecolor="#FA840D" uuid="fee954b3-4480-4ff4-9d1e-8fd60c777e39">
+				<reportElement x="130" y="10" width="300" height="25" forecolor="#FA840D" uuid="fee954b3-4480-4ff4-9d1e-8fd60c777e39">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -60,13 +60,13 @@ INNER JOIN employees e ON u.id = e.users_id;]]>
 				<text><![CDATA[PT. Lawencon International]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="128" y="31" width="300" height="27" forecolor="#1B82CD" uuid="c683bd1f-4f44-4b6a-a57f-953c1ea9c4ab">
+				<reportElement x="131" y="31" width="300" height="27" forecolor="#1B82CD" uuid="c683bd1f-4f44-4b6a-a57f-953c1ea9c4ab">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Segoe UI" size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Lawencon Management System]]></text>
+				<text><![CDATA[Lawencon-Assets Management System]]></text>
 			</staticText>
 			<image isLazy="true" onErrorType="Blank">
 				<reportElement x="0" y="10" width="126" height="50" uuid="43115f28-285f-41c2-b72a-02bb1e5a1847"/>
