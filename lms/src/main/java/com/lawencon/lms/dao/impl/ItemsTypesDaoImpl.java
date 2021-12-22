@@ -1,5 +1,6 @@
 package com.lawencon.lms.dao.impl;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -75,9 +76,12 @@ public class ItemsTypesDaoImpl extends BaseDaoImpl<ItemsTypes> implements ItemsT
 	}
 
 	@Override
-	public String count() throws Exception {
-		
-		return null;
+	public Integer count() throws Exception {
+		String sql = "SELECT COUNT(it.id) FROM items_types ib ";
+		Object result = createNativeQuery(sql).getSingleResult();
+		BigInteger results = new BigInteger(result.toString());
+		Integer resultsInteger = results.intValue();
+		return resultsInteger;
 	}
 
 }

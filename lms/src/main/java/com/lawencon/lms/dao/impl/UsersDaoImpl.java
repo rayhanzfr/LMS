@@ -71,5 +71,4 @@ public class UsersDaoImpl extends BaseDaoImpl<Users> implements UsersDao {
 	public Boolean removeById(String id) throws Exception {
 		return deleteById(id);
 	}
-
 }
