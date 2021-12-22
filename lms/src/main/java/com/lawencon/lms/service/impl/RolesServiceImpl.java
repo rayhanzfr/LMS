@@ -146,8 +146,8 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 				}
 			}
 			return false;
-		} catch (NotFoundException e) {
-			throw new Exception(e);
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("Data Not Found");
 		}
 	}
 }
