@@ -9,15 +9,16 @@ create or replace function bytea_import(p_path text, p_result out bytea)
     end;$$;
 
 INSERT INTO roles (roles_code,roles_name,"version",created_by,created_at,is_active)VALUES
-('ROLES1','SUPER-ADMIN',0,'1',now(),true),
-('ROLES2','ADMIN',0,'1',now(),true),
-('ROLES3','NON-ADMIN',0,'1',now(),true);
+('ROLES1','SYSTEM',0,'1',now(),true),
+('ROLES2','SUPER-ADMIN',0,'1',now(),true),
+('ROLES3','ADMIN',0,'1',now(),true);
+('ROLES4','NON-ADMIN',0,'1',now(),true);
 
 INSERT INTO users(roles_id, users_email,users_password,"version",created_by,created_at,is_active)
 VALUES 
-((select id from roles where roles_code = 'ROLES1'),'superadmin@gmail.com','superadmin',0,(select id from roles where roles_code = 'ROLES1'),now(),TRUE),
-((select id from roles where roles_code = 'ROLES2'),'admin@gmail.com','superadmin',0,(select id from roles where roles_code = 'ROLES1'),now(),TRUE),
-((select id from roles where roles_code = 'ROLES3'),'nonadmin@gmail.com','superadmin',0,(select id from roles where roles_code = 'ROLES1'),now(),TRUE);
+((select id from roles where roles_code = 'ROLES1'),'lawenconassetsmanagement@gmail.com','lms',0,(select id from roles where roles_code = 'ROLES1'),now(),TRUE),
+((select id from roles where roles_code = 'ROLES2'),'superadmin@gmail.com','superadmin',0,(select id from roles where roles_code = 'ROLES1'),now(),TRUE),
+((select id from roles where roles_code = 'ROLES3'),'admin@gmail.com','admin',0,(select id from roles where roles_code = 'ROLES1'),now(),TRUE);
 
 INSERT INTO permissions (permissions_code,permissions_name,"version",created_by,created_at,is_active)VALUES
 ('PERMSN1','ROLES-READ',0,(select id from roles where roles_code = 'ROLES1'),now(),true),
