@@ -210,9 +210,9 @@ public class AssetsController extends BaseController{
 	@GetMapping("/send-report")
 	public ResponseEntity<?> sendReport() throws Exception {
 		EmailHelper emailHelper = new EmailHelper();
-		emailHelper.setSubject("Assets Report");
+		emailHelper.setSubject("Report Asset Expired");
 		emailHelper.setBody("Your Report");
-		emailHelper.setAttachmentName("Assets Report.pdf");
+		emailHelper.setAttachmentName("Rerport-Asset-Expired.pdf");
 		
 		List<JasperAssets> data = assetsService.getAssetsExpired();
 
