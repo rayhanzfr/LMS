@@ -12,4 +12,6 @@ public interface TransactionsDetailOutDao {
 	TransactionsDetailOut saveOrUpdate(TransactionsDetailOut transactionsDetailOut) throws Exception;
 	
 	List<TransactionsDetailOut> findMoreThanExpiredDate() throws Exception;
+	
+	List<TransactionsDetailOut> findAlmostExpired() throws Exception;
 }

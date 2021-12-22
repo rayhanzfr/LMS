@@ -75,9 +75,6 @@ public class ExcelRequest {
 								data = null;
 							}
 						}
-						else {
-							data = null;
-						}
 						
 						switch(cellIndex) {
 						case 0:
@@ -87,15 +84,14 @@ public class ExcelRequest {
 							asset.setInvoicesCode(data);
 							break;
 						case 2:
-							asset.setAssetsName(data);
-							break;
-						case 3:
 							asset.setStatusesAssetsCode(data);
 							break;
-						case 4:
+						case 3:
 							asset.setStatusesInOutCode(data);
-						case 5:
+							break;
+						case 4:
 							asset.setAssetsExpired(data);
+							break;
 						default :
 							break;
 						}
