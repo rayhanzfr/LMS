@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.lms.assets.ExcelRequest;
 import com.lawencon.lms.dao.AssetsDao;
+import com.lawencon.lms.dao.HistoriesDao;
 import com.lawencon.lms.dao.InvoicesDao;
 import com.lawencon.lms.dao.ItemsDao;
 import com.lawencon.lms.dao.PermissionsDao;
@@ -31,6 +32,7 @@ import com.lawencon.lms.dto.assets.UpdateAssetsDataDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsReqDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsResDto;
 import com.lawencon.lms.model.Assets;
+import com.lawencon.lms.model.Histories;
 import com.lawencon.lms.model.Invoices;
 import com.lawencon.lms.model.Items;
 import com.lawencon.lms.model.JasperAssets;
@@ -69,6 +71,9 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	
 	@Autowired
 	private PermissionsRolesDao permissionRolesDao;
+	
+	@Autowired
+	private HistoriesDao historiesDao;
 	
 	@Autowired
 	private UsersDao usersDao;
@@ -286,6 +291,14 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 			save.setIsActive(true);
 			begin();
 			Assets result = assetsDao.saveOrUpdate(save);
+			
+			Users user = usersDao.findById(getIdAuth());
+			Histories history = new Histories();
+			history.setUsers(user);
+			history.setAssets(result);
+			history.setActivityName("CREATE");
+			
+			historiesDao.saveOrUpdate(history);
 			commit();
 			
 			SaveAssetsDataDto resDataDto = new SaveAssetsDataDto();
