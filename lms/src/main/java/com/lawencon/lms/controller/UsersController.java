@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("users")
-public class UsersController {
+public class UsersController extends BaseController {
 
 	@Autowired
 	private UsersService usersService;

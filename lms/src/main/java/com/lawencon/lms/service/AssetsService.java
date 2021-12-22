@@ -39,10 +39,6 @@ public interface AssetsService {
 	
 	UpdateAssetsResDto update(UpdateAssetsReqDto updateAssetsReqDto) throws Exception;
 	
-	UpdateAssetsResDto updateStatusAssets(UpdateAssetsReqDto updateAssetsReqDto) throws Exception;
-	
-	UpdateAssetsResDto updateStatusInOut(UpdateAssetsReqDto updateAssetsReqDto) throws Exception;
-	
 	List<JasperAssets> getAssetsExpired()throws Exception;
 
 	Boolean removeById(String id) throws Exception;

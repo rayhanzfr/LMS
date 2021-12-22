@@ -43,7 +43,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("assets")
-public class AssetsController {
+public class AssetsController extends BaseController{
 
 	@Autowired
 	private AssetsService assetsService;
