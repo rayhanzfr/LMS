@@ -6,15 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.lms.assets.ExcelRequest;
 import com.lawencon.lms.dao.AssetsDao;
+import com.lawencon.lms.dao.HistoriesDao;
 import com.lawencon.lms.dao.InvoicesDao;
 import com.lawencon.lms.dao.ItemsDao;
+import com.lawencon.lms.dao.PermissionsDao;
+import com.lawencon.lms.dao.PermissionsRolesDao;
+import com.lawencon.lms.dao.RolesDao;
 import com.lawencon.lms.dao.StatusesAssetsDao;
 import com.lawencon.lms.dao.StatusesInOutDao;
+import com.lawencon.lms.dao.UsersDao;
 import com.lawencon.lms.dto.assets.AssetsDataDto;
 import com.lawencon.lms.dto.assets.GetAllAssetsDto;
 import com.lawencon.lms.dto.assets.GetByIdAssetsDto;
@@ -26,12 +32,18 @@ import com.lawencon.lms.dto.assets.UpdateAssetsDataDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsReqDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsResDto;
 import com.lawencon.lms.model.Assets;
+import com.lawencon.lms.model.Histories;
 import com.lawencon.lms.model.Invoices;
 import com.lawencon.lms.model.Items;
 import com.lawencon.lms.model.JasperAssets;
+import com.lawencon.lms.model.Permissions;
+import com.lawencon.lms.model.PermissionsRoles;
+import com.lawencon.lms.model.Roles;
 import com.lawencon.lms.model.StatusesAssets;
 import com.lawencon.lms.model.StatusesInOut;
+import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.AssetsService;
+import com.lawencon.lms.service.RolesService;
 
 @Service
 public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsService {
@@ -50,6 +62,21 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	
 	@Autowired
 	private InvoicesDao invoicesDao;
+	
+	@Autowired
+	private RolesDao rolesDao;
+	
+	@Autowired
+	private PermissionsDao permissionsDao;
+	
+	@Autowired
+	private PermissionsRolesDao permissionRolesDao;
+	
+	@Autowired
+	private HistoriesDao historiesDao;
+	
+	@Autowired
+	private UsersDao usersDao;
 	
 	private AssetsDataDto convert(Assets assets) {
 		AssetsDataDto data = new AssetsDataDto();
@@ -75,253 +102,291 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 
 	@Override
 	public GetAllAssetsDto findAll() throws Exception {
+		String permissionCode = "PERMSN9";
+		boolean validation = validation(permissionCode);
 		GetAllAssetsDto assetsAll = new GetAllAssetsDto();
-		List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-		List<Assets> assets = assetsDao.findAll();
-		assets.forEach(asset->{
-			AssetsDataDto data = convert(asset);
-			listAssets.add(data);
-		});
-		assetsAll.setData(listAssets);
-		return assetsAll;
+		if(validation) {
+			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+			List<Assets> assets = assetsDao.findAll();
+			assets.forEach(asset->{
+				AssetsDataDto data = convert(asset);
+				listAssets.add(data);
+			});
+			assetsAll.setData(listAssets);
+			return assetsAll;
+		}
+		else {
+			throw new Exception("Acces Denied");
+		}
 	}
 
 
 
 	@Override
 	public GetByIdAssetsDto findById(String id) throws Exception {
-		Assets asset = assetsDao.findById(id);
-		GetByIdAssetsDto getAssets = new GetByIdAssetsDto();
-		AssetsDataDto data = convert(asset);
-		getAssets.setData(data);
-		return getAssets;
+		String permissionCode = "PERMSN9";
+		boolean validation = validation(permissionCode);
+		if(validation) {
+			Assets asset = assetsDao.findById(id);
+			GetByIdAssetsDto getAssets = new GetByIdAssetsDto();
+			AssetsDataDto data = convert(asset);
+			getAssets.setData(data);
+			return getAssets;
+		}
+		else {
+			throw new Exception("Acces Denied");
+		}
 	}
 
 
 
 	@Override
 	public GetByIdAssetsDto findByAssetsName(String assetsName) throws Exception {
-		Assets asset = assetsDao.findByAssetsName(assetsName);
-		GetByIdAssetsDto getAssets = new GetByIdAssetsDto();
-		AssetsDataDto data = convert(asset);
-		getAssets.setData(data);
-		return getAssets;
+		String permissionCode = "PERMSN9";
+		boolean validation = validation(permissionCode);
+		if(validation) {
+			Assets asset = assetsDao.findByAssetsName(assetsName);
+			GetByIdAssetsDto getAssets = new GetByIdAssetsDto();
+			AssetsDataDto data = convert(asset);
+			getAssets.setData(data);
+			return getAssets;
+		}
+		else {
+			throw new Exception("Acces Denied");
+		}
 	}
 
 
 
 	@Override
 	public GetAllAssetsDto findByItemsCode(String itemsCode) throws Exception {
-		GetAllAssetsDto assetsAll = new GetAllAssetsDto();
-		List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-		List<Assets> assets = assetsDao.findByItemsCode(itemsCode);
-		assets.forEach(asset->{
-			AssetsDataDto data = convert(asset);
-			listAssets.add(data);
-		});
-		assetsAll.setData(listAssets);
-		return assetsAll;
+		String permissionCode = "PERMSN9";
+		boolean validation = validation(permissionCode);
+		if(validation) {
+			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
+			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+			List<Assets> assets = assetsDao.findByItemsCode(itemsCode);
+			assets.forEach(asset->{
+				AssetsDataDto data = convert(asset);
+				listAssets.add(data);
+			});
+			assetsAll.setData(listAssets);
+			return assetsAll;
+		}
+		else {
+			throw new Exception("Acces Denied");
+		}
 	}
-
-
 
 	@Override
 	public GetAllAssetsDto findByItemsBrandsCode(String brandsCode) throws Exception {
-		GetAllAssetsDto assetsAll = new GetAllAssetsDto();
-		List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-		List<Assets> assets = assetsDao.findByBrandsCode(brandsCode);
-		assets.forEach(asset->{
-			AssetsDataDto data = convert(asset);
-			listAssets.add(data);
-		});
-		assetsAll.setData(listAssets);
-		return assetsAll;
+		String permissionCode = "PERMSN9";
+		boolean validation = validation(permissionCode);
+		if(validation) {
+			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
+			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+			List<Assets> assets = assetsDao.findByBrandsCode(brandsCode);
+			assets.forEach(asset->{
+				AssetsDataDto data = convert(asset);
+				listAssets.add(data);
+			});
+			assetsAll.setData(listAssets);
+			return assetsAll;
+		}
+		else {
+			throw new Exception("Acces Denied");
+		}
 	}
 
 
 
 	@Override
 	public GetAllAssetsDto findByItemsTypesCode(String itemsTypesCode) throws Exception {
-		GetAllAssetsDto assetsAll = new GetAllAssetsDto();
-		List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-		List<Assets> assets = assetsDao.findByItemsTypesCode(itemsTypesCode);
-		assets.forEach(asset->{
-			AssetsDataDto data = convert(asset);
-			listAssets.add(data);
-		});
-		assetsAll.setData(listAssets);
-		return assetsAll;
+		String permissionCode = "PERMSN9";
+		boolean validation = validation(permissionCode);
+		if(validation) {
+			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
+			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+			List<Assets> assets = assetsDao.findByItemsTypesCode(itemsTypesCode);
+			assets.forEach(asset->{
+				AssetsDataDto data = convert(asset);
+				listAssets.add(data);
+			});
+			assetsAll.setData(listAssets);
+			return assetsAll;
+		}
+		else {
+			throw new Exception("Acces Denied");
+		}
 	}
 
 
 
 	@Override
 	public GetAllAssetsDto findByStatusesAssetsCode(String statusesAssetsCode) throws Exception {
-		GetAllAssetsDto assetsAll = new GetAllAssetsDto();
-		List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-		List<Assets> assets = assetsDao.findByStatusesAssetsCode(statusesAssetsCode);
-		assets.forEach(asset->{
-			AssetsDataDto data = convert(asset);
-			listAssets.add(data);
-		});
-		assetsAll.setData(listAssets);
-		return assetsAll;
+		String permissionCode = "PERMSN9";
+		boolean validation = validation(permissionCode);
+		if(validation) {
+			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
+			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+			List<Assets> assets = assetsDao.findByStatusesAssetsCode(statusesAssetsCode);
+			assets.forEach(asset->{
+				AssetsDataDto data = convert(asset);
+				listAssets.add(data);
+			});
+			assetsAll.setData(listAssets);
+			return assetsAll;
+		}
+		else {
+			throw new Exception("Access Denied");
+		}
 	}
 
 
 
 	@Override
 	public GetAllAssetsDto findByStatusesInOutCode(String statusesInOutCode) throws Exception {
-		GetAllAssetsDto assetsAll = new GetAllAssetsDto();
-		List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-		List<Assets> assets = assetsDao.findByStatusesInOutCode(statusesInOutCode);
-		assets.forEach(asset->{
-			AssetsDataDto data = convert(asset);
-			listAssets.add(data);
-		});
-		assetsAll.setData(listAssets);
-		return assetsAll;
+		String permissionCode = "PERMSN9";
+		boolean validation = validation(permissionCode);
+		if(validation) {
+			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
+			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+			List<Assets> assets = assetsDao.findByStatusesInOutCode(statusesInOutCode);
+			assets.forEach(asset->{
+				AssetsDataDto data = convert(asset);
+				listAssets.add(data);
+			});
+			assetsAll.setData(listAssets);
+			return assetsAll;
+		}
+		else {
+			throw new Exception("Access Denied");
+		}
 	}
 
 
 
 	@Override
 	public SaveAssetsResDto save(SaveAssetsReqDto saveAssetsReqDto) throws Exception {
-		Items item = itemsDao.findByCode(saveAssetsReqDto.getItemsCode());
-		Invoices invoice = invoicesDao.findByCode(saveAssetsReqDto.getInvoicesCode());
-		StatusesAssets statusesAssets = statusesAssetsDao.findByCode(saveAssetsReqDto.getStatusesAssetsCode());
-		StatusesInOut statusesInOut = statusesInOutDao.findByCode(saveAssetsReqDto.getStatusesInOutCode());
-		
-		Assets save = new Assets();
-		save.setItems(item);
-		save.setInvoices(invoice);
-		save.setAssetsName(saveAssetsReqDto.getAssetsName());
-		save.setStatusesAssets(statusesAssets);
-		save.setStatusesInOut(statusesInOut);
-		if(saveAssetsReqDto.getAssetsExpired()!=null) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			LocalDate  localDate = LocalDate.parse(saveAssetsReqDto.getAssetsExpired(), formatter);
-			save.setAssetsExpired(localDate);
+		String permissionCode = "PERMSN10";
+		boolean validation = validation(permissionCode);
+		if(validation) {
+			Items item = itemsDao.findByCode(saveAssetsReqDto.getItemsCode());
+			Invoices invoice = invoicesDao.findByCode(saveAssetsReqDto.getInvoicesCode());
+			StatusesAssets statusesAssets = statusesAssetsDao.findByCode(saveAssetsReqDto.getStatusesAssetsCode());
+			StatusesInOut statusesInOut = statusesInOutDao.findByCode(saveAssetsReqDto.getStatusesInOutCode());
+			
+			Assets save = new Assets();
+			save.setItems(item);
+			save.setInvoices(invoice);
+			save.setAssetsName(saveAssetsReqDto.getAssetsName());
+			save.setStatusesAssets(statusesAssets);
+			save.setStatusesInOut(statusesInOut);
+			if(saveAssetsReqDto.getAssetsExpired()!=null) {
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+				LocalDate  localDate = LocalDate.parse(saveAssetsReqDto.getAssetsExpired(), formatter);
+				save.setAssetsExpired(localDate);
+			}
+			save.setCreatedBy(getIdAuth());
+			save.setIsActive(true);
+			begin();
+			Assets result = assetsDao.saveOrUpdate(save);
+			
+			Users user = usersDao.findById(getIdAuth());
+			Histories history = new Histories();
+			history.setUsers(user);
+			history.setAssets(result);
+			history.setActivityName("CREATE");
+			
+			historiesDao.saveOrUpdate(history);
+			commit();
+			
+			SaveAssetsDataDto resDataDto = new SaveAssetsDataDto();
+			resDataDto.setId(result.getId());
+			
+			SaveAssetsResDto resDto = new SaveAssetsResDto();
+			resDto.setData(resDataDto);
+			resDto.setMessage("SUCCESS");
+			return resDto;
 		}
-		save.setCreatedBy(getIdAuth());
-		save.setIsActive(true);
-		begin();
-		Assets result = assetsDao.saveOrUpdate(save);
-		commit();
-		
-		SaveAssetsDataDto resDataDto = new SaveAssetsDataDto();
-		resDataDto.setId(result.getId());
-		
-		SaveAssetsResDto resDto = new SaveAssetsResDto();
-		resDto.setData(resDataDto);
-		resDto.setMessage("SUCCESS");
-		return resDto;
+		else {
+			throw new Exception("Access Denied");
+		}
 	}
 
 
 
 	@Override
 	public UpdateAssetsResDto update(UpdateAssetsReqDto updateAssetsReqDto) throws Exception {
-		Items item = itemsDao.findByCode(updateAssetsReqDto.getItemsCode());
-		Invoices invoice = invoicesDao.findByCode(updateAssetsReqDto.getInvoicesCode());
-		StatusesAssets statusesAssets = statusesAssetsDao.findByCode(updateAssetsReqDto.getStatusesAssetsCode());
-		StatusesInOut statusesInOut = statusesInOutDao.findByCode(updateAssetsReqDto.getStatusesInOutCode());
-		
-		Assets save = assetsDao.findById(updateAssetsReqDto.getId());
-		save.setItems(item);
-		save.setInvoices(invoice);
-		save.setAssetsName(updateAssetsReqDto.getAssetsName());
-		save.setStatusesAssets(statusesAssets);
-		save.setStatusesInOut(statusesInOut);
-		save.setAssetsExpired(LocalDate.parse(updateAssetsReqDto.getAssetsExpired()));
-		save.setUpdatedBy(getIdAuth());
-		save.setIsActive(updateAssetsReqDto.getIsActive());
-		save.setVersion(save.getVersion());
-		begin();
-		Assets result = assetsDao.saveOrUpdate(save);
-		commit();
-		
-		UpdateAssetsDataDto resDataDto = new UpdateAssetsDataDto();
-		resDataDto.setId(result.getId());
-		
-		UpdateAssetsResDto resDto = new UpdateAssetsResDto();
-		resDto.setData(resDataDto);
-		resDto.setMessage("SUCCESS");
-		return resDto;
+		String permissionCode = "PERMSN11";
+		boolean validation = validation(permissionCode);
+		if(validation) {
+			Items item = itemsDao.findByCode(updateAssetsReqDto.getItemsCode());
+			Invoices invoice = invoicesDao.findByCode(updateAssetsReqDto.getInvoicesCode());
+			StatusesAssets statusesAssets = statusesAssetsDao.findByCode(updateAssetsReqDto.getStatusesAssetsCode());
+			StatusesInOut statusesInOut = statusesInOutDao.findByCode(updateAssetsReqDto.getStatusesInOutCode());
+			
+			Assets save = assetsDao.findById(updateAssetsReqDto.getId());
+			save.setItems(item);
+			save.setInvoices(invoice);
+			save.setAssetsName(updateAssetsReqDto.getAssetsName());
+			save.setStatusesAssets(statusesAssets);
+			save.setStatusesInOut(statusesInOut);
+			save.setAssetsExpired(LocalDate.parse(updateAssetsReqDto.getAssetsExpired()));
+			save.setUpdatedBy(getIdAuth());
+			begin();
+			Assets result = assetsDao.saveOrUpdate(save);
+			commit();
+			
+			UpdateAssetsDataDto resDataDto = new UpdateAssetsDataDto();
+			resDataDto.setId(result.getId());
+			
+			UpdateAssetsResDto resDto = new UpdateAssetsResDto();
+			resDto.setData(resDataDto);
+			resDto.setMessage("SUCCESS");
+			return resDto;
+		}
+		else {
+			throw new Exception("Access Denied");
+		}
 	}
-
-
-
-	@Override
-	public UpdateAssetsResDto updateStatusAssets(UpdateAssetsReqDto updateAssetsReqDto) throws Exception {
-		StatusesAssets statusesAssets = statusesAssetsDao.findByCode(updateAssetsReqDto.getStatusesAssetsCode());
-		
-		Assets save = assetsDao.findById(updateAssetsReqDto.getId());
-		save.setStatusesAssets(statusesAssets);
-		save.setUpdatedBy(getIdAuth());
-		save.setIsActive(updateAssetsReqDto.getIsActive());
-		save.setVersion(save.getVersion());
-		begin();
-		Assets result = assetsDao.saveOrUpdate(save);
-		commit();
-		
-		UpdateAssetsDataDto resDataDto = new UpdateAssetsDataDto();
-		resDataDto.setId(result.getId());
-		
-		UpdateAssetsResDto resDto = new UpdateAssetsResDto();
-		resDto.setData(resDataDto);
-		resDto.setMessage("SUCCESS");
-		return resDto;
-	}
-
-
-
-	@Override
-	public UpdateAssetsResDto updateStatusInOut(UpdateAssetsReqDto updateAssetsReqDto) throws Exception {
-		StatusesInOut statusesInOut = statusesInOutDao.findByCode(updateAssetsReqDto.getStatusesInOutCode());
-		
-		Assets save = new Assets();
-		save.setStatusesInOut(statusesInOut);
-		save.setUpdatedBy(getIdAuth());
-		save.setIsActive(updateAssetsReqDto.getIsActive());
-		save.setVersion(save.getVersion());
-		begin();
-		Assets result = assetsDao.saveOrUpdate(save);
-		commit();
-		
-		UpdateAssetsDataDto resDataDto = new UpdateAssetsDataDto();
-		resDataDto.setId(result.getId());
-		
-		UpdateAssetsResDto resDto = new UpdateAssetsResDto();
-		resDto.setData(resDataDto);
-		resDto.setMessage("SUCCESS");
-		return resDto;
-	}
-
-
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		try {
-			begin();
-			boolean delete = assetsDao.removeById(id);
-			commit();
-			
-			return delete;
-		} catch (Exception e) {
-			e.printStackTrace();
-			rollback();
-			throw new Exception(e);
+		String permissionCode = "PERMS12";
+		boolean validation = validation(permissionCode);
+		if(validation) {
+			try {
+				begin();
+				boolean delete = assetsDao.removeById(id);
+				commit();
+				
+				return delete;
+			} catch (Exception e) {
+				e.printStackTrace();
+				rollback();
+				throw new Exception(e);
+			}
+		}
+		else {
+			throw new Exception("Acces Denied");
 		}
 	}
 
 	@Override
 	public GetTotalAssetsReqDto getTotalreq(String itemsCode, String itemsBrandsCode, String itemsTypesCode, String statusesAssetsCode, String statusesInOutCode,int total) throws Exception {
-		GetTotalAssetsReqDto getAssets = new GetTotalAssetsReqDto(); 
-		List<Assets> listAssets = assetsDao.findByReq(itemsCode,itemsTypesCode,itemsBrandsCode,statusesAssetsCode,statusesInOutCode,total);
-		getAssets.setData(listAssets);
-		getAssets.setTotal(total);
-		return getAssets;
+		String permissionCode = "PERMSN9";
+		boolean validation = validation(permissionCode);
+		if(validation) {
+			GetTotalAssetsReqDto getAssets = new GetTotalAssetsReqDto(); 
+			List<Assets> listAssets = assetsDao.findByReq(itemsCode,itemsTypesCode,itemsBrandsCode,statusesAssetsCode,statusesInOutCode,total);
+			getAssets.setData(listAssets);
+			getAssets.setTotal(total);
+			return getAssets;
+		}
+		else {
+			throw new Exception("Acces Denied");
+		}
 	}
 
 	@Override
@@ -359,5 +424,25 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 			showJasper.add(jp);
 		}
 		return showJasper;
+	}
+	
+	public boolean validation(String permissionsCode)throws Exception{
+		try {
+			boolean check = false;
+			Users users = usersDao.findById(getIdAuth());
+			Roles roles = rolesDao.findById(users.getRoles().getId());
+			Permissions permissions = permissionsDao.findByCode(permissionsCode);
+			List<PermissionsRoles> listPermissionsRoles = permissionRolesDao.findAll();
+			for (int i = 0; i < listPermissionsRoles.size(); i++) {
+				if (listPermissionsRoles.get(i).getPermissions().getId().equals(permissions.getId())) {
+					if (listPermissionsRoles.get(i).getRoles().getId().equals(roles.getId())) {
+						check = true;
+					}
+				}
+			}
+			return check;
+		} catch (NotFoundException e) {
+			throw new Exception(e);
+		}
 	}
 }

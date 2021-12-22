@@ -16,6 +16,8 @@ public interface ItemsTypesService {
 	SaveItemsTypesResDto save(ItemsTypes itemsTypes) throws Exception;
 	
 	UpdateItemsTypesResDto update(ItemsTypes itemsTypes) throws Exception;
+	
+	String countData()throws Exception;
 
 	Boolean removeById(String id) throws Exception;
 }

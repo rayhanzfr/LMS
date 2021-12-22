@@ -3,10 +3,10 @@ package com.lawencon.lms.dto.transactionsin;
 public class SaveTransactionsDetailsInReqDto {
 
 	private String transactionsInId;
-	private String locationsId;
-	private String employeesId;
-	private String assetsId;
-	private String statusesTransactionsId;
+	private String locationsCode;
+	private String employeesCode;
+	private String assetsName;
+	private String statusesTransactionsCode;
 	private String returnDate;
 
 	public String getTransactionsInId() {
@@ -17,36 +17,36 @@ public class SaveTransactionsDetailsInReqDto {
 		this.transactionsInId = transactionsInId;
 	}
 
-	public String getLocationsId() {
-		return locationsId;
+	public String getLocationsCode() {
+		return locationsCode;
 	}
 
-	public void setLocationsId(String locationsId) {
-		this.locationsId = locationsId;
+	public void setLocationsCode(String locationsCode) {
+		this.locationsCode = locationsCode;
 	}
 
-	public String getEmployeesId() {
-		return employeesId;
+	public String getEmployeesCode() {
+		return employeesCode;
 	}
 
-	public void setEmployeesId(String employeesId) {
-		this.employeesId = employeesId;
+	public void setEmployeesCode(String employeesCode) {
+		this.employeesCode = employeesCode;
 	}
 
-	public String getAssetsId() {
-		return assetsId;
+	public String getAssetsName() {
+		return assetsName;
 	}
 
-	public void setAssetsId(String assetsId) {
-		this.assetsId = assetsId;
+	public void setAssetsName(String assetsName) {
+		this.assetsName = assetsName;
 	}
 
-	public String getStatusesTransactionsId() {
-		return statusesTransactionsId;
+	public String getStatusesTransactionsCode() {
+		return statusesTransactionsCode;
 	}
 
-	public void setStatusesTransactionsId(String statusesTransactionsId) {
-		this.statusesTransactionsId = statusesTransactionsId;
+	public void setStatusesTransactionsCode(String statusesTransactionsCode) {
+		this.statusesTransactionsCode = statusesTransactionsCode;
 	}
 
 	public String getReturnDate() {

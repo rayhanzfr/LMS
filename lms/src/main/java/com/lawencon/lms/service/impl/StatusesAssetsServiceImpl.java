@@ -3,38 +3,69 @@ package com.lawencon.lms.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.lawencon.lms.dao.PermissionsDao;
+import com.lawencon.lms.dao.PermissionsRolesDao;
+import com.lawencon.lms.dao.RolesDao;
 import com.lawencon.lms.dao.StatusesAssetsDao;
+import com.lawencon.lms.dao.UsersDao;
 import com.lawencon.lms.dto.statusesassets.SaveStatusesAssetsResDto;
 import com.lawencon.lms.dto.statusesassets.UpdateStatusesAssetsResDto;
+import com.lawencon.lms.model.Permissions;
+import com.lawencon.lms.model.PermissionsRoles;
+import com.lawencon.lms.model.Roles;
 import com.lawencon.lms.model.StatusesAssets;
 import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.StatusesAssetsService;
-import com.lawencon.lms.service.UsersService;
 
 @Service
 public class StatusesAssetsServiceImpl extends BaseServiceLmsImpl implements StatusesAssetsService {
 
 	@Autowired
-	private UsersService usersService;
+	private StatusesAssetsDao statusesAssetsDao;
 
 	@Autowired
-	private StatusesAssetsDao statusesAssetsDao;
+	private PermissionsDao permissionsDao;
+
+	@Autowired
+	private UsersDao usersDao;
+
+	@Autowired
+	private RolesDao rolesDao;
+
+	@Autowired
+	private PermissionsRolesDao permissionsRolesDao;
 
 	@Override
 	public List<StatusesAssets> findAll() throws Exception {
-		return statusesAssetsDao.findAll();
+		
+		String permissionsCode = "PERMSN45";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation)
+			return statusesAssetsDao.findAll();
+		throw new Exception("Access Denied");
 	}
 
 	@Override
 	public StatusesAssets findById(String id) throws Exception {
-		return statusesAssetsDao.findById(id);
+
+		String permissionsCode = "PERMSN45";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation)
+			return statusesAssetsDao.findById(id);
+		throw new Exception("Access Denied");
 	}
 
 	@Override
 	public StatusesAssets findByCode(String code) throws Exception {
-		return statusesAssetsDao.findByCode(code);
+
+		String permissionsCode = "PERMSN45";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation)
+			return statusesAssetsDao.findByCode(code);
+		throw new Exception("Access Denied");
 	}
 
 	@Override
@@ -42,16 +73,10 @@ public class StatusesAssetsServiceImpl extends BaseServiceLmsImpl implements Sta
 		SaveStatusesAssetsResDto saveRes = new SaveStatusesAssetsResDto();
 
 		try {
-
-			Users users = usersService.findById(getIdAuth());
-
-			if (users == null) {
-				throw new IllegalAccessException("You need to login first!");
-			}
-
-			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
-				saveRes.setMessage("only superAdmin can Insert data!");
-				throw new IllegalAccessException("only superAdmin can Insert data!");
+			String permissionsCode = "PERMSN46";
+			Boolean validation = validationUsers(permissionsCode);
+			if (!validation) {
+				throw new Exception("Access Denied");
 			}
 
 			else {
@@ -91,24 +116,27 @@ public class StatusesAssetsServiceImpl extends BaseServiceLmsImpl implements Sta
 			statusesAssetsDb.setUpdatedBy(getIdAuth());
 			statusesAssetsDb.setStatusesAssetsName(statusesAssets.getStatusesAssetsName());
 
-			Users users = usersService.findById(getIdAuth());
-
-			if (users == null) {
-				throw new IllegalAccessException("You need to Login first!");
-			}
-
-			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
-				updateRes.setMessage("only superAdmin can Update data!");
-				throw new IllegalAccessException("only superAdmin can Update data!");
+			String permissionsCode = "PERMSN47";
+			Boolean validation = validationUsers(permissionsCode);
+			if (!validation) {
+				throw new Exception("Access Denied");
 			}
 
 			else {
-				begin();
-				statusesAssets.setUpdatedBy(getIdAuth());
-				statusesAssets = statusesAssetsDao.saveOrUpdate(statusesAssetsDb);
-				commit();
-				updateRes.setVersion(statusesAssets.getVersion());
-				updateRes.setMessage("Inserted");
+				if (statusesAssetsDb.getStatusesAssetsName() == null
+						|| statusesAssetsDb.getStatusesAssetsName().length() > 15) {
+					throw new Exception("statusesAssetsName required and not longer than 15 character length");
+				}
+				
+				else {
+					begin();
+					statusesAssets.setUpdatedBy(getIdAuth());
+					statusesAssets = statusesAssetsDao.saveOrUpdate(statusesAssetsDb);
+					commit();
+					updateRes.setVersion(statusesAssets.getVersion());
+					updateRes.setMessage("Inserted");
+				}
+				
 			}
 
 		} catch (Exception e) {
@@ -120,7 +148,41 @@ public class StatusesAssetsServiceImpl extends BaseServiceLmsImpl implements Sta
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return statusesAssetsDao.removeById(id);
+		String permissionsCode = "PERMSN48";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation) {
+			try {
+				begin();
+				boolean isDeleted = statusesAssetsDao.removeById(id);
+				commit();
+				return isDeleted;
+			} catch (Exception e) {
+				e.printStackTrace();
+				rollback();
+				throw new Exception(e);
+			}
+		}
+
+		throw new Exception("Access Denied");
+	}
+
+	public Boolean validationUsers(String permissionsCode) throws Exception {
+		try {
+			Users users = usersDao.findById(getIdAuth());
+			Roles roles = rolesDao.findById(users.getRoles().getId());
+			Permissions permissions = permissionsDao.findByCode(permissionsCode);
+			List<PermissionsRoles> listPermissionsRoles = permissionsRolesDao.findAll();
+			for (int i = 0; i < listPermissionsRoles.size(); i++) {
+				if (listPermissionsRoles.get(i).getPermissions().getId().equals(permissions.getId())) {
+					if (listPermissionsRoles.get(i).getRoles().getId().equals(roles.getId())) {
+						return true;
+					}
+				}
+			}
+			return false;
+		} catch (NotFoundException e) {
+			throw new Exception(e);
+		}
 	}
 
 }

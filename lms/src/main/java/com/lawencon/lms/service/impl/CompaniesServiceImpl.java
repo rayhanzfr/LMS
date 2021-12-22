@@ -3,25 +3,29 @@ package com.lawencon.lms.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.CompaniesDao;
 import com.lawencon.lms.dao.FilesDao;
+import com.lawencon.lms.dao.PermissionsDao;
+import com.lawencon.lms.dao.PermissionsRolesDao;
+import com.lawencon.lms.dao.RolesDao;
+import com.lawencon.lms.dao.UsersDao;
 import com.lawencon.lms.dto.companies.SaveCompaniesResDto;
 import com.lawencon.lms.dto.companies.UpdateCompaniesResDto;
 import com.lawencon.lms.model.Companies;
 import com.lawencon.lms.model.Files;
+import com.lawencon.lms.model.Permissions;
+import com.lawencon.lms.model.PermissionsRoles;
+import com.lawencon.lms.model.Roles;
 import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.CompaniesService;
-import com.lawencon.lms.service.UsersService;
 
 @Service
 public class CompaniesServiceImpl extends BaseServiceLmsImpl implements CompaniesService {
-
-	@Autowired
-	private UsersService usersService;
 
 	@Autowired
 	private CompaniesDao companiesDao;
@@ -29,19 +33,44 @@ public class CompaniesServiceImpl extends BaseServiceLmsImpl implements Companie
 	@Autowired
 	private FilesDao filesDao;
 
+	@Autowired
+	private UsersDao usersDao;
+
+	@Autowired
+	private RolesDao rolesDao;
+
+	@Autowired
+	private PermissionsDao permissionsDao;
+
+	@Autowired
+	private PermissionsRolesDao permissionsRolesDao;
+
 	@Override
 	public List<Companies> findAll() throws Exception {
-		return companiesDao.findAll();
+		String permissionsCode = "PERMSN13";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation)
+			return companiesDao.findAll();
+		throw new Exception("Access Denied");
 	}
 
 	@Override
 	public Companies findById(String id) throws Exception {
-		return companiesDao.findById(id);
+		String permissionsCode = "PERMSN13";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation)
+			return companiesDao.findById(id);
+		throw new Exception("Access Denied");
 	}
 
 	@Override
 	public Companies findByCode(String code) throws Exception {
-		return companiesDao.findByCode(code);
+
+		String permissionsCode = "PERMSN13";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation)
+			return companiesDao.findByCode(code);
+		throw new Exception("Access Denied");
 	}
 
 	@Override
@@ -55,25 +84,25 @@ public class CompaniesServiceImpl extends BaseServiceLmsImpl implements Companie
 			filesInsert.setFile(file.getBytes());
 			filesInsert.setExtensions(ext);
 
-			Users users = usersService.findById(getIdAuth());
-			if (users == null) {
-				throw new IllegalAccessException("You need to login first!");
-			}
-
-			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
-				saveRes.setMessage("only superAdmin can Insert data!");
-				throw new IllegalAccessException("only superAdmin can Insert data!");
+			String permissionsCode = "PERMSN14";
+			Boolean validation = validationUsers(permissionsCode);
+			if (!validation) {
+				throw new Exception("Access Denied");
 			}
 
 			else {
-				if(companies.getCompaniesPhone() == null) {
+				if (companies.getCompaniesPhone() == null) {
 					throw new Exception("companiesPhone required");
 				}
-				
-				else if(companies.getCompaniesAddress() == null) {
+
+				else if (companies.getCompaniesAddress() == null) {
 					throw new Exception("companiesAddress required");
 				}
 				
+				else if(companies.getCompaniesName() == null) {
+					throw new Exception("companiesName required");
+				}
+
 				else {
 					begin();
 					Files filesDb = new Files();
@@ -107,37 +136,53 @@ public class CompaniesServiceImpl extends BaseServiceLmsImpl implements Companie
 			Files filesUpdate = new Files();
 			filesUpdate.setFile(file.getBytes());
 			filesUpdate.setExtensions(ext);
-			
-			
-			Companies companiesDb = findByCode(companies.getCompaniesCode());
-			companiesDb.setUpdatedBy(getIdAuth());
-			companiesDb.setCompaniesName(companies.getCompaniesName());
-			companiesDb.setCompaniesPhone(companies.getCompaniesPhone());
-			companiesDb.setCompaniesAddress(companies.getCompaniesAddress());
 
-			Users users = usersService.findById(getIdAuth());
-
-			if (users == null) {
-				throw new IllegalAccessException("You need to login first!");
-			}
-
-			else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") || users.getIsActive() == false) {
-				updateRes.setMessage("only superAdmin can Update data!");
-				throw new IllegalAccessException("only superAdmin can Update data!");
+			String permissionsCode = "PERMSN15";
+			Boolean validation = validationUsers(permissionsCode);
+			if (!validation) {
+				throw new Exception("Access Denied");
 			}
 
 			else {
-				begin();
-				Files filesDb = new Files();
-				filesUpdate.setCreatedBy(getIdAuth());
-				filesDb = filesDao.saveOrUpdate(filesUpdate);
-				companiesDb.setFiles(filesDb);
-				
-				companies = companiesDao.saveOrUpdate(companiesDb);
-				commit();
+				Companies companiesDb = findByCode(companies.getCompaniesCode());
+				if (companiesDb == null) {
+					throw new Exception("Companies code not found");
+				}
 
-				updateRes.setVersion(companies.getVersion());
-				updateRes.setMessage("Inserted");
+				else {
+					companiesDb.setUpdatedBy(getIdAuth());
+					companiesDb.setCompaniesName(companies.getCompaniesName());
+					companiesDb.setCompaniesPhone(companies.getCompaniesPhone());
+					companiesDb.setCompaniesAddress(companies.getCompaniesAddress());
+
+					if (companiesDb.getCompaniesName() == null) {
+						throw new Exception("companiesName required");
+					}
+					
+					else if (companiesDb.getCompaniesPhone() == null) {
+						throw new Exception("companiesPhone required");
+					}
+					
+					else if(companiesDb.getCompaniesAddress() == null) {
+						throw new Exception("companiesAddress required");
+					}
+
+					else {
+						begin();
+						Files filesDb = new Files();
+						filesUpdate.setCreatedBy(getIdAuth());
+						filesDb = filesDao.saveOrUpdate(filesUpdate);
+						companiesDb.setFiles(filesDb);
+
+						companies = companiesDao.saveOrUpdate(companiesDb);
+						commit();
+
+						updateRes.setVersion(companies.getVersion());
+						updateRes.setMessage("Inserted");
+					}
+
+				}
+
 			}
 
 		} catch (Exception e) {
@@ -149,12 +194,46 @@ public class CompaniesServiceImpl extends BaseServiceLmsImpl implements Companie
 
 	@Override
 	public Boolean removeById(String id) throws Exception {
-		return companiesDao.removeById(id);
+		String permissionsCode = "PERMSN24";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation) {
+			try {
+				begin();
+				boolean isDeleted = companiesDao.removeById(id);
+				commit();
+				return isDeleted;
+			} catch (Exception e) {
+				e.printStackTrace();
+				rollback();
+				throw new Exception(e);
+			}
+		}
+
+		throw new Exception("Access Denied");
 	}
 
 	public String generateCode() throws Exception {
 		String generatedCode = EnumCode.COMPANIES.getCode() + (companiesDao.countData() + 1);
 		return generatedCode;
+	}
+
+	public Boolean validationUsers(String permissionsCode) throws Exception {
+		try {
+			Users users = usersDao.findById(getIdAuth());
+			Roles roles = rolesDao.findById(users.getRoles().getId());
+			Permissions permissions = permissionsDao.findByCode(permissionsCode);
+			List<PermissionsRoles> listPermissionsRoles = permissionsRolesDao.findAll();
+			for (int i = 0; i < listPermissionsRoles.size(); i++) {
+				if (listPermissionsRoles.get(i).getPermissions().getId().equals(permissions.getId())) {
+					if (listPermissionsRoles.get(i).getRoles().getId().equals(roles.getId())) {
+						return true;
+					}
+				}
+			}
+			return false;
+		} catch (NotFoundException e) {
+			throw new Exception(e);
+		}
 	}
 
 }

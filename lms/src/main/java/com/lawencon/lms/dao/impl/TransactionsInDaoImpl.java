@@ -94,14 +94,11 @@ public class TransactionsInDaoImpl extends BaseDaoImpl<TransactionsIn> implement
 	}
 
 	@Override
-	public String countData() throws Exception {
-		String lastRegist = null;
-
+	public Integer countData() throws Exception {
 		String sql = "SELECT COUNT(tin) FROM TransactionsIn as tin";
-
-		Object resultQuery = createQuery(sql, TransactionsIn.class).getSingleResult();
-		lastRegist = resultQuery.toString();
-		return lastRegist;
+		Object result = createNativeQuery(sql).getSingleResult();
+		Integer results = Integer.valueOf(result.toString());
+		return results;
 	}
 
 }

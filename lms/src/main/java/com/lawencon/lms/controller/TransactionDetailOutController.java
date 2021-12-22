@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RequestMapping("transactions-detail-out")
-public class TransactionDetailOutController {
+public class TransactionDetailOutController extends BaseController {
 	@Autowired
 	private TransactionsDetailOutService transactionsDetailOutService;
 	
