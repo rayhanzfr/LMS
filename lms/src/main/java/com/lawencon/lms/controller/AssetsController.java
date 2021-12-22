@@ -1,6 +1,5 @@
 package com.lawencon.lms.controller;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +29,8 @@ import com.lawencon.lms.dto.assets.SaveAssetsReqDto;
 import com.lawencon.lms.dto.assets.SaveAssetsResDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsReqDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsResDto;
+import com.lawencon.lms.email.EmailHelper;
+import com.lawencon.lms.email.FileSender;
 import com.lawencon.lms.model.Assets;
 import com.lawencon.lms.model.JasperAssets;
 import com.lawencon.lms.service.AssetsService;
@@ -39,13 +40,6 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @RestController
 @RequestMapping("assets")
@@ -53,6 +47,9 @@ public class AssetsController {
 
 	@Autowired
 	private AssetsService assetsService;
+
+	@Autowired
+	private FileSender fileSender;
 
 	@ApiResponse(responseCode = "200", content = {
 			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class))) })
@@ -67,7 +64,7 @@ public class AssetsController {
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/expired")
 	public ResponseEntity<?> getAssetsExpired() throws Exception {
 		List<JasperAssets> result = new ArrayList<>();
@@ -195,7 +192,7 @@ public class AssetsController {
 		message = "Please upload an excel file!";
 		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@GetMapping("/download")
 	public HttpEntity<?> reportSample() throws Exception {
 		List<JasperAssets> data = assetsService.getAssetsExpired();
@@ -208,5 +205,23 @@ public class AssetsController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_PDF);
 		return new HttpEntity<>(out, headers);
+	}
+
+	@GetMapping("/send-report")
+	public ResponseEntity<?> sendReport() throws Exception {
+		EmailHelper emailHelper = new EmailHelper();
+		emailHelper.setSubject("Assets Report");
+		emailHelper.setBody("Your Report");
+		emailHelper.setAttachmentName("Assets Report.pdf");
+		
+		List<JasperAssets> data = assetsService.getAssetsExpired();
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("company", "items");
+
+		byte[] out = JasperUtil.responseToByteArray(data, "assets-report", map);
+
+		fileSender.sendReport(emailHelper, out);
+		return new ResponseEntity<>("SENT", HttpStatus.OK);
 	}
 }
