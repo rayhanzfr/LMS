@@ -25,9 +25,10 @@ public interface AssetsDao {
 
 	List<Assets> getExpiredAssets() throws Exception;
 	
-	String countData() throws Exception;
+	Integer countData() throws Exception;
 	
 	Assets saveOrUpdate(Assets assets) throws Exception;
 
 	Boolean removeById(String id) throws Exception;
+	
 }

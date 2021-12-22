@@ -10,12 +10,12 @@ public class JasperAssets {
 	private String itemsBrandsName;
 	private String statusesAssetsName;
 	private String statusesInOutName;
-	private LocalDate assetsExpired;
+	private String assetsExpired;
 	
-	public LocalDate getAssetsExpired() {
+	public String getAssetsExpired() {
 		return assetsExpired;
 	}
-	public void setAssetsExpired(LocalDate assetsExpired) {
+	public void setAssetsExpired(String assetsExpired) {
 		this.assetsExpired = assetsExpired;
 	}
 	public String getAssetsName() {
