@@ -24,23 +24,6 @@ public class FileSender extends BaseServiceLmsImpl {
 	private UsersDao usersDao;
 
 	@Async
-	public void sendFile(String to, String subject, String body, byte[] attachment) throws MessagingException {
-
-		MimeMessage message = mailSender.createMimeMessage();
-
-		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		DataSource dataSource = new ByteArrayDataSource(attachment, "application/pdf");
-
-		helper.setFrom("bahrul.faizi@gmail.com");
-		helper.setTo(to);
-		helper.setSubject(subject);
-		helper.setText("<b>" + body + "</b>", true);
-		helper.addAttachment("Assets-report.pdf", dataSource);
-
-		mailSender.send(message);
-	}
-
-	@Async
 	public void sendReport(EmailHelper emailHelper, byte[] attachment) throws MessagingException {
 
 		try {
@@ -51,7 +34,7 @@ public class FileSender extends BaseServiceLmsImpl {
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 			DataSource dataSource = new ByteArrayDataSource(attachment, "application/pdf");
 
-			helper.setFrom("bahrul.faizi@gmail.com");
+			helper.setFrom("lawenconassetsmanagement@gmail.com");
 			helper.setTo(users.getUsersEmail());
 			helper.setSubject(emailHelper.getSubject());
 			helper.setText(emailHelper.getBody());
