@@ -1,5 +1,6 @@
 package com.lawencon.lms.dao.impl;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -170,10 +171,14 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	}
 
 	@Override
-	public String countData() throws Exception {
-		Object resultQuery = createQuery("SELECT COUNT(a.id) FROM Assets a", Assets.class).getSingleResult();
-		String count = resultQuery.toString();
-		return count;
+	public Integer countData() throws Exception {
+		Object resultQuery = createNativeQuery("SELECT COUNT(a.id) FROM Assets a").getSingleResult();
+		if(resultQuery==null) {
+			return 0;
+		}
+		BigInteger results = new BigInteger(resultQuery.toString());
+		Integer resultsInteger = results.intValue();
+		return resultsInteger;
 	}
 
 	@Override

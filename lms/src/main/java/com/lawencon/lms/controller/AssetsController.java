@@ -198,8 +198,7 @@ public class AssetsController extends BaseController{
 		List<JasperAssets> data = assetsService.getAssetsExpired();
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("company", "items");
-
+		
 		byte[] out = JasperUtil.responseToByteArray(data, "assets-report", map);
 
 		HttpHeaders headers = new HttpHeaders();

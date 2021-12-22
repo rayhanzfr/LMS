@@ -170,10 +170,11 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					histories.setAssets(transactionsDetailOut.getAssets());
-					histories.setUsers(users);
-					histories.setActivityName(StatusesInOutCode.CHECKOUT.getCode());
 					try {
+						histories.setAssets(transactionsDetailOut.getAssets());
+						histories.setUsers(users);
+						histories.setActivityName(StatusesInOutCode.CHECKOUT.getCode());
+						histories.setCreatedBy(getIdAuth());
 						histories = historiesDao.saveOrUpdate(histories);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block

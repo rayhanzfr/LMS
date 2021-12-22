@@ -75,10 +75,10 @@ WHERE a.assets_expired <= DATE(NOW())]]>
 				</textElement>
 				<text><![CDATA[Report Expired Asset]]></text>
 			</staticText>
-			<textField pattern="dd-mm-yyyy">
-				<reportElement x="26" y="89" width="100" height="18" uuid="deb4a450-7590-4a7e-aea3-17679bb56dd6"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Segoe UI" size="12"/>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement x="70" y="60" width="110" height="30" uuid="857981c2-0a20-46ba-b7d4-85eb448b5eca"/>
+				<textElement>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>

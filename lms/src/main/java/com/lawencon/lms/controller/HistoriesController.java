@@ -3,6 +3,7 @@ package com.lawencon.lms.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -41,7 +42,7 @@ public class HistoriesController extends BaseController {
 	@GetMapping("/pdf")
     public ResponseEntity<byte[]> generatePdf() throws Exception, JRException {
         
-        HashMap<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         
         byte[] data = JasperUtil.responseToByteArray(historiesService.findHistoriesReport(), "assets-histories", map);
 
