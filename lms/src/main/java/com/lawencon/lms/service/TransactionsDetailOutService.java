@@ -12,4 +12,6 @@ public interface TransactionsDetailOutService {
 	List<TransactionsOutExpired> getMoreThanExpired() throws Exception;
 
 	List<TransactionsOutExpired> findAlmostExpired() throws Exception;
+	
+	public void sendReminder() throws Exception;
 }
