@@ -274,7 +274,7 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 	}
 
 	public String generateCode() throws Exception {
-		String generatedCode = EnumCode.INVOICES.getCode() + (transactionsInDao.countData() + 1);
+		String generatedCode = EnumCode.TRANSACTIONSIN.getCode() + (transactionsInDao.countData() + 1);
 		return generatedCode;
 	}
 
