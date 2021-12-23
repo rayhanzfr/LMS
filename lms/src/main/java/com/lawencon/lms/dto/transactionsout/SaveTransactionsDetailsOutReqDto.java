@@ -1,20 +1,18 @@
 package com.lawencon.lms.dto.transactionsout;
 
 public class SaveTransactionsDetailsOutReqDto {
-	private String transactionsInId;
+	private String transactionsOutId;
 	private String locationsCode;
 	private String employeesCode;
 	private String assetsName;
 	private String expiredDate;
-	private String createdBy;
-	private String isActive;
 
-	public String getTransactionsInId() {
-		return transactionsInId;
+	public String getTransactionsOutId() {
+		return transactionsOutId;
 	}
 
-	public void setTransactionsInId(String transactionsInId) {
-		this.transactionsInId = transactionsInId;
+	public void setTransactionsOutId(String transactionsOutId) {
+		this.transactionsOutId = transactionsOutId;
 	}
 
 	public String getLocationsCode() {
@@ -49,21 +47,7 @@ public class SaveTransactionsDetailsOutReqDto {
 		this.expiredDate = expiredDate;
 	}
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public String getIsActive() {
-		return isActive;
-	}
-
-	public void setIsActive(String isActive) {
-		this.isActive = isActive;
-	}
+	
 	
 	
 }

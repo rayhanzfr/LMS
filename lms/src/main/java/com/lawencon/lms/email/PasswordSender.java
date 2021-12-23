@@ -25,16 +25,16 @@ public class PasswordSender {
 	protected Configuration freemarkerConfig;
 
 	@Async
-	public void sendSimpleMessage(String to, String subject, String text) throws Exception {
+	public void sendSimpleMessage(EmailHelper emailHelper, String text) throws Exception {
 
 		MimeMessage message = mailSender.createMimeMessage();
 
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
 		helper.setFrom("lawenconassetsmanagement@gmail.com");
-		helper.setTo(to);
-		helper.setSubject(subject);
-		String emailContent = getEmailContent(to,text);
+		helper.setTo(emailHelper.getReceiver());
+		helper.setSubject(emailHelper.getSubject());
+		String emailContent = getEmailContent(emailHelper.getReceiver(),text);
 		helper.setText(emailContent, true);
 		mailSender.send(message);
 	}

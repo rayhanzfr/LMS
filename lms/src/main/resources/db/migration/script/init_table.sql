@@ -27,7 +27,7 @@ CREATE TABLE users (
 	PRIMARY KEY(id),
 	FOREIGN KEY (roles_id)
 	REFERENCES roles(id)
-);
+); 
 
 
 CREATE TABLE permissions (
@@ -253,7 +253,6 @@ CREATE TABLE transactions_out (
    id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
    transactions_out_code varchar(15) UNIQUE NOT NULL, 
    check_out_date timestamp without time zone NOT NULL,
-   expired_date date NOT NULL,
    "version" integer NOT NULL,
    created_by text NOT NULL,
    created_at timestamp without time zone NOT NULL,
