@@ -84,14 +84,14 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 
 	@Override
 	public SaveUsersResDto save(Users users) throws Exception {
-		String permissionCode = "PERMSN38";
-		boolean validation = validation(permissionCode);
-		if (validation) {
+//		String permissionCode = "PERMSN38";
+//		boolean validation = validation(permissionCode);
+//		if (validation) {
 			String initPassword = generateInitPassword().toString();
 
 			SaveUsersResDto resDto = new SaveUsersResDto();
 			try {
-				Roles roles = rolesService.findByCode(users.getRoles().getRolesCode());
+				Roles roles = rolesDao.findByCode(users.getRoles().getRolesCode());
 				users.setCreatedBy(roles.getId());
 				users.setRoles(roles);
 //			users.setUsersPassword(bCryptPasswordEncoder.encode(users.getUsersPassword()));
@@ -108,9 +108,9 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 				rollback();
 			}
 			return resDto;
-		} else {
-			throw new Exception("Access Denied");
-		}
+//		} else {
+//			throw new Exception("Access Denied");
+//		}
 	}
 
 	@Override
