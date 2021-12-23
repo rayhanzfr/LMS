@@ -106,7 +106,7 @@ public class TransactionsDetailOutServiceImpl extends BaseServiceLmsImpl impleme
 				emailHelper.setSubject("Almost Expired");
 				emailHelper.setBody("Code: " + transactionsOut.getTransactionsOutCode() + " Date: "+ transactionsDetailOut.getTransactionDetailOutExpired());
 				try {
-					reminderSender.sendReminder(emailHelper);
+					reminderSender.sendReminder(data,emailHelper);
 				} catch (MessagingException e) {
 					e.printStackTrace();
 				}

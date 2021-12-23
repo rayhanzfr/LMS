@@ -27,7 +27,7 @@ public class TransactionsOutDaoImpl extends BaseDaoImpl<TransactionsOut> impleme
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append(
-					"SELECT id,transactions_out_code,check_out_date,expired_date,created_by,created_at,isactive,updated_by,updated_at,version");
+					"SELECT id,transactions_out_code,check_out_date,created_by,created_at,isactive,updated_by,updated_at,version");
 			sql.append(" FROM transactions_out to");
 			sql.append(" WHERE transactions_out_code = :code ");
 			Object result = createNativeQuery(sql.toString()).setParameter("code", code).getSingleResult();
@@ -37,7 +37,6 @@ public class TransactionsOutDaoImpl extends BaseDaoImpl<TransactionsOut> impleme
 				transactionsOut.setId(objArr[0].toString());
 				transactionsOut.setTransactionsOutCode(objArr[1].toString());
 				transactionsOut.setCheckOutDate(((Timestamp) objArr[2]).toLocalDateTime().toLocalDate());
-				transactionsOut.setExpiredDate(((Timestamp) objArr[3]).toLocalDateTime().toLocalDate());
 				transactionsOut.setCreatedBy(objArr[4].toString());
 				transactionsOut.setCreatedAt(((Timestamp) objArr[5]).toLocalDateTime());
 				transactionsOut.setIsActive((Boolean) objArr[6]);
@@ -64,7 +63,7 @@ public class TransactionsOutDaoImpl extends BaseDaoImpl<TransactionsOut> impleme
 
 	@Override
 	public Integer countData() throws Exception {
-		String sql = "SELECT COUNT(to.id) FROM transactions_out to ";
+		String sql = " SELECT COUNT(id) FROM transactions_out ";
 		Object result = createNativeQuery(sql).getSingleResult();
 		BigInteger results = new BigInteger(result.toString());
 		Integer resultsInteger = results.intValue();

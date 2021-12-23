@@ -29,7 +29,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
-		sql.append(" INNER JOIN FETCH i.itemstypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
 		sql.append(" INNER JOIN FETCH a.invoices ");
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
@@ -47,7 +47,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
-		sql.append(" INNER JOIN FETCH i.itemstypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
 		sql.append(" INNER JOIN FETCH a.invoices ");
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
@@ -65,7 +65,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
-		sql.append(" INNER JOIN FETCH i.itemstypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
 		sql.append(" INNER JOIN FETCH a.invoices ");
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
@@ -83,7 +83,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
-		sql.append(" INNER JOIN FETCH i.itemstypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
 		sql.append(" INNER JOIN FETCH a.invoices ");
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
@@ -102,7 +102,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
-		sql.append(" INNER JOIN FETCH i.itemstypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
 		sql.append(" INNER JOIN FETCH a.invoices ");
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
@@ -121,7 +121,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
-		sql.append(" INNER JOIN FETCH i.itemstypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
 		sql.append(" INNER JOIN FETCH a.invoices ");
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
@@ -151,7 +151,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
-		sql.append(" INNER JOIN FETCH i.itemstypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
 		sql.append(" INNER JOIN FETCH a.invoices ");
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");

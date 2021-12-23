@@ -69,7 +69,8 @@ public class AssetsController extends BaseController{
 	public ResponseEntity<?> getAssetsExpired() throws Exception {
 		List<JasperAssets> result = new ArrayList<>();
 		try {
-			result = assetsService.getAssetsExpired();
+			Map<String, Object> res = assetsService.getAssetsExpired();
+			result = (List<JasperAssets>) res.get("listJasper");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
@@ -195,8 +196,9 @@ public class AssetsController extends BaseController{
 
 	@GetMapping("/download")
 	public HttpEntity<?> reportSample() throws Exception {
-		List<JasperAssets> data = assetsService.getAssetsExpired();
-
+		Map<String, Object> res = assetsService.getAssetsExpired();
+		List<JasperAssets> data = (List<JasperAssets>) res.get("listJasper");
+		
 		Map<String, Object> map = new HashMap<>();
 		
 		byte[] out = JasperUtil.responseToByteArray(data, "assets-report", map);
@@ -208,15 +210,14 @@ public class AssetsController extends BaseController{
 
 	@GetMapping("/send-report")
 	public ResponseEntity<?> sendReport() throws Exception {
-		EmailHelper emailHelper = new EmailHelper();
-		emailHelper.setSubject("Report Asset Expired");
-		emailHelper.setBody("Your Report");
-		emailHelper.setAttachmentName("Rerport-Asset-Expired.pdf");
 		
-		List<JasperAssets> data = assetsService.getAssetsExpired();
-
+		
+		Map<String, Object> res = assetsService.getAssetsExpired();
+		List<JasperAssets> data = (List<JasperAssets>) res.get("listJasper");
+		
+		EmailHelper emailHelper = (EmailHelper) res.get("emailHelper");
+		
 		Map<String, Object> map = new HashMap<>();
-		map.put("company", "items");
 
 		byte[] out = JasperUtil.responseToByteArray(data, "assets-report", map);
 

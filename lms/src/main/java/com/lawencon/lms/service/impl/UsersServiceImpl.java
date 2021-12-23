@@ -17,6 +17,7 @@ import com.lawencon.lms.dao.RolesDao;
 import com.lawencon.lms.dao.UsersDao;
 import com.lawencon.lms.dto.users.SaveUsersResDto;
 import com.lawencon.lms.dto.users.UpdateUsersResDto;
+import com.lawencon.lms.email.EmailHelper;
 import com.lawencon.lms.email.PasswordSender;
 import com.lawencon.lms.model.Permissions;
 import com.lawencon.lms.model.PermissionsRoles;
@@ -101,8 +102,12 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 				commit();
 				resDto.setId(users.getId());
 				resDto.setMessage("INSERTED");
+				
+				EmailHelper emailHelper = new EmailHelper();
+				emailHelper.setReceiver(users.getUsersEmail());
+				emailHelper.setSubject("Password for login LMS");
 
-				passwordSender.sendSimpleMessage(users.getUsersEmail(), "Password untuk login LMS", initPassword);
+				passwordSender.sendSimpleMessage(emailHelper, initPassword);
 			} catch (Exception e) {
 				e.printStackTrace();
 				rollback();
