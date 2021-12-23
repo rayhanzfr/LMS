@@ -5,16 +5,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.parsing.Location;
 import org.springframework.stereotype.Repository;
 
 import com.lawencon.base.BaseDaoImpl;
 import com.lawencon.lms.dao.TransactionsDetailOutDao;
 import com.lawencon.lms.model.Assets;
+import com.lawencon.lms.model.Companies;
 import com.lawencon.lms.model.Employees;
 import com.lawencon.lms.model.Locations;
 import com.lawencon.lms.model.TransactionsDetailOut;
 import com.lawencon.lms.model.TransactionsOut;
+import com.lawencon.lms.model.Users;
 
 @Repository
 public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetailOut>
@@ -133,6 +134,58 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 		});
 		
 		return listTO;
+	}
+
+	@Override
+	public List<TransactionsDetailOut> findAlmostExpired() throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT tdo.id , transout.transactions_out_code, a.assets_name , e.employees_fullname, u.users_email , l.locations_code , c.companies_name, tdo.transaction_detail_out_expired ");
+		sql.append(" FROM transactions_detail_out tdo ");
+		sql.append(" INNER JOIN transactions_out transout ON transout.id = tdo.transactions_out_id ");
+		sql.append(" INNER JOIN locations l ON l.id = tdo.locations_id ");
+		sql.append(" INNER JOIN companies c ON c.id = l.companies_id ");
+		sql.append(" INNER JOIN employees e ON e.id = tdo.employees_id ");
+		sql.append(" INNER JOIN users u ON u.id = e.users_id ");
+		sql.append(" INNER JOIN assets a ON a.id = tdo.assets_id ");
+		sql.append(" WHERE (EXTRACT(DAY FROM tdo.transaction_detail_out_expired)- EXTRACT(DAY FROM now())) <=7 ");
+		
+		List<?> result = createNativeQuery(sql.toString())
+				.getResultList();
+		List<TransactionsDetailOut> data = new ArrayList<TransactionsDetailOut>();
+		result.forEach(rs->{
+			Object[] obj = (Object[]) rs;
+			TransactionsDetailOut detail = new TransactionsDetailOut();
+			detail.setId(obj[0].toString());
+			
+			TransactionsOut out = new TransactionsOut();
+			out.setTransactionsOutCode(obj[1].toString());
+			
+			Assets asset = new Assets();
+			asset.setAssetsName(obj[2].toString());
+			
+			Employees employee = new  Employees();
+			employee.setEmployeesFullname(obj[3].toString());
+			
+			Users user = new Users();
+			user.setUsersEmail(obj[4].toString());
+			employee.setUsers(user);
+			
+			Locations location =  new Locations();
+			location.setLocationsDeploy(obj[5].toString());
+			
+			Companies company = new Companies();
+			company.setCompaniesName(obj[6].toString());
+			location.setCompanies(company);
+			
+			detail.setAssets(asset);
+			detail.setEmployees(employee);
+			detail.setLocations(location);
+			detail.setTransactionsOut(out);
+			detail.setTransactionDetailOutExpired(LocalDate.parse(obj[7].toString()));
+			
+			data.add(detail);
+		});
+		return data;
 	}
 
 }

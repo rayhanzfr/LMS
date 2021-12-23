@@ -61,4 +61,20 @@ public class TransactionsDetailOutServiceImpl extends BaseServiceLmsImpl impleme
 		});
 		return transactionsExpired;
 	}
+
+	@Override
+	public List<TransactionsOutExpired> findAlmostExpired() throws Exception {
+		List<TransactionsDetailOut> detail = transactionsDetailOutDao.findAlmostExpired();
+		List<TransactionsOutExpired> transactionsExpired = new ArrayList<TransactionsOutExpired>(); 
+		detail.forEach(data->{
+			TransactionsOutExpired toe = new TransactionsOutExpired();
+			toe.setAssetsName(data.getAssets().getAssetsName());
+			toe.setEmployeesFullname(data.getEmployees().getEmployeesFullname());
+			toe.setLocationsDeploy(data.getLocations().getLocationsDeploy());
+			toe.setTransactionsOutCode(data.getTransactionsOut().getTransactionsOutCode());
+			toe.setTransactionsDetailOutExpired(data.getTransactionDetailOutExpired());
+			transactionsExpired.add(toe);
+		});
+		return transactionsExpired;
+	}
 }
