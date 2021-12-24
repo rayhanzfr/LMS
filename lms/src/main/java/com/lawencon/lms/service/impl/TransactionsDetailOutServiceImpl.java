@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.lawencon.lms.dao.TransactionsDetailOutDao;
 import com.lawencon.lms.dto.transactionsout.GetAllTransactionsDetailsOutResDto;
 import com.lawencon.lms.dto.transactionsout.GetTransactionsDetailsOutDataDto;
-import com.lawencon.lms.dto.transactionsoutexpired.TransactionsOutExpired;
+import com.lawencon.lms.dto.transactionsoutexpired.TransactionsOutExpiredResDto;
 import com.lawencon.lms.email.EmailHelper;
 import com.lawencon.lms.email.ReminderSender;
 import com.lawencon.lms.model.TransactionsDetailOut;
@@ -36,12 +36,14 @@ public class TransactionsDetailOutServiceImpl extends BaseServiceLmsImpl impleme
 
 		listOut.forEach(detail -> {
 			GetTransactionsDetailsOutDataDto data = new GetTransactionsDetailsOutDataDto();
+			data.setTransactionsOutCode(detail.getTransactionsOut().getTransactionsOutCode());
 			data.setLocationsId(detail.getLocations().getId());
 			data.setLocationsCode(detail.getLocations().getLocationsCode());
 			data.setEmployeesId(detail.getEmployees().getId());
 			data.setEmployeesCode(detail.getEmployees().getEmployeesCode());
 			data.setAssetsId(detail.getAssets().getId());
 			data.setAssetsCode(detail.getAssets().getAssetsName());
+			data.setExpiredDate(detail.getTransactionDetailOutExpired().toString());
 			data.setVersion(detail.getVersion());
 			data.setCreatedBy(detail.getCreatedBy());
 			data.setCreatedAt(detail.getCreatedAt());
@@ -57,11 +59,11 @@ public class TransactionsDetailOutServiceImpl extends BaseServiceLmsImpl impleme
 	}
 
 	@Override
-	public List<TransactionsOutExpired> getMoreThanExpired() throws Exception {
+	public List<TransactionsOutExpiredResDto> getMoreThanExpired() throws Exception {
 		List<TransactionsDetailOut> transactionsDetail = transactionsDetailOutDao.findMoreThanExpiredDate();
-		List<TransactionsOutExpired> transactionsExpired = new ArrayList<TransactionsOutExpired>();
+		List<TransactionsOutExpiredResDto> transactionsExpired = new ArrayList<TransactionsOutExpiredResDto>();
 		transactionsDetail.forEach(data -> {
-			TransactionsOutExpired toe = new TransactionsOutExpired();
+			TransactionsOutExpiredResDto toe = new TransactionsOutExpiredResDto();
 			toe.setAssetsName(data.getAssets().getAssetsName());
 			toe.setEmployeesFullname(data.getEmployees().getEmployeesFullname());
 			toe.setLocationsDeploy(data.getLocations().getLocationsDeploy());
@@ -73,11 +75,11 @@ public class TransactionsDetailOutServiceImpl extends BaseServiceLmsImpl impleme
 	}
 
 	@Override
-	public List<TransactionsOutExpired> findAlmostExpired() throws Exception {
+	public List<TransactionsOutExpiredResDto> findAlmostExpired() throws Exception {
 		List<TransactionsDetailOut> detail = transactionsDetailOutDao.findAlmostExpired();
-		List<TransactionsOutExpired> transactionsExpired = new ArrayList<TransactionsOutExpired>();
+		List<TransactionsOutExpiredResDto> transactionsExpired = new ArrayList<TransactionsOutExpiredResDto>();
 		detail.forEach(data -> {
-			TransactionsOutExpired toe = new TransactionsOutExpired();
+			TransactionsOutExpiredResDto toe = new TransactionsOutExpiredResDto();
 			toe.setAssetsName(data.getAssets().getAssetsName());
 			toe.setEmployeesFullname(data.getEmployees().getEmployeesFullname());
 			toe.setLocationsDeploy(data.getLocations().getLocationsDeploy());
@@ -95,18 +97,19 @@ public class TransactionsDetailOutServiceImpl extends BaseServiceLmsImpl impleme
 			Users users = new Users();
 			TransactionsOut transactionsOut = new TransactionsOut();
 			TransactionsDetailOut transactionsDetailOut = new TransactionsDetailOut();
-			
+
 			users.setUsersEmail(data.getEmployees().getUsers().getUsersEmail());
 			transactionsOut.setTransactionsOutCode(data.getTransactionsOut().getTransactionsOutCode());
 			transactionsDetailOut.setTransactionDetailOutExpired(data.getTransactionDetailOutExpired());
-			
+
 			if (users.getUsersEmail() != null) {
 				EmailHelper emailHelper = new EmailHelper();
 				emailHelper.setReceiver(users.getUsersEmail());
 				emailHelper.setSubject("Almost Expired");
-				emailHelper.setBody("Code: " + transactionsOut.getTransactionsOutCode() + " Date: "+ transactionsDetailOut.getTransactionDetailOutExpired());
+				emailHelper.setBody("Code: " + transactionsOut.getTransactionsOutCode() + " Date: "
+						+ transactionsDetailOut.getTransactionDetailOutExpired());
 				try {
-					reminderSender.sendReminder(data,emailHelper);
+					reminderSender.sendReminder(data, emailHelper);
 				} catch (MessagingException e) {
 					e.printStackTrace();
 				}

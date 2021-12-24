@@ -3,17 +3,26 @@ package com.lawencon.lms.dto.transactionsout;
 import java.time.LocalDateTime;
 
 public class GetTransactionsDetailsOutDataDto {
+	private String transactionsOutCode;
 	private String locationsId;
 	private String locationsCode;
 	private String employeesId;
 	private String employeesCode;
 	private String assetsId;
 	private String assetsCode;
+	private String expiredDate;
 	private Integer version;
 	private String createdBy;
 	private LocalDateTime createdAt;
 	private String updatedBy;
 	private LocalDateTime updatedAt;
+	
+	public String getTransactionsOutCode() {
+		return transactionsOutCode;
+	}
+	public void setTransactionsOutCode(String transactionsOutCode) {
+		this.transactionsOutCode = transactionsOutCode;
+	}
 	public String getLocationsId() {
 		return locationsId;
 	}
@@ -49,6 +58,12 @@ public class GetTransactionsDetailsOutDataDto {
 	}
 	public void setAssetsCode(String assetsCode) {
 		this.assetsCode = assetsCode;
+	}
+	public String getExpiredDate() {
+		return expiredDate;
+	}
+	public void setExpiredDate(String expiredDate) {
+		this.expiredDate = expiredDate;
 	}
 	public Integer getVersion() {
 		return version;
