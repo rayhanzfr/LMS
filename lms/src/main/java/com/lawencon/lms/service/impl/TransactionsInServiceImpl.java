@@ -260,6 +260,7 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 					}
 
 				}
+				saveResDto.setListDetail(detailsRes);
 				saveFullResDto.setSaveTransactionsInResDto(saveResDto);
 				saveFullResDto.setMessage("Sukses");
 				commit();

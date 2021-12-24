@@ -1,8 +1,10 @@
 package com.lawencon.lms.dto.transactionsin;
 
+import java.util.List;
+
 public class SaveTransactionsInResDto {
 	private String code;
-	private SaveTransactionsDetailsInResDto listDetail;
+	private List<SaveTransactionsDetailsInResDto> listDetail;
 
 	public String getCode() {
 		return code;
@@ -12,11 +14,11 @@ public class SaveTransactionsInResDto {
 		this.code = code;
 	}
 
-	public SaveTransactionsDetailsInResDto getListDetail() {
+	public List<SaveTransactionsDetailsInResDto> getListDetail() {
 		return listDetail;
 	}
 
-	public void setListDetail(SaveTransactionsDetailsInResDto listDetail) {
+	public void setListDetail(List<SaveTransactionsDetailsInResDto> listDetail) {
 		this.listDetail = listDetail;
 	}
 
