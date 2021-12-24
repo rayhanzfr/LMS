@@ -2,7 +2,7 @@ package com.lawencon.lms.dto.transactionsoutexpired;
 
 import java.time.LocalDate;
 
-public class TransactionsOutExpired {
+public class TransactionsOutExpiredResDto {
 	
 	private String transactionsOutCode;
 	private String assetsName;

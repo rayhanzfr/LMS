@@ -195,9 +195,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 					}
 				});
 				headerRes.setId(transactionsOut.getId());
-				detailsRes.forEach(i -> {
-					headerRes.setListDetail(i);
-				});
+				headerRes.setListDetail(detailsRes);
 				saveFullTransactionsOutResDto.setSaveTransactionsOutResDto(headerRes);
 				saveFullTransactionsOutResDto.setMessage("SUCCESS");
 
