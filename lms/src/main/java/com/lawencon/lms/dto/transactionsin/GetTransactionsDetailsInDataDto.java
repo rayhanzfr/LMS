@@ -7,12 +7,15 @@ public class GetTransactionsDetailsInDataDto {
 	private String transactionsInId;
 	private String transactionsInCode;
 	private String locationsId;
+	private String locationsCode;
 	private String locationsDeploy;
 	private String employeesId;
+	private String employeesCode;
 	private String employeesFullname;
 	private String assetsId;
 	private String assetsName;
 	private String statusesTransactionsId;
+	private String statusesTransactionsCode;
 	private String statusesTransactionsName;
 	private String returnDate;
 	private Integer version;
@@ -54,6 +57,14 @@ public class GetTransactionsDetailsInDataDto {
 		this.locationsId = locationsId;
 	}
 
+	public String getLocationsCode() {
+		return locationsCode;
+	}
+
+	public void setLocationsCode(String locationsCode) {
+		this.locationsCode = locationsCode;
+	}
+
 	public String getLocationsDeploy() {
 		return locationsDeploy;
 	}
@@ -68,6 +79,14 @@ public class GetTransactionsDetailsInDataDto {
 
 	public void setEmployeesId(String employeesId) {
 		this.employeesId = employeesId;
+	}
+
+	public String getEmployeesCode() {
+		return employeesCode;
+	}
+
+	public void setEmployeesCode(String employeesCode) {
+		this.employeesCode = employeesCode;
 	}
 
 	public String getEmployeesFullname() {
@@ -100,6 +119,14 @@ public class GetTransactionsDetailsInDataDto {
 
 	public void setStatusesTransactionsId(String statusesTransactionsId) {
 		this.statusesTransactionsId = statusesTransactionsId;
+	}
+
+	public String getStatusesTransactionsCode() {
+		return statusesTransactionsCode;
+	}
+
+	public void setStatusesTransactionsCode(String statusesTransactionsCode) {
+		this.statusesTransactionsCode = statusesTransactionsCode;
 	}
 
 	public String getStatusesTransactionsName() {

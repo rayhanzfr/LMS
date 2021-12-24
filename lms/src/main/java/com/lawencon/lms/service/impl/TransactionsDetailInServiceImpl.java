@@ -54,6 +54,16 @@ public class TransactionsDetailInServiceImpl extends BaseServiceLmsImpl implemen
 				GetTransactionsDetailsInDataDto tdinDataDto = new GetTransactionsDetailsInDataDto();
 				tdinDataDto.setId(listDetail.getId());
 				tdinDataDto.setTransactionsInCode(listDetail.getTransactionsIn().getTransactionsInCode());
+				tdinDataDto.setLocationsCode(listDetail.getLocations().getLocationsCode());
+				tdinDataDto.setLocationsDeploy(listDetail.getLocations().getLocationsDeploy());
+				tdinDataDto.setEmployeesId(listDetail.getEmployees().getId());
+				tdinDataDto.setEmployeesCode(listDetail.getEmployees().getEmployeesCode());
+				tdinDataDto.setEmployeesFullname(listDetail.getEmployees().getEmployeesFullname());
+				tdinDataDto.setAssetsId(listDetail.getAssets().getId());
+				tdinDataDto.setAssetsName(listDetail.getAssets().getAssetsName());
+				tdinDataDto.setStatusesTransactionsId(listDetail.getStatusesTransactions().getId());
+				tdinDataDto.setTransactionsInCode(listDetail.getStatusesTransactions().getStatusesTransactionsCode());
+				tdinDataDto.setStatusesTransactionsName(listDetail.getStatusesTransactions().getStatusesTransactionsName());
 				tdinDataDto.setVersion(listDetail.getVersion());
 				tdinDataDto.setCreatedAt(listDetail.getCreatedAt());
 				tdinDataDto.setCreatedBy(listDetail.getCreatedBy());
