@@ -12,6 +12,7 @@ import com.lawencon.lms.dao.TransactionsDetailOutDao;
 import com.lawencon.lms.model.Assets;
 import com.lawencon.lms.model.Companies;
 import com.lawencon.lms.model.Employees;
+import com.lawencon.lms.model.Items;
 import com.lawencon.lms.model.Locations;
 import com.lawencon.lms.model.TransactionsDetailOut;
 import com.lawencon.lms.model.TransactionsOut;
@@ -139,7 +140,8 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 	@Override
 	public List<TransactionsDetailOut> findAlmostExpired() throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT tdo.id , transout.transactions_out_code, a.assets_name , e.employees_fullname, u.users_email , l.locations_code , c.companies_name, tdo.transaction_detail_out_expired ");
+		sql.append(" SELECT tdo.id , transout.transactions_out_code, a.assets_name , e.employees_fullname, u.users_email ");
+		sql.append(" l.locations_code , c.companies_name, tdo.transaction_detail_out_expired, i.items_name ");
 		sql.append(" FROM transactions_detail_out tdo ");
 		sql.append(" INNER JOIN transactions_out transout ON transout.id = tdo.transactions_out_id ");
 		sql.append(" INNER JOIN locations l ON l.id = tdo.locations_id ");
@@ -147,6 +149,7 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 		sql.append(" INNER JOIN employees e ON e.id = tdo.employees_id ");
 		sql.append(" INNER JOIN users u ON u.id = e.users_id ");
 		sql.append(" INNER JOIN assets a ON a.id = tdo.assets_id ");
+		sql.append(" INNER JOIN items i ON i.id = a.items_id ");
 		sql.append(" WHERE (EXTRACT(DAY FROM tdo.transaction_detail_out_expired)- EXTRACT(DAY FROM now())) <=7 ");
 		
 		List<?> result = createNativeQuery(sql.toString())
@@ -182,6 +185,10 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 			detail.setLocations(location);
 			detail.setTransactionsOut(out);
 			detail.setTransactionDetailOutExpired(LocalDate.parse(obj[7].toString()));
+			
+			Items items = new Items();
+			items.setItemsName(obj[8].toString());
+			asset.setItems(items);
 			
 			data.add(detail);
 		});

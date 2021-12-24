@@ -16,19 +16,19 @@ import com.lawencon.base.BaseEntity;
 public class TransactionsDetailOut extends BaseEntity{
 
 	@ManyToOne
-	@JoinColumn(nullable=false)
+	@JoinColumn(name="transactions_out_id",nullable=false)
 	private TransactionsOut transactionsOut;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name = "locations_id")
 	private Locations locations;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name = "employees_id")
 	private Employees employees;
 	
 	@ManyToOne
-	@JoinColumn(nullable=false)
+	@JoinColumn(name = "assets_id",nullable=false)
 	private Assets assets;
 	
 	@Column(nullable=false)

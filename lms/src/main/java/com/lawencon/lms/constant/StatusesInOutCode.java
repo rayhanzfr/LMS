@@ -1,7 +1,7 @@
 package com.lawencon.lms.constant;
 
 public enum StatusesInOutCode {
-	CHECKIN("CHECKIN"),CHECKOUT("CHECKOUT");
+	CHECKIN("CIN"),CHECKOUT("COUT");
 
 	private String code;
 

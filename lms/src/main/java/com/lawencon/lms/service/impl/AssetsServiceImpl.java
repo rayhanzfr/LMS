@@ -4,8 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -34,6 +35,7 @@ import com.lawencon.lms.dto.assets.SaveAssetsResDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsDataDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsReqDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsResDto;
+import com.lawencon.lms.email.EmailHelper;
 import com.lawencon.lms.model.Assets;
 import com.lawencon.lms.model.Histories;
 import com.lawencon.lms.model.Invoices;
@@ -394,7 +396,8 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	}
 
 	@Override
-	public List<JasperAssets> getAssetsExpired() throws Exception {
+	public Map<String,Object> getAssetsExpired() throws Exception {
+		Map<String,Object> resMap = new HashMap<>();
 		List<Assets> assets = assetsDao.getExpiredAssets();
 		List<JasperAssets> showJasper = new ArrayList<JasperAssets>();
 		for(Assets asset : assets) {
@@ -410,7 +413,14 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 			jp.setAssetsExpired(assetsExpired);
 			showJasper.add(jp);
 		}
-		return showJasper;
+		Users users = usersDao.findById(getIdAuth());
+		EmailHelper emailHelper = new EmailHelper();
+		emailHelper.setReceiver(users.getUsersEmail());
+		emailHelper.setSubject("Report Asset Expired");
+		emailHelper.setAttachmentName("Report-Asset-Expired.pdf");
+		resMap.put("listJasper", showJasper);
+		resMap.put("emailHelper", emailHelper);
+		return resMap;
 	}
 
 	public String generateCode(String itemsType) throws Exception {

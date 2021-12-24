@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.constant.StatusesAssetsCode;
 import com.lawencon.lms.constant.StatusesInOutCode;
 import com.lawencon.lms.dao.AssetsDao;
@@ -100,54 +101,64 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 			List<SaveTransactionsDetailsOutResDto> detailsRes = new ArrayList<>();
 			TransactionsOut transactionsOut = new TransactionsOut();
 			try {
-				begin();
+				
+				String code = generateCode();
+				saveTransactionsOutReqDto.setTransactionsOutCode(code);
 				transactionsOut.setTransactionsOutCode(saveTransactionsOutReqDto.getTransactionsOutCode());
 				transactionsOut.setCheckOutDate(LocalDate.now());
-				transactionsOut.setExpiredDate(LocalDate.parse(saveTransactionsOutReqDto.getExpiredOutDate()));
+				transactionsOut.setCreatedBy(getIdAuth());
+				begin();
 				final TransactionsOut transactionsOutFinal = transactionsOutDao.saveOrUpdate(transactionsOut);
+				commit();
 				listSaveTransactionsDetailsOutReqDto.forEach(i -> {
 					SaveTransactionsDetailsOutResDto detail = new SaveTransactionsDetailsOutResDto();
 					TransactionsDetailOut transactionsDetailOut = new TransactionsDetailOut();
 					transactionsDetailOut.setTransactionsOut(transactionsOutFinal);
-					if (i.getLocationsCode() != null && i.getEmployeesCode() == null && i.getAssetsName() == null) {
-						Locations locations;
+					if (i.getLocationsCode() != null && i.getEmployeesCode() == null && i.getAssetsName() != null) {
+						Locations locations = new Locations();
 						try {
-							locations = locationsDao.findByCode(i.getLocationsCode());
+							Locations locationsDb = locationsDao.findByCode(i.getLocationsCode());
+							locations.setId(locationsDb.getId());
+							locations.setLocationsCode(locationsDb.getLocationsCode());
 							transactionsDetailOut.setLocations(locations);
 						} catch (Exception e) {
 							e.printStackTrace();
 							rollback();
 						}
 					}
-					if (i.getLocationsCode() == null && i.getEmployeesCode() != null && i.getAssetsName() == null) {
+					else if (i.getLocationsCode() == null && i.getEmployeesCode() != null && i.getAssetsName() != null) {
 
-						Employees employees;
+						Employees employees = new Employees();
 						try {
-							employees = employeesDao.findByCode(i.getEmployeesCode());
+							Employees employeesDb = employeesDao.findByCode(i.getEmployeesCode());
+							employees.setId(employeesDb.getId());
+							employees.setEmployeesCode(employees.getEmployeesCode());
 							transactionsDetailOut.setEmployees(employees);
 						} catch (Exception e) {
 							e.printStackTrace();
 							rollback();
 						}
 					}
-					if (i.getLocationsCode() == null && i.getEmployeesCode() == null && i.getAssetsName() != null) {
-						Assets assets;
+					
+						
+						Assets assets = new Assets();
 						try {
-							assets = assetsDao.findByAssetsName(i.getAssetsName());
+							Assets assetsDb = assetsDao.findByAssetsName(i.getAssetsName());
+							assets = assetsDb;
 							transactionsDetailOut.setAssets(assets);
 						} catch (Exception e) {
 							e.printStackTrace();
-							rollback();
 						}
-					}
-					transactionsDetailOut.setTransactionDetailOutExpired(LocalDate.parse(i.getExpiredDate()));
+						
+					
+						transactionsDetailOut.setTransactionDetailOutExpired(LocalDate.parse(i.getExpiredDate()));
 					try {
 						transactionsDetailOut.setCreatedBy(getIdAuth());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					transactionsDetailOut.setIsActive(true);
 					try {
+						begin();
 						transactionsDetailOut = transactionsDetailOutDao.saveOrUpdate(transactionsDetailOut);
 						StatusesInOut statusesInOut = new StatusesInOut();
 						statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKOUT.getCode());
@@ -159,6 +170,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 						transactionsDetailOut.setAssets(assetsDao.saveOrUpdate(assetsUpdate));
 						detail.setId(transactionsDetailOut.getId());
 						detailsRes.add(detail);
+						commit();
 					} catch (Exception e) {
 						e.printStackTrace();
 						rollback();
@@ -175,13 +187,13 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 						histories.setUsers(users);
 						histories.setActivityName(StatusesInOutCode.CHECKOUT.getCode());
 						histories.setCreatedBy(getIdAuth());
+						begin();
 						histories = historiesDao.saveOrUpdate(histories);
+						commit();
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				});
-				commit();
 				headerRes.setId(transactionsOut.getId());
 				detailsRes.forEach(i -> {
 					headerRes.setListDetail(i);
@@ -209,7 +221,6 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 			TransactionsOut headerDb = transactionsOutDao.findById(id);
 			header.setTransactionsInCode(headerDb.getTransactionsOutCode());
 			header.setCheckOutDate(headerDb.getCheckOutDate());
-			header.setExpiredDate(headerDb.getExpiredDate());
 			header.setVersion(headerDb.getVersion());
 			header.setCreatedBy(headerDb.getCreatedBy());
 			header.setCreatedAt(headerDb.getCreatedAt());
@@ -233,7 +244,6 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 			TransactionsOut headerDb = transactionsOutDao.findByCode(code);
 			header.setTransactionsInCode(headerDb.getTransactionsOutCode());
 			header.setCheckOutDate(headerDb.getCheckOutDate());
-			header.setExpiredDate(headerDb.getExpiredDate());
 			header.setVersion(headerDb.getVersion());
 			header.setCreatedBy(headerDb.getCreatedBy());
 			header.setCreatedAt(headerDb.getCreatedAt());
@@ -259,7 +269,6 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 				GetTransactionsOutDataDto header = new GetTransactionsOutDataDto();
 				header.setTransactionsInCode(i.getTransactionsOutCode());
 				header.setCheckOutDate(i.getCheckOutDate());
-				header.setExpiredDate(i.getExpiredDate());
 				header.setVersion(i.getVersion());
 				header.setCreatedBy(i.getCreatedBy());
 				header.setCreatedAt(i.getCreatedAt());
@@ -273,7 +282,13 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 		}
 		throw new Exception("Access Denied");
 	}
-
+	
+	public String generateCode() throws Exception {
+		Integer increment = transactionsOutDao.countData() + 1;
+		String code = EnumCode.TRANSACTIONSOUT.getCode() + increment;
+		return code;
+	}
+	
 	public Boolean validationUsers(String permissionsCode) throws Exception {
 		try {
 			Users users = usersDao.findById(getIdAuth());

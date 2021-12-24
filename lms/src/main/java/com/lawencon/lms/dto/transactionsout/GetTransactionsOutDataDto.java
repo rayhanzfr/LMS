@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 public class GetTransactionsOutDataDto {
 	private String transactionsInCode;
 	private LocalDate checkOutDate;
-	private LocalDate expiredDate;
 	private Integer version;
 	private String createdBy;
 	private LocalDateTime createdAt;
@@ -27,14 +26,6 @@ public class GetTransactionsOutDataDto {
 
 	public void setCheckOutDate(LocalDate checkOutDate) {
 		this.checkOutDate = checkOutDate;
-	}
-
-	public LocalDate getExpiredDate() {
-		return expiredDate;
-	}
-
-	public void setExpiredDate(LocalDate expiredDate) {
-		this.expiredDate = expiredDate;
 	}
 
 	public Integer getVersion() {

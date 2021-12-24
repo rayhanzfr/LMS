@@ -1,10 +1,19 @@
 package com.lawencon.lms.email;
 
 public class EmailHelper {
+	private String sender;
 	private String receiver;
 	private String subject;
 	private String body;
 	private String attachmentName;
+
+	public String getSender() {
+		return sender;
+	}
+
+	public void setSender(String sender) {
+		this.sender = sender;
+	}
 
 	public String getReceiver() {
 		return receiver;
