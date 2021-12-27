@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lawencon.lms.dto.transactionsout.GetAllTransactionsDetailsOutResDto;
-import com.lawencon.lms.dto.transactionsoutexpired.TransactionsOutExpired;
+import com.lawencon.lms.dto.transactionsoutexpired.TransactionsOutExpiredResDto;
 import com.lawencon.lms.service.TransactionsDetailOutService;
 import com.lawencon.util.JasperUtil;
 
@@ -38,7 +38,7 @@ public class TransactionDetailOutController extends BaseController {
 	
 	@GetMapping("/download")
 	public HttpEntity<?> reportSample() throws Exception {
-		List<TransactionsOutExpired> data = transactionsDetailOutService.getMoreThanExpired();
+		List<TransactionsOutExpiredResDto> data = transactionsDetailOutService.getMoreThanExpired();
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("company", "items");
