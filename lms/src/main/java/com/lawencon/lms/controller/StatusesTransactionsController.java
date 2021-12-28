@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lawencon.lms.dto.permissions.DeletePermissionsResDto;
+import com.lawencon.lms.dto.statusestransactions.DeleteStatusesTransactionsResDto;
 import com.lawencon.lms.dto.statusestransactions.SaveStatusesTransactionsResDto;
 import com.lawencon.lms.dto.statusestransactions.UpdateStatusesTransactionsResDto;
 import com.lawencon.lms.model.StatusesTransactions;
@@ -71,14 +73,17 @@ public class StatusesTransactionsController extends BaseController {
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
-	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = StatusesTransactions.class)))
+	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = DeleteStatusesTransactionsResDto.class)))
 	@DeleteMapping("{id}")
 	public ResponseEntity<?> removeById(@PathVariable("id") String id) throws Exception {
 		Boolean result = statusesTransactionsService.removeById(id);
+		DeleteStatusesTransactionsResDto results = new DeleteStatusesTransactionsResDto();
 		if (result==false) {
-			return new ResponseEntity<>("FAILED", HttpStatus.NOT_FOUND);
+			results.setMsg("FAILED");
+			return new ResponseEntity<>(results, HttpStatus.NOT_FOUND);
 		} else {
-			return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+			results.setMsg("SUCCESS");
+			return new ResponseEntity<>(results, HttpStatus.OK);
 		}
 		
 	}

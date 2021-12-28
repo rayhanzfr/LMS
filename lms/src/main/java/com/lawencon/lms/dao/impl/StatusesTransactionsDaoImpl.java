@@ -27,7 +27,7 @@ public class StatusesTransactionsDaoImpl extends BaseDaoImpl<StatusesTransaction
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append(
-					"SELECT st.id,statuses_assets_id,statuses_transactions_code,statuses_transactions_name,st.created_by,st.created_at,st.isactive,st.update_by,st.update_date,st.version");
+					" SELECT st.id,statuses_assets_id,statuses_transactions_code,statuses_transactions_name,st.created_by,st.created_at,st.is_active,st.updated_by,st.updated_at,st.version ");
 			sql.append(" FROM statuses_transactions st");
 			sql.append(" INNER JOIN statuses_assets sa ON sa.id = st.statuses_assets_id");
 			sql.append(" WHERE statuses_transactions_code = :code ");
