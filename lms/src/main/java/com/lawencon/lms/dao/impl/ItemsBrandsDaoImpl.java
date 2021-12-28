@@ -27,7 +27,7 @@ public class ItemsBrandsDaoImpl extends BaseDaoImpl<ItemsBrands> implements Item
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append(
-					"SELECT id,items_brands_code,items_brands_name,created_by,created_at,isactive,updated_by,updated_at,version");
+					" SELECT id,items_brands_code,items_brands_name,created_by,created_at,is_active,updated_by,updated_at,version ");
 			sql.append("FROM items_brands WHERE items_brands_code = :code ");
 			Object result = createNativeQuery(sql.toString()).setParameter("code", code).getSingleResult();
 			if (result != null) {
