@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lawencon.base.ConnHandler;
 
 public class BaseController extends ConnHandler {
@@ -24,4 +27,5 @@ public class BaseController extends ConnHandler {
 		return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
 		
 	}
+	
 }

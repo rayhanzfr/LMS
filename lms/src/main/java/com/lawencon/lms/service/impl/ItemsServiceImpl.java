@@ -57,19 +57,21 @@ public class ItemsServiceImpl extends BaseServiceLmsImpl implements ItemsService
 
 	@Override
 	public SaveItemsResDto save(Items items, MultipartFile file) throws Exception {
+		String img = file.getOriginalFilename();
+		String ext = img.substring(img.lastIndexOf(".") + 1, img.length());
+		Files filesInsert = new Files();
+		filesInsert.setFile(file.getBytes());
+		filesInsert.setExtensions(ext);
+		
+		
 		String permissionsCode = "PERMSN26";
 		Boolean validation = validationUsers(permissionsCode);
 		if (validation) {
 			SaveItemsResDto saveItemsResDto = new SaveItemsResDto();
 			try {
-				String img = file.getOriginalFilename();
-				String ext = img.substring(img.lastIndexOf(".") + 1, img.length());
-				Files filesInsert = new Files();
-				filesInsert.setFile(file.getBytes());
-				filesInsert.setExtensions(ext);
-				filesInsert.setCreatedBy(getIdAuth());
 				begin();
 				Files filesDb = new Files();
+				filesInsert.setCreatedBy(getIdAuth());
 				filesDb = filesDao.saveOrUpdate(filesInsert);
 				ItemsTypes itemsTypes = itemsTypesService.findById(items.getItemsTypes().getId());
 				ItemsBrands itemsBrands = itemsBrandsService.findById(items.getItemsBrands().getId());
@@ -78,9 +80,9 @@ public class ItemsServiceImpl extends BaseServiceLmsImpl implements ItemsService
 				items.setItemsTypes(itemsTypes);
 				items.setItemsBrands(itemsBrands);
 				items.setCreatedBy(getIdAuth());
-				items = itemsDao.saveOrUpdate(items);
+				Items itemsResult = itemsDao.saveOrUpdate(items);
 				commit();
-				saveItemsResDto.setId(itemsBrands.getId());
+				saveItemsResDto.setId(itemsResult.getId());
 				saveItemsResDto.setMsg("OK");
 			} catch (Exception e) {
 				e.printStackTrace();
