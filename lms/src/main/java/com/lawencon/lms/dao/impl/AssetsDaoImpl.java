@@ -208,7 +208,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	}
 
 	@Override
-	public Assets getNewAssets() throws Exception {
+	public List<Assets> getNewAssets() throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
@@ -219,17 +219,33 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.invoices ");
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
-		sql.append(" ORDER BY createdAt DESC LIMIT 1 ");
+		sql.append(" ORDER BY a.createdAt DESC ");
 		
-		Assets assets = createQuery(sql.toString(), Assets.class)
-				.getSingleResult();
+		List<Assets> assets = createQuery(sql.toString(), Assets.class)
+				.setMaxResults(1)
+				.getResultList();
 		return assets;
 	}
 
 	@Override
 	public List<Assets> getTop5AssetsDeploy() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT a ");
+		sql.append(" FROM Assets AS a ");
+		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH i.files as f");
+		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
+		sql.append(" INNER JOIN FETCH a.invoices ");
+		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
+		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
+		sql.append(" WHERE sio.statusesInOutCode = 'COUT' ");
+		sql.append(" AND sa.statusesAssetsCode = 'UNDEP' ");
+		sql.append(" ORDER BY a.updatedAt DESC ");
+		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
+				.setMaxResults(5)
+				.getResultList();
+		return listAssets;
 	}
 
 }
