@@ -40,11 +40,11 @@
             <td  style="padding: 10px 30px 40px 30px;">
                 <p>Hello ${to},<br><br>
                 	
-                	Sorry to inform, Your assets will expire on ${expired}.
-					Here's detail of the assets
-					Items Name: ${items}
-					Assets Name: ${assets}
-					Expired Date: ${expired}
+                	Sorry to inform, Your assets will expire on <b>${expired}</b>.
+					Here's detail of the assets<br>
+					Items Name: <b>${items}</b><br>
+					Assets Name: <b>${assets}</b><br>
+					Expired Date: <b>${expired}</b><br>
 					
 					Thank you for your trust to be a customer of Lawencon-Assets Management System. 
 					

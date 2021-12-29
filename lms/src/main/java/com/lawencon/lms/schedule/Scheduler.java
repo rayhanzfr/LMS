@@ -12,7 +12,7 @@ public class Scheduler {
 	@Autowired
 	private TransactionsDetailOutService transactionsDetailOutService;
 	
-	@Scheduled(fixedDelay = 5000)
+	@Scheduled(cron = "0 0 9 * * *")
 	public void expiredAssetsReminder() throws Exception{
 		transactionsDetailOutService.sendReminder();
 	}

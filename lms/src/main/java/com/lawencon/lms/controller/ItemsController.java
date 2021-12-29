@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lawencon.lms.dto.items.DeleteItemsResDto;
 import com.lawencon.lms.dto.items.SaveItemsResDto;
 import com.lawencon.lms.dto.items.UpdateItemsResDto;
@@ -34,11 +36,19 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("items")
-public class ItemsController {
+public class ItemsController extends BaseController{
 	
 	@Autowired
 	private ItemsService itemsService;
 	
+	protected <T> T convertToModel (String src, Class<T> clazz) throws Exception{
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        return new ObjectMapper()
+                .registerModule(javaTimeModule)
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .readValue(src, clazz);
+    }
+		
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Items.class)))})
 	@GetMapping
 	public ResponseEntity<?> getAll() throws Exception {
@@ -66,14 +76,14 @@ public class ItemsController {
 	@ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = SaveItemsResDto.class)))
 	@PostMapping
 	public ResponseEntity<?> save(@RequestPart String data, @RequestPart MultipartFile file)throws Exception {
-		SaveItemsResDto result = itemsService.save(new ObjectMapper().readValue(data, Items.class), file);
+		SaveItemsResDto result = itemsService.save(convertToModel(data, Items.class), file);
 		return new ResponseEntity<>(result,HttpStatus.CREATED);
 	}
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UpdateItemsResDto.class)))
 	@PutMapping
 	public ResponseEntity<?> update(@RequestPart String data, @RequestPart MultipartFile file) throws Exception {
-		UpdateItemsResDto result = itemsService.update(new ObjectMapper().readValue(data, Items.class), file);
+		UpdateItemsResDto result = itemsService.update(convertToModel(data, Items.class), file);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
