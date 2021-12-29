@@ -38,7 +38,7 @@ public class ItemsDaoImpl extends BaseDaoImpl<Items> implements ItemsDao {
 			sql.append(" WHERE items_code = :code ");
 			Object result = createNativeQuery(sql.toString()).setParameter("code", code).getSingleResult();
 			if (result != null) {
-				items = new Items();
+				items = new Items();	
 				Object[] objArr = (Object[]) result;
 				items.setId(objArr[0].toString());
 				Files files = new Files();
