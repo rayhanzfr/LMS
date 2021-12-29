@@ -6,6 +6,7 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.lms.dao.TransactionsDetailOutDao;
@@ -91,6 +92,7 @@ public class TransactionsDetailOutServiceImpl extends BaseServiceLmsImpl impleme
 	}
 
 	@Override
+	@Async
 	public void sendReminder() throws Exception {
 		List<TransactionsDetailOut> detail = transactionsDetailOutDao.findAlmostExpired();
 		detail.forEach(data -> {
