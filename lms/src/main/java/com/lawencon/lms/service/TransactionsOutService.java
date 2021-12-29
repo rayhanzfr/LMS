@@ -1,5 +1,6 @@
 package com.lawencon.lms.service;
 
+import com.lawencon.lms.dto.transactionsout.GetAllTransactionsOutByUsersResDto;
 import com.lawencon.lms.dto.transactionsout.GetAllTransactionsOutResDto;
 import com.lawencon.lms.dto.transactionsout.GetByTransactionsOutCodeResDto;
 import com.lawencon.lms.dto.transactionsout.GetByTransactionsOutIdResDto;
@@ -14,5 +15,7 @@ public interface TransactionsOutService {
 	GetByTransactionsOutCodeResDto findByCode(String code) throws Exception;
 	
 	GetAllTransactionsOutResDto findAll() throws Exception;
+	
+	GetAllTransactionsOutByUsersResDto findAllByUsers() throws Exception;
 	
 }

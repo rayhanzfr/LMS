@@ -23,6 +23,7 @@ import com.lawencon.lms.dao.StatusesInOutDao;
 import com.lawencon.lms.dao.TransactionsDetailOutDao;
 import com.lawencon.lms.dao.TransactionsOutDao;
 import com.lawencon.lms.dao.UsersDao;
+import com.lawencon.lms.dto.transactionsout.GetAllTransactionsOutByUsersResDto;
 import com.lawencon.lms.dto.transactionsout.GetAllTransactionsOutResDto;
 import com.lawencon.lms.dto.transactionsout.GetByTransactionsOutCodeResDto;
 import com.lawencon.lms.dto.transactionsout.GetByTransactionsOutIdResDto;
@@ -101,7 +102,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 			List<SaveTransactionsDetailsOutResDto> detailsRes = new ArrayList<>();
 			TransactionsOut transactionsOut = new TransactionsOut();
 			try {
-				
+
 				String code = generateCode();
 				saveTransactionsOutReqDto.setTransactionsOutCode(code);
 				transactionsOut.setTransactionsOutCode(saveTransactionsOutReqDto.getTransactionsOutCode());
@@ -125,8 +126,8 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 							e.printStackTrace();
 							rollback();
 						}
-					}
-					else if (i.getLocationsCode() == null && i.getEmployeesCode() != null && i.getAssetsName() != null) {
+					} else if (i.getLocationsCode() == null && i.getEmployeesCode() != null
+							&& i.getAssetsName() != null) {
 
 						Employees employees = new Employees();
 						try {
@@ -139,19 +140,17 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 							rollback();
 						}
 					}
-					
-						
-						Assets assets = new Assets();
-						try {
-							Assets assetsDb = assetsDao.findByAssetsName(i.getAssetsName());
-							assets = assetsDb;
-							transactionsDetailOut.setAssets(assets);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						
-					
-						transactionsDetailOut.setTransactionDetailOutExpired(LocalDate.parse(i.getExpiredDate()));
+
+					Assets assets = new Assets();
+					try {
+						Assets assetsDb = assetsDao.findByAssetsName(i.getAssetsName());
+						assets = assetsDb;
+						transactionsDetailOut.setAssets(assets);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+					transactionsDetailOut.setTransactionDetailOutExpired(LocalDate.parse(i.getExpiredDate()));
 					try {
 						transactionsDetailOut.setCreatedBy(getIdAuth());
 					} catch (Exception e) {
@@ -280,13 +279,13 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 		}
 		throw new Exception("Access Denied");
 	}
-	
+
 	public String generateCode() throws Exception {
 		Integer increment = transactionsOutDao.countData() + 1;
 		String code = EnumCode.TRANSACTIONSOUT.getCode() + increment;
 		return code;
 	}
-	
+
 	public Boolean validationUsers(String permissionsCode) throws Exception {
 		try {
 			Users users = usersDao.findById(getIdAuth());
@@ -304,6 +303,40 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 		} catch (NotFoundException e) {
 			throw new Exception(e);
 		}
-	} 
+	}
+
+	@Override
+	public GetAllTransactionsOutByUsersResDto findAllByUsers() throws Exception {
+		String permissionsCode = "PERMSN33";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation) {
+
+			GetAllTransactionsOutByUsersResDto headerRes = new GetAllTransactionsOutByUsersResDto();
+			List<GetTransactionsOutDataDto> listHeader = new ArrayList<>();
+			List<TransactionsOut> listHeaderDb = transactionsOutDao.findAll();
+			listHeaderDb.forEach(i -> {
+				GetTransactionsOutDataDto header = new GetTransactionsOutDataDto();
+				try {
+					String usersId = getIdAuth();
+					if (usersId == header.getCreatedBy()) {
+						header.setTransactionsInCode(i.getTransactionsOutCode());
+						header.setCheckOutDate(i.getCheckOutDate());
+						header.setVersion(i.getVersion());
+						header.setCreatedBy(i.getCreatedBy());
+						header.setCreatedAt(i.getCreatedAt());
+						header.setUpdatedBy(i.getUpdatedBy());
+						header.setUpdatedAt(i.getUpdatedAt());
+						listHeader.add(header);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+			headerRes.setGetTransactionsOutDataDto(listHeader);
+			headerRes.setMessage("SUCCESS");
+			return headerRes;
+		}
+		throw new Exception("Access Denied");
+	}
 
 }
