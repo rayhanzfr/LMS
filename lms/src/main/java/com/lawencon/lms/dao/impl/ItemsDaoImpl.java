@@ -30,13 +30,13 @@ public class ItemsDaoImpl extends BaseDaoImpl<Items> implements ItemsDao {
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append(
-					"SELECT items.id,files_id,items_types_id,items_brands_id,items_code,items_name,items.created_by,items.created_at,items.is_active,items.updated_by,items.updated_at,items.version");
-			sql.append(" FROM items");
-			sql.append(" INNER JOIN files f ON f.id = items.files_id");
-			sql.append(" INNER JOIN items_types it ON it.id = items.items_types_id");
-			sql.append(" INNER JOIN items_brands ib ON ib.id = items.items_brands_id");
-			sql.append(" WHERE items_code = :code ");
-			Object result = createNativeQuery(sql.toString()).setParameter("code", code).getSingleResult();
+					"SELECT i ");
+			sql.append(" FROM Items i");
+			sql.append(" INNER JOIN FETCH i.files");
+			sql.append(" INNER JOIN FETCH i.itemsTypes");
+			sql.append(" INNER JOIN FETCH i.itemsBsrands");
+			sql.append(" WHERE itemsCode = :code ");
+			Object result = createQuery(sql.toString(),Items.class).setParameter("code", code).getSingleResult();
 			if (result != null) {
 				items = new Items();
 				Object[] objArr = (Object[]) result;

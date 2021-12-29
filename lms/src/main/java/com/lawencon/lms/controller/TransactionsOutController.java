@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lawencon.lms.dto.transactionsout.GetAllTransactionsOutByUsersResDto;
 import com.lawencon.lms.dto.transactionsout.GetAllTransactionsOutResDto;
 import com.lawencon.lms.dto.transactionsout.GetByTransactionsOutIdResDto;
 import com.lawencon.lms.dto.transactionsout.SaveFullTransactionsOutReqDto;
@@ -31,6 +32,13 @@ public class TransactionsOutController extends BaseController{
 	@GetMapping
 	public ResponseEntity<?> findAll() throws Exception {
 		GetAllTransactionsOutResDto result = transactionsOutService.findAll();
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
+	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = GetAllTransactionsOutByUsersResDto.class)))
+	@GetMapping
+	public ResponseEntity<?> findAllByUsers() throws Exception {
+		GetAllTransactionsOutByUsersResDto result = transactionsOutService.findAllByUsers();
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
