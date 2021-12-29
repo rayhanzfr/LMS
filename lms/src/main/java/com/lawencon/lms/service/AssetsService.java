@@ -1,5 +1,6 @@
 package com.lawencon.lms.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +12,7 @@ import com.lawencon.lms.dto.assets.SaveAssetsReqDto;
 import com.lawencon.lms.dto.assets.SaveAssetsResDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsReqDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsResDto;
+import com.lawencon.lms.model.Assets;
 
 public interface AssetsService {
 	GetAllAssetsDto findAll() throws Exception;
@@ -38,6 +40,10 @@ public interface AssetsService {
 	UpdateAssetsResDto update(UpdateAssetsReqDto updateAssetsReqDto) throws Exception;
 	
 	Map<String,Object> getAssetsExpired()throws Exception;
+	
+	GetAllAssetsDto getTop5AssetsDeploy() throws Exception;
+	
+	GetAllAssetsDto getNewAssets()throws Exception;
 
 	Boolean removeById(String id) throws Exception;
 }

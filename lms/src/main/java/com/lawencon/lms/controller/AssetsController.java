@@ -99,6 +99,21 @@ public class AssetsController extends BaseController{
 		GetByIdAssetsDto result = assetsService.findByAssetsName(assetsName);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
+	
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetByIdAssetsDto.class))) })
+	@GetMapping("/new")
+	public ResponseEntity<?> getNewAssets() throws Exception {
+		GetAllAssetsDto result = assetsService.getNewAssets();
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetByIdAssetsDto.class))) })
+	@GetMapping("/top5")
+	public ResponseEntity<?> getTop5() throws Exception {
+		GetAllAssetsDto result = assetsService.getTop5AssetsDeploy();
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
 
 	@ApiResponse(responseCode = "200", content = {
 			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class))) })
