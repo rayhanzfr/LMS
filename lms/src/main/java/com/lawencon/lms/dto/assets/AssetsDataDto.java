@@ -3,16 +3,15 @@ package com.lawencon.lms.dto.assets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.lawencon.lms.model.Files;
+
 public class AssetsDataDto {
 	private String id;
-	private String itemsId;
 	private String itemsName;
-	private String invoicesId;
 	private String invoicesCode;
 	private String assetsName;
-	private String statusesAssetsId;
+	private Files files;
 	private String statusesAssetsName;
-	private String statusesInOutId;
 	private String statusesInOutName;
 	private LocalDate assetsExpired;
 	private String createdBy;
@@ -21,6 +20,16 @@ public class AssetsDataDto {
 	private LocalDateTime updatedAt;
 	private boolean isActive;
 	private Integer version;
+
+	
+	
+	public Files getFiles() {
+		return files;
+	}
+
+	public void setFiles(Files files) {
+		this.files = files;
+	}
 
 	public String getItemsName() {
 		return itemsName;
@@ -60,22 +69,6 @@ public class AssetsDataDto {
 
 	public void setAssetsExpired(LocalDate assetsExpired) {
 		this.assetsExpired = assetsExpired;
-	}
-
-	public String getItemsId() {
-		return itemsId;
-	}
-
-	public void setItemsId(String itemsId) {
-		this.itemsId = itemsId;
-	}
-
-	public String getInvoicesId() {
-		return invoicesId;
-	}
-
-	public void setInvoicesId(String invoicesId) {
-		this.invoicesId = invoicesId;
 	}
 
 	public String getInvoicesCode() {
@@ -141,21 +134,4 @@ public class AssetsDataDto {
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
-
-	public String getStatusesAssetsId() {
-		return statusesAssetsId;
-	}
-
-	public void setStatusesAssetsId(String statusesAssetsId) {
-		this.statusesAssetsId = statusesAssetsId;
-	}
-
-	public String getStatusesInOutId() {
-		return statusesInOutId;
-	}
-
-	public void setStatusesInOutId(String statusesInOutId) {
-		this.statusesInOutId = statusesInOutId;
-	}
-	
 }
