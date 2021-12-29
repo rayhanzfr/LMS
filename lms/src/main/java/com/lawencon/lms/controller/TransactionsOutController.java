@@ -36,7 +36,7 @@ public class TransactionsOutController extends BaseController{
 	}
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = GetAllTransactionsOutByUsersResDto.class)))
-	@GetMapping
+	@GetMapping("/users")
 	public ResponseEntity<?> findAllByUsers() throws Exception {
 		GetAllTransactionsOutByUsersResDto result = transactionsOutService.findAllByUsers();
 		return new ResponseEntity<>(result, HttpStatus.OK);
