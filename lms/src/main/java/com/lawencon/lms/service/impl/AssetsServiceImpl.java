@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -392,6 +393,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		}
 	}
 
+	
 	@Override
 	public Map<String,Object> getAssetsExpired() throws Exception {
 		Map<String,Object> resMap = new HashMap<>();
