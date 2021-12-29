@@ -140,16 +140,15 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 	@Override
 	public List<TransactionsDetailOut> findAlmostExpired() throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT tdo.id , transout.transactions_out_code, a.assets_name , e.employees_fullname, u.users_email ");
-		sql.append(" l.locations_code , c.companies_name, tdo.transaction_detail_out_expired, i.items_name ");
-		sql.append(" FROM transactions_detail_out tdo ");
-		sql.append(" INNER JOIN transactions_out transout ON transout.id = tdo.transactions_out_id ");
-		sql.append(" INNER JOIN locations l ON l.id = tdo.locations_id ");
-		sql.append(" INNER JOIN companies c ON c.id = l.companies_id ");
-		sql.append(" INNER JOIN employees e ON e.id = tdo.employees_id ");
-		sql.append(" INNER JOIN users u ON u.id = e.users_id ");
+		sql.append(" SELECT tdo.id , transout.transactions_out_code, a.assets_name , e.employees_fullname, u.users_email , l.locations_deploy , c.companies_name, tdo.transaction_detail_out_expired, i.items_name  ");
+		sql.append(" FROM transactions_detail_out tdo  ");
 		sql.append(" INNER JOIN assets a ON a.id = tdo.assets_id ");
-		sql.append(" INNER JOIN items i ON i.id = a.items_id ");
+		sql.append(" INNER JOIN transactions_out transout ON transout.id = tdo.transactions_out_id ");
+		sql.append(" INNER JOIN locations l ON l.id = tdo.locations_id OR tdo.locations_id IS NULL ");
+		sql.append(" INNER JOIN companies c ON c.id = l.companies_id OR l.companies_id IS NULL ");
+		sql.append(" INNER JOIN employees e ON e.id = tdo.employees_id OR tdo.employees_id IS NULL ");
+		sql.append(" INNER JOIN users u ON u.id = e.users_id OR e.users_id IS NULL ");
+		sql.append(" INNER JOIN items i ON i.id = a.items_id OR a.items_id IS NULL ");
 		sql.append(" WHERE (EXTRACT(DAY FROM tdo.transaction_detail_out_expired)- EXTRACT(DAY FROM now())) <=7 ");
 		
 		List<?> result = createNativeQuery(sql.toString())
@@ -167,17 +166,25 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 			asset.setAssetsName(obj[2].toString());
 			
 			Employees employee = new  Employees();
-			employee.setEmployeesFullname(obj[3].toString());
+			if(obj[3]!=null) {
+				employee.setEmployeesFullname(obj[3].toString());
+			}
 			
 			Users user = new Users();
-			user.setUsersEmail(obj[4].toString());
+			if(obj[4]!=null) {
+				user.setUsersEmail(obj[4].toString());
+			}
 			employee.setUsers(user);
 			
 			Locations location =  new Locations();
-			location.setLocationsDeploy(obj[5].toString());
+			if(obj[5]!=null) {
+				location.setLocationsDeploy(obj[5].toString());
+			}
 			
 			Companies company = new Companies();
-			company.setCompaniesName(obj[6].toString());
+			if(obj[6]!=null) {
+				company.setCompaniesName(obj[6].toString());
+			}
 			location.setCompanies(company);
 			
 			detail.setAssets(asset);

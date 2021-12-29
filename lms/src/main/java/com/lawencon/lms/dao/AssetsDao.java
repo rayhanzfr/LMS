@@ -24,6 +24,10 @@ public interface AssetsDao {
 	List<Assets> findByReq(String itemsCode,String itemsTypesCode,String itemsBrandsCode, String statusesAssetsCode, String statusesInOutCode,Integer total) throws Exception;
 
 	List<Assets> getExpiredAssets() throws Exception;
+
+	List<Assets> getTop5AssetsDeploy() throws Exception;
+	
+	Assets getNewAssets()throws Exception;
 	
 	Integer countData() throws Exception;
 	

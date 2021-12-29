@@ -89,14 +89,11 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	private AssetsDataDto convert(Assets assets) {
 		AssetsDataDto data = new AssetsDataDto();
 		data.setId(assets.getId());
-		data.setItemsId(assets.getItems().getId());
 		data.setItemsName(assets.getItems().getItemsName());
-		data.setInvoicesId(assets.getInvoices().getId());
+		data.setFiles(assets.getItems().getFiles());
 		data.setInvoicesCode(assets.getInvoices().getInvoicesCode());
 		data.setAssetsName(assets.getAssetsName());
-		data.setStatusesAssetsId(assets.getStatusesAssets().getId());
 		data.setStatusesAssetsName(assets.getStatusesAssets().getStatusesAssetsName());
-		data.setStatusesInOutId(assets.getStatusesInOut().getId());
 		data.setStatusesInOutName(assets.getStatusesInOut().getStatusesInOutName());
 		data.setAssetsExpired(assets.getAssetsExpired());
 		data.setCreatedBy(assets.getCreatedBy());
