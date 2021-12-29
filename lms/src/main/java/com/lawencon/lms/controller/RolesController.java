@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.base.ConnHandler;
+import com.lawencon.lms.dto.roles.DeleteRolesResDto;
 import com.lawencon.lms.dto.roles.SaveRolesResDto;
 import com.lawencon.lms.dto.roles.UpdateRolesResDto;
 import com.lawencon.lms.model.Roles;
@@ -72,14 +73,17 @@ public class RolesController extends BaseController {
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
-	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Roles.class)))
+	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = DeleteRolesResDto.class)))
 	@DeleteMapping("{id}")
 	public ResponseEntity<?> removeById(@PathVariable("id") String id) throws Exception {
 		Boolean result = rolesService.removeById(id);
+		DeleteRolesResDto results = new DeleteRolesResDto();
 		if (result==false) {
-			return new ResponseEntity<>("FAILED", HttpStatus.NOT_FOUND);
+			results.setMsg("FAILED");
+			return new ResponseEntity<>(results, HttpStatus.NOT_FOUND);
 		} else {
-			return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+			results.setMsg("SUCCESS");
+			return new ResponseEntity<>(results, HttpStatus.OK);
 		}
 		
 	}

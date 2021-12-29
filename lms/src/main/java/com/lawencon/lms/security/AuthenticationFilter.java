@@ -70,6 +70,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 			
 			LoginResDto loginResDto = new LoginResDto();
 			loginResDto.setToken(token);
+			loginResDto.setUsersId(users.getId());
 			loginResDto.setRolesCode(roleCode);
 			response.setContentType("/application/json");
 			response.getWriter().append(objectMapper.writeValueAsString(loginResDto));

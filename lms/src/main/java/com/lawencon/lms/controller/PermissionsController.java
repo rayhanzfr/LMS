@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lawencon.lms.dto.permissions.DeletePermissionsResDto;
 import com.lawencon.lms.dto.permissions.SavePermissionsResDto;
 import com.lawencon.lms.dto.permissions.UpdatePermissionsResDto;
+import com.lawencon.lms.dto.roles.DeleteRolesResDto;
 import com.lawencon.lms.model.Permissions;
 import com.lawencon.lms.model.Roles;
 import com.lawencon.lms.service.PermissionsService;
@@ -72,14 +74,17 @@ public class PermissionsController extends BaseController {
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
-	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Permissions.class)))
+	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = DeletePermissionsResDto.class)))
 	@DeleteMapping("{id}")
 	public ResponseEntity<?> removeById(@PathVariable("id") String id) throws Exception {
 		Boolean result = permissionsService.removeById(id);
+		DeletePermissionsResDto results = new DeletePermissionsResDto();
 		if (result==false) {
-			return new ResponseEntity<>("FAILED", HttpStatus.NOT_FOUND);
+			results.setMsg("FAILED");
+			return new ResponseEntity<>(results, HttpStatus.NOT_FOUND);
 		} else {
-			return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+			results.setMsg("SUCCESS");
+			return new ResponseEntity<>(results, HttpStatus.OK);
 		}
 		
 	}

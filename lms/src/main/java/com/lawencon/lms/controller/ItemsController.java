@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lawencon.lms.dto.items.DeleteItemsResDto;
 import com.lawencon.lms.dto.items.SaveItemsResDto;
 import com.lawencon.lms.dto.items.UpdateItemsResDto;
+import com.lawencon.lms.dto.roles.DeleteRolesResDto;
 import com.lawencon.lms.model.Files;
 import com.lawencon.lms.model.Items;
 import com.lawencon.lms.service.ItemsService;
@@ -75,14 +77,17 @@ public class ItemsController {
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
-	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Items.class)))
+	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = DeleteItemsResDto.class)))
 	@DeleteMapping("{id}")
 	public ResponseEntity<?> removeById(@PathVariable("id") String id) throws Exception {
+		DeleteItemsResDto results = new DeleteItemsResDto();
 		Boolean result = itemsService.removeById(id);
 		if (result==false) {
-			return new ResponseEntity<>("FAILED", HttpStatus.NOT_FOUND);
+			results.setMsg("FAILED");
+			return new ResponseEntity<>(results, HttpStatus.NOT_FOUND);
 		} else {
-			return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+			results.setMsg("SUCCESS");
+			return new ResponseEntity<>(results, HttpStatus.OK);
 		}
 		
 	}

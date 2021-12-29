@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lawencon.lms.dto.items.DeleteItemsResDto;
+import com.lawencon.lms.dto.itemsbrands.DeleteItemsBrandsResDto;
 import com.lawencon.lms.dto.itemsbrands.SaveItemsBrandsResDto;
 import com.lawencon.lms.dto.itemsbrands.UpdateItemsBrandsResDto;
 import com.lawencon.lms.model.ItemsBrands;
@@ -72,14 +74,17 @@ public class ItemsBrandsController extends BaseController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = ItemsBrands.class)))
+	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = DeleteItemsBrandsResDto.class)))
 	@DeleteMapping("{id}")
 	public ResponseEntity<?> removeById(@PathVariable("id") String id) throws Exception {
+		DeleteItemsBrandsResDto results = new DeleteItemsBrandsResDto();
 		Boolean result = itemsBrandsService.removeById(id);
-		if (result == false) {
-			return new ResponseEntity<>("FAILED", HttpStatus.NOT_FOUND);
+		if (result==false) {
+			results.setMsg("FAILED");
+			return new ResponseEntity<>(results, HttpStatus.NOT_FOUND);
 		} else {
-			return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+			results.setMsg("SUCCESS");
+			return new ResponseEntity<>(results, HttpStatus.OK);
 		}
 
 	}
