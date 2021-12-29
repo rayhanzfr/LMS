@@ -26,8 +26,8 @@ public class ItemsDaoImpl extends BaseDaoImpl<Items> implements ItemsDao {
 
 	@Override
 	public Items findByCode(String code) throws Exception {
-		Items items = new Items();
 		try {
+			Items items = new Items();
 			StringBuilder sql = new StringBuilder();
 			sql.append(
 					"SELECT i ");
@@ -36,34 +36,14 @@ public class ItemsDaoImpl extends BaseDaoImpl<Items> implements ItemsDao {
 			sql.append(" INNER JOIN FETCH i.itemsTypes");
 			sql.append(" INNER JOIN FETCH i.itemsBrands");
 			sql.append(" WHERE i.itemsCode = :code ");
-			Object result = createQuery(sql.toString(),Items.class).setParameter("code", code).getSingleResult();
-			if (result != null) {
-				items = new Items();	
-				Object[] objArr = (Object[]) result;
-				items.setId(objArr[0].toString());
-				Files files = new Files();
-				files.setId(objArr[1].toString());
-				items.setFiles(files);
-				ItemsTypes itemsTypes = new ItemsTypes();
-				itemsTypes.setId(objArr[2].toString());
-				items.setItemsTypes(itemsTypes);
-				ItemsBrands itemsBrands = new ItemsBrands();
-				itemsBrands.setId(objArr[3].toString());
-				items.setItemsBrands(itemsBrands);
-				items.setItemsCode(objArr[4].toString());
-				items.setItemsName(objArr[5].toString());
-				items.setCreatedBy(objArr[6].toString());
-				items.setCreatedAt(((Timestamp) objArr[7]).toLocalDateTime());
-				items.setIsActive((Boolean) objArr[8]);
-				items.setVersion((Integer)objArr[11]);
-			}
+			items = createQuery(sql.toString(),Items.class).setParameter("code", code).getSingleResult();
+			return items;
 		}catch (NoResultException e) {
 			e.printStackTrace();
 			throw new NoResultException("Not Found");
 		} catch (NonUniqueResultException e) {
 			throw new NonUniqueResultException("Found more than one");
 		}
-		return items;
 	}
 
 	@Override
