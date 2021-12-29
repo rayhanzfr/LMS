@@ -448,4 +448,42 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 			throw new Exception(e);
 		}
 	}
+
+	@Override
+	public GetAllAssetsDto getTop5AssetsDeploy() throws Exception {
+		String permissionCode = "PERMSN9";
+		boolean validation = validation(permissionCode);
+		if (validation) {
+			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
+			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+			List<Assets> assets = assetsDao.getTop5AssetsDeploy();
+			assets.forEach(asset -> {
+				AssetsDataDto data = convert(asset);
+				listAssets.add(data);
+			});
+			assetsAll.setData(listAssets);
+			return assetsAll;
+		} else {
+			throw new Exception("Access Denied");
+		}
+	}
+
+	@Override
+	public GetAllAssetsDto getNewAssets() throws Exception {
+		String permissionCode = "PERMSN9";
+		boolean validation = validation(permissionCode);
+		if (validation) {
+			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
+			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+			List<Assets> assets = assetsDao.getNewAssets();
+			assets.forEach(asset -> {
+				AssetsDataDto data = convert(asset);
+				listAssets.add(data);
+			});
+			assetsAll.setData(listAssets);
+			return assetsAll;
+		} else {
+			throw new Exception("Access Denied");
+		}
+	}
 }
