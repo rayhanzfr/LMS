@@ -27,7 +27,7 @@ public interface AssetsDao {
 
 	List<Assets> getTop5AssetsDeploy() throws Exception;
 	
-	Assets getNewAssets()throws Exception;
+	List<Assets> getNewAssets()throws Exception;
 	
 	Integer countData() throws Exception;
 	
