@@ -357,17 +357,14 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	}
 
 	@Override
-	public GetTotalAssetsReqDto getTotalreq(String itemsCode, String itemsBrandsCode, String itemsTypesCode,
-			String statusesAssetsCode, String statusesInOutCode, int total) throws Exception {
+	public List<Assets> getTotalreq(String itemsCode,
+			String statusesAssetsCode, int total) throws Exception {
 		String permissionCode = "PERMSN9";
 		boolean validation = validation(permissionCode);
 		if (validation) {
-			GetTotalAssetsReqDto getAssets = new GetTotalAssetsReqDto();
-			List<Assets> listAssets = assetsDao.findByReq(itemsCode, itemsTypesCode, itemsBrandsCode,
-					statusesAssetsCode, statusesInOutCode, total);
-			getAssets.setData(listAssets);
-			getAssets.setTotal(total);
-			return getAssets;
+			List<Assets> listAssets = assetsDao.findByReq(itemsCode,
+					statusesAssetsCode,total);
+			return listAssets;
 		} else {
 			throw new Exception("Acces Denied");
 		}
