@@ -165,7 +165,7 @@ public class AssetsController extends BaseController{
 	public ResponseEntity<?> findByReq(@RequestParam(value = "itemsCode", required = false) String itemsCode,
 			@RequestParam(value = "statusesAssetsCode", required = false) String statusesAssetsCode,
 			@RequestParam(value = "total", required = false) Integer total) throws Exception {
-		GetTotalAssetsReqDto result = assetsService.getTotalreq(itemsCode,
+		List<Assets> result = assetsService.getTotalreq(itemsCode,
 				statusesAssetsCode, total);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
