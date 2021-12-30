@@ -65,6 +65,13 @@ public class ItemsController extends BaseController{
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Items.class)))})
+	@GetMapping("/filter")
+	public ResponseEntity<?> getByItemsBrandsAndItemsType(@RequestParam("itemsBrandsCode") String itemsBrandsCode,@RequestParam("itemsTypesCode") String itemsTypesCode) throws Exception {
+		Items result = new Items();
+		result = itemsService.findByItemsBrandsAndItemsType(itemsBrandsCode,itemsTypesCode);
+		return new ResponseEntity<>(result,HttpStatus.OK);
+	}
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Items.class)))
 	@GetMapping("/code")
 	public ResponseEntity<?> getByCode(@RequestParam("code") String code)throws Exception {

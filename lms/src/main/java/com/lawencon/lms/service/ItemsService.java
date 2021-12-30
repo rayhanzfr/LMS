@@ -20,4 +20,6 @@ public interface ItemsService {
 	Boolean removeById(String id) throws Exception;
 
 	SaveItemsResDto save(Items items, MultipartFile file) throws Exception;
+	
+	Items findByItemsBrandsAndItemsType(String itemsBrandsCode,String itemsTypesCode)throws Exception;
 }
