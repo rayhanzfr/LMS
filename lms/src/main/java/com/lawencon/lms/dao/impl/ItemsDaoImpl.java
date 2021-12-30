@@ -2,6 +2,7 @@ package com.lawencon.lms.dao.impl;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -29,8 +30,7 @@ public class ItemsDaoImpl extends BaseDaoImpl<Items> implements ItemsDao {
 		try {
 			Items items = new Items();
 			StringBuilder sql = new StringBuilder();
-			sql.append(
-					"SELECT i ");
+			sql.append(" SELECT i ");
 			sql.append(" FROM Items i");
 			sql.append(" INNER JOIN FETCH i.files");
 			sql.append(" INNER JOIN FETCH i.itemsTypes");
@@ -69,5 +69,30 @@ public class ItemsDaoImpl extends BaseDaoImpl<Items> implements ItemsDao {
 		BigInteger results = new BigInteger(result.toString());
 		Integer resultsInteger = results.intValue();
 		return resultsInteger;
+	}
+
+	@Override
+	public Items findByItemsBrandsAndItemsType(String itemsBrandsCode, String itemsTypesCode) throws Exception {
+		try {
+			Items items = new Items();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" SELECT i ");
+			sql.append(" FROM Items i");
+			sql.append(" INNER JOIN FETCH i.files");
+			sql.append(" INNER JOIN FETCH i.itemsTypes");
+			sql.append(" INNER JOIN FETCH i.itemsBrands");
+			sql.append(" WHERE i.itemsBrands.itemsBrandsCode = :itemsBrandsCode AND ");
+			sql.append(" WHERE i.itemsTypes.itemsTypesCode = :itemsTypesCode ");
+			items = createQuery(sql.toString(),Items.class)
+					.setParameter("itemsBrandsCode", itemsBrandsCode)
+					.setParameter("itemsTypesCode", itemsTypesCode)
+					.getSingleResult();
+			return items;
+		}catch (NoResultException e) {
+			e.printStackTrace();
+			throw new NoResultException("Not Found");
+		} catch (NonUniqueResultException e) {
+			throw new NonUniqueResultException("Found more than one");
+		}
 	}
 }
