@@ -216,7 +216,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 			GetByTransactionsOutIdResDto headerRes = new GetByTransactionsOutIdResDto();
 			GetTransactionsOutDataDto header = new GetTransactionsOutDataDto();
 			TransactionsOut headerDb = transactionsOutDao.findById(id);
-			header.setTransactionsInCode(headerDb.getTransactionsOutCode());
+			header.setTransactionsOutCode(headerDb.getTransactionsOutCode());
 			header.setCheckOutDate(headerDb.getCheckOutDate());
 			header.setVersion(headerDb.getVersion());
 			header.setCreatedBy(headerDb.getCreatedBy());
@@ -239,7 +239,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 			GetByTransactionsOutCodeResDto headerRes = new GetByTransactionsOutCodeResDto();
 			GetTransactionsOutDataDto header = new GetTransactionsOutDataDto();
 			TransactionsOut headerDb = transactionsOutDao.findByCode(code);
-			header.setTransactionsInCode(headerDb.getTransactionsOutCode());
+			header.setTransactionsOutCode(headerDb.getTransactionsOutCode());
 			header.setCheckOutDate(headerDb.getCheckOutDate());
 			header.setVersion(headerDb.getVersion());
 			header.setCreatedBy(headerDb.getCreatedBy());
@@ -264,7 +264,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 			List<TransactionsOut> listHeaderDb = transactionsOutDao.findAll();
 			listHeaderDb.forEach(i -> {
 				GetTransactionsOutDataDto header = new GetTransactionsOutDataDto();
-				header.setTransactionsInCode(i.getTransactionsOutCode());
+				header.setTransactionsOutCode(i.getTransactionsOutCode());
 				header.setCheckOutDate(i.getCheckOutDate());
 				header.setVersion(i.getVersion());
 				header.setCreatedBy(i.getCreatedBy());
@@ -319,7 +319,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 				try {
 					String usersId = getIdAuth();
 					if (usersId == header.getCreatedBy()) {
-						header.setTransactionsInCode(i.getTransactionsOutCode());
+						header.setTransactionsOutCode(i.getTransactionsOutCode());
 						header.setCheckOutDate(i.getCheckOutDate());
 						header.setVersion(i.getVersion());
 						header.setCreatedBy(i.getCreatedBy());

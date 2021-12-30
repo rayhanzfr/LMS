@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class GetTransactionsOutDataDto {
-	private String transactionsInCode;
+	private String transactionsOutCode;
 	private LocalDate checkOutDate;
 	private Integer version;
 	private String createdBy;
@@ -12,12 +12,12 @@ public class GetTransactionsOutDataDto {
 	private String updatedBy;
 	private LocalDateTime updatedAt;
 
-	public String getTransactionsInCode() {
-		return transactionsInCode;
+	public String getTransactionsOutCode() {
+		return transactionsOutCode;
 	}
 
-	public void setTransactionsInCode(String transactionsInCode) {
-		this.transactionsInCode = transactionsInCode;
+	public void setTransactionsOutCode(String transactionsOutCode) {
+		this.transactionsOutCode = transactionsOutCode;
 	}
 
 	public LocalDate getCheckOutDate() {
