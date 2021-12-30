@@ -151,8 +151,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	}
 
 	@Override
-	public List<Assets> findByReq(String itemsCode, String itemsTypesCode, String itemsBrandsCode,
-			String statusesAssetsCode, String statusesInOutCode, Integer total) throws Exception {
+	public List<Assets> findByReq(String itemsCode,String statusesAssetsCode,Integer total) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
@@ -164,16 +163,12 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE i.itemsCode= :itemsCode ");
-		sql.append(" WHERE it.itemsTypesCode= :itemsTypesCode ");
-		sql.append(" WHERE ib.itemsBrandsCode= :itemsBrandsCode ");
 		sql.append(" WHERE sa.statusesAssetsCode= :statusesAssetsCode ");
-		sql.append(" WHERE sio.statusesInOutCode= :statusesInOutCode ");
-		sql.append(" LIMIT :total ");
 
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class).setParameter("itemsCode", itemsCode)
-				.setParameter("itemsTypesCode", itemsTypesCode).setParameter("itemsBrandsCode", itemsBrandsCode)
 				.setParameter("statusesAssetsCode", statusesAssetsCode)
-				.setParameter("statusesInOutCode", statusesInOutCode).setParameter("total", total).getResultList();
+				.setMaxResults(total)
+				.getResultList();
 		return listAssets;
 	}
 

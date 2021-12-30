@@ -31,7 +31,7 @@ public interface AssetsService {
 
 	GetAllAssetsDto findByStatusesInOutCode(String statusesInOutCode) throws Exception;
 	
-	GetTotalAssetsReqDto getTotalreq(String itemsCode, String itemsBrandsCode, String itemsTypesCode, String statusesAssetsCode, String statusesInOutCode,int total) throws Exception;
+	List<Assets> getTotalreq(String itemsCode,String statusesAssetsCode,int total) throws Exception;
 
 	SaveAssetsResDto save(SaveAssetsReqDto saveAssetsReqDto) throws Exception;
 	

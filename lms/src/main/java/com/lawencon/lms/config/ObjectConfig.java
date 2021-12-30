@@ -1,5 +1,9 @@
 package com.lawencon.lms.config;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.concurrent.DelegatingSecurityContextExecutor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -41,6 +46,14 @@ public class ObjectConfig {
 	@Bean
 	public BCryptPasswordEncoder passEncoder(){
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	public Executor executor() {
+		ExecutorService executorService = Executors.newCachedThreadPool();
+		DelegatingSecurityContextExecutor delegatingExecutorCustom = new DelegatingSecurityContextExecutor(
+				executorService);
+		return delegatingExecutorCustom;
 	}
 	
 	@Bean

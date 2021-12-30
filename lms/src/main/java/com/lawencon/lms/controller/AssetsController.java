@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.Executor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -50,6 +53,9 @@ public class AssetsController extends BaseController{
 
 	@Autowired
 	private FileSender fileSender;
+	
+	@Autowired
+	private Executor executor;
 
 	@ApiResponse(responseCode = "200", content = {
 			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class))) })
@@ -157,13 +163,10 @@ public class AssetsController extends BaseController{
 			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class))) })
 	@GetMapping("/req")
 	public ResponseEntity<?> findByReq(@RequestParam(value = "itemsCode", required = false) String itemsCode,
-			@RequestParam(value = "itemsTypesCode", required = false) String itemsTypesCode,
-			@RequestParam(value = "itemsBrandsCode", required = false) String itemsBrandsCode,
 			@RequestParam(value = "statusesAssetsCode", required = false) String statusesAssetsCode,
-			@RequestParam(value = "statusesInOutCode", required = false) String statusesInOutCode,
 			@RequestParam(value = "total", required = false) Integer total) throws Exception {
-		GetTotalAssetsReqDto result = assetsService.getTotalreq(itemsCode, itemsBrandsCode, itemsTypesCode,
-				statusesAssetsCode, statusesInOutCode, total);
+		GetTotalAssetsReqDto result = assetsService.getTotalreq(itemsCode,
+				statusesAssetsCode, total);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
@@ -223,20 +226,38 @@ public class AssetsController extends BaseController{
 		return new HttpEntity<>(out, headers);
 	}
 
+//	@GetMapping("/send-report")
+//	public ResponseEntity<?> sendReport() throws Exception {
+//		
+//		
+//		Map<String, Object> res = assetsService.getAssetsExpired();
+//		List<JasperAssets> data = (List<JasperAssets>) res.get("listJasper");
+//		
+//		EmailHelper emailHelper = (EmailHelper) res.get("emailHelper");
+//		
+//		Map<String, Object> map = new HashMap<>();
+//
+//		byte[] out = JasperUtil.responseToByteArray(data, "assets-report", map);
+//
+//		fileSender.sendReport(emailHelper, out);
+//		return new ResponseEntity<>("SENT", HttpStatus.OK);
+//	}
 	@GetMapping("/send-report")
-	public ResponseEntity<?> sendReport() throws Exception {
-		
-		
-		Map<String, Object> res = assetsService.getAssetsExpired();
-		List<JasperAssets> data = (List<JasperAssets>) res.get("listJasper");
-		
-		EmailHelper emailHelper = (EmailHelper) res.get("emailHelper");
-		
-		Map<String, Object> map = new HashMap<>();
-
-		byte[] out = JasperUtil.responseToByteArray(data, "assets-report", map);
-
-		fileSender.sendReport(emailHelper, out);
-		return new ResponseEntity<>("SENT", HttpStatus.OK);
+	public CompletableFuture<?> sendReport() throws Exception {
+		return CompletableFuture.supplyAsync(() ->{
+			try {
+				Map<String, Object> res = assetsService.getAssetsExpired();
+				List<JasperAssets> data = (List<JasperAssets>) res.get("listJasper");				
+				EmailHelper emailHelper = (EmailHelper) res.get("emailHelper");
+				Map<String, Object> map = new HashMap<>();
+				byte[] out = JasperUtil.responseToByteArray(data, "assets-report", map);
+				fileSender.sendReport(emailHelper, out);
+			}
+			catch (Exception e) {
+				throw new CompletionException(e);
+			}
+			
+			return new ResponseEntity<>("SENT", HttpStatus.OK);
+		}, executor);
 	}
 }
