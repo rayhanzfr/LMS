@@ -202,5 +202,14 @@ public class ItemsServiceImpl extends BaseServiceLmsImpl implements ItemsService
 		} catch (NotFoundException e) {
 			throw new Exception(e);
 		}
+	}
+
+	@Override
+	public Items findByItemsBrandsAndItemsType(String itemsBrandsCode, String itemsTypesCode) throws Exception {
+		String permissionsCode = "PERMSN25";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation)
+			return itemsDao.findByItemsBrandsAndItemsType(itemsBrandsCode,itemsTypesCode);
+		return null;
 	} 
 }
