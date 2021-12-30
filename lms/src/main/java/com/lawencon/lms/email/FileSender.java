@@ -34,7 +34,7 @@ public class FileSender extends BaseServiceLmsImpl {
 	@Autowired
 	protected Configuration freemarkerConfig;
 
-	@Async
+//	@Async
 	public void sendReport(EmailHelper emailHelper, byte[] attachment) throws MessagingException {
 
 		try {
