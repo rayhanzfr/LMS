@@ -254,50 +254,56 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	public SaveAssetsResDto save(SaveAssetsReqDto saveAssetsReqDto) throws Exception {
 		String permissionCode = "PERMSN10";
 		boolean validation = validation(permissionCode);
+		SaveAssetsResDto resDto = new SaveAssetsResDto();
 		if (validation) {
-			Items item = itemsDao.findByCode(saveAssetsReqDto.getItemsCode());
-			ItemsTypes itemType = itemsTypesDao.findById(item.getItemsTypes().getId());
-			Invoices invoice = invoicesDao.findByCode(saveAssetsReqDto.getInvoicesCode());
-			StatusesAssets statusesAssets = statusesAssetsDao.findByCode(saveAssetsReqDto.getStatusesAssetsCode());
-			StatusesInOut statusesInOut = statusesInOutDao.findByCode(saveAssetsReqDto.getStatusesInOutCode());
-			String assetsName = generateCode(itemType.getItemsTypesName());
-
-			Assets save = new Assets();
-			save.setItems(item);
-			save.setInvoices(invoice);
-			save.setAssetsName(assetsName);
-			save.setStatusesAssets(statusesAssets);
-			save.setStatusesInOut(statusesInOut);
-			if (saveAssetsReqDto.getAssetsExpired() != null) {
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-				LocalDate localDate = LocalDate.parse(saveAssetsReqDto.getAssetsExpired(), formatter);
-				save.setAssetsExpired(localDate);
+			try {
+				Items item = itemsDao.findByCode(saveAssetsReqDto.getItemsCode());
+				ItemsTypes itemType = itemsTypesDao.findById(item.getItemsTypes().getId());
+				Invoices invoice = invoicesDao.findByCode(saveAssetsReqDto.getInvoicesCode());
+				StatusesAssets statusesAssets = statusesAssetsDao.findByCode(saveAssetsReqDto.getStatusesAssetsCode());
+				StatusesInOut statusesInOut = statusesInOutDao.findByCode(saveAssetsReqDto.getStatusesInOutCode());
+				String assetsName = generateCode(itemType.getItemsTypesName());
+				
+				Assets save = new Assets();
+				save.setItems(item);
+				save.setInvoices(invoice);
+				save.setAssetsName(assetsName);
+				save.setStatusesAssets(statusesAssets);
+				save.setStatusesInOut(statusesInOut);
+				if (saveAssetsReqDto.getAssetsExpired() != null) {
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+					LocalDate localDate = LocalDate.parse(saveAssetsReqDto.getAssetsExpired(), formatter);
+					save.setAssetsExpired(localDate);
+				}
+				save.setCreatedBy(getIdAuth());
+				save.setIsActive(true);
+				begin();
+				Assets result = assetsDao.saveOrUpdate(save);
+				
+				Users user = usersDao.findById(getIdAuth());
+				Histories history = new Histories();
+				history.setUsers(user);
+				history.setAssets(result);
+				history.setActivityName("CREATE");
+				history.setCreatedBy(getIdAuth());
+				
+				historiesDao.saveOrUpdate(history);
+				commit();
+				
+				SaveAssetsDataDto resDataDto = new SaveAssetsDataDto();
+				resDataDto.setId(result.getId());
+				
+				
+				resDto.setData(resDataDto);
+				resDto.setMessage("SUCCESS");
+				
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			save.setCreatedBy(getIdAuth());
-			save.setIsActive(true);
-			begin();
-			Assets result = assetsDao.saveOrUpdate(save);
-
-			Users user = usersDao.findById(getIdAuth());
-			Histories history = new Histories();
-			history.setUsers(user);
-			history.setAssets(result);
-			history.setActivityName("CREATE");
-			history.setCreatedBy(getIdAuth());
-
-			historiesDao.saveOrUpdate(history);
-			commit();
-
-			SaveAssetsDataDto resDataDto = new SaveAssetsDataDto();
-			resDataDto.setId(result.getId());
-
-			SaveAssetsResDto resDto = new SaveAssetsResDto();
-			resDto.setData(resDataDto);
-			resDto.setMessage("SUCCESS");
-			return resDto;
 		} else {
 			throw new Exception("Access Denied");
 		}
+		return resDto;
 	}
 
 	@Override
@@ -404,9 +410,14 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 			jp.setItemsTypesName(asset.getItems().getItemsTypes().getItemsTypesName());
 			jp.setStatusesAssetsName(asset.getStatusesAssets().getStatusesAssetsName());
 			jp.setStatusesInOutName(asset.getStatusesInOut().getStatusesInOutName());
-			DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			String assetsExpired = asset.getAssetsExpired().format(formatDate);
-			jp.setAssetsExpired(assetsExpired);
+			if(asset.getAssetsExpired()!=null) {
+				DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+				String assetsExpired = asset.getAssetsExpired().format(formatDate);
+				jp.setAssetsExpired(assetsExpired);
+			}
+			else {
+				jp.setAssetsExpired(null);
+			}
 			showJasper.add(jp);
 		}
 		Users users = usersDao.findById(getIdAuth());

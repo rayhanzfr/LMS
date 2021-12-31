@@ -38,10 +38,13 @@ public class TransactionsDetailOutServiceImpl extends BaseServiceLmsImpl impleme
 		listOut.forEach(detail -> {
 			GetTransactionsDetailsOutDataDto data = new GetTransactionsDetailsOutDataDto();
 			data.setTransactionsOutCode(detail.getTransactionsOut().getTransactionsOutCode());
-			data.setLocationsId(detail.getLocations().getId());
-			data.setLocationsCode(detail.getLocations().getLocationsCode());
-			data.setEmployeesId(detail.getEmployees().getId());
-			data.setEmployeesCode(detail.getEmployees().getEmployeesCode());
+			if(detail.getLocations()!=null) {
+				data.setLocationsId(detail.getLocations().getId());
+			}
+			if(detail.getEmployees()!=null) {
+				data.setEmployeesId(detail.getEmployees().getId());
+				data.setEmployeesCode(detail.getEmployees().getEmployeesCode());
+			}
 			data.setAssetsId(detail.getAssets().getId());
 			data.setAssetsCode(detail.getAssets().getAssetsName());
 			data.setExpiredDate(detail.getTransactionDetailOutExpired().toString());

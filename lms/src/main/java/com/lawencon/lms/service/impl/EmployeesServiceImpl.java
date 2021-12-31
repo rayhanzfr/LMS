@@ -116,7 +116,7 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 				Companies companies = companiesService.findByCode(employees.getCompanies().getCompaniesCode());
 				employees.setCompanies(companies);
 				
-				Employees employee = employeesDao.findById(employees.getId());
+				Employees employee = employeesDao.findByCode(employees.getEmployeesCode());
 				employee.setEmployeesFullname(employees.getEmployeesFullname());
 				employee.setEmployeesAddress(employees.getEmployeesAddress());
 				employee.setUpdatedBy(getIdAuth());
