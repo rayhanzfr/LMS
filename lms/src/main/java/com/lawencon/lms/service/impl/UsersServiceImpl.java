@@ -93,7 +93,8 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 			SaveUsersResDto resDto = new SaveUsersResDto();
 			try {
 				Roles roles = rolesDao.findByCode(users.getRoles().getRolesCode());
-				users.setCreatedBy(roles.getId());
+				Users userSystem = usersDao.findByEmail("lawenconassetsmanagement@gmail.com");
+				users.setCreatedBy(userSystem.getId());
 				users.setRoles(roles);
 //			users.setUsersPassword(bCryptPasswordEncoder.encode(users.getUsersPassword()));
 				users.setUsersPassword(bCryptPasswordEncoder.encode(initPassword));
