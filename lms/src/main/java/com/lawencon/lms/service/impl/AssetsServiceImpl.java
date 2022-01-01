@@ -94,8 +94,11 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		data.setFiles(assets.getItems().getFiles());
 		data.setInvoicesCode(assets.getInvoices().getInvoicesCode());
 		data.setAssetsName(assets.getAssetsName());
+		data.setItemsCode(assets.getItems().getItemsCode());
 		data.setStatusesAssetsName(assets.getStatusesAssets().getStatusesAssetsName());
+		data.setStatusesAssetsCode(assets.getStatusesAssets().getStatusesAssetsCode());
 		data.setStatusesInOutName(assets.getStatusesInOut().getStatusesInOutName());
+		data.setStatusesInOutCode(assets.getStatusesInOut().getStatusesInOutCode());
 		data.setAssetsExpired(assets.getAssetsExpired());
 		data.setCreatedBy(assets.getCreatedBy());
 		data.setCreatedAt(assets.getCreatedAt());
@@ -486,6 +489,25 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
 			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
 			List<Assets> assets = assetsDao.getNewAssets();
+			assets.forEach(asset -> {
+				AssetsDataDto data = convert(asset);
+				listAssets.add(data);
+			});
+			assetsAll.setData(listAssets);
+			return assetsAll;
+		} else {
+			throw new Exception("Access Denied");
+		}
+	}
+
+	@Override
+	public GetAllAssetsDto findByStatAssetsInOut(String statusesAssetsCode, String statusesInOutCode) throws Exception {
+		String permissionCode = "PERMSN9";
+		boolean validation = validation(permissionCode);
+		if (validation) {
+			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
+			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+			List<Assets> assets = assetsDao.findByStatAssetsInOut(statusesAssetsCode,statusesInOutCode);
 			assets.forEach(asset -> {
 				AssetsDataDto data = convert(asset);
 				listAssets.add(data);

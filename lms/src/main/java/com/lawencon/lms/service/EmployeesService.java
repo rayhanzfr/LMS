@@ -11,6 +11,8 @@ public interface EmployeesService {
 	List<Employees> findAll() throws Exception;
 
 	Employees findById(String id) throws Exception;
+	
+	Employees findByUserId() throws Exception;
 
 	Employees findByCode(String code) throws Exception;
 

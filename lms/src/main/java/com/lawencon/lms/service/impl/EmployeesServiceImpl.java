@@ -192,4 +192,17 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 			throw new Exception(e);
 		}
 	}
+
+
+	@Override
+	public Employees findByUserId() throws Exception {
+		String permissionCode = "PERMSN17";
+		boolean validation = validation(permissionCode);
+		if(validation) {
+			return employeesDao.findByUserId(getIdAuth());
+		}
+		else {
+			throw new Exception("Access Denied");
+		}
+	}
 }

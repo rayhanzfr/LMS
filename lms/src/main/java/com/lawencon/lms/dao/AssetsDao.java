@@ -10,7 +10,9 @@ public interface AssetsDao {
 	Assets findById(String id) throws Exception;
 
 	Assets findByAssetsName(String assetsName) throws Exception;
-
+	
+	List<Assets> findByStatAssetsInOut(String statusesAssetsCode, String statusesInOutCode) throws Exception;
+	
 	List<Assets> findByItemsCode(String itemsCode) throws Exception;
 
 	List<Assets> findByBrandsCode(String brandsCode) throws Exception;
