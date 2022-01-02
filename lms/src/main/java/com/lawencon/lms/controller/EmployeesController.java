@@ -52,6 +52,13 @@ public class EmployeesController extends BaseController {
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Employees.class)))})
+	@GetMapping("/users")
+	public ResponseEntity<?>findByUsersId() throws Exception{
+		Employees result = employeesService.findByUserId();
+		return new ResponseEntity<>(result,HttpStatus.OK);
+	}
+	
 	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Employees.class)))})
 	@PostMapping
 	public ResponseEntity<?>save(@RequestBody Employees employees) throws Exception{
