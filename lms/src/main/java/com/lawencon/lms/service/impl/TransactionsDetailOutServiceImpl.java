@@ -46,7 +46,7 @@ public class TransactionsDetailOutServiceImpl extends BaseServiceLmsImpl impleme
 				data.setEmployeesCode(detail.getEmployees().getEmployeesCode());
 			}
 			data.setAssetsId(detail.getAssets().getId());
-			data.setAssetsCode(detail.getAssets().getAssetsName());
+			data.setAssetsName(detail.getAssets().getAssetsName());
 			data.setExpiredDate(detail.getTransactionDetailOutExpired().toString());
 			data.setVersion(detail.getVersion());
 			data.setCreatedBy(detail.getCreatedBy());
