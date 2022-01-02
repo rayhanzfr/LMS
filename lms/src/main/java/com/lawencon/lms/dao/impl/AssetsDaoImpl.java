@@ -243,4 +243,26 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		return listAssets;
 	}
 
+	@Override
+	public List<Assets> findByStatAssetsInOut(String statusesAssetsCode, String statusesInOutCode) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT a ");
+		sql.append(" FROM Assets AS a ");
+		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH i.files as f");
+		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
+		sql.append(" INNER JOIN FETCH a.invoices ");
+		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
+		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
+		sql.append(" WHERE sio.statusesInOutCode = :statInCode ");
+		sql.append(" AND sa.statusesAssetsCode = :statAssCode ");
+		sql.append(" ORDER BY a.updatedAt DESC ");
+		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
+				.setParameter("statInCode", statusesInOutCode)
+				.setParameter("statAssCode", statusesAssetsCode)
+				.getResultList();
+		return listAssets;
+	}
+
 }

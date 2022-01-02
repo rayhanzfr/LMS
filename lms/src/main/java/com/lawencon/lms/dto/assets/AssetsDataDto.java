@@ -8,11 +8,14 @@ import com.lawencon.lms.model.Files;
 public class AssetsDataDto {
 	private String id;
 	private String itemsName;
+	private String itemsCode;
 	private String invoicesCode;
 	private String assetsName;
 	private Files files;
 	private String statusesAssetsName;
+	private String statusesAssetsCode;
 	private String statusesInOutName;
+	private String statusesInOutCode;
 	private LocalDate assetsExpired;
 	private String createdBy;
 	private LocalDateTime createdAt;
@@ -23,6 +26,30 @@ public class AssetsDataDto {
 
 	
 	
+	public String getItemsCode() {
+		return itemsCode;
+	}
+
+	public void setItemsCode(String itemsCode) {
+		this.itemsCode = itemsCode;
+	}
+
+	public String getStatusesAssetsCode() {
+		return statusesAssetsCode;
+	}
+
+	public void setStatusesAssetsCode(String statusesAssetsCode) {
+		this.statusesAssetsCode = statusesAssetsCode;
+	}
+
+	public String getStatusesInOutCode() {
+		return statusesInOutCode;
+	}
+
+	public void setStatusesInOutCode(String statusesInOutCode) {
+		this.statusesInOutCode = statusesInOutCode;
+	}
+
 	public Files getFiles() {
 		return files;
 	}
