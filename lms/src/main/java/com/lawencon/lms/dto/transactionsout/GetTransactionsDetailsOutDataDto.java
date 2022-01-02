@@ -9,7 +9,7 @@ public class GetTransactionsDetailsOutDataDto {
 	private String employeesId;
 	private String employeesCode;
 	private String assetsId;
-	private String assetsCode;
+	private String assetsName;
 	private String expiredDate;
 	private Integer version;
 	private String createdBy;
@@ -53,11 +53,12 @@ public class GetTransactionsDetailsOutDataDto {
 	public void setAssetsId(String assetsId) {
 		this.assetsId = assetsId;
 	}
-	public String getAssetsCode() {
-		return assetsCode;
+	
+	public String getAssetsName() {
+		return assetsName;
 	}
-	public void setAssetsCode(String assetsCode) {
-		this.assetsCode = assetsCode;
+	public void setAssetsName(String assetsName) {
+		this.assetsName = assetsName;
 	}
 	public String getExpiredDate() {
 		return expiredDate;
