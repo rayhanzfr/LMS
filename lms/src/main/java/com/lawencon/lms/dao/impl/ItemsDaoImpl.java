@@ -82,7 +82,7 @@ public class ItemsDaoImpl extends BaseDaoImpl<Items> implements ItemsDao {
 			sql.append(" INNER JOIN FETCH i.itemsTypes");
 			sql.append(" INNER JOIN FETCH i.itemsBrands");
 			sql.append(" WHERE i.itemsBrands.itemsBrandsCode = :itemsBrandsCode AND ");
-			sql.append(" WHERE i.itemsTypes.itemsTypesCode = :itemsTypesCode ");
+			sql.append(" i.itemsTypes.itemsTypesCode = :itemsTypesCode ");
 			items = createQuery(sql.toString(),Items.class)
 					.setParameter("itemsBrandsCode", itemsBrandsCode)
 					.setParameter("itemsTypesCode", itemsTypesCode)
