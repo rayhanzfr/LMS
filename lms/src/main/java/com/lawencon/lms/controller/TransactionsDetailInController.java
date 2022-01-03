@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lawencon.lms.dto.transactionsin.GetAllTransactionsDetailInResDto;
 import com.lawencon.lms.dto.transactionsin.GetByTransactionsDetailInCodeResDto;
 import com.lawencon.lms.service.TransactionsDetailInService;
 
@@ -23,11 +24,11 @@ public class TransactionsDetailInController {
 	private TransactionsDetailInService transactionsDetailInService;
 
 	@ApiResponse(responseCode = "200", content = {
-			@Content(array = @ArraySchema(schema = @Schema(implementation = GetByTransactionsDetailInCodeResDto.class))) })
-	@GetMapping("/code")
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllTransactionsDetailInResDto.class))) })
+	@GetMapping
 	public ResponseEntity<?> findByCode(@RequestParam(required = false, name = "code") String code) throws Exception {
-		GetByTransactionsDetailInCodeResDto allTransactionsIn = new GetByTransactionsDetailInCodeResDto();
-		allTransactionsIn = transactionsDetailInService.findByTransactionInCode(null);
+		GetAllTransactionsDetailInResDto allTransactionsIn = new GetAllTransactionsDetailInResDto();
+		allTransactionsIn = transactionsDetailInService.findByTransactionInCode(code);
 		return new ResponseEntity<>(allTransactionsIn, HttpStatus.OK);
 	}
 

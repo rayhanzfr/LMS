@@ -3,7 +3,7 @@ package com.lawencon.lms.dto.transactionsin;
 public class SaveTransactionsInReqDto {
 	private String transactionsInCode;
 	private String transactionsInDate;
-	private String transactionsOutId;
+	private String transactionsOutCode;
 
 	public String getTransactionsInCode() {
 		return transactionsInCode;
@@ -21,12 +21,12 @@ public class SaveTransactionsInReqDto {
 		this.transactionsInDate = transactionsInDate;
 	}
 
-	public String getTransactionsOutId() {
-		return transactionsOutId;
+	public String getTransactionsOutCode() {
+		return transactionsOutCode;
 	}
 
-	public void setTransactionsOutId(String transactionsOutId) {
-		this.transactionsOutId = transactionsOutId;
+	public void setTransactionsOutCode(String transactionsOutCode) {
+		this.transactionsOutCode = transactionsOutCode;
 	}
 
 }

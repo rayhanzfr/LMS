@@ -162,9 +162,9 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.invoices ");
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
-		sql.append(" WHERE i.itemsCode= :itemsCode ");
-		sql.append(" WHERE sa.statusesAssetsCode= :statusesAssetsCode ");
-		sql.append(" WHERE sa.statusesAssetsCode= :statusesInOutCode ");
+		sql.append(" WHERE i.itemsCode= :itemsCode AND ");
+		sql.append(" sa.statusesAssetsCode= :statusesAssetsCode AND ");
+		sql.append(" sio.statusesInOutCode= :statusesInOutCode ");
 
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class).setParameter("itemsCode", itemsCode)
 				.setParameter("statusesAssetsCode", statusesAssetsCode)

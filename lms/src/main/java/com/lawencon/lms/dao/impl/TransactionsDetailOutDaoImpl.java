@@ -28,7 +28,7 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 	}
 
 	@Override
-	public List<TransactionsDetailOut> findByTransactionOutCode(String tansactionOutCode) throws Exception {
+	public List<TransactionsDetailOut> findByTransactionOutCode(String transactionOutCode) throws Exception {
 			StringBuilder sql = new StringBuilder();
 			sql.append(" SELECT tdo ");
 			sql.append(" FROM TransactionsDetailOut tdo ");
@@ -36,12 +36,12 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 			sql.append(" LEFT JOIN FETCH tdo.locations l ");
 			sql.append(" LEFT JOIN FETCH tdo.employees e ");
 			sql.append(" INNER JOIN FETCH tdo.assets a ");
-			sql.append(" WHERE tdo.transactionsOut.transactionsOutCode = :tansactionOutCode");
+			sql.append(" WHERE tdo.transactionsOut.transactionsOutCode = :transactionOutCode");
 			sql.append(" AND (l IS NOT NULL OR l IS NULL) ");
 			sql.append(" AND (e IS NOT NULL OR e IS NULL) ");
 			
 			List<TransactionsDetailOut> listDetail = createQuery(sql.toString(), TransactionsDetailOut.class)
-					.setParameter("tansactionOutCode", tansactionOutCode)
+					.setParameter("transactionOutCode", transactionOutCode)
 					.getResultList();
 		return listDetail;
 	}

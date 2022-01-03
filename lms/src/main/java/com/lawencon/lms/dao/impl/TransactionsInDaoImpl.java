@@ -31,7 +31,7 @@ public class TransactionsInDaoImpl extends BaseDaoImpl<TransactionsIn> implement
 	public TransactionsIn findByCode(String code) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(
-				" SELECT tin.id, tin.transactions_in_code, tin.transactions_in_date, tout.id, tout.trasanctions_out_code, tin.version, tin.created_at, tin.created_by, tin.updated_at, tin.updated_by, tin.is_active");
+				" SELECT tin.id, tin.transactions_in_code, tin.transactions_in_date, tout.transactions_out_code, tin.version, tin.created_at, tin.created_by, tin.updated_at, tin.updated_by, tin.is_active");
 		sql.append(" FROM transactions_in as tin ");
 		sql.append(" INNER JOIN transactions_out as tout ON tout.id = tin.transactions_out_id ");
 		sql.append(" WHERE tin.transactions_in_code = :transactions_in_code ");
@@ -39,7 +39,7 @@ public class TransactionsInDaoImpl extends BaseDaoImpl<TransactionsIn> implement
 		TransactionsIn transactionsIn = null;
 
 		try {
-			Object resultQuery = createNativeQuery(sql.toString()).setParameter("locations_code", code)
+			Object resultQuery = createNativeQuery(sql.toString()).setParameter("transactions_in_code", code)
 					.getSingleResult();
 
 			if (resultQuery != null) {
@@ -49,23 +49,21 @@ public class TransactionsInDaoImpl extends BaseDaoImpl<TransactionsIn> implement
 				String tinId = objArr[0].toString();
 				String tinCode = objArr[1].toString();
 				LocalDateTime tinDate = Timestamp.valueOf(objArr[2].toString()).toLocalDateTime();
-				String toutId = objArr[3].toString();
-				String toutCode = objArr[4].toString();
-				Integer version = (Integer) objArr[5];
-				LocalDateTime createdAt = Timestamp.valueOf(objArr[6].toString()).toLocalDateTime();
-				String createdBy = objArr[7].toString();
+				String toutCode = objArr[3].toString();
+				Integer version = (Integer) objArr[4];
+				LocalDateTime createdAt = Timestamp.valueOf(objArr[5].toString()).toLocalDateTime();
+				String createdBy = objArr[6].toString();
 
 				if (objArr[8] != null) {
-					LocalDateTime updatedAt = Timestamp.valueOf(objArr[8].toString()).toLocalDateTime();
-					String updatedBy = objArr[9].toString();
+					LocalDateTime updatedAt = Timestamp.valueOf(objArr[7].toString()).toLocalDateTime();
+					String updatedBy = objArr[8].toString();
 					transactionsIn.setUpdatedAt(updatedAt);
 					transactionsIn.setUpdatedBy(updatedBy);
 				}
 
-				Boolean isActive = Boolean.parseBoolean(objArr[10].toString());
+				Boolean isActive = Boolean.parseBoolean(objArr[9].toString());
 
 				TransactionsOut transactionsOut = new TransactionsOut();
-				transactionsOut.setId(toutId);
 				transactionsOut.setTransactionsOutCode(toutCode);
 
 				transactionsIn.setId(tinId);
@@ -95,7 +93,7 @@ public class TransactionsInDaoImpl extends BaseDaoImpl<TransactionsIn> implement
 
 	@Override
 	public Integer countData() throws Exception {
-		String sql = "SELECT COUNT(tin) FROM TransactionsIn as tin";
+		String sql = "SELECT COUNT(id) FROM transactions_in as tin";
 		Object result = createNativeQuery(sql).getSingleResult();
 		Integer results = Integer.valueOf(result.toString());
 		return results;
