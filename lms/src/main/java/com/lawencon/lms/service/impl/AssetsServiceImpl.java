@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.lms.assets.ExcelRequest;
+import com.lawencon.lms.constant.StatusesInOutCode;
 import com.lawencon.lms.dao.AssetsDao;
 import com.lawencon.lms.dao.HistoriesDao;
 import com.lawencon.lms.dao.InvoicesDao;
@@ -318,7 +319,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 			ItemsTypes itemType = itemsTypesDao.findById(item.getItemsTypes().getId());
 			Invoices invoice = invoicesDao.findByCode(updateAssetsReqDto.getInvoicesCode());
 			StatusesAssets statusesAssets = statusesAssetsDao.findByCode(updateAssetsReqDto.getStatusesAssetsCode());
-			StatusesInOut statusesInOut = statusesInOutDao.findByCode(updateAssetsReqDto.getStatusesInOutCode());
+			StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
 			String assetsName = generateCode(itemType.getItemsTypesName());
 
 			Assets save = assetsDao.findById(updateAssetsReqDto.getId());
@@ -368,12 +369,12 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 
 	@Override
 	public List<Assets> getTotalreq(String itemsCode,
-			String statusesAssetsCode, int total) throws Exception {
+			String statusesAssetsCode, String statusesInOutCode, int total) throws Exception {
 		String permissionCode = "PERMSN9";
 		boolean validation = validation(permissionCode);
 		if (validation) {
 			List<Assets> listAssets = assetsDao.findByReq(itemsCode,
-					statusesAssetsCode,total);
+					statusesAssetsCode,statusesInOutCode,total);
 			return listAssets;
 		} else {
 			throw new Exception("Acces Denied");

@@ -105,7 +105,7 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append(
-					" SELECT e.id, e.employees_code, c.companies_name ,u.users_email, e.employees_fullname, e.employees_address, e.employees_phone_number, e.created_by, e.created_at, e.updated_by, e.updated_at, e.version ");
+					" SELECT e.id, e.employees_code, c.id as companies_id, c.companies_name ,u.users_email, e.employees_fullname, e.employees_address, e.employees_phone_number, e.created_by, e.created_at, e.updated_by, e.updated_at, e.version ");
 			sql.append(" FROM employees as e ");
 			sql.append(" INNER JOIN users as u ON  u.id = e.users_id ");
 			sql.append(" INNER JOIN companies as c ON  c.id = e.companies_id ");
@@ -119,25 +119,26 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 				employees.setEmployeesCode(obj[1].toString());
 
 				Companies companies = new Companies();
-				companies.setCompaniesName(obj[2].toString());
+				companies.setId(obj[2].toString());
+				companies.setCompaniesName(obj[3].toString());
 
 				Users user = new Users();
-				user.setUsersEmail(obj[3].toString());
+				user.setUsersEmail(obj[4].toString());
 				employees.setUsers(user);
 
-				employees.setEmployeesFullname(obj[4].toString());
-				employees.setEmployeesAddress(obj[5].toString());
-				employees.setEmployeesPhoneNumber(obj[6].toString());
-				employees.setCreatedBy(obj[7].toString());
-				employees.setCreatedAt(Timestamp.valueOf(obj[8].toString()).toLocalDateTime());
+				employees.setEmployeesFullname(obj[5].toString());
+				employees.setEmployeesAddress(obj[6].toString());
+				employees.setEmployeesPhoneNumber(obj[7].toString());
+				employees.setCreatedBy(obj[8].toString());
+				employees.setCreatedAt(Timestamp.valueOf(obj[9].toString()).toLocalDateTime());
 
-				if (obj[9] != null) {
-					employees.setUpdatedBy(obj[9].toString());
-				}
 				if (obj[10] != null) {
-					employees.setUpdatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
+					employees.setUpdatedBy(obj[10].toString());
 				}
-				employees.setVersion(Integer.valueOf(obj[11].toString()));
+				if (obj[11] != null) {
+					employees.setUpdatedAt(Timestamp.valueOf(obj[11].toString()).toLocalDateTime());
+				}
+				employees.setVersion(Integer.valueOf(obj[12].toString()));
 			}
 		} catch (NoResultException e) {
 			e.printStackTrace();
