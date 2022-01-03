@@ -318,7 +318,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 				GetTransactionsOutDataDto header = new GetTransactionsOutDataDto();
 				try {
 					String usersId = getIdAuth();
-					if (usersId == header.getCreatedBy()) {
+					if (usersId.equals(i.getCreatedBy())) {
 						header.setTransactionsOutCode(i.getTransactionsOutCode());
 						header.setCheckOutDate(i.getCheckOutDate());
 						header.setVersion(i.getVersion());
