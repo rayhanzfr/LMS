@@ -164,9 +164,10 @@ public class AssetsController extends BaseController{
 	@GetMapping("/req")
 	public ResponseEntity<?> findByReq(@RequestParam(value = "itemsCode", required = false) String itemsCode,
 			@RequestParam(value = "statusesAssetsCode", required = false) String statusesAssetsCode,
+			@RequestParam(value = "statusesInOutCode", required = false) String statusesInOutCode,
 			@RequestParam(value = "total", required = false) Integer total) throws Exception {
 		List<Assets> result = assetsService.getTotalreq(itemsCode,
-				statusesAssetsCode, total);
+				statusesAssetsCode,statusesInOutCode, total);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
