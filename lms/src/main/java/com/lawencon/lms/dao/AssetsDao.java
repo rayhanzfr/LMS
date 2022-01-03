@@ -23,7 +23,7 @@ public interface AssetsDao {
 
 	List<Assets> findByStatusesInOutCode(String statusesInOutCode) throws Exception;
 	
-	List<Assets> findByReq(String itemsCode, String statusesAssetsCode, Integer total) throws Exception;
+	List<Assets> findByReq(String itemsCode, String statusesAssetsCode, String statusesInOutCode, Integer total) throws Exception;
 
 	List<Assets> getExpiredAssets() throws Exception;
 
