@@ -55,5 +55,5 @@ public class TransactionsOutController extends BaseController{
 		SaveFullTransactionsOutResDto result = transactionsOutService.save(data);
 		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
-
+	
 }
