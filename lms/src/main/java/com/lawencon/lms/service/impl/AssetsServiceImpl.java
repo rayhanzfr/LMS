@@ -265,7 +265,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 				ItemsTypes itemType = itemsTypesDao.findById(item.getItemsTypes().getId());
 				Invoices invoice = invoicesDao.findByCode(saveAssetsReqDto.getInvoicesCode());
 				StatusesAssets statusesAssets = statusesAssetsDao.findByCode(saveAssetsReqDto.getStatusesAssetsCode());
-				StatusesInOut statusesInOut = statusesInOutDao.findByCode(saveAssetsReqDto.getStatusesInOutCode());
+				StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
 				String assetsName = generateCode(itemType.getItemsTypesName());
 				
 				Assets save = new Assets();
@@ -391,7 +391,6 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 				save.setInvoicesCode(asset.getInvoicesCode());
 				save.setAssetsName(asset.getAssetsName());
 				save.setStatusesAssetsCode(asset.getStatusesAssetsCode());
-				save.setStatusesInOutCode(asset.getStatusesInOutCode());
 				save.setAssetsExpired(asset.getAssetsExpired());
 				save(save);
 			}
