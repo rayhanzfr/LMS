@@ -14,6 +14,7 @@ import com.lawencon.lms.model.Employees;
 import com.lawencon.lms.model.Locations;
 import com.lawencon.lms.model.StatusesTransactions;
 import com.lawencon.lms.model.TransactionsDetailIn;
+import com.lawencon.lms.model.TransactionsDetailOut;
 import com.lawencon.lms.model.TransactionsIn;
 
 @Repository()
@@ -32,71 +33,20 @@ public class TransactionsDetailInDaoImpl extends BaseDaoImpl<TransactionsDetailI
 	@Override
 	public List<TransactionsDetailIn> findByTransactionInCode(String code) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(
-				" SELECT tdin.id, tdin.transactions_in_code, tdin.locations_deploy, tdin.employees_fullname, tdin.assets_name, tdin.statuses_transactions_name, tdin.return_date, tdin.version, tdin.created_at, tdin.created_by, tdin.updated_at, tdin.updated_by, tdin.is_active ");
-		sql.append(" FROM transactions_detail_in as tdin");
-		sql.append(" INNER JOIN transactions_in as tin ON tin.id = tdin.transactions_in_id ");
-		sql.append(" INNER JOIN locations as l ON l.id = tin.locations_id ");
-		sql.append(" INNER JOIN employees as e ON e.id = tin.employees_id ");
-		sql.append(" INNER JOIN assets as e ON a.id = tin.assets_id ");
-		sql.append(" INNER JOIN statuses_transactions as st ON st.id = tin.statuses_transactions_id ");
-		sql.append(" WHERE companies_code = :companies_code ");
-
-		List<?> resultQuery = createNativeQuery(sql.toString()).setParameter("companies_code", code).getResultList();
-
-		List<TransactionsDetailIn> resultDetail = new ArrayList<>();
-		resultQuery.forEach(rq -> {
-			TransactionsDetailIn transactionsDetailIn = new TransactionsDetailIn();
-			Object[] objArr = (Object[]) rq;
-
-			String id = objArr[0].toString();
-			String transactionsInCode = objArr[1].toString();
-			String locationsDeploy = objArr[2].toString();
-			String employeesFullname = objArr[3].toString();
-			String assetsName = objArr[4].toString();
-			String statusesTransactionsName = objArr[5].toString();
-			LocalDateTime returnDate = Timestamp.valueOf(objArr[6].toString()).toLocalDateTime();
-			Integer version = (Integer) objArr[7];
-			LocalDateTime createdAt = Timestamp.valueOf(objArr[8].toString()).toLocalDateTime();
-			String createdBy = objArr[9].toString();
-
-			if (objArr[10] != null) {
-				LocalDateTime updatedAt = Timestamp.valueOf(objArr[10].toString()).toLocalDateTime();
-				String updatedBy = objArr[11].toString();
-				transactionsDetailIn.setUpdatedAt(updatedAt);
-				transactionsDetailIn.setUpdatedBy(updatedBy);
-			}
-
-			TransactionsIn tin = new TransactionsIn();
-			tin.setTransactionsInCode(transactionsInCode);
-
-			Locations locations = new Locations();
-			locations.setLocationsDeploy(locationsDeploy);
-
-			Employees employees = new Employees();
-			employees.setEmployeesFullname(employeesFullname);
-
-			Assets assets = new Assets();
-			assets.setAssetsName(assetsName);
-
-			StatusesTransactions statTrans = new StatusesTransactions();
-			statTrans.setStatusesTransactionsName(statusesTransactionsName);
-
-			transactionsDetailIn.setId(id);
-			transactionsDetailIn.setTransactionsIn(tin);
-			transactionsDetailIn.setLocations(locations);
-			transactionsDetailIn.setEmployees(employees);
-			transactionsDetailIn.setAssets(assets);
-			transactionsDetailIn.setStatusesTransactions(statTrans);
-			transactionsDetailIn.setReturnDate(returnDate);
-			transactionsDetailIn.setVersion(version);
-			transactionsDetailIn.setCreatedAt(createdAt);
-			transactionsDetailIn.setCreatedBy(createdBy);
-
-			resultDetail.add(transactionsDetailIn);
-		});
-
-		return resultDetail;
+		sql.append(" SELECT tdo ");
+		sql.append(" FROM TransactionsDetailIn tdo ");
+		sql.append(" INNER JOIN FETCH tdo.transactionsIn ");
+		sql.append(" LEFT JOIN FETCH tdo.locations l ");
+		sql.append(" LEFT JOIN FETCH tdo.employees e ");
+		sql.append(" INNER JOIN FETCH tdo.assets a ");
+		sql.append(" WHERE tdo.transactionsIn.transactionsInCode = :code");
+		sql.append(" AND (l IS NOT NULL OR l IS NULL) ");
+		sql.append(" AND (e IS NOT NULL OR e IS NULL) ");
+		
+		List<TransactionsDetailIn> listDetail = createQuery(sql.toString(), TransactionsDetailIn.class)
+				.setParameter("code", code)
+				.getResultList();
+	return listDetail;
 	}
 
 	@Override

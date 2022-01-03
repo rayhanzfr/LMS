@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.constant.StatusesAssetsCode;
 import com.lawencon.lms.constant.StatusesInOutCode;
+import com.lawencon.lms.constant.StatusesTransactionsCode;
 import com.lawencon.lms.dao.AssetsDao;
 import com.lawencon.lms.dao.EmployeesDao;
 import com.lawencon.lms.dao.HistoriesDao;
@@ -23,6 +24,7 @@ import com.lawencon.lms.dao.StatusesInOutDao;
 import com.lawencon.lms.dao.StatusesTransactionsDao;
 import com.lawencon.lms.dao.TransactionsDetailInDao;
 import com.lawencon.lms.dao.TransactionsInDao;
+import com.lawencon.lms.dao.TransactionsOutDao;
 import com.lawencon.lms.dao.UsersDao;
 import com.lawencon.lms.dto.transactionsin.GetAllTransactionsInByUsersResDto;
 import com.lawencon.lms.dto.transactionsin.GetAllTransactionsInResDto;
@@ -57,6 +59,9 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 
 	@Autowired
 	private TransactionsInDao transactionsInDao;
+
+	@Autowired
+	private TransactionsOutDao transactionsOutDao;
 
 	@Autowired
 	private LocationsDao locationsDao;
@@ -202,8 +207,12 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 
 			else {
 				begin();
+				TransactionsOut transactionsOut = transactionsOutDao
+						.findByCode(saveFullReq.getSaveTransactionsInReqDto().getTransactionsOutCode());
+				transactionsIn.setTransactionsOut(transactionsOut);
 				transactionsIn.setTransactionsInCode(generateCode());
 				transactionsIn.setTransactionsInDate(LocalDateTime.now());
+				transactionsIn.setCreatedBy(getIdAuth());
 
 				TransactionsIn tin = transactionsInDao.saveOrUpdate(transactionsIn);
 
@@ -211,59 +220,82 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 					SaveTransactionsDetailsInResDto detail = new SaveTransactionsDetailsInResDto();
 					TransactionsDetailIn tdin = new TransactionsDetailIn();
 
-					if (saveDet.getLocationsCode() == null) {
-						throw new Exception("locationsCode required");
-					}
-					
-					else if(saveDet.getEmployeesCode() == null) {
-						throw new Exception("employeesCode required");
-					}
+					if (saveDet.getLocationsCode() != null && saveDet.getEmployeesCode() == null
+							&& saveDet.getAssetsName() != null) {
+						Locations locations = new Locations();
+						try {
+							Locations locationsDb = locationsDao.findByCode(saveDet.getLocationsCode());
+							locations.setId(locationsDb.getId());
+							locations.setLocationsCode(locationsDb.getLocationsCode());
+							tdin.setLocations(locations);
+						} catch (Exception e) {
+							e.printStackTrace();
+							rollback();
+						}
+					} else if (saveDet.getLocationsCode() == null && saveDet.getEmployeesCode() != null
+							&& saveDet.getAssetsName() != null) {
 
-					else if(saveDet.getAssetsName() == null) {
+						Employees employees = new Employees();
+						try {
+							Employees employeesDb = employeesDao.findByCode(saveDet.getEmployeesCode());
+							employees.setId(employeesDb.getId());
+							employees.setEmployeesCode(employees.getEmployeesCode());
+							tdin.setEmployees(employees);
+						} catch (Exception e) {
+							e.printStackTrace();
+							rollback();
+						}
+					} else if (saveDet.getAssetsName() == null) {
 						throw new Exception("assetsName required");
 					}
-					
-					else if(saveDet.getStatusesTransactionsCode() == null) {
+
+					else if (saveDet.getStatusesTransactionsCode() == null) {
 						throw new Exception("statusesTransactions required");
 					}
+
 					
-					else {
-						Locations location = locationsDao.findByCode(saveDet.getLocationsCode());
-						Employees employees = employeesDao.findByCode(saveDet.getEmployeesCode());
-						Assets assets = assetsDao.findByAssetsName(saveDet.getAssetsName());
-						StatusesTransactions statusesTransactions = statusesTransactionsDao
-								.findByCode(saveDet.getStatusesTransactionsCode());
+					Assets assets = assetsDao.findByAssetsName(saveDet.getAssetsName());
+					StatusesTransactions statusesTransactions = statusesTransactionsDao.findByCode(saveDet.getStatusesTransactionsCode());
 
-						tdin.setTransactionsIn(tin);
-						tdin.setLocations(location);
-						tdin.setEmployees(employees);
-						tdin.setAssets(assets);
-						tdin.setStatusesTransactions(statusesTransactions);
-						tdin.setReturnDate(LocalDateTime.now());
+					tdin.setTransactionsIn(tin);
+					tdin.setAssets(assets);
+					tdin.setStatusesTransactions(statusesTransactions);
+					tdin.setReturnDate(LocalDateTime.now());
+					tdin.setCreatedBy(getIdAuth());
 
-						transactionsDetailInDao.saveOrUpdate(tdin);
-
-						StatusesInOut statusesInOut = new StatusesInOut();
-						statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKOUT.getCode());
-						StatusesAssets statusesAssets = new StatusesAssets();
-						statusesAssets = statusesAssetsDao.findByCode(StatusesAssetsCode.UNDEPLOYABLE.getCode());
-						Assets assetsUpdate = tdin.getAssets();
-						assetsUpdate.setStatusesInOut(statusesInOut);
+					transactionsDetailInDao.saveOrUpdate(tdin);
+					Assets assetsUpdate = tdin.getAssets();
+					StatusesAssets statusesAssets = new StatusesAssets();
+					if(statusesTransactions.getStatusesTransactionsCode().equals(StatusesTransactionsCode.READY.getCode())) {
+						statusesAssets = statusesAssetsDao.findByCode(StatusesAssetsCode.DEPLOYABLE.getCode());
 						assetsUpdate.setStatusesAssets(statusesAssets);
-						tdin.setAssets(assetsDao.saveOrUpdate(assetsUpdate));
-						detail.setId(tdin.getId());
-						detailsRes.add(detail);
-
-						Histories histories = new Histories();
-						Users users = new Users();
-						users = usersDao.findById(getIdAuth());
-						histories.setAssets(tdin.getAssets());
-						histories.setUsers(users);
-						histories.setActivityName(StatusesInOutCode.CHECKIN.getCode());
-						histories = historiesDao.saveOrUpdate(histories);
+					}else if(statusesTransactions.getStatusesTransactionsCode().equals(StatusesTransactionsCode.LOSTORSTOLEN.getCode())) {
+						statusesAssets = statusesAssetsDao.findByCode(StatusesAssetsCode.ARCHIVED.getCode());
+						assetsUpdate.setStatusesAssets(statusesAssets);
+					}else if(statusesTransactions.getStatusesTransactionsCode().equals(StatusesTransactionsCode.BROKEN.getCode())) {
+						statusesAssets = statusesAssetsDao.findByCode(StatusesAssetsCode.UNDEPLOYABLE.getCode());
+						assetsUpdate.setStatusesAssets(statusesAssets);
+					}else if(statusesTransactions.getStatusesTransactionsCode().equals(StatusesTransactionsCode.REPAIR.getCode())) {
+						statusesAssets = statusesAssetsDao.findByCode(StatusesAssetsCode.UNDEPLOYABLE.getCode());
+						assetsUpdate.setStatusesAssets(statusesAssets);
 					}
+					StatusesInOut statusesInOut = new StatusesInOut();
+					statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
+					assetsUpdate.setStatusesInOut(statusesInOut);
+					tdin.setAssets(assetsDao.saveOrUpdate(assetsUpdate));
+					detail.setId(tdin.getId());
+					detailsRes.add(detail);
 
+					Histories histories = new Histories();
+					Users users = new Users();
+					users = usersDao.findById(getIdAuth());
+					histories.setAssets(tdin.getAssets());
+					histories.setUsers(users);
+					histories.setActivityName(StatusesInOutCode.CHECKIN.getCode());
+					histories.setCreatedBy(getIdAuth());
+					histories = historiesDao.saveOrUpdate(histories);
 				}
+
 				saveResDto.setListDetail(detailsRes);
 				saveFullResDto.setSaveTransactionsInResDto(saveResDto);
 				saveFullResDto.setMessage("Sukses");
@@ -311,7 +343,7 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 		}
 		throw new Exception("Access Denied");
 	}
-	
+
 	public String generateCode() throws Exception {
 		String generatedCode = EnumCode.TRANSACTIONSIN.getCode() + (transactionsInDao.countData() + 1);
 		return generatedCode;

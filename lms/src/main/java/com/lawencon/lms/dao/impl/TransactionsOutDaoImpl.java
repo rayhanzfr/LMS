@@ -27,8 +27,8 @@ public class TransactionsOutDaoImpl extends BaseDaoImpl<TransactionsOut> impleme
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append(
-					"SELECT id,transactions_out_code,check_out_date,created_by,created_at,isactive,updated_by,updated_at,version");
-			sql.append(" FROM transactions_out to");
+					" SELECT id,transactions_out_code,created_by,created_at,is_active,updated_by,updated_at,version ");
+			sql.append(" FROM transactions_out ");
 			sql.append(" WHERE transactions_out_code = :code ");
 			Object result = createNativeQuery(sql.toString()).setParameter("code", code).getSingleResult();
 			if (result != null) {
@@ -36,11 +36,10 @@ public class TransactionsOutDaoImpl extends BaseDaoImpl<TransactionsOut> impleme
 				Object[] objArr = (Object[]) result;
 				transactionsOut.setId(objArr[0].toString());
 				transactionsOut.setTransactionsOutCode(objArr[1].toString());
-				transactionsOut.setCheckOutDate(((Timestamp) objArr[2]).toLocalDateTime().toLocalDate());
-				transactionsOut.setCreatedBy(objArr[4].toString());
-				transactionsOut.setCreatedAt(((Timestamp) objArr[5]).toLocalDateTime());
-				transactionsOut.setIsActive((Boolean) objArr[6]);
-				transactionsOut.setVersion((Integer) objArr[9]);
+				transactionsOut.setCreatedBy(objArr[2].toString());
+				transactionsOut.setCreatedAt(((Timestamp) objArr[3]).toLocalDateTime());
+				transactionsOut.setIsActive((Boolean) objArr[4]);
+				transactionsOut.setVersion((Integer) objArr[7]);
 			}
 		} catch (NoResultException e) {
 			e.printStackTrace();
