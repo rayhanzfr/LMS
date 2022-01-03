@@ -24,6 +24,7 @@ import com.lawencon.lms.dao.StatusesTransactionsDao;
 import com.lawencon.lms.dao.TransactionsDetailInDao;
 import com.lawencon.lms.dao.TransactionsInDao;
 import com.lawencon.lms.dao.UsersDao;
+import com.lawencon.lms.dto.transactionsin.GetAllTransactionsInByUsersResDto;
 import com.lawencon.lms.dto.transactionsin.GetAllTransactionsInResDto;
 import com.lawencon.lms.dto.transactionsin.GetByTransactionsInCodeResDto;
 import com.lawencon.lms.dto.transactionsin.GetByTransactionsInIdResDto;
@@ -33,6 +34,8 @@ import com.lawencon.lms.dto.transactionsin.SaveFullTransactionsInResDto;
 import com.lawencon.lms.dto.transactionsin.SaveTransactionsDetailsInReqDto;
 import com.lawencon.lms.dto.transactionsin.SaveTransactionsDetailsInResDto;
 import com.lawencon.lms.dto.transactionsin.SaveTransactionsInResDto;
+import com.lawencon.lms.dto.transactionsout.GetAllTransactionsOutByUsersResDto;
+import com.lawencon.lms.dto.transactionsout.GetTransactionsOutDataDto;
 import com.lawencon.lms.model.Assets;
 import com.lawencon.lms.model.Employees;
 import com.lawencon.lms.model.Histories;
@@ -45,6 +48,7 @@ import com.lawencon.lms.model.StatusesInOut;
 import com.lawencon.lms.model.StatusesTransactions;
 import com.lawencon.lms.model.TransactionsDetailIn;
 import com.lawencon.lms.model.TransactionsIn;
+import com.lawencon.lms.model.TransactionsOut;
 import com.lawencon.lms.model.Users;
 import com.lawencon.lms.service.TransactionsInService;
 
@@ -274,6 +278,40 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 		return saveFullResDto;
 	}
 
+	@Override
+	public GetAllTransactionsInByUsersResDto findAllByUsers() throws Exception {
+		String permissionsCode = "PERMSN33";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation) {
+
+			GetAllTransactionsInByUsersResDto headerRes = new GetAllTransactionsInByUsersResDto();
+			List<GetTransactionsInDataDto> listHeader = new ArrayList<>();
+			List<TransactionsIn> listHeaderDb = transactionsInDao.findAll();
+			listHeaderDb.forEach(i -> {
+				GetTransactionsInDataDto header = new GetTransactionsInDataDto();
+				try {
+					String usersId = getIdAuth();
+					if (usersId == header.getCreatedBy()) {
+						header.setTransactionsInCode(i.getTransactionsInCode());
+						header.setTransactionsInDate(i.getTransactionsInDate().toString());
+						header.setVersion(i.getVersion());
+						header.setCreatedBy(i.getCreatedBy());
+						header.setCreatedAt(i.getCreatedAt());
+						header.setUpdatedBy(i.getUpdatedBy());
+						header.setUpdatedAt(i.getUpdatedAt());
+						listHeader.add(header);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+			headerRes.setGetTransactionsInDataDto(listHeader);
+			headerRes.setMessage("SUCCESS");
+			return headerRes;
+		}
+		throw new Exception("Access Denied");
+	}
+	
 	public String generateCode() throws Exception {
 		String generatedCode = EnumCode.TRANSACTIONSIN.getCode() + (transactionsInDao.countData() + 1);
 		return generatedCode;
