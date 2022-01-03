@@ -105,7 +105,7 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append(
-					" SELECT e.id, e.employees_code, c.id as companies_id, c.companies_name ,u.users_email, e.employees_fullname, e.employees_address, e.employees_phone_number, e.created_by, e.created_at, e.updated_by, e.updated_at, e.version ");
+					" SELECT e.id, e.employees_code, c.companies_code, c.companies_name ,u.users_email, e.employees_fullname, e.employees_address, e.employees_phone_number, e.created_by, e.created_at, e.updated_by, e.updated_at, e.version ");
 			sql.append(" FROM employees as e ");
 			sql.append(" INNER JOIN users as u ON  u.id = e.users_id ");
 			sql.append(" INNER JOIN companies as c ON  c.id = e.companies_id ");
@@ -119,8 +119,9 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 				employees.setEmployeesCode(obj[1].toString());
 
 				Companies companies = new Companies();
-				companies.setId(obj[2].toString());
+				companies.setCompaniesCode(obj[2].toString());
 				companies.setCompaniesName(obj[3].toString());
+				employees.setCompanies(companies);
 
 				Users user = new Users();
 				user.setUsersEmail(obj[4].toString());
