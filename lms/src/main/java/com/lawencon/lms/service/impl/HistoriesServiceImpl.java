@@ -65,34 +65,40 @@ public class HistoriesServiceImpl extends BaseServiceLmsImpl implements Historie
 		List<Histories> listHistories = historiesDao.findAll();
 		List<HistoriesReportResDto> listHistoriesReportResDto = new ArrayList<HistoriesReportResDto>();
 		listHistories.forEach(i -> {
-			HistoriesReportResDto historiesReportResDto = new HistoriesReportResDto();
-			Assets assets = new Assets();
 			try {
-				assets = assetsDao.findById(i.getAssets().getId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			historiesReportResDto.setAssetsName(assets.getAssetsName());
-			Users users = new Users();
-			try {
-				users = usersDao.findById(i.getUsers().getId());
-				historiesReportResDto.setUsersEmail(users.getUsersEmail());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			Employees employees = new Employees();
-			try {
-				if (users.getRoles().getRolesName().equals("SUPER-ADMIN")) {
-					historiesReportResDto.setEmployeesCode("-");
-				}else {
-					employees = employeesDao.findByUserId(users.getId());
-					historiesReportResDto.setEmployeesCode(employees.getEmployeesCode());
+				if (i.getCreatedBy().equals(getIdAuth())) {
+					HistoriesReportResDto historiesReportResDto = new HistoriesReportResDto();
+					Assets assets = new Assets();
+					try {
+						assets = assetsDao.findById(i.getAssets().getId());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					historiesReportResDto.setAssetsName(assets.getAssetsName());
+					Users users = new Users();
+					try {
+						users = usersDao.findById(i.getUsers().getId());
+						historiesReportResDto.setUsersEmail(users.getUsersEmail());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					Employees employees = new Employees();
+					try {
+						if (users.getRoles().getRolesName().equals("SUPER-ADMIN")) {
+							historiesReportResDto.setEmployeesCode("-");
+						} else {
+							employees = employeesDao.findByUserId(users.getId());
+							historiesReportResDto.setEmployeesCode(employees.getEmployeesCode());
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					historiesReportResDto.setActivityName(i.getActivityName());
+					listHistoriesReportResDto.add(historiesReportResDto);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			historiesReportResDto.setActivityName(i.getActivityName());
-			listHistoriesReportResDto.add(historiesReportResDto);
 		});
 		return listHistoriesReportResDto;
 	}
