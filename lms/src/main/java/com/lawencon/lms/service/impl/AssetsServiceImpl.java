@@ -316,19 +316,20 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		boolean validation = validation(permissionCode);
 		if (validation) {
 			Items item = itemsDao.findByCode(updateAssetsReqDto.getItemsCode());
-			ItemsTypes itemType = itemsTypesDao.findById(item.getItemsTypes().getId());
 			Invoices invoice = invoicesDao.findByCode(updateAssetsReqDto.getInvoicesCode());
 			StatusesAssets statusesAssets = statusesAssetsDao.findByCode(updateAssetsReqDto.getStatusesAssetsCode());
 			StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
-			String assetsName = generateCode(itemType.getItemsTypesName());
 
-			Assets save = assetsDao.findById(updateAssetsReqDto.getId());
+			Assets save = assetsDao.findByAssetsName(updateAssetsReqDto.getAssetsName());
 			save.setItems(item);
 			save.setInvoices(invoice);
-			save.setAssetsName(assetsName);
 			save.setStatusesAssets(statusesAssets);
 			save.setStatusesInOut(statusesInOut);
-			save.setAssetsExpired(LocalDate.parse(updateAssetsReqDto.getAssetsExpired()));
+			if (updateAssetsReqDto.getAssetsExpired() != null) {
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+				LocalDate localDate = LocalDate.parse(updateAssetsReqDto.getAssetsExpired(), formatter);
+				save.setAssetsExpired(localDate);
+			}
 			save.setUpdatedBy(getIdAuth());
 			begin();
 			Assets result = assetsDao.saveOrUpdate(save);
