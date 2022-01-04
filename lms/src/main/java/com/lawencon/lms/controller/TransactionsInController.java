@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lawencon.lms.dto.transactionsin.GetAllTransactionsInByUsersResDto;
 import com.lawencon.lms.dto.transactionsin.GetAllTransactionsInResDto;
 import com.lawencon.lms.dto.transactionsin.GetByTransactionsInCodeResDto;
 import com.lawencon.lms.dto.transactionsin.GetByTransactionsInIdResDto;
 import com.lawencon.lms.dto.transactionsin.SaveFullTransactionsInReqDto;
 import com.lawencon.lms.dto.transactionsin.SaveFullTransactionsInResDto;
+import com.lawencon.lms.dto.transactionsout.GetAllTransactionsOutByUsersResDto;
 import com.lawencon.lms.service.TransactionsInService;
 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -35,6 +37,13 @@ public class TransactionsInController {
 		GetAllTransactionsInResDto allTransactionsIn = new GetAllTransactionsInResDto();
 		allTransactionsIn = transactionsInService.findAll();
 		return new ResponseEntity<>(allTransactionsIn, HttpStatus.OK);
+	}
+	
+	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = GetAllTransactionsInByUsersResDto.class)))
+	@GetMapping("/users")
+	public ResponseEntity<?> findAllByUsers() throws Exception {
+		GetAllTransactionsInByUsersResDto result = transactionsInService.findAllByUsers();
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetByTransactionsInIdResDto.class)))})
