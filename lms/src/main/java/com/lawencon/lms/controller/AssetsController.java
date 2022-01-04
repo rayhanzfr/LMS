@@ -158,6 +158,15 @@ public class AssetsController extends BaseController{
 		GetAllAssetsDto result = assetsService.findByStatusesInOutCode(statusesInOutCode);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
+	
+	@ApiResponse(responseCode = "200", content = {
+			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class))) })
+	@GetMapping("/status")
+	public ResponseEntity<?> findByStatusesAssetsInOut(@RequestParam(value = "statusesAssetsCode") String statusesAssetsCode,
+			@RequestParam(value = "statusesInOutCode") String statusesInOutCode) throws Exception {
+		GetAllAssetsDto result = assetsService.findByStatAssetsInOut(statusesAssetsCode, statusesInOutCode);
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
 
 	@ApiResponse(responseCode = "200", content = {
 			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class))) })
