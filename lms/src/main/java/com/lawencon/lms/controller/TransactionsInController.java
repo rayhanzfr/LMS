@@ -38,6 +38,13 @@ public class TransactionsInController {
 		allTransactionsIn = transactionsInService.findAll();
 		return new ResponseEntity<>(allTransactionsIn, HttpStatus.OK);
 	}
+	
+	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = GetAllTransactionsInByUsersResDto.class)))
+	@GetMapping("/users")
+	public ResponseEntity<?> findAllByUsers() throws Exception {
+		GetAllTransactionsInByUsersResDto result = transactionsInService.findAllByUsers();
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
 
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = GetByTransactionsInIdResDto.class)))})
 	@GetMapping("/id")
