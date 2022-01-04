@@ -87,6 +87,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 	@Autowired
 	private PermissionsRolesDao permissionsRolesDao;
 
+
 	@Override
 	public SaveFullTransactionsOutResDto save(SaveFullTransactionsOutReqDto itemsReq) throws Exception {
 		String permissionsCode = "PERMSN34";
@@ -103,12 +104,12 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 			TransactionsOut transactionsOut = new TransactionsOut();
 			try {
 
+				begin();
 				String code = generateCode();
 				saveTransactionsOutReqDto.setTransactionsOutCode(code);
 				transactionsOut.setTransactionsOutCode(saveTransactionsOutReqDto.getTransactionsOutCode());
 				transactionsOut.setCheckOutDate(LocalDate.now());
 				transactionsOut.setCreatedBy(getIdAuth());
-				begin();
 				final TransactionsOut transactionsOutFinal = transactionsOutDao.saveOrUpdate(transactionsOut);
 				commit();
 				listSaveTransactionsDetailsOutReqDto.forEach(i -> {
@@ -318,7 +319,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 				GetTransactionsOutDataDto header = new GetTransactionsOutDataDto();
 				try {
 					String usersId = getIdAuth();
-					if (usersId == header.getCreatedBy()) {
+					if (usersId.equals(i.getCreatedBy())) {
 						header.setTransactionsOutCode(i.getTransactionsOutCode());
 						header.setCheckOutDate(i.getCheckOutDate());
 						header.setVersion(i.getVersion());

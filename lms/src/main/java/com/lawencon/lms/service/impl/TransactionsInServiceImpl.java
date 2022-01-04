@@ -199,7 +199,7 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 		TransactionsIn transactionsIn = new TransactionsIn();
 
 		try {
-			String permissionsCode = "PERMSN46";
+			String permissionsCode = "PERMSN36";
 			Boolean validation = validationUsers(permissionsCode);
 			if (!validation) {
 				throw new Exception("Access Denied");
@@ -323,7 +323,7 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 				GetTransactionsInDataDto header = new GetTransactionsInDataDto();
 				try {
 					String usersId = getIdAuth();
-					if (usersId == header.getCreatedBy()) {
+					if (usersId.equals(i.getCreatedBy())) {
 						header.setTransactionsInCode(i.getTransactionsInCode());
 						header.setTransactionsInDate(i.getTransactionsInDate().toString());
 						header.setVersion(i.getVersion());
