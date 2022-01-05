@@ -33,19 +33,23 @@
             
             <td align="center" style="padding: 40px 0 20px 0;">
             	<img alt="lms.png" src="https://i.imgur.com/VIaF4XQ.png" style="border:0;display:block;outline:0;text-decoration:none; font-size:12px" width="300px" tabindex="0">
-                <h1 style="color:#FA840F">PT. Lawencon International</p>
-                <h2 style="color:#0094FF">Lawencon-Assets Management System</p>
             </td>
         </tr>
         <tr>
             <td  style="padding: 10px 30px 40px 30px;">
-                <p>Hello ${to}</p>
+                <p>Dear, ${to}</p>
                 <p>Here are your password:</p>
-                <div align="center" style="background-color: #eaeaea; padding: 40px 20px 40px 20px;">
+                <div align="center" style="background-color: #eaeaea; padding: 40px 30px 40px 20px;">
 			        <h1><b>${text}</b></h1>
 			    </div>
-                <p>Thanks</p>
+                
             </td>
+        </tr>
+        <tr>
+        	<td style="padding: 10px 30px 40px 30px;">
+        	<p>Lawencon-Assets Management System is a Assets Management System managed by PT. Lawencon International</p>
+			<p>Thankyou very much for the attention.</p>
+        	</td>
         </tr>
         <tr>
             	<td align="center">

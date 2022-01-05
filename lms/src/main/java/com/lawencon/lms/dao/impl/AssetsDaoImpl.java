@@ -29,6 +29,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH a.companies c ");
 		sql.append(" INNER JOIN FETCH i.files as f");
 		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
@@ -48,6 +49,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH a.companies c ");
 		sql.append(" INNER JOIN FETCH i.files as f");
 		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
@@ -67,6 +69,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH a.companies c ");
 		sql.append(" INNER JOIN FETCH i.files as f");
 		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
@@ -86,6 +89,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH a.companies c ");
 		sql.append(" INNER JOIN FETCH i.files as f");
 		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
@@ -106,6 +110,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH a.companies c ");
 		sql.append(" INNER JOIN FETCH i.files as f");
 		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
@@ -126,6 +131,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH a.companies c ");
 		sql.append(" INNER JOIN FETCH i.files as f");
 		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
@@ -151,11 +157,12 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	}
 
 	@Override
-	public List<Assets> findByReq(String itemsCode,String statusesAssetsCode, String statusesInOutCode, Integer total) throws Exception {
+	public List<Assets> findByReq(String itemsCode, String companiesCode, String statusesAssetsCode, String statusesInOutCode, Integer total) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH a.companies c ");
 		sql.append(" INNER JOIN FETCH i.files as f");
 		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
@@ -164,11 +171,13 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE i.itemsCode= :itemsCode AND ");
 		sql.append(" sa.statusesAssetsCode= :statusesAssetsCode AND ");
-		sql.append(" sio.statusesInOutCode= :statusesInOutCode ");
+		sql.append(" sio.statusesInOutCode= :statusesInOutCode AND ");
+		sql.append(" c.companiesCode=:companiesCode ");
 
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class).setParameter("itemsCode", itemsCode)
 				.setParameter("statusesAssetsCode", statusesAssetsCode)
 				.setParameter("statusesInOutCode", statusesInOutCode)
+				.setParameter("companiesCode", companiesCode)
 				.setMaxResults(total)
 				.getResultList();
 		return listAssets;
@@ -191,6 +200,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH a.companies c ");
 		sql.append(" INNER JOIN FETCH i.files as f");
 		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
@@ -198,7 +208,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE a.assetsExpired <= DATE(NOW()) ");
-		sql.append(" AND it.itemsTypesName = 'LICENSES' ");
+		sql.append(" AND it.itemsTypesName = 'Licenses' ");
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
 				.getResultList();
 		return listAssets;
@@ -210,6 +220,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH a.companies c ");
 		sql.append(" INNER JOIN FETCH i.files as f");
 		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
@@ -230,6 +241,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH a.companies c ");
 		sql.append(" INNER JOIN FETCH i.files as f");
 		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
@@ -251,6 +263,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
 		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH a.companies c ");
 		sql.append(" INNER JOIN FETCH i.files as f");
 		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
@@ -266,5 +279,27 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 				.getResultList();
 		return listAssets;
 	}
+
+	@Override
+	public List<Assets> findByCompaniesCode(String companiesCode) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT a ");
+		sql.append(" FROM Assets AS a ");
+		sql.append(" INNER JOIN FETCH a.items i ");
+		sql.append(" INNER JOIN FETCH a.companies c ");
+		sql.append(" INNER JOIN FETCH i.files as f");
+		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
+		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
+		sql.append(" INNER JOIN FETCH a.invoices ");
+		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
+		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
+		sql.append(" WHERE c.companiesCode= :companiesCode ");
+
+		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
+				.setParameter("companiesCode", companiesCode).getResultList();
+		return listAssets;
+	}
+
+
 
 }

@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.lawencon.lms.assets.ExcelRequest;
 import com.lawencon.lms.constant.StatusesInOutCode;
 import com.lawencon.lms.dao.AssetsDao;
+import com.lawencon.lms.dao.CompaniesDao;
+import com.lawencon.lms.dao.EmployeesDao;
 import com.lawencon.lms.dao.HistoriesDao;
 import com.lawencon.lms.dao.InvoicesDao;
 import com.lawencon.lms.dao.ItemsDao;
@@ -39,6 +41,8 @@ import com.lawencon.lms.dto.assets.UpdateAssetsReqDto;
 import com.lawencon.lms.dto.assets.UpdateAssetsResDto;
 import com.lawencon.lms.email.EmailHelper;
 import com.lawencon.lms.model.Assets;
+import com.lawencon.lms.model.Companies;
+import com.lawencon.lms.model.Employees;
 import com.lawencon.lms.model.Histories;
 import com.lawencon.lms.model.Invoices;
 import com.lawencon.lms.model.Items;
@@ -88,6 +92,12 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	@Autowired
 	private UsersDao usersDao;
 
+	@Autowired
+	private CompaniesDao companiesDao;
+
+	@Autowired
+	private EmployeesDao employeesDao;
+
 	private AssetsDataDto convert(Assets assets) {
 		AssetsDataDto data = new AssetsDataDto();
 		data.setId(assets.getId());
@@ -100,6 +110,8 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		data.setStatusesAssetsCode(assets.getStatusesAssets().getStatusesAssetsCode());
 		data.setStatusesInOutName(assets.getStatusesInOut().getStatusesInOutName());
 		data.setStatusesInOutCode(assets.getStatusesInOut().getStatusesInOutCode());
+		data.setCompaniesCode(assets.getCompanies().getCompaniesCode());
+		data.setCompaniesName(assets.getCompanies().getCompaniesName());
 		data.setAssetsExpired(assets.getAssetsExpired());
 		data.setCreatedBy(assets.getCreatedBy());
 		data.setCreatedAt(assets.getCreatedAt());
@@ -265,13 +277,15 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 				ItemsTypes itemType = itemsTypesDao.findById(item.getItemsTypes().getId());
 				Invoices invoice = invoicesDao.findByCode(saveAssetsReqDto.getInvoicesCode());
 				StatusesAssets statusesAssets = statusesAssetsDao.findByCode(saveAssetsReqDto.getStatusesAssetsCode());
-				StatusesInOut statusesInOut = statusesInOutDao.findByCode(saveAssetsReqDto.getStatusesInOutCode());
+				StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
 				String assetsName = generateCode(itemType.getItemsTypesName());
+				Companies companies = companiesDao.findByCode(saveAssetsReqDto.getCompaniesCode());
 				
 				Assets save = new Assets();
 				save.setItems(item);
 				save.setInvoices(invoice);
 				save.setAssetsName(assetsName);
+				save.setCompanies(companies);
 				save.setStatusesAssets(statusesAssets);
 				save.setStatusesInOut(statusesInOut);
 				if (saveAssetsReqDto.getAssetsExpired() != null) {
@@ -316,19 +330,22 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		boolean validation = validation(permissionCode);
 		if (validation) {
 			Items item = itemsDao.findByCode(updateAssetsReqDto.getItemsCode());
-			ItemsTypes itemType = itemsTypesDao.findById(item.getItemsTypes().getId());
 			Invoices invoice = invoicesDao.findByCode(updateAssetsReqDto.getInvoicesCode());
 			StatusesAssets statusesAssets = statusesAssetsDao.findByCode(updateAssetsReqDto.getStatusesAssetsCode());
 			StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
-			String assetsName = generateCode(itemType.getItemsTypesName());
-
-			Assets save = assetsDao.findById(updateAssetsReqDto.getId());
+			Companies companies = companiesDao.findByCode(updateAssetsReqDto.getCompaniesCode());
+			
+			Assets save = assetsDao.findByAssetsName(updateAssetsReqDto.getAssetsName());
 			save.setItems(item);
 			save.setInvoices(invoice);
-			save.setAssetsName(assetsName);
 			save.setStatusesAssets(statusesAssets);
 			save.setStatusesInOut(statusesInOut);
-			save.setAssetsExpired(LocalDate.parse(updateAssetsReqDto.getAssetsExpired()));
+			save.setCompanies(companies);
+			if (updateAssetsReqDto.getAssetsExpired() != null) {
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+				LocalDate localDate = LocalDate.parse(updateAssetsReqDto.getAssetsExpired(), formatter);
+				save.setAssetsExpired(localDate);
+			}
 			save.setUpdatedBy(getIdAuth());
 			begin();
 			Assets result = assetsDao.saveOrUpdate(save);
@@ -368,12 +385,12 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	}
 
 	@Override
-	public List<Assets> getTotalreq(String itemsCode,
+	public List<Assets> getTotalreq(String itemsCode,String companiesCode,
 			String statusesAssetsCode, String statusesInOutCode, int total) throws Exception {
 		String permissionCode = "PERMSN9";
 		boolean validation = validation(permissionCode);
 		if (validation) {
-			List<Assets> listAssets = assetsDao.findByReq(itemsCode,
+			List<Assets> listAssets = assetsDao.findByReq(itemsCode, companiesCode,
 					statusesAssetsCode,statusesInOutCode,total);
 			return listAssets;
 		} else {
@@ -389,9 +406,9 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 				SaveAssetsReqDto save = new SaveAssetsReqDto();
 				save.setItemsCode(asset.getItemsCode());
 				save.setInvoicesCode(asset.getInvoicesCode());
+				save.setCompaniesCode(asset.getCompaniesCode());
 				save.setAssetsName(asset.getAssetsName());
 				save.setStatusesAssetsCode(asset.getStatusesAssetsCode());
-				save.setStatusesInOutCode(asset.getStatusesInOutCode());
 				save.setAssetsExpired(asset.getAssetsExpired());
 				save(save);
 			}
@@ -410,6 +427,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 			JasperAssets jp = new JasperAssets();
 			jp.setAssetsName(asset.getAssetsName());
 			jp.setItemsBrandsName(asset.getItems().getItemsBrands().getItemsBrandsName());
+			jp.setCompaniesName(asset.getCompanies().getCompaniesName());
 			jp.setItemsName(asset.getItems().getItemsName());
 			jp.setItemsTypesName(asset.getItems().getItemsTypes().getItemsTypesName());
 			jp.setStatusesAssetsName(asset.getStatusesAssets().getStatusesAssetsName());
@@ -517,6 +535,25 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 			return assetsAll;
 		} else {
 			throw new Exception("Access Denied");
+		}
+	}
+
+	@Override
+	public GetAllAssetsDto findByCompaniesCode(String companiesCode) throws Exception {
+		String permissionCode = "PERMSN9";
+		boolean validation = validation(permissionCode);
+		if (validation) {
+			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
+			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+			List<Assets> assets = assetsDao.findByCompaniesCode(companiesCode);
+			assets.forEach(asset -> {
+				AssetsDataDto data = convert(asset);
+				listAssets.add(data);
+			});
+			assetsAll.setData(listAssets);
+			return assetsAll;
+		} else {
+			throw new Exception("Acces Denied");
 		}
 	}
 }

@@ -6,6 +6,8 @@ public class HistoriesReportResDto {
 	
 	private String employeesCode;
 	
+	private String employeesName;
+	
 	private String assetsName;
 	
 	private String activityName;
@@ -24,6 +26,14 @@ public class HistoriesReportResDto {
 
 	public void setEmployeesCode(String employeesCode) {
 		this.employeesCode = employeesCode;
+	}
+
+	public String getEmployeesName() {
+		return employeesName;
+	}
+
+	public void setEmployeesName(String employeesName) {
+		this.employeesName = employeesName;
 	}
 
 	public String getAssetsName() {

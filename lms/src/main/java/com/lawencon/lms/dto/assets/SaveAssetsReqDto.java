@@ -5,11 +5,20 @@ public class SaveAssetsReqDto {
 	private String itemsCode;
 	private String invoicesCode;
 	private String assetsName;
+	private String companiesCode;
 	private String statusesAssetsCode;
 	private String statusesInOutCode;
 	private String assetsExpired;
 	private String createdBy;
 	private boolean isActive;
+	
+	
+	public String getCompaniesCode() {
+		return companiesCode;
+	}
+	public void setCompaniesCode(String companiesCode) {
+		this.companiesCode = companiesCode;
+	}
 	public String getItemsCode() {
 		return itemsCode;
 	}

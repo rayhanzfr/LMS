@@ -105,7 +105,7 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append(
-					" SELECT e.id, e.employees_code, c.id as companies_id, c.companies_name ,u.users_email, e.employees_fullname, e.employees_address, e.employees_phone_number, e.created_by, e.created_at, e.updated_by, e.updated_at, e.version ");
+					" SELECT e.id, e.employees_code, c.companies_code, c.companies_name ,u.users_email, u.users_password, e.employees_fullname, e.employees_address, e.employees_phone_number, e.created_by, e.created_at, e.updated_by, e.updated_at, e.version ");
 			sql.append(" FROM employees as e ");
 			sql.append(" INNER JOIN users as u ON  u.id = e.users_id ");
 			sql.append(" INNER JOIN companies as c ON  c.id = e.companies_id ");
@@ -119,26 +119,28 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 				employees.setEmployeesCode(obj[1].toString());
 
 				Companies companies = new Companies();
-				companies.setId(obj[2].toString());
+				companies.setCompaniesCode(obj[2].toString());
 				companies.setCompaniesName(obj[3].toString());
+				employees.setCompanies(companies);
 
 				Users user = new Users();
 				user.setUsersEmail(obj[4].toString());
+				user.setUsersPassword(obj[5].toString());
 				employees.setUsers(user);
 
-				employees.setEmployeesFullname(obj[5].toString());
-				employees.setEmployeesAddress(obj[6].toString());
-				employees.setEmployeesPhoneNumber(obj[7].toString());
-				employees.setCreatedBy(obj[8].toString());
-				employees.setCreatedAt(Timestamp.valueOf(obj[9].toString()).toLocalDateTime());
+				employees.setEmployeesFullname(obj[6].toString());
+				employees.setEmployeesAddress(obj[7].toString());
+				employees.setEmployeesPhoneNumber(obj[8].toString());
+				employees.setCreatedBy(obj[9].toString());
+				employees.setCreatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
 
-				if (obj[10] != null) {
-					employees.setUpdatedBy(obj[10].toString());
-				}
 				if (obj[11] != null) {
-					employees.setUpdatedAt(Timestamp.valueOf(obj[11].toString()).toLocalDateTime());
+					employees.setUpdatedBy(obj[11].toString());
 				}
-				employees.setVersion(Integer.valueOf(obj[12].toString()));
+				if (obj[12] != null) {
+					employees.setUpdatedAt(Timestamp.valueOf(obj[12].toString()).toLocalDateTime());
+				}
+				employees.setVersion(Integer.valueOf(obj[13].toString()));
 			}
 		} catch (NoResultException e) {
 			e.printStackTrace();
