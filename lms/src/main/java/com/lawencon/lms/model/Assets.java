@@ -29,6 +29,10 @@ public class Assets extends BaseEntity{
 	@ManyToOne
 	@JoinColumn(name="statuses_assets_id",nullable=false)
 	private StatusesAssets statusesAssets;
+
+	@ManyToOne
+	@JoinColumn(name="companies_id",nullable=false)
+	private Companies companies;
 	
 	@ManyToOne
 	@JoinColumn(name="statuses_in_out_id",nullable=false)
@@ -38,6 +42,16 @@ public class Assets extends BaseEntity{
 	private LocalDate assetsExpired;
 
 	
+	
+	
+	public Companies getCompanies() {
+		return companies;
+	}
+
+	public void setCompanies(Companies companies) {
+		this.companies = companies;
+	}
+
 	public Items getItems() {
 		return items;
 	}

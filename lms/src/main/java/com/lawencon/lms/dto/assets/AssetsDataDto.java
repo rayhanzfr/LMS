@@ -14,6 +14,8 @@ public class AssetsDataDto {
 	private Files files;
 	private String statusesAssetsName;
 	private String statusesAssetsCode;
+	private String companiesCode;
+	private String companiesName;
 	private String statusesInOutName;
 	private String statusesInOutCode;
 	private LocalDate assetsExpired;
@@ -26,6 +28,22 @@ public class AssetsDataDto {
 
 	
 	
+	public String getCompaniesCode() {
+		return companiesCode;
+	}
+
+	public void setCompaniesCode(String companiesCode) {
+		this.companiesCode = companiesCode;
+	}
+
+	public String getCompaniesName() {
+		return companiesName;
+	}
+
+	public void setCompaniesName(String companiesName) {
+		this.companiesName = companiesName;
+	}
+
 	public String getItemsCode() {
 		return itemsCode;
 	}
