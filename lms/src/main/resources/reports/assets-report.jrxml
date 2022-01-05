@@ -31,7 +31,7 @@ WHERE a.assets_expired <= DATE(NOW())]]>
 	<field name="itemsBrandsName" class="java.lang.String"/>
 	<field name="statusesAssetsName" class="java.lang.String"/>
 	<field name="statusesInOutName" class="java.lang.String"/>
-	<field name="assetsExpired" class="java.time.LocalDate"/>
+	<field name="assetsExpired" class="java.lang.String"/>
 	<field name="companiesName" class="java.lang.String"/>
 	<title>
 		<band height="103" splitType="Stretch">

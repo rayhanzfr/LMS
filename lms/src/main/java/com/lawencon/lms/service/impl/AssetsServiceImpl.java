@@ -426,7 +426,8 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	@Override
 	public Map<String,Object> getAssetsExpired() throws Exception {
 		Map<String,Object> resMap = new HashMap<>();
-		List<Assets> assets = assetsDao.getExpiredAssets(companiesCode());
+		String code = companiesCode();
+		List<Assets> assets = assetsDao.getExpiredAssets(code);
 		List<JasperAssets> showJasper = new ArrayList<JasperAssets>();
 		for(Assets asset : assets) {
 			JasperAssets jp = new JasperAssets();
