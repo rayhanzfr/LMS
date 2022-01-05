@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.lms.dto.histories.HistoriesReportResDto;
@@ -33,18 +34,18 @@ public class HistoriesController extends BaseController {
 	
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = HistoriesReportResDto.class)))})
 	@GetMapping
-	public ResponseEntity<?> findAll() throws Exception {
+	public ResponseEntity<?> findAll(String companiesCode) throws Exception {
 		List<HistoriesReportResDto> listHistoriesReportResDto = new ArrayList<HistoriesReportResDto>();
-		listHistoriesReportResDto = historiesService.findHistoriesReport();
+		listHistoriesReportResDto = historiesService.findHistoriesReport(companiesCode);
 		return new ResponseEntity<>(listHistoriesReportResDto, HttpStatus.OK);
 	}
 	
 	@GetMapping("/pdf")
-    public ResponseEntity<byte[]> generatePdf() throws Exception, JRException {
+    public ResponseEntity<byte[]> generatePdf(@RequestParam("companiesCode") String companiesCode) throws Exception, JRException {
         
         Map<String, Object> map = new HashMap<>();
         
-        byte[] data = JasperUtil.responseToByteArray(historiesService.findHistoriesReport(), "assets-histories", map);
+        byte[] data = JasperUtil.responseToByteArray(historiesService.findHistoriesReport(companiesCode), "assets-histories", map);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=assets-histories.pdf");
