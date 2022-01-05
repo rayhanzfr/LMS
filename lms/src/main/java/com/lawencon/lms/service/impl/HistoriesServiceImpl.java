@@ -83,13 +83,10 @@ public class HistoriesServiceImpl extends BaseServiceLmsImpl implements Historie
 						e.printStackTrace();
 					}
 					Employees employees = new Employees();
-					try {
-						if (users.getRoles().getRolesName().equals("SUPER-ADMIN")) {
-							historiesReportResDto.setEmployeesCode("-");
-						} else {
-							employees = employeesDao.findByUserId(users.getId());
-							historiesReportResDto.setEmployeesName(employees.getEmployeesFullname());
-						}
+					try {						
+						employees = employeesDao.findByUserId(users.getId());
+						historiesReportResDto.setEmployeesName(employees.getEmployeesFullname());
+						
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
