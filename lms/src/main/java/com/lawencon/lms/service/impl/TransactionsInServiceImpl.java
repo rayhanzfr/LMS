@@ -98,6 +98,12 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 
 	@Autowired
 	private PermissionsRolesDao permissionsRolesDao;
+	
+	public String companiesCode()throws Exception{
+		Employees employees = employeesDao.findByUserId(getIdAuth());
+		String companiesCode = employees.getCompanies().getCompaniesCode();
+		return companiesCode;
+	}
 
 	@Override
 	public GetAllTransactionsInResDto findAll() throws Exception {
@@ -254,7 +260,7 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 					}
 
 					
-					Assets assets = assetsDao.findByAssetsName(saveDet.getAssetsName());
+					Assets assets = assetsDao.findByAssetsName(companiesCode(),saveDet.getAssetsName());
 					StatusesTransactions statusesTransactions = statusesTransactionsDao.findByCode(saveDet.getStatusesTransactionsCode());
 
 					tdin.setTransactionsIn(tin);
