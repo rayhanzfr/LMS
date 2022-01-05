@@ -32,8 +32,7 @@
         <tr>
             
             <td align="center" style="padding: 40px 0 20px 0;">
-                <h1 style="color:#FA840F">PT. Lawencon International</p>
-                <h2 style="color:#0094FF">Lawencon-Assets Management System</p>
+                <img alt="lms.png" src="https://i.imgur.com/VIaF4XQ.png" style="border:0;display:block;outline:0;text-decoration:none; font-size:12px" width="300px" tabindex="0">
             </td>
         </tr>
         <tr>

@@ -88,7 +88,7 @@ public class HistoriesServiceImpl extends BaseServiceLmsImpl implements Historie
 							historiesReportResDto.setEmployeesCode("-");
 						} else {
 							employees = employeesDao.findByUserId(users.getId());
-							historiesReportResDto.setEmployeesCode(employees.getEmployeesCode());
+							historiesReportResDto.setEmployeesName(employees.getEmployeesFullname());
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
