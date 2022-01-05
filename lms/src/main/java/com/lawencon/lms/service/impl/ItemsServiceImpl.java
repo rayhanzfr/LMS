@@ -105,13 +105,12 @@ public class ItemsServiceImpl extends BaseServiceLmsImpl implements ItemsService
 				Files filesInsert = new Files();
 				filesInsert.setFile(file.getBytes());
 				filesInsert.setExtensions(ext);
-
+				filesInsert.setCreatedBy(getIdAuth());
 				begin();
-				Files files = filesDao.findById(items.getFiles().getId());
-				files = filesDao.saveOrUpdate(files);
+				filesInsert = filesDao.saveOrUpdate(filesInsert);
 				ItemsTypes itemsTypes = itemsTypesService.findByCode(items.getItemsTypes().getItemsTypesCode());
 				ItemsBrands itemsBrands = itemsBrandsService.findByCode(items.getItemsBrands().getItemsBrandsCode());
-				items.setFiles(files);
+				items.setFiles(filesInsert);
 				items.setItemsTypes(itemsTypes);
 				items.setItemsBrands(itemsBrands);
 				Items itemsDb = findByCode(items.getItemsCode());

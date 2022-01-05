@@ -205,7 +205,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH i.itemsTypes it ");
 		sql.append(" INNER JOIN FETCH i.itemsBrands ib ");
 		sql.append(" INNER JOIN FETCH a.invoices ");
-		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
+		sql.append(" INNER JOIN FcETCH a.statusesAssets sa ");
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE a.assetsExpired <= DATE(NOW()) ");
 		sql.append(" AND it.itemsTypesName = 'Licenses' ");
@@ -299,7 +299,4 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 				.setParameter("companiesCode", companiesCode).getResultList();
 		return listAssets;
 	}
-
-
-
 }
