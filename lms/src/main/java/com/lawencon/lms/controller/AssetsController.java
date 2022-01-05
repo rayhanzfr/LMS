@@ -163,8 +163,8 @@ public class AssetsController extends BaseController{
 			@Content(array = @ArraySchema(schema = @Schema(implementation = GetAllAssetsDto.class))) })
 	@GetMapping("/companies")
 	public ResponseEntity<?> findByCompaniesCode(
-			@RequestParam(value = "statusesInOutCode") String statusesInOutCode) throws Exception {
-		GetAllAssetsDto result = assetsService.findByStatusesInOutCode(statusesInOutCode);
+			@RequestParam(value = "companiesCode") String companiesCode) throws Exception {
+		GetAllAssetsDto result = assetsService.findByCompaniesCode(companiesCode);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
