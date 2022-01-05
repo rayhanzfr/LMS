@@ -14,5 +14,5 @@ public interface HistoriesService {
 	
 	List<Histories> findByUsersId(String usersId) throws Exception;
 	
-	List<HistoriesReportResDto> findHistoriesReport() throws Exception;
+	List<HistoriesReportResDto> findHistoriesReport(String companiesCode) throws Exception;
 }

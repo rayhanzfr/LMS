@@ -59,14 +59,23 @@ public class HistoriesServiceImpl extends BaseServiceLmsImpl implements Historie
 	public List<Histories> findByUsersId(String usersId) throws Exception {
 		return historiesDao.findByUsersId(usersId);
 	}
-
+	
+	public String companiesCode()throws Exception{
+		Employees employees = employeesDao.findByUserId(getIdAuth());
+		String companiesCode = employees.getCompanies().getCompaniesCode();
+		return companiesCode;
+	}
+	
 	@Override
-	public List<HistoriesReportResDto> findHistoriesReport() throws Exception {
+	public List<HistoriesReportResDto> findHistoriesReport(String companiesCode) throws Exception {
 		List<Histories> listHistories = historiesDao.findAll();
 		List<HistoriesReportResDto> listHistoriesReportResDto = new ArrayList<HistoriesReportResDto>();
+		
 		listHistories.forEach(i -> {
 			try {
-				
+				Users usersNow = usersDao.findById(i.getUsers().getId());
+				Employees employeesNow = employeesDao.findByUserId(usersNow.getId());
+				if (companiesCode.equals(employeesNow.getCompanies().getCompaniesCode())) {
 					HistoriesReportResDto historiesReportResDto = new HistoriesReportResDto();
 					Assets assets = new Assets();
 					try {
@@ -92,8 +101,9 @@ public class HistoriesServiceImpl extends BaseServiceLmsImpl implements Historie
 					}
 					historiesReportResDto.setActivityName(i.getActivityName());
 					listHistoriesReportResDto.add(historiesReportResDto);
+				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();				
 			}
 		});
 		return listHistoriesReportResDto;
