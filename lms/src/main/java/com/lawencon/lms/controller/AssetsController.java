@@ -264,9 +264,9 @@ public class AssetsController extends BaseController{
 				fileSender.sendReport(emailHelper, out);
 			}
 			catch (Exception e) {
+				e.printStackTrace();
 				throw new CompletionException(e);
 			}
-			
 			return new ResponseEntity<>("SENT", HttpStatus.OK);
 		}, executor);
 	}

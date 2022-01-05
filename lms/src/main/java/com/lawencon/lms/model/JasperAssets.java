@@ -7,11 +7,20 @@ public class JasperAssets {
 	private String assetsName;
 	private String itemsName;
 	private String itemsTypesName;
+	private String companiesName;
 	private String itemsBrandsName;
 	private String statusesAssetsName;
 	private String statusesInOutName;
 	private String assetsExpired;
 	
+	
+	
+	public String getCompaniesName() {
+		return companiesName;
+	}
+	public void setCompaniesName(String companiesName) {
+		this.companiesName = companiesName;
+	}
 	public String getAssetsExpired() {
 		return assetsExpired;
 	}

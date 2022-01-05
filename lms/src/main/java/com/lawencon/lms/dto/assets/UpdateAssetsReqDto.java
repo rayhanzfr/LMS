@@ -5,6 +5,7 @@ public class UpdateAssetsReqDto {
 	private String id;
 	private String itemsCode;
 	private String invoicesCode;
+	private String companiesCode;
 	private String assetsName;
 	private String statusesAssetsCode;
 	private String statusesInOutCode;
@@ -14,6 +15,12 @@ public class UpdateAssetsReqDto {
 	private Integer version;
 	
 	
+	public String getCompaniesCode() {
+		return companiesCode;
+	}
+	public void setCompaniesCode(String companiesCode) {
+		this.companiesCode = companiesCode;
+	}
 	public String getId() {
 		return id;
 	}
