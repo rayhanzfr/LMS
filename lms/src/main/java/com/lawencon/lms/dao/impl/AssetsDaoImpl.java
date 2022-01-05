@@ -23,7 +23,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	}
 
 	@Override
-	public Assets findByAssetsName(String assetsName) throws Exception {
+	public Assets findByAssetsName(String companiesCode,String assetsName) throws Exception {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a");
@@ -37,14 +37,16 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE a.assetsName = :assetsName ");
+		sql.append(" AND c.companiesCode = :companiesCode ");
 
 		Assets assets = createQuery(sql.toString(), Assets.class).setParameter("assetsName", assetsName)
+				.setParameter("companiesCode", companiesCode)
 				.getSingleResult();
 		return assets;
 	}
 
 	@Override
-	public List<Assets> findByItemsCode(String itemsCode) throws Exception {
+	public List<Assets> findByItemsCode(String companiesCode,String itemsCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
@@ -57,14 +59,16 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE i.itemsCode = :itemsCode ");
+		sql.append(" AND c.companiesCode = :companiesCode ");
 
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class).setParameter("itemsCode", itemsCode)
+				.setParameter("companiesCode", companiesCode)
 				.getResultList();
 		return listAssets;
 	}
 
 	@Override
-	public List<Assets> findByBrandsCode(String brandsCode) throws Exception {
+	public List<Assets> findByBrandsCode(String companiesCode,String brandsCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
@@ -77,14 +81,16 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE ib.itemsBrandsCode= :brandsCode ");
+		sql.append(" AND c.companiesCode= :companiesCode ");
 
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class).setParameter("brandsCode", brandsCode)
+				.setParameter("companiesCode", companiesCode)
 				.getResultList();
 		return listAssets;
 	}
 
 	@Override
-	public List<Assets> findByItemsTypesCode(String itemsTypesCode) throws Exception {
+	public List<Assets> findByItemsTypesCode(String companiesCode,String itemsTypesCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM assets AS a ");
@@ -97,15 +103,18 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE it.itemsTypesCode = :itemsTypesCode ");
+		sql.append(" AND c.companiesCode = :companiesCode ");
 
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
-				.setParameter("itemsTypesCode", itemsTypesCode).getResultList();
+				.setParameter("itemsTypesCode", itemsTypesCode)
+				.setParameter("companiesCode", companiesCode)
+				.getResultList();
 		return listAssets;
 
 	}
 
 	@Override
-	public List<Assets> findByStatusesAssetsCode(String statusesAssetsCode) throws Exception {
+	public List<Assets> findByStatusesAssetsCode(String companiesCode,String statusesAssetsCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
@@ -118,15 +127,18 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE sa.statusesAssetsCode = :statusesAssetsCode ");
+		sql.append(" AND c.companiesCode = :companiesCode ");
 
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
-				.setParameter("statusesAssetsCode", statusesAssetsCode).getResultList();
+				.setParameter("statusesAssetsCode", statusesAssetsCode)
+				.setParameter("companiesCode", companiesCode)
+				.getResultList();
 		return listAssets;
 
 	}
 
 	@Override
-	public List<Assets> findByStatusesInOutCode(String statusesInOutCode) throws Exception {
+	public List<Assets> findByStatusesInOutCode(String companiesCode,String statusesInOutCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
@@ -139,9 +151,12 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.statusesAssets sa ");
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE sio.statusesInOutCode= :statusesInOutCode ");
+		sql.append(" AND c.companiesCode =:companiesCode ");
 
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
-				.setParameter("statusesInOutCode", statusesInOutCode).getResultList();
+				.setParameter("statusesInOutCode", statusesInOutCode)
+				.setParameter("companiesCode", companiesCode)
+				.getResultList();
 		return listAssets;
 
 	}
@@ -195,7 +210,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	}
 
 	@Override
-	public List<Assets> getExpiredAssets() throws Exception {
+	public List<Assets> getExpiredAssets(String companiesCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
@@ -209,13 +224,15 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE a.assetsExpired <= DATE(NOW()) ");
 		sql.append(" AND it.itemsTypesName = 'Licenses' ");
+		sql.append(" AND c.companiesCode= :companiesCode ");
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
+				.setParameter("companiesCode", companiesCode)
 				.getResultList();
 		return listAssets;
 	}
 
 	@Override
-	public List<Assets> getNewAssets() throws Exception {
+	public List<Assets> getNewAssets(String companiesCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
@@ -236,7 +253,7 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 	}
 
 	@Override
-	public List<Assets> getTop5AssetsDeploy() throws Exception {
+	public List<Assets> getTop5AssetsDeploy(String companiesCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
@@ -250,15 +267,17 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE sio.statusesInOutCode = 'COUT' ");
 		sql.append(" AND sa.statusesAssetsCode = 'UNDEP' ");
+		sql.append(" AND c.companiesCode= :companiesCode ");
 		sql.append(" ORDER BY a.updatedAt DESC ");
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
+				.setParameter("companiesCode", companiesCode)
 				.setMaxResults(5)
 				.getResultList();
 		return listAssets;
 	}
 
 	@Override
-	public List<Assets> findByStatAssetsInOut(String statusesAssetsCode, String statusesInOutCode) throws Exception {
+	public List<Assets> findByStatAssetsInOut(String companiesCode,String statusesAssetsCode, String statusesInOutCode) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT a ");
 		sql.append(" FROM Assets AS a ");
@@ -272,10 +291,12 @@ public class AssetsDaoImpl extends BaseDaoImpl<Assets> implements AssetsDao {
 		sql.append(" INNER JOIN FETCH a.statusesInOut sio ");
 		sql.append(" WHERE sio.statusesInOutCode = :statInCode ");
 		sql.append(" AND sa.statusesAssetsCode = :statAssCode ");
+		sql.append(" AND c.companiesCode= :companiesCode ");
 		sql.append(" ORDER BY a.updatedAt DESC ");
 		List<Assets> listAssets = createQuery(sql.toString(), Assets.class)
 				.setParameter("statInCode", statusesInOutCode)
 				.setParameter("statAssCode", statusesAssetsCode)
+				.setParameter("companiesCode", companiesCode)
 				.getResultList();
 		return listAssets;
 	}

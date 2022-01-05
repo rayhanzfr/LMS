@@ -20,7 +20,7 @@ import liquibase.pro.packaged.ce;
 public class ExcelRequest {
 
 	static String type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-	static String[] headers = { "items_code", "invoices_code", "companies_code","statuses_assets_code",
+	static String[] headers = { "items_code", "invoices_code","statuses_assets_code",
 			"assets_expired" };
 	static String sheets = "assets";
 
@@ -82,11 +82,9 @@ public class ExcelRequest {
 						asset.setInvoicesCode(data);
 						break;
 					case 2:
-						asset.setCompaniesCode(data);
-					case 3:
 						asset.setStatusesAssetsCode(data);
 						break;
-					case 4:
+					case 3:
 						asset.setAssetsExpired(data);
 						break;
 					default:

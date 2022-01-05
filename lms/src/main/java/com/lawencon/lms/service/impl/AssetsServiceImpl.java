@@ -122,6 +122,12 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		return data;
 	}
 
+	public String companiesCode()throws Exception{
+		Employees employees = employeesDao.findByUserId(getIdAuth());
+		String companiesCode = employees.getCompanies().getCompaniesCode();
+		return companiesCode;
+	}
+	
 	@Override
 	public GetAllAssetsDto findAll() throws Exception {
 		String permissionCode = "PERMSN9";
@@ -161,7 +167,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		String permissionCode = "PERMSN9";
 		boolean validation = validation(permissionCode);
 		if (validation) {
-			Assets asset = assetsDao.findByAssetsName(assetsName);
+			Assets asset = assetsDao.findByAssetsName(companiesCode(),assetsName);
 			GetByIdAssetsDto getAssets = new GetByIdAssetsDto();
 			AssetsDataDto data = convert(asset);
 			getAssets.setData(data);
@@ -178,7 +184,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
 			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.findByItemsCode(itemsCode);
+			List<Assets> assets = assetsDao.findByItemsCode(companiesCode(),itemsCode);
 			assets.forEach(asset -> {
 				AssetsDataDto data = convert(asset);
 				listAssets.add(data);
@@ -197,7 +203,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
 			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.findByBrandsCode(brandsCode);
+			List<Assets> assets = assetsDao.findByBrandsCode(companiesCode(),brandsCode);
 			assets.forEach(asset -> {
 				AssetsDataDto data = convert(asset);
 				listAssets.add(data);
@@ -216,7 +222,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
 			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.findByItemsTypesCode(itemsTypesCode);
+			List<Assets> assets = assetsDao.findByItemsTypesCode(companiesCode(),itemsTypesCode);
 			assets.forEach(asset -> {
 				AssetsDataDto data = convert(asset);
 				listAssets.add(data);
@@ -235,7 +241,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
 			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.findByStatusesAssetsCode(statusesAssetsCode);
+			List<Assets> assets = assetsDao.findByStatusesAssetsCode(companiesCode(),statusesAssetsCode);
 			assets.forEach(asset -> {
 				AssetsDataDto data = convert(asset);
 				listAssets.add(data);
@@ -254,7 +260,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
 			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.findByStatusesInOutCode(statusesInOutCode);
+			List<Assets> assets = assetsDao.findByStatusesInOutCode(companiesCode(),statusesInOutCode);
 			assets.forEach(asset -> {
 				AssetsDataDto data = convert(asset);
 				listAssets.add(data);
@@ -279,13 +285,13 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 				StatusesAssets statusesAssets = statusesAssetsDao.findByCode(saveAssetsReqDto.getStatusesAssetsCode());
 				StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
 				String assetsName = generateCode(itemType.getItemsTypesName());
-				Companies companies = companiesDao.findByCode(saveAssetsReqDto.getCompaniesCode());
+				Companies companies = companiesDao.findByCode(companiesCode());
 				
 				Assets save = new Assets();
 				save.setItems(item);
 				save.setInvoices(invoice);
 				save.setAssetsName(assetsName);
-				save.setCompanies(companies);
+				save.setCompanies(companies);	
 				save.setStatusesAssets(statusesAssets);
 				save.setStatusesInOut(statusesInOut);
 				if (saveAssetsReqDto.getAssetsExpired() != null) {
@@ -335,7 +341,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 			StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
 			Companies companies = companiesDao.findByCode(updateAssetsReqDto.getCompaniesCode());
 			
-			Assets save = assetsDao.findByAssetsName(updateAssetsReqDto.getAssetsName());
+			Assets save = assetsDao.findByAssetsName(companiesCode(),updateAssetsReqDto.getAssetsName());
 			save.setItems(item);
 			save.setInvoices(invoice);
 			save.setStatusesAssets(statusesAssets);
@@ -406,7 +412,6 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 				SaveAssetsReqDto save = new SaveAssetsReqDto();
 				save.setItemsCode(asset.getItemsCode());
 				save.setInvoicesCode(asset.getInvoicesCode());
-				save.setCompaniesCode(asset.getCompaniesCode());
 				save.setAssetsName(asset.getAssetsName());
 				save.setStatusesAssetsCode(asset.getStatusesAssetsCode());
 				save.setAssetsExpired(asset.getAssetsExpired());
@@ -421,7 +426,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	@Override
 	public Map<String,Object> getAssetsExpired() throws Exception {
 		Map<String,Object> resMap = new HashMap<>();
-		List<Assets> assets = assetsDao.getExpiredAssets();
+		List<Assets> assets = assetsDao.getExpiredAssets(companiesCode());
 		List<JasperAssets> showJasper = new ArrayList<JasperAssets>();
 		for(Assets asset : assets) {
 			JasperAssets jp = new JasperAssets();
@@ -488,7 +493,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
 			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.getTop5AssetsDeploy();
+			List<Assets> assets = assetsDao.getTop5AssetsDeploy(companiesCode());
 			assets.forEach(asset -> {
 				AssetsDataDto data = convert(asset);
 				listAssets.add(data);
@@ -507,7 +512,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
 			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.getNewAssets();
+			List<Assets> assets = assetsDao.getNewAssets(companiesCode());
 			assets.forEach(asset -> {
 				AssetsDataDto data = convert(asset);
 				listAssets.add(data);
@@ -526,7 +531,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
 			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.findByStatAssetsInOut(statusesAssetsCode,statusesInOutCode);
+			List<Assets> assets = assetsDao.findByStatAssetsInOut(companiesCode(),statusesAssetsCode,statusesInOutCode);
 			assets.forEach(asset -> {
 				AssetsDataDto data = convert(asset);
 				listAssets.add(data);

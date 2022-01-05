@@ -183,4 +183,21 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 		return list;
 	}
 
+	@Override
+	public Employees findByCompaniesCode(String code) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT e ");
+		sql.append(" FROM Employees e ");
+		sql.append(" INNER JOIN FETCH e.users u ");
+		sql.append(" INNER JOIN FETCH u.roles ");
+		sql.append(" INNER JOIN FETCH e.companies c ");
+		sql.append(" INNER JOIN FETCH c.files ");
+		sql.append(" WHERE e.employeesCode = :code ");
+		
+		Employees employees = createQuery(sql.toString(), Employees.class)
+				.setParameter("code", code)
+				.getSingleResult();
+		return null;
+	}
+
 }

@@ -87,7 +87,12 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 	@Autowired
 	private PermissionsRolesDao permissionsRolesDao;
 
-
+	public String companiesCode()throws Exception{
+		Employees employees = employeesDao.findByUserId(getIdAuth());
+		String companiesCode = employees.getCompanies().getCompaniesCode();
+		return companiesCode;
+	}
+	
 	@Override
 	public SaveFullTransactionsOutResDto save(SaveFullTransactionsOutReqDto itemsReq) throws Exception {
 		String permissionsCode = "PERMSN34";
@@ -144,7 +149,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 
 					Assets assets = new Assets();
 					try {
-						Assets assetsDb = assetsDao.findByAssetsName(i.getAssetsName());
+						Assets assetsDb = assetsDao.findByAssetsName(companiesCode(),i.getAssetsName());
 						assets = assetsDb;
 						transactionsDetailOut.setAssets(assets);
 					} catch (Exception e) {

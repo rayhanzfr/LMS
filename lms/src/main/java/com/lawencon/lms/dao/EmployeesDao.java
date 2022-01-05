@@ -14,6 +14,8 @@ public interface EmployeesDao {
 
 	Employees findByCode(String Code) throws Exception;
 
+	Employees findByCompaniesCode(String code) throws Exception;
+
 	Employees saveOrUpdate(Employees employees) throws Exception;
 	
 	List<Employees>findByRoles(String rolesCode)throws Exception;
