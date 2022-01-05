@@ -66,7 +66,7 @@ public class HistoriesServiceImpl extends BaseServiceLmsImpl implements Historie
 		List<HistoriesReportResDto> listHistoriesReportResDto = new ArrayList<HistoriesReportResDto>();
 		listHistories.forEach(i -> {
 			try {
-				if (i.getCreatedBy().equals(getIdAuth())) {
+				
 					HistoriesReportResDto historiesReportResDto = new HistoriesReportResDto();
 					Assets assets = new Assets();
 					try {
@@ -95,7 +95,6 @@ public class HistoriesServiceImpl extends BaseServiceLmsImpl implements Historie
 					}
 					historiesReportResDto.setActivityName(i.getActivityName());
 					listHistoriesReportResDto.add(historiesReportResDto);
-				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

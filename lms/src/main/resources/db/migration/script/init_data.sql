@@ -193,12 +193,27 @@ INSERT INTO permissions_roles (permissions_id,roles_id,"version",created_by,crea
 ((select id from permissions where permissions_code = 'PERMSN55'),(select id from roles where roles_code = 'ROLES2'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
 ((select id from permissions where permissions_code = 'PERMSN56'),(select id from roles where roles_code = 'ROLES2'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
 ((select id from permissions where permissions_code = 'PERMSN9'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
-((select id from permissions where permissions_code = 'PERMSN10'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
 ((select id from permissions where permissions_code = 'PERMSN17'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN10'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN11'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN13'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN17'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN18'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN19'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN25'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN26'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN27'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN29'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN30'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN31'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
 ((select id from permissions where permissions_code = 'PERMSN33'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
 ((select id from permissions where permissions_code = 'PERMSN34'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
 ((select id from permissions where permissions_code = 'PERMSN35'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
-((select id from permissions where permissions_code = 'PERMSN36'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true);
+((select id from permissions where permissions_code = 'PERMSN36'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN41'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN45'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN49'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from permissions where permissions_code = 'PERMSN53'),(select id from roles where roles_code = 'ROLES3'),0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true);
 
 
 
@@ -223,8 +238,8 @@ INSERT INTO statuses_assets (statuses_assets_code, statuses_assets_name, "versio
 --(bytea_import('D:\Lawencon\FINAL PRJ\backend\LMS-main\LMS-main\bootcamp\lms\src\main\resources\reports\logoLMS 1.svg'),'svg',(select id from roles where roles_code = 'ROLES1'),now(),true,0);
 
 
-INSERT INTO items_brands (items_brands_code,items_brands_name,"version",created_by,created_at,is_active)VALUES
-('ITMBRANDS1','LENOVO',0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true);
+-- INSERT INTO items_brands (items_brands_code,items_brands_name,"version",created_by,created_at,is_active)VALUES
+-- ('ITMBRANDS1','LENOVO',0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true);
 
 --INSERT INTO items (files_id, items_types_id,items_brands_id,items_code,items_name,"version",created_by,created_at,is_active)VALUES
 --((select id from files where extensions = 'svg'),(select id from items_types where items_types_code= 'ITMTYPES1'),(select id from items_brands where items_brands_code='ITMBRANDS1'),'ITEMS1','LAPTOP',0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true);
@@ -238,7 +253,10 @@ INSERT INTO items_brands (items_brands_code,items_brands_name,"version",created_
 --	('LOCTN2', 'Tomcat', (select id from companies where companies_code= 'COMP1'), 0, now(), (select id from roles where roles_code = 'ROLES1'), true);
 
 INSERT INTO statuses_transactions (statuses_assets_id,statuses_transactions_code,statuses_transactions_name,"version",created_by,created_at,is_active)VALUES
-((select id from statuses_assets where statuses_assets_code= 'DEP'),'READY','Ready To Deploy',0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true);
+((select id from statuses_assets where statuses_assets_code= 'DEP'),'READY','Ready To Deploy',0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from statuses_assets where statuses_assets_code= 'UNDEP'),'BROKEN','Broken',0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from statuses_assets where statuses_assets_code= 'ARCHV'),'LOST/STOLEN','Lost or Stolen',0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true),
+((select id from statuses_assets where statuses_assets_code= 'UNDEP'),'REPAIR','Repair',0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),true);
 
 --INSERT INTO employees (users_id,companies_id, employees_code, employees_fullname, employees_address,employees_phone_number,"version",created_by,created_at,is_active)
 --VALUES 
