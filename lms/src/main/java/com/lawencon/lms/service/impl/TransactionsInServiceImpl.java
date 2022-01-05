@@ -291,7 +291,7 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 					users = usersDao.findById(getIdAuth());
 					histories.setAssets(tdin.getAssets());
 					histories.setUsers(users);
-					histories.setActivityName(StatusesInOutCode.CHECKIN.getCode());
+					histories.setActivityName(StatusesInOutCode.CHECKIN.name());
 					histories.setCreatedBy(getIdAuth());
 					histories = historiesDao.saveOrUpdate(histories);
 				}

@@ -32,6 +32,7 @@
         <tr>
             
             <td align="center" style="padding: 40px 0 20px 0;">
+            	<img alt="lms.png" src="https://i.imgur.com/VIaF4XQ.png" style="border:0;display:block;outline:0;text-decoration:none; font-size:12px" width="300px" tabindex="0">
                 <h1 style="color:#FA840F">PT. Lawencon International</p>
                 <h2 style="color:#0094FF">Lawencon-Assets Management System</p>
             </td>
@@ -46,13 +47,18 @@
                 <p>Thanks</p>
             </td>
         </tr>
-        
+        <tr>
+            	<td align="center">
+            	<img alt="Password Image" src="https://image.freepik.com/free-vector/key-concept-illustration_114360-6305.jpg" style="border:0;display:block;outline:0;text-decoration:none; font-size:12px" width="500px" class="CToWUd a6T" tabindex="0"> 
+            	</td>
+        </tr>
     </table>
     <table bgcolor="#eaeaea" border="0" cellspacing="0" cellpadding="0" style="table-layout:fixed;border-collapse:separate">
         <tbody>
             <tr>
                 <td height="20" class="m_-4195446629692241502smallspacer" style="border-collapse:separate;table-layout:fixed;font-size:1px;line-height:1px">&nbsp;</td>
             </tr>
+            
         </tbody>
     </table>
 	</div>

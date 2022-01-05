@@ -211,6 +211,7 @@ CREATE TABLE assets(
 	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
 	items_id varchar(36) NOT null,
 	invoices_id varchar(36) NOT null,
+	companies_id varchar(36) NOT Null,
 	assets_name varchar(50) unique not null,
 	statuses_assets_id varchar(36) NOT NULL,
 	statuses_in_out_id varchar(36) NOT NULL,
@@ -225,6 +226,8 @@ CREATE TABLE assets(
 	REFERENCES items(id),
 	FOREIGN KEY (invoices_id)
 	REFERENCES invoices(id),
+	FOREIGN KEY (companies_id)
+	REFERENCES companies(id),
 	FOREIGN KEY (statuses_assets_id)
 	REFERENCES statuses_assets(id),
 	FOREIGN KEY (statuses_in_out_id)
