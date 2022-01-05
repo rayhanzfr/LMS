@@ -32,8 +32,9 @@ WHERE a.assets_expired <= DATE(NOW())]]>
 	<field name="statusesAssetsName" class="java.lang.String"/>
 	<field name="statusesInOutName" class="java.lang.String"/>
 	<field name="assetsExpired" class="java.time.LocalDate"/>
+	<field name="companiesName" class="java.lang.String"/>
 	<title>
-		<band height="125" splitType="Stretch">
+		<band height="103" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
 				<reportElement x="250" y="19" width="300" height="25" forecolor="#FA840D" uuid="24e61ffc-d361-4361-9104-5d541027d7d2">
@@ -69,14 +70,14 @@ WHERE a.assets_expired <= DATE(NOW())]]>
 		<band height="126">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<staticText>
-				<reportElement x="286" y="5" width="236" height="30" uuid="b4554098-0daf-468f-9716-883746a3f60f"/>
+				<reportElement x="282" y="30" width="236" height="30" uuid="b4554098-0daf-468f-9716-883746a3f60f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Segoe UI" size="20" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Report Expired Asset]]></text>
 			</staticText>
 			<textField pattern="dd-MM-yyyy">
-				<reportElement x="70" y="60" width="110" height="30" uuid="857981c2-0a20-46ba-b7d4-85eb448b5eca"/>
+				<reportElement x="90" y="80" width="110" height="30" uuid="857981c2-0a20-46ba-b7d4-85eb448b5eca"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
@@ -87,116 +88,102 @@ WHERE a.assets_expired <= DATE(NOW())]]>
 	<columnHeader>
 		<band height="31">
 			<staticText>
-				<reportElement x="0" y="1" width="40" height="30" uuid="f21127a0-fc8a-448a-a02c-4e9a5c2c6f27"/>
+				<reportElement x="38" y="1" width="40" height="30" uuid="f21127a0-fc8a-448a-a02c-4e9a5c2c6f27"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="40" y="0" width="114" height="30" uuid="d138f4f5-9aab-4118-ae3b-52a80ccaa366">
+				<reportElement x="78" y="1" width="141" height="30" uuid="d138f4f5-9aab-4118-ae3b-52a80ccaa366">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f12ad01e-06d3-493e-9e4f-f3d4cc56517e"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[assetsName]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="154" y="0" width="138" height="30" uuid="a294a4b7-5280-4e68-be2d-69fd73d5d6bf">
+				<reportElement x="220" y="1" width="138" height="30" uuid="a294a4b7-5280-4e68-be2d-69fd73d5d6bf">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="be874db5-fd69-4484-a203-247caee51b1b"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[itemsName]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="292" y="0" width="102" height="30" uuid="2261cd2d-0097-441d-b240-a216394bc8f5">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6b5d2242-ae5e-4ba8-85b2-fbf40fa88c10"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[itemsTypesName]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="394" y="0" width="102" height="30" uuid="da982bdb-2baf-4694-8f79-cae9e6228273">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2e8c00b3-8d37-4ea2-a360-c940b25be3e5"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[itemsBrandsName]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="496" y="1" width="102" height="30" uuid="75e983a1-6adb-4a2e-8817-252be9ccd470">
+				<reportElement x="458" y="1" width="102" height="30" uuid="75e983a1-6adb-4a2e-8817-252be9ccd470">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e5fcc95e-fedb-439b-8fda-7911c05edebe"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[statusesAssetsName]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="598" y="1" width="102" height="30" uuid="be2c91f3-2b4e-4802-b40b-bc5dbba7c5b9">
+				<reportElement x="560" y="1" width="102" height="30" uuid="be2c91f3-2b4e-4802-b40b-bc5dbba7c5b9">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7a08a0ed-ff09-4b37-b870-6279c2104515"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[statusesInOutName]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="700" y="0" width="102" height="30" uuid="dceba61a-8a38-4706-ae0c-78556e58ed07">
+				<reportElement x="662" y="1" width="102" height="30" uuid="dceba61a-8a38-4706-ae0c-78556e58ed07">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="549e27b0-018f-4ba4-a429-9e88a9e3cac4"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[assetsExpired]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="1" width="100" height="30" uuid="0145fe23-0d05-4438-aca8-98f1ae7a4328">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d6841bcb-19e5-4a89-b03e-2ad2a98366a1"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[companiesName]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="30">
 			<textField>
-				<reportElement x="0" y="0" width="40" height="30" uuid="80fdcb0e-3234-42e8-a230-072df6f1aa7c"/>
+				<reportElement x="38" y="0" width="40" height="30" uuid="80fdcb0e-3234-42e8-a230-072df6f1aa7c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="40" y="0" width="114" height="30" uuid="4694935e-9c3f-4d85-b7e3-575dc9cfb646">
+				<reportElement x="79" y="0" width="141" height="30" uuid="4694935e-9c3f-4d85-b7e3-575dc9cfb646">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f12ad01e-06d3-493e-9e4f-f3d4cc56517e"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{assetsName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="154" y="0" width="138" height="30" uuid="9d091fbc-bc31-47d7-a254-33463ed60b62">
+				<reportElement x="220" y="0" width="138" height="30" uuid="9d091fbc-bc31-47d7-a254-33463ed60b62">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="be874db5-fd69-4484-a203-247caee51b1b"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{itemsName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="292" y="0" width="102" height="30" uuid="7214df66-ab6e-4857-b411-8f2d36aedeb7">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6b5d2242-ae5e-4ba8-85b2-fbf40fa88c10"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{itemsTypesName}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="394" y="0" width="102" height="30" uuid="4d6696d9-4e3a-4e32-8cd8-071ea96e48dc">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2e8c00b3-8d37-4ea2-a360-c940b25be3e5"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{itemsBrandsName}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="496" y="0" width="102" height="30" uuid="8af44a62-b4ae-4003-a52a-d9a1ad91bced">
+				<reportElement x="458" y="0" width="102" height="30" uuid="8af44a62-b4ae-4003-a52a-d9a1ad91bced">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e5fcc95e-fedb-439b-8fda-7911c05edebe"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{statusesAssetsName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="598" y="0" width="102" height="30" uuid="eee60e8f-16c2-475f-9ab5-1958c571a79c">
+				<reportElement x="560" y="0" width="102" height="30" uuid="eee60e8f-16c2-475f-9ab5-1958c571a79c">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7a08a0ed-ff09-4b37-b870-6279c2104515"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{statusesInOutName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="700" y="0" width="102" height="30" uuid="526f31b7-f22d-47c1-a368-4b4185c1e11a">
+				<reportElement x="662" y="0" width="102" height="30" uuid="526f31b7-f22d-47c1-a368-4b4185c1e11a">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="549e27b0-018f-4ba4-a429-9e88a9e3cac4"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{assetsExpired}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="358" y="0" width="100" height="30" uuid="c34343ac-8717-4a99-b621-c4c6c6b76a2a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d6841bcb-19e5-4a89-b03e-2ad2a98366a1"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{companiesName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
