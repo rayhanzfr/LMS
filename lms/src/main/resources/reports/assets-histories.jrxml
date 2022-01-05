@@ -42,6 +42,7 @@ INNER JOIN users u ON u.id = h.users_id
 INNER JOIN employees e ON u.id = e.users_id;]]>
 	</queryString>
 	<field name="usersEmail" class="java.lang.String"/>
+	<field name="employeesName" class="java.lang.String"/>
 	<field name="employeesCode" class="java.lang.String"/>
 	<field name="assetsName" class="java.lang.String"/>
 	<field name="activityName" class="java.lang.String"/>
@@ -100,7 +101,7 @@ INNER JOIN employees e ON u.id = e.users_id;]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[usersEmail]]></text>
+				<text><![CDATA[Users Email]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="180" y="0" width="115" height="30" uuid="811ea0a5-0b8b-4c8f-99f0-cb8e2aaded1a">
@@ -113,7 +114,7 @@ INNER JOIN employees e ON u.id = e.users_id;]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[employeesCode]]></text>
+				<text><![CDATA[Employees Name]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="295" y="0" width="115" height="30" uuid="7c6b4616-9a6a-438a-9049-eab7d0cdcafd">
@@ -126,7 +127,7 @@ INNER JOIN employees e ON u.id = e.users_id;]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[assetsName]]></text>
+				<text><![CDATA[Assets Name]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="410" y="0" width="115" height="30" uuid="e2efd2f4-afe1-4d82-8317-a67cc75e7382">
@@ -139,7 +140,7 @@ INNER JOIN employees e ON u.id = e.users_id;]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[activityName]]></text>
+				<text><![CDATA[Activity Name]]></text>
 			</staticText>
 			<staticText>
 				<reportElement positionType="Float" x="32" y="0" width="30" height="30" uuid="57b2b501-1b99-49cb-976f-afe14405768a"/>
@@ -180,7 +181,7 @@ INNER JOIN employees e ON u.id = e.users_id;]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{employeesCode}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{employeesName}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="295" y="0" width="115" height="30" uuid="62d5c942-11e0-4816-94ed-30ddee574a53">

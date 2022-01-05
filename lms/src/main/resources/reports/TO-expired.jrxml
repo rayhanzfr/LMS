@@ -103,31 +103,36 @@ WHERE tdo.transaction_detail_out_expired < DATE(NOW())]]>
 				<reportElement x="110" y="0" width="111" height="30" uuid="62eaf1fa-729b-4fab-bf41-e6e3064d53ba">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12ee288b-11e0-4d8d-8242-5047ec71d377"/>
 				</reportElement>
-				<text><![CDATA[assetsName]]></text>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Assets Name]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="28" y="0" width="82" height="30" uuid="c1d6d624-4bf6-407c-8c38-dd8218ff6485">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9ab554b3-2507-40f0-8468-051022be7a23"/>
 				</reportElement>
-				<text><![CDATA[transactionsOutCode]]></text>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Transactions Out Code]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="220" y="0" width="111" height="30" uuid="108a174b-28d4-4dbe-9a69-58a6e8e7b0a9">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8b539511-bbbf-48fe-a48e-b797e63fb43f"/>
 				</reportElement>
-				<text><![CDATA[employeesFullname]]></text>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Employees Fullname]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="333" y="0" width="111" height="30" uuid="dc524d9e-eac6-4f59-a4f3-ca92aa293a03">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fb879087-4ba3-41e2-ae08-76780565ca3e"/>
 				</reportElement>
-				<text><![CDATA[locationsDeploy]]></text>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Locations Deploy]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="444" y="0" width="111" height="30" uuid="3ec842f1-3da9-4015-a344-fadf41f50fc7">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dbadfb4b-a9f4-490c-8e18-d077a9599a48"/>
 				</reportElement>
-				<text><![CDATA[transactionsDetailOutExpired]]></text>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Transactions Detail Out Expired]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -141,30 +146,35 @@ WHERE tdo.transaction_detail_out_expired < DATE(NOW())]]>
 				<reportElement x="110" y="0" width="111" height="30" uuid="54e0638f-6ffc-47ee-884d-ab49a3d69597">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12ee288b-11e0-4d8d-8242-5047ec71d377"/>
 				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{assetsName}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="28" y="0" width="82" height="30" uuid="d2bc5500-68ff-4eb4-afdf-e539480aa1d9">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9ab554b3-2507-40f0-8468-051022be7a23"/>
 				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{transactionsOutCode}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="221" y="0" width="111" height="30" uuid="d30e8695-9269-460c-a569-8ea6d97a2135">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8b539511-bbbf-48fe-a48e-b797e63fb43f"/>
 				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{employeesFullname}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="333" y="0" width="111" height="30" uuid="3c644d1b-8fb5-45c7-aa70-6073576c5dc8">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fb879087-4ba3-41e2-ae08-76780565ca3e"/>
 				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{locationsDeploy}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="444" y="0" width="111" height="30" uuid="817dac67-792a-453d-a988-40d58a62e767">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dbadfb4b-a9f4-490c-8e18-d077a9599a48"/>
 				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{transactionsDetailOutExpired}]]></textFieldExpression>
 			</textField>
 		</band>
