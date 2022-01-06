@@ -6,6 +6,8 @@ import com.lawencon.lms.model.Invoices;
 
 public interface InvoicesDao {
 	List<Invoices> findAll() throws Exception;
+	
+	List<Invoices> findByCompanies(String companiesCode) throws Exception;
 
 	Invoices findById(String id) throws Exception;
 

@@ -11,6 +11,8 @@ public interface LocationsDao {
 
 	Locations findByCode(String code) throws Exception;
 	
+	List<Locations>findByCompany(String companiesCode) throws Exception;
+	
 	Locations saveOrUpdate(Locations locations) throws Exception;
 
 	Integer countData() throws Exception;

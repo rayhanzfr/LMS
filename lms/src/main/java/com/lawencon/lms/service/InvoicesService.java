@@ -9,6 +9,8 @@ import com.lawencon.lms.model.Invoices;
 public interface InvoicesService {
 
 	List<Invoices> findAll() throws Exception;
+	
+	List<Invoices> findByCompanies() throws Exception;
 
 	Invoices findById(String id) throws Exception;
 
