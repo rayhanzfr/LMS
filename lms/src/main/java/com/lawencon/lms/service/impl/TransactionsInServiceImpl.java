@@ -251,8 +251,19 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 							e.printStackTrace();
 							rollback();
 						}
-					} else if (saveDet.getAssetsName() == null) {
-						throw new Exception("assetsName required");
+					} else if (saveDet.getLocationsCode() == null && saveDet.getEmployeesCode() == null
+							&& saveDet.getAssetsGeneralName() != null) {
+
+						Assets assetsGeneral = new Assets();
+						try {
+							Assets assetsDb = assetsDao.findByAssetsName(i.getAssetsGeneralName());
+							assetsGeneral.setId(assetsDb.getId());
+							assetsGeneral.setAssetsName(assetsDb.getAssetsName());
+							tdin.setAssetsGeneral(assetsGeneral);
+						} catch (Exception e) {
+							e.printStackTrace();
+							rollback();
+						}
 					}
 
 					else if (saveDet.getStatusesTransactionsCode() == null) {

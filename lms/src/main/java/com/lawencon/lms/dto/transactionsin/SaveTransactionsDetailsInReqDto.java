@@ -5,6 +5,7 @@ public class SaveTransactionsDetailsInReqDto {
 	private String transactionsInId;
 	private String locationsCode;
 	private String employeesCode;
+	private String assetsGeneralName;
 	private String assetsName;
 	private String statusesTransactionsCode;
 	private String returnDate;
@@ -31,6 +32,14 @@ public class SaveTransactionsDetailsInReqDto {
 
 	public void setEmployeesCode(String employeesCode) {
 		this.employeesCode = employeesCode;
+	}
+
+	public String getAssetsGeneralName() {
+		return assetsGeneralName;
+	}
+
+	public void setAssetsGeneralName(String assetsGeneralName) {
+		this.assetsGeneralName = assetsGeneralName;
 	}
 
 	public String getAssetsName() {

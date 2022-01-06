@@ -12,6 +12,8 @@ public class GetTransactionsDetailsInDataDto {
 	private String employeesId;
 	private String employeesCode;
 	private String employeesFullname;
+	private String assetsGeneralId;
+	private String assetsGeneralName;
 	private String assetsId;
 	private String assetsName;
 	private String statusesTransactionsId;
@@ -95,6 +97,22 @@ public class GetTransactionsDetailsInDataDto {
 
 	public void setEmployeesFullname(String employeesFullname) {
 		this.employeesFullname = employeesFullname;
+	}
+
+	public String getAssetsGeneralId() {
+		return assetsGeneralId;
+	}
+
+	public void setAssetsGeneralId(String assetsGeneralId) {
+		this.assetsGeneralId = assetsGeneralId;
+	}
+
+	public String getAssetsGeneralName() {
+		return assetsGeneralName;
+	}
+
+	public void setAssetsGeneralName(String assetsGeneralName) {
+		this.assetsGeneralName = assetsGeneralName;
 	}
 
 	public String getAssetsId() {

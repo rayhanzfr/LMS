@@ -44,6 +44,9 @@ public class TransactionsDetailOutServiceImpl extends BaseServiceLmsImpl impleme
 			if(detail.getEmployees()!=null) {
 				data.setEmployeesId(detail.getEmployees().getId());
 				data.setEmployeesCode(detail.getEmployees().getEmployeesCode());
+			}if(detail.getAssetsGeneral()!=null) {
+				data.setAssetsGeneralId(detail.getAssetsGeneral().getId());
+				data.setAssetsGeneralName(detail.getAssetsGeneral().getAssetsName());
 			}
 			data.setAssetsId(detail.getAssets().getId());
 			data.setAssetsName(detail.getAssets().getAssetsName());
