@@ -39,6 +39,14 @@ public class InvoicesController {
 		listInvoices = invoicesService.findAll();
 		return new ResponseEntity<>(listInvoices, HttpStatus.OK);
 	}
+	
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Invoices.class)))})
+	@GetMapping("/companies")
+	public ResponseEntity<?> findByCompanies() throws Exception {
+		List<Invoices> listInvoices = new ArrayList<Invoices>();
+		listInvoices = invoicesService.findByCompanies();
+		return new ResponseEntity<>(listInvoices, HttpStatus.OK);
+	}
 
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Invoices.class)))})
 	@GetMapping("/id")

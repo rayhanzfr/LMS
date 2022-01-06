@@ -10,6 +10,8 @@ import com.lawencon.lms.model.Users;
 
 public interface UsersService extends UserDetailsService{
 	List<Users> findAll() throws Exception;
+	
+	List<Users>findByCompany() throws Exception;
 
 	Users findById(String id) throws Exception;
 

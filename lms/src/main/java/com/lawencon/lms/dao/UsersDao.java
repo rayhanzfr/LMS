@@ -11,6 +11,8 @@ public interface UsersDao {
 
 	Users findByEmail(String email) throws Exception;
 	
+	List<Users>findByCompany(String companiesCode) throws Exception;
+	
 	Users saveOrUpdate(Users users) throws Exception;
 
 	Boolean removeById(String id) throws Exception;

@@ -52,6 +52,11 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 		return employeesDao.findAll();
 	}
 
+	public String companiesCode()throws Exception{
+		Employees employees = employeesDao.findByUserId(getIdAuth());
+		String companiesCode = employees.getCompanies().getCompaniesCode();
+		return companiesCode;
+	}
 
 	@Override
 	public Employees findById(String id) throws Exception {
@@ -198,6 +203,19 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 		boolean validation = validation(permissionCode);
 		if(validation) {
 			return employeesDao.findByUserId(getIdAuth());
+		}
+		else {
+			throw new Exception("Access Denied");
+		}
+	}
+
+
+	@Override
+	public List<Employees> employeesCompany() throws Exception {
+		String permissionCode = "PERMSN17";
+		boolean validation = validation(permissionCode);
+		if(validation) {
+			return employeesDao.employeesCompany(companiesCode());
 		}
 		else {
 			throw new Exception("Access Denied");
