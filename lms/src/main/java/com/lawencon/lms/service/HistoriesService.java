@@ -1,6 +1,7 @@
 package com.lawencon.lms.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.lawencon.lms.dto.histories.HistoriesReportResDto;
 import com.lawencon.lms.model.Histories;
@@ -14,5 +15,7 @@ public interface HistoriesService {
 	
 	List<Histories> findByUsersId(String usersId) throws Exception;
 	
-	List<HistoriesReportResDto> findHistoriesReport(String companiesCode) throws Exception;
+	Map<String,Object> findHistoriesReport() throws Exception;
+	
+	Map<String,Object> findHistoriesReportNonAdmin(String companiesCode) throws Exception;
 }

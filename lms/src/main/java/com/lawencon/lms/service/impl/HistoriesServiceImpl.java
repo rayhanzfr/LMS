@@ -1,7 +1,9 @@
 package com.lawencon.lms.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,18 +61,63 @@ public class HistoriesServiceImpl extends BaseServiceLmsImpl implements Historie
 	public List<Histories> findByUsersId(String usersId) throws Exception {
 		return historiesDao.findByUsersId(usersId);
 	}
-	
-	public String companiesCode()throws Exception{
+
+	public String companiesCode() throws Exception {
 		Employees employees = employeesDao.findByUserId(getIdAuth());
 		String companiesCode = employees.getCompanies().getCompaniesCode();
 		return companiesCode;
 	}
-	
+
 	@Override
-	public List<HistoriesReportResDto> findHistoriesReport(String companiesCode) throws Exception {
+	public Map<String, Object> findHistoriesReport() throws Exception {
+		Map<String, Object> resMap = new HashMap<>();
 		List<Histories> listHistories = historiesDao.findAll();
 		List<HistoriesReportResDto> listHistoriesReportResDto = new ArrayList<HistoriesReportResDto>();
-		
+
+		listHistories.forEach(i -> {
+			try {
+				Users usersNow = usersDao.findById(i.getUsers().getId());
+				Employees employeesNow = employeesDao.findByUserId(usersNow.getId());
+
+				HistoriesReportResDto historiesReportResDto = new HistoriesReportResDto();
+				Assets assets = new Assets();
+				try {
+					assets = assetsDao.findById(i.getAssets().getId());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				historiesReportResDto.setAssetsName(assets.getAssetsName());
+				Users users = new Users();
+				try {
+					users = usersDao.findById(i.getUsers().getId());
+					historiesReportResDto.setUsersEmail(users.getUsersEmail());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				Employees employees = new Employees();
+				try {
+					employees = employeesDao.findByUserId(users.getId());
+					historiesReportResDto.setEmployeesName(employees.getEmployeesFullname());
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				historiesReportResDto.setActivityName(i.getActivityName());
+				listHistoriesReportResDto.add(historiesReportResDto);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		resMap.put("listJasper", listHistoriesReportResDto);
+		return resMap;
+	}
+
+	@Override
+	public Map<String, Object> findHistoriesReportNonAdmin(String companiesCode) throws Exception {
+		Map<String, Object> resMap = new HashMap<>();
+		List<Histories> listHistories = historiesDao.findAll();
+		List<HistoriesReportResDto> listHistoriesReportResDto = new ArrayList<HistoriesReportResDto>();
+
 		listHistories.forEach(i -> {
 			try {
 				Users usersNow = usersDao.findById(i.getUsers().getId());
@@ -92,10 +139,10 @@ public class HistoriesServiceImpl extends BaseServiceLmsImpl implements Historie
 						e.printStackTrace();
 					}
 					Employees employees = new Employees();
-					try {						
+					try {
 						employees = employeesDao.findByUserId(users.getId());
 						historiesReportResDto.setEmployeesName(employees.getEmployeesFullname());
-						
+
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -103,10 +150,11 @@ public class HistoriesServiceImpl extends BaseServiceLmsImpl implements Historie
 					listHistoriesReportResDto.add(historiesReportResDto);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();				
+				e.printStackTrace();
 			}
 		});
-		return listHistoriesReportResDto;
+		resMap.put("listJasper", listHistoriesReportResDto);
+		return resMap;
 	}
 
 }

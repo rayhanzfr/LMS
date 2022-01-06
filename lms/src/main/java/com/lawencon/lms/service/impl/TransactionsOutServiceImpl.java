@@ -121,7 +121,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 					SaveTransactionsDetailsOutResDto detail = new SaveTransactionsDetailsOutResDto();
 					TransactionsDetailOut transactionsDetailOut = new TransactionsDetailOut();
 					transactionsDetailOut.setTransactionsOut(transactionsOutFinal);
-					if (i.getLocationsCode() != null && i.getEmployeesCode() == null && i.getAssetsName() != null) {
+					if (i.getLocationsCode() != null && i.getEmployeesCode() == null && i.getAssetsGeneralName() == null) {
 						Locations locations = new Locations();
 						try {
 							Locations locationsDb = locationsDao.findByCode(i.getLocationsCode());
@@ -133,7 +133,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 							rollback();
 						}
 					} else if (i.getLocationsCode() == null && i.getEmployeesCode() != null
-							&& i.getAssetsName() != null) {
+							&& i.getAssetsGeneralName() == null) {
 
 						Employees employees = new Employees();
 						try {
@@ -141,6 +141,20 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 							employees.setId(employeesDb.getId());
 							employees.setEmployeesCode(employees.getEmployeesCode());
 							transactionsDetailOut.setEmployees(employees);
+						} catch (Exception e) {
+							e.printStackTrace();
+							rollback();
+						}
+						
+					}else if (i.getLocationsCode() == null && i.getEmployeesCode() == null
+							&& i.getAssetsGeneralName() != null) {
+
+						Assets assetsGeneral = new Assets();
+						try {
+							Assets assetsDb = assetsDao.findByAssetsName(i.getAssetsGeneralName());
+							assetsGeneral.setId(assetsDb.getId());
+							assetsGeneral.setAssetsName(assetsDb.getAssetsName());
+							transactionsDetailOut.setAssetsGeneral(assetsGeneral);
 						} catch (Exception e) {
 							e.printStackTrace();
 							rollback();

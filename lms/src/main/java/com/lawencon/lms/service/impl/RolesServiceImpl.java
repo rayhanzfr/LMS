@@ -62,6 +62,8 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 		String permissionsCode = "PERMSN3";
 		Boolean validation = validationUsers(permissionsCode);
 		if (validation) {
+			Boolean valPk = valPK(roles.getId());
+			if(valPk) {
 			UpdateRolesResDto updateRolesResDto = new UpdateRolesResDto();
 			try {
 				Roles rolesDb = findByCode(roles.getRolesCode());
@@ -79,6 +81,8 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 				rollback();
 			}
 			return updateRolesResDto;
+			}
+			throw new Exception("ID Must Be Filled");	
 		}
 		throw new Exception("Access Denied");
 	}
@@ -150,4 +154,24 @@ public class RolesServiceImpl extends BaseServiceLmsImpl implements RolesService
 			throw new IllegalArgumentException("Data Not Found");
 		}
 	}
+	
+	public Boolean valPK(String id) throws Exception{
+		if (id!=null) {
+			String rolesId = rolesDao.findById(id).getId();
+			if(rolesId==null) {				
+				return true;
+			}
+			return false;
+		}
+		return false;		
+	}
+	
+	public Boolean valNotNull(String attribute) throws Exception{
+		if (attribute!=null) {
+			return true;
+		}
+		return false;		
+	}
+	
+	
 }

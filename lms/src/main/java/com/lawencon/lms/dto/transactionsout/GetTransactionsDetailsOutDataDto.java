@@ -8,6 +8,8 @@ public class GetTransactionsDetailsOutDataDto {
 	private String locationsCode;
 	private String employeesId;
 	private String employeesCode;
+	private String assetsGeneralId;
+	private String assetsGeneralName;
 	private String assetsId;
 	private String assetsName;
 	private String expiredDate;
@@ -46,6 +48,18 @@ public class GetTransactionsDetailsOutDataDto {
 	}
 	public void setEmployeesCode(String employeesCode) {
 		this.employeesCode = employeesCode;
+	}
+	public String getAssetsGeneralId() {
+		return assetsGeneralId;
+	}
+	public void setAssetsGeneralId(String assetsGeneralId) {
+		this.assetsGeneralId = assetsGeneralId;
+	}
+	public String getAssetsGeneralName() {
+		return assetsGeneralName;
+	}
+	public void setAssetsGeneralName(String assetsGeneralName) {
+		this.assetsGeneralName = assetsGeneralName;
 	}
 	public String getAssetsId() {
 		return assetsId;

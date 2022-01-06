@@ -58,6 +58,10 @@ public class TransactionsDetailInServiceImpl extends BaseServiceLmsImpl implemen
 				data.setEmployeesId(detail.getEmployees().getId());
 				data.setEmployeesCode(detail.getEmployees().getEmployeesCode());
 			}
+			if(detail.getAssets()!=null) {
+				data.setEmployeesId(detail.getEmployees().getId());
+				data.setEmployeesCode(detail.getEmployees().getEmployeesCode());
+			}
 			data.setAssetsId(detail.getAssets().getId());
 			data.setAssetsName(detail.getAssets().getAssetsName());
 			data.setReturnDate(detail.getReturnDate().toString());
