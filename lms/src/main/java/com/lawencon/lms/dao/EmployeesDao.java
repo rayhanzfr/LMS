@@ -13,6 +13,8 @@ public interface EmployeesDao {
 	Employees findByUserId (String id) throws Exception;
 
 	Employees findByCode(String Code) throws Exception;
+	
+	List<Employees> employeesCompany(String companiesCode) throws Exception;
 
 	Employees findByCompaniesCode(String code) throws Exception;
 

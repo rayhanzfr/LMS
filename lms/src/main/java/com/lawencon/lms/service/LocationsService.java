@@ -9,6 +9,8 @@ import com.lawencon.lms.model.Locations;
 public interface LocationsService {
 	List<Locations> findAll() throws Exception;
 
+	List<Locations> findByCompanies() throws Exception;
+
 	Locations findById(String id) throws Exception;
 
 	Locations findByCode(String code) throws Exception;

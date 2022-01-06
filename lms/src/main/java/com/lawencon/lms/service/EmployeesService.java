@@ -13,6 +13,8 @@ public interface EmployeesService {
 	Employees findById(String id) throws Exception;
 	
 	Employees findByUserId() throws Exception;
+	
+	List<Employees> employeesCompany() throws Exception;
 
 	Employees findByCode(String code) throws Exception;
 

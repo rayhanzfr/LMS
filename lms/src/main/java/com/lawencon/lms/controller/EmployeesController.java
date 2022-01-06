@@ -51,6 +51,13 @@ public class EmployeesController extends BaseController {
 		Employees result = employeesService.findByCode(code);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
+
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Employees.class)))})
+	@GetMapping("/companies")
+	public ResponseEntity<?>findByCompaniesCode() throws Exception{
+		List<Employees> result = employeesService.employeesCompany();
+		return new ResponseEntity<>(result,HttpStatus.OK);
+	}
 	
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Employees.class)))})
 	@GetMapping("/users")

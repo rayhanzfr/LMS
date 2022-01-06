@@ -2,6 +2,7 @@ package com.lawencon.lms.dao.impl;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -102,6 +103,30 @@ public class LocationsDaoImpl extends BaseDaoImpl<Locations> implements Location
 	@Override
 	public Boolean removeById(String id) throws Exception {
 		return deleteById(id);
+	}
+
+	@Override
+	public List<Locations> findByCompany(String companiesCode) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT l.id , l.locations_code , l.locations_deploy ");
+		sql.append(" FROM locations l ");
+		sql.append(" INNER JOIN companies c ON c.id =l.companies_id ");
+		sql.append(" WHERE c.companies_code = :companiesCode ");
+		
+		List<?>result = createNativeQuery(sql.toString())
+				.setParameter("companiesCode", companiesCode)
+				.getResultList();
+		List<Locations>listLocation = new ArrayList<Locations>();
+		result.forEach(rs->{
+			Object[] obj = (Object[]) rs;
+			Locations location = new Locations();
+			location.setId(obj[0].toString());
+			location.setLocationsCode(obj[1].toString());
+			location.setLocationsDeploy(obj[2].toString());
+			
+			listLocation.add(location);
+		});
+		return listLocation;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.lawencon.lms.dao.impl;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -101,6 +102,43 @@ public class InvoicesDaoImpl extends BaseDaoImpl<Invoices> implements InvoicesDa
 	@Override
 	public Boolean removeById(String id) throws Exception {
 		return deleteById(id);
+	}
+
+	@Override
+	public List<Invoices> findByCompanies(String companiesCode) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT i.id , i.invoices_code , i.store_name ,i.price , i.invoices_date ");
+		sql.append(" FROM invoices i ");
+		sql.append(" WHERE i.created_by = (SELECT r.id ");
+		sql.append(" FROM users u ");
+		sql.append(" INNER JOIN roles r ON u.roles_id = r.id ");
+		sql.append(" WHERE r.roles_code = 'ROLES1' AND c.companies_code=:code) ");
+		sql.append(" OR i.created_by = (SELECT r.id ");
+		sql.append(" FROM users u ");
+		sql.append(" INNER JOIN roles r ON u.roles_id = r.id ");
+		sql.append(" WHERE r.roles_code = 'ROLES2' AND c.companies_code=:code) ");
+		sql.append(" OR i.created_by = (SELECT r.id ");
+		sql.append(" FROM users u ");
+		sql.append(" INNER JOIN roles r ON u.roles_id = r.id ");
+		sql.append(" WHERE r.roles_code = 'ROLES3' AND c.companies_code=:code) ");
+		
+		
+		List<?>result = createNativeQuery(sql.toString())
+				.setParameter("code", companiesCode)
+				.getResultList();
+		List<Invoices> listInvoices = new ArrayList<Invoices>();
+		result.forEach(rs->{
+			Object[] obj = (Object[]) rs;
+			Invoices invoices = new Invoices();
+			invoices.setId(obj[0].toString());
+			invoices.setInvoicesCode(obj[1].toString());
+			invoices.setStoreName(obj[2].toString());
+			BigDecimal price  = new BigDecimal(obj[3].toString());
+			invoices.setPrice(price);
+			invoices.setInvoicesDate(((Timestamp) obj[4]).toLocalDateTime());
+			listInvoices.add(invoices);
+		});
+		return listInvoices;
 	}
 
 }

@@ -7,6 +7,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.lms.constant.EnumCode;
+import com.lawencon.lms.dao.EmployeesDao;
 import com.lawencon.lms.dao.LocationsDao;
 import com.lawencon.lms.dao.PermissionsDao;
 import com.lawencon.lms.dao.PermissionsRolesDao;
@@ -15,6 +16,7 @@ import com.lawencon.lms.dao.UsersDao;
 import com.lawencon.lms.dto.locations.SaveLocationsResDto;
 import com.lawencon.lms.dto.locations.UpdateLocationsResDto;
 import com.lawencon.lms.model.Companies;
+import com.lawencon.lms.model.Employees;
 import com.lawencon.lms.model.Locations;
 import com.lawencon.lms.model.Permissions;
 import com.lawencon.lms.model.PermissionsRoles;
@@ -43,6 +45,15 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 
 	@Autowired
 	private PermissionsRolesDao permissionsRolesDao;
+	
+	@Autowired
+	private EmployeesDao employeeDao;
+	
+	private String comapniesCode() throws Exception{
+		Employees employee = employeeDao.findByUserId(getIdAuth());
+		String companiesCode = employee.getCompanies().getCompaniesCode();
+		return companiesCode;
+	}
 
 	@Override
 	public List<Locations> findAll() throws Exception {
@@ -195,5 +206,14 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 		} catch (NotFoundException e) {
 			throw new Exception(e);
 		}
+	}
+
+	@Override
+	public List<Locations> findByCompanies() throws Exception {
+		String permissionsCode = "PERMSN53";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation)
+			return locationsDao.findByCompany(comapniesCode());
+		throw new Exception("Access Denied");
 	}
 }

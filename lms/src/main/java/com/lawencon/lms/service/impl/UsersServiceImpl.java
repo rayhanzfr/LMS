@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.lawencon.lms.dao.EmployeesDao;
 import com.lawencon.lms.dao.PermissionsDao;
 import com.lawencon.lms.dao.PermissionsRolesDao;
 import com.lawencon.lms.dao.RolesDao;
@@ -19,6 +20,7 @@ import com.lawencon.lms.dto.users.SaveUsersResDto;
 import com.lawencon.lms.dto.users.UpdateUsersResDto;
 import com.lawencon.lms.email.EmailHelper;
 import com.lawencon.lms.email.PasswordSender;
+import com.lawencon.lms.model.Employees;
 import com.lawencon.lms.model.Permissions;
 import com.lawencon.lms.model.PermissionsRoles;
 import com.lawencon.lms.model.Roles;
@@ -50,6 +52,9 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 	@Autowired
 	private PasswordSender passwordSender;
 
+	@Autowired
+	private EmployeesDao employeesDao;
+
 	@Override
 	public List<Users> findAll() throws Exception {
 		String permissionCode = "PERMSN37";
@@ -59,6 +64,12 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 		} else {
 			throw new Exception("Access Denied");
 		}
+	}
+	
+	public String companiesCode()throws Exception{
+		Employees employees = employeesDao.findByUserId(getIdAuth());
+		String companiesCode = employees.getCompanies().getCompaniesCode();
+		return companiesCode;
 	}
 
 	@Override
@@ -205,6 +216,17 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 			return check;
 		} catch (NotFoundException e) {
 			throw new Exception(e);
+		}
+	}
+
+	@Override
+	public List<Users> findByCompany() throws Exception {
+		String permissionCode = "PERMSN37";
+		boolean validation = validation(permissionCode);
+		if (validation) {
+			return usersDao.findByCompany(companiesCode());
+		} else {
+			throw new Exception("Access Denied");
 		}
 	}
 }
