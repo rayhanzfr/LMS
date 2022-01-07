@@ -8,6 +8,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.lms.constant.EnumCode;
+import com.lawencon.lms.constant.RolesCode;
 import com.lawencon.lms.dao.EmployeesDao;
 import com.lawencon.lms.dao.InvoicesDao;
 import com.lawencon.lms.dao.PermissionsDao;
@@ -50,14 +51,24 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 		String companiesCode = employee.getCompanies().getCompaniesCode();
 		return companiesCode;
 	}
-	
+	private String rolesCode()throws Exception{
+		Employees employee = employeesDao.findByUserId(getIdAuth());
+		String roleCode = employee.getUsers().getRoles().getRolesCode();
+		return roleCode;
+	}
 	@Override
 	public List<Invoices> findAll() throws Exception {
 
 		String permissionsCode = "PERMSN21";
 		Boolean validation = validationUsers(permissionsCode);
-		if (validation)
-			return invoicesDao.findAll();
+		if (validation) {
+			if(rolesCode().equals(RolesCode.ROLES2.name())) {
+				return invoicesDao.findAll();
+			}
+			else {
+				return invoicesDao.findByCompanies(companiesCode());
+			}
+		}
 		throw new Exception("Access Denied");
 	}
 

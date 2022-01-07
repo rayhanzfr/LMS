@@ -76,6 +76,9 @@ public class ExcelRequest {
 					
 					switch (cellIndex) {
 					case 0:
+						if(data==null) {
+							break;
+						}
 						asset.setItemsCode(data);
 						break;
 					case 1:
@@ -88,6 +91,9 @@ public class ExcelRequest {
 						asset.setAssetsExpired(data);
 						break;
 					default:
+						break;
+					}
+					if(cellIndex==0 && data==null) {
 						break;
 					}
 					cellIndex++;

@@ -47,7 +47,12 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 	
 	@Override
 	public List<Employees> findAll() throws Exception {
+		String permissionCode = "PERMSN17";
+		boolean validation = validation(permissionCode);
+		if(validation) {
 		return employeesDao.findAll();
+		}
+		throw new Exception("Access Denied");
 	}
 
 	public String companiesCode()throws Exception{

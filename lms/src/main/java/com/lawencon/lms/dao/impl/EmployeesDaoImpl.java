@@ -105,10 +105,11 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append(
-					" SELECT e.id, e.employees_code, c.companies_code, c.companies_name ,u.users_email, u.users_password, e.employees_fullname, e.employees_address, e.employees_phone_number, e.created_by, e.created_at, e.updated_by, e.updated_at, e.version ");
+					" SELECT e.id, e.employees_code, c.companies_code, c.companies_name ,u.users_email, u.users_password, e.employees_fullname, e.employees_address, e.employees_phone_number, r.roles_code, r.roles_name ");
 			sql.append(" FROM employees as e ");
 			sql.append(" INNER JOIN users as u ON  u.id = e.users_id ");
 			sql.append(" INNER JOIN companies as c ON  c.id = e.companies_id ");
+			sql.append(" INNER JOIN roles as r ON  r.id = u.roles_id ");
 			sql.append(" WHERE u.id = :id ");
 
 			Object resultQuery = createNativeQuery(sql.toString()).setParameter("id", id).getSingleResult();
@@ -126,21 +127,17 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 				Users user = new Users();
 				user.setUsersEmail(obj[4].toString());
 				user.setUsersPassword(obj[5].toString());
-				employees.setUsers(user);
+				
 
 				employees.setEmployeesFullname(obj[6].toString());
 				employees.setEmployeesAddress(obj[7].toString());
 				employees.setEmployeesPhoneNumber(obj[8].toString());
-				employees.setCreatedBy(obj[9].toString());
-				employees.setCreatedAt(Timestamp.valueOf(obj[10].toString()).toLocalDateTime());
-
-				if (obj[11] != null) {
-					employees.setUpdatedBy(obj[11].toString());
-				}
-				if (obj[12] != null) {
-					employees.setUpdatedAt(Timestamp.valueOf(obj[12].toString()).toLocalDateTime());
-				}
-				employees.setVersion(Integer.valueOf(obj[13].toString()));
+				
+				Roles roles = new Roles();
+				roles.setRolesCode(obj[9].toString());
+				roles.setRolesName(obj[10].toString());
+				user.setRoles(roles);
+				employees.setUsers(user);
 			}
 		} catch (NoResultException e) {
 			e.printStackTrace();
