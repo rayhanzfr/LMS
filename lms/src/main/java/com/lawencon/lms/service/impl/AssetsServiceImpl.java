@@ -296,13 +296,25 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		boolean validation = validation(permissionCode);
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
-			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.findByStatusesAssetsCodeCompany(companiesCode(),statusesAssetsCode);
-			assets.forEach(asset -> {
-				AssetsDataDto data = convert(asset);
-				listAssets.add(data);
-			});
-			assetsAll.setData(listAssets);
+			if(rolesCode().equals(RolesCode.ROLES2.name())) {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.findByStatusesAssetsCode(statusesAssetsCode);
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);
+			}
+			else {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.findByStatusesAssetsCodeCompany(companiesCode(),statusesAssetsCode);
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);
+			}
+			
 			return assetsAll;
 		} else {
 			throw new Exception("Access Denied");
@@ -451,14 +463,12 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 				Invoices invoice = invoicesDao.findByCode(updateAssetsReqDto.getInvoicesCode());
 				StatusesAssets statusesAssets = statusesAssetsDao.findByCode(updateAssetsReqDto.getStatusesAssetsCode());
 				StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
-				Companies companies = companiesDao.findByCode(companiesCode());
 				
 				Assets save = assetsDao.findByAssetsName(updateAssetsReqDto.getAssetsName());
 				save.setItems(item);
 				save.setInvoices(invoice);
 				save.setStatusesAssets(statusesAssets);
 				save.setStatusesInOut(statusesInOut);
-				save.setCompanies(companies);
 				if (updateAssetsReqDto.getAssetsExpired() != null) {
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 					LocalDate localDate = LocalDate.parse(updateAssetsReqDto.getAssetsExpired(), formatter);
@@ -482,14 +492,12 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 				Invoices invoice = invoicesDao.findByCode(updateAssetsReqDto.getInvoicesCode());
 				StatusesAssets statusesAssets = statusesAssetsDao.findByCode(updateAssetsReqDto.getStatusesAssetsCode());
 				StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
-				Companies companies = companiesDao.findByCode(updateAssetsReqDto.getCompaniesCode());
 				
 				Assets save = assetsDao.findByAssetsName(updateAssetsReqDto.getAssetsName());
 				save.setItems(item);
 				save.setInvoices(invoice);
 				save.setStatusesAssets(statusesAssets);
 				save.setStatusesInOut(statusesInOut);
-				save.setCompanies(companies);
 				if (updateAssetsReqDto.getAssetsExpired() != null) {
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 					LocalDate localDate = LocalDate.parse(updateAssetsReqDto.getAssetsExpired(), formatter);

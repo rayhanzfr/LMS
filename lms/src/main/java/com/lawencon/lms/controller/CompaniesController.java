@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lawencon.lms.dto.companies.SaveCompaniesResDto;
 import com.lawencon.lms.dto.companies.UpdateCompaniesResDto;
 import com.lawencon.lms.model.Companies;
+import com.lawencon.lms.model.Items;
 import com.lawencon.lms.service.CompaniesService;
 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -33,7 +36,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 public class CompaniesController {
 	@Autowired
 	private CompaniesService companiesService;
-
+	
+	protected <T> T convertToModel (String src, Class<T> clazz) throws Exception{
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        return new ObjectMapper()
+                .registerModule(javaTimeModule)
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .readValue(src, clazz);
+    }
+	
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Companies.class)))})
 	@GetMapping
 	public ResponseEntity<?> findAll() throws Exception {
@@ -61,7 +72,7 @@ public class CompaniesController {
 	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = SaveCompaniesResDto.class)))})
 	@PostMapping
 	public ResponseEntity<?> insert(@RequestPart String data, @RequestPart MultipartFile file) throws Exception {
-		SaveCompaniesResDto companies = companiesService.save(new ObjectMapper().readValue(data, Companies.class), file);
+		SaveCompaniesResDto companies = companiesService.save(convertToModel(data, Companies.class), file);
 		SaveCompaniesResDto result = new SaveCompaniesResDto();
 		
 		SaveCompaniesResDto id = new SaveCompaniesResDto();
@@ -74,8 +85,8 @@ public class CompaniesController {
 
 	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = UpdateCompaniesResDto.class)))})	
 	@PutMapping
-	public ResponseEntity<?> update(@RequestPart String data, @RequestPart MultipartFile file) throws Exception {
-		UpdateCompaniesResDto companies = companiesService.update(new ObjectMapper().readValue(data, Companies.class), file);
+	public ResponseEntity<?> update(@RequestPart String data, @RequestPart(required=false) MultipartFile file) throws Exception {
+		UpdateCompaniesResDto companies = companiesService.update(convertToModel(data, Companies.class), file);
 		UpdateCompaniesResDto ver = new UpdateCompaniesResDto();
 		ver.setVersion(companies.getVersion());
 		
