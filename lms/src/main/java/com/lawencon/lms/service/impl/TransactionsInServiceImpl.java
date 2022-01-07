@@ -260,7 +260,7 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 					}
 
 					
-					Assets assets = assetsDao.findByAssetsName(companiesCode(),saveDet.getAssetsName());
+					Assets assets = assetsDao.findByAssetsNameCompany(companiesCode(),saveDet.getAssetsName());
 					StatusesTransactions statusesTransactions = statusesTransactionsDao.findByCode(saveDet.getStatusesTransactionsCode());
 
 					tdin.setTransactionsIn(tin);
