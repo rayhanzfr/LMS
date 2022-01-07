@@ -96,9 +96,9 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 
 	@Override
 	public SaveUsersResDto save(Users users) throws Exception {
-		String permissionCode = "PERMSN38";
-		boolean validation = validation(permissionCode);
-		if (validation) {
+//		String permissionCode = "PERMSN38";
+//		boolean validation = validation(permissionCode);
+//		if (validation) {
 			String initPassword = generateInitPassword().toString();
 
 			SaveUsersResDto resDto = new SaveUsersResDto();
@@ -125,9 +125,9 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 				rollback();
 			}
 			return resDto;
-		} else {
-			throw new Exception("Access Denied");
-		}
+//		} else {
+//			throw new Exception("Access Denied");
+//		}
 	}
 
 	@Override
