@@ -44,7 +44,7 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 	private PermissionsDao permissionsDao;
 
 	@Autowired
-	private PermissionsRolesDao permissionRolesDao;
+	private PermissionsRolesDao permissionsRolesDao;
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -96,9 +96,9 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 
 	@Override
 	public SaveUsersResDto save(Users users) throws Exception {
-//		String permissionCode = "PERMSN38";
-//		boolean validation = validation(permissionCode);
-//		if (validation) {
+		String permissionCode = "PERMSN38";
+		boolean validation = validation(permissionCode);
+		if (validation) {
 			String initPassword = generateInitPassword().toString();
 
 			SaveUsersResDto resDto = new SaveUsersResDto();
@@ -107,7 +107,7 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 				Users userSystem = usersDao.findByEmail("lawenconassetsmanagement@gmail.com");
 				users.setCreatedBy(userSystem.getId());
 				users.setRoles(roles);
-//			users.setUsersPassword(bCryptPasswordEncoder.encode(users.getUsersPassword()));
+				users.setUsersPassword(bCryptPasswordEncoder.encode(users.getUsersPassword()));
 				users.setUsersPassword(bCryptPasswordEncoder.encode(initPassword));
 				begin();
 				users = usersDao.saveOrUpdate(users);
@@ -125,9 +125,9 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 				rollback();
 			}
 			return resDto;
-//		} else {
-//			throw new Exception("Access Denied");
-//		}
+		} else {
+			throw new Exception("Access Denied");
+		}
 	}
 
 	@Override
@@ -199,21 +199,20 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 		return generatedPassword;
 	}
 
-	public boolean validation(String permissionsCode) throws Exception {
+	public Boolean validation(String permissionsCode) throws Exception {
 		try {
-			boolean check = false;
 			Users users = usersDao.findById(getIdAuth());
 			Roles roles = rolesDao.findById(users.getRoles().getId());
 			Permissions permissions = permissionsDao.findByCode(permissionsCode);
-			List<PermissionsRoles> listPermissionsRoles = permissionRolesDao.findAll();
+			List<PermissionsRoles> listPermissionsRoles = permissionsRolesDao.findAll();
 			for (int i = 0; i < listPermissionsRoles.size(); i++) {
 				if (listPermissionsRoles.get(i).getPermissions().getId().equals(permissions.getId())) {
 					if (listPermissionsRoles.get(i).getRoles().getId().equals(roles.getId())) {
-						check = true;
+						return true;
 					}
 				}
 			}
-			return check;
+			return false;
 		} catch (NotFoundException e) {
 			throw new Exception(e);
 		}
