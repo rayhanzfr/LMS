@@ -69,9 +69,11 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 
 		String permissionsCode = "PERMSN53";
 		Boolean validation = validationUsers(permissionsCode);
-		if (validation)
+		if (validation) {
 			return locationsDao.findById(id);
-		throw new Exception("Access Denied");
+		}else {
+			throw new Exception("Access Denied");
+		}
 	}
 
 	@Override

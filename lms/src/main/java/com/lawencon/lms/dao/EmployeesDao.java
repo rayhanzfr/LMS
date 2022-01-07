@@ -23,4 +23,6 @@ public interface EmployeesDao {
 	List<Employees>findByRoles(String rolesCode)throws Exception;
 
 	Boolean removeById(String id) throws Exception;
+	
+	Integer countData() throws Exception;
 }
