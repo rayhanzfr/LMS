@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.lawencon.lms.constant.EnumCode;
 import com.lawencon.lms.dao.CompaniesDao;
 import com.lawencon.lms.dao.EmployeesDao;
 import com.lawencon.lms.dao.PermissionsDao;
@@ -91,6 +92,7 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 					employees.setUsers(user);
 					Companies company = companiesDao.findByCode(employees.getCompanies().getCompaniesCode());
 					employees.setCompanies(company);
+					employees.setEmployeesCode(generateCode());
 					employees.setCreatedBy(getIdAuth());
 					employees = employeesDao.saveOrUpdate(employees);
 					commit();
@@ -223,5 +225,10 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 		else {
 			throw new Exception("Access Denied");
 		}
+	}
+	
+	public String generateCode() throws Exception {
+		String generatedCode = EnumCode.EMPLOYEES.getCode() + (employeesDao.countData() + 1);
+		return generatedCode;
 	}
 }

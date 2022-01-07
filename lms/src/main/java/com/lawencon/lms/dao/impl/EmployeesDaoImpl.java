@@ -141,7 +141,7 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 			}
 		} catch (NoResultException e) {
 			e.printStackTrace();
-			throw new NoResultException("Not Found");
+			return null;
 		} catch (NonUniqueResultException e) {
 			e.printStackTrace();
 			throw new NoResultException("Found more than one");
@@ -237,6 +237,14 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 		});
 
 		return list;
+	}
+
+	@Override
+	public Integer countData() throws Exception {
+		String sql = "SELECT COUNT(e.id) FROM employees as e";
+		Object result = createNativeQuery(sql).getSingleResult();
+		Integer results = Integer.valueOf(result.toString());
+		return results;
 	}
 
 }
