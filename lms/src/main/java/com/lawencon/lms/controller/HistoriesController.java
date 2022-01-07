@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.lms.dto.histories.HistoriesReportResDto;
+import com.lawencon.lms.model.Histories;
+import com.lawencon.lms.model.JasperAssets;
 import com.lawencon.lms.service.HistoriesService;
 import com.lawencon.util.JasperUtil;
 
@@ -35,21 +38,35 @@ public class HistoriesController extends BaseController {
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = HistoriesReportResDto.class)))})
 	@GetMapping
 	public ResponseEntity<?> findAll(String companiesCode) throws Exception {
-		List<HistoriesReportResDto> listHistoriesReportResDto = new ArrayList<HistoriesReportResDto>();
-		listHistoriesReportResDto = historiesService.findHistoriesReport(companiesCode);
+		List<Histories> listHistoriesReportResDto = new ArrayList<>();
+		listHistoriesReportResDto = historiesService.findAll();
 		return new ResponseEntity<>(listHistoriesReportResDto, HttpStatus.OK);
 	}
 	
 	@GetMapping("/pdf")
-    public ResponseEntity<byte[]> generatePdf(@RequestParam("companiesCode") String companiesCode) throws Exception, JRException {
+    public HttpEntity<?> generatePdf(@RequestParam("companiesCode") String companiesCode) throws Exception, JRException {
         
+		Map<String, Object> res = historiesService.findHistoriesReport();
+        List<HistoriesReportResDto> data = (List<HistoriesReportResDto>) res.get("listJasper");
         Map<String, Object> map = new HashMap<>();
-        
-        byte[] data = JasperUtil.responseToByteArray(historiesService.findHistoriesReport(companiesCode), "assets-histories", map);
+        byte[] out = JasperUtil.responseToByteArray(data, "assets-histories", map);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=assets-histories.pdf");
+        
+		headers.setContentType(MediaType.APPLICATION_PDF);
+		return new HttpEntity<>(out, headers);
+    }
+	@GetMapping("/pdf/non-admin")
+    public HttpEntity<?> generatePdfNonAdmin(@RequestParam("companiesCode") String companiesCode) throws Exception, JRException {
+        
+		Map<String, Object> res = historiesService.findHistoriesReportNonAdmin(companiesCode);
+        List<HistoriesReportResDto> data = (List<HistoriesReportResDto>) res.get("listJasper");
+        Map<String, Object> map = new HashMap<>();
+        byte[] out = JasperUtil.responseToByteArray(data, "assets-histories", map);
 
-        return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
+        HttpHeaders headers = new HttpHeaders();
+        
+		headers.setContentType(MediaType.APPLICATION_PDF);
+		return new HttpEntity<>(out, headers);
     }
 }

@@ -28,6 +28,10 @@ public class TransactionsDetailOut extends BaseEntity{
 	private Employees employees;
 	
 	@ManyToOne
+	@JoinColumn(name = "assets_general_id")
+	private Assets assetsGeneral;
+	
+	@ManyToOne
 	@JoinColumn(name = "assets_id",nullable=false)
 	private Assets assets;
 	
@@ -56,6 +60,14 @@ public class TransactionsDetailOut extends BaseEntity{
 
 	public void setEmployees(Employees employees) {
 		this.employees = employees;
+	}
+
+	public Assets getAssetsGeneral() {
+		return assetsGeneral;
+	}
+
+	public void setAssetsGeneral(Assets assetsGeneral) {
+		this.assetsGeneral = assetsGeneral;
 	}
 
 	public Assets getAssets() {

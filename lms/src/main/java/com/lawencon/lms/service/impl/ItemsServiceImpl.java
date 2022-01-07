@@ -100,17 +100,19 @@ public class ItemsServiceImpl extends BaseServiceLmsImpl implements ItemsService
 		if (validation) {
 			UpdateItemsResDto updateItemsResDto = new UpdateItemsResDto();
 			try {
-				String img = file.getOriginalFilename();
-				String ext = img.substring(img.lastIndexOf(".") + 1, img.length());
-				Files filesInsert = new Files();
-				filesInsert.setFile(file.getBytes());
-				filesInsert.setExtensions(ext);
-				filesInsert.setCreatedBy(getIdAuth());
 				begin();
-				filesInsert = filesDao.saveOrUpdate(filesInsert);
+				if (file!=null) {
+					String img = file.getOriginalFilename();
+					String ext = img.substring(img.lastIndexOf(".") + 1, img.length());
+					Files filesInsert = new Files();
+					filesInsert.setFile(file.getBytes());
+					filesInsert.setExtensions(ext);
+					filesInsert.setCreatedBy(getIdAuth());
+					filesInsert = filesDao.saveOrUpdate(filesInsert);
+					items.setFiles(filesInsert);
+				}
 				ItemsTypes itemsTypes = itemsTypesService.findByCode(items.getItemsTypes().getItemsTypesCode());
 				ItemsBrands itemsBrands = itemsBrandsService.findByCode(items.getItemsBrands().getItemsBrandsCode());
-				items.setFiles(filesInsert);
 				items.setItemsTypes(itemsTypes);
 				items.setItemsBrands(itemsBrands);
 				Items itemsDb = findByCode(items.getItemsCode());

@@ -89,7 +89,7 @@ public class ItemsController extends BaseController{
 	
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UpdateItemsResDto.class)))
 	@PutMapping
-	public ResponseEntity<?> update(@RequestPart String data, @RequestPart MultipartFile file) throws Exception {
+	public ResponseEntity<?> update(@RequestPart String data, @RequestPart (required = false) MultipartFile file) throws Exception {
 		UpdateItemsResDto result = itemsService.update(convertToModel(data, Items.class), file);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
