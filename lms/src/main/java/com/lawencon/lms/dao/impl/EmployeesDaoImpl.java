@@ -107,8 +107,8 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 			sql.append(
 					" SELECT e.id, e.employees_code, c.companies_code, c.companies_name ,u.users_email, u.users_password, e.employees_fullname, e.employees_address, e.employees_phone_number, r.roles_code, r.roles_name ");
 			sql.append(" FROM employees as e ");
-			sql.append(" INNER JOIN users as u ON  u.id = e.users_id ");
-			sql.append(" INNER JOIN companies as c ON  c.id = e.companies_id ");
+			sql.append(" LEFT JOIN users as u ON  u.id = e.users_id ");
+			sql.append(" LEFT JOIN companies as c ON  c.id = e.companies_id ");
 			sql.append(" INNER JOIN roles as r ON  r.id = u.roles_id ");
 			sql.append(" WHERE u.id = :id ");
 
@@ -138,6 +138,8 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 				roles.setRolesName(obj[10].toString());
 				user.setRoles(roles);
 				employees.setUsers(user);
+			}else {
+				return employees;
 			}
 		} catch (NoResultException e) {
 			e.printStackTrace();

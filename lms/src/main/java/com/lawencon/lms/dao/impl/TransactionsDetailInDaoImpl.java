@@ -39,7 +39,9 @@ public class TransactionsDetailInDaoImpl extends BaseDaoImpl<TransactionsDetailI
 		sql.append(" LEFT JOIN FETCH tdo.locations l ");
 		sql.append(" LEFT JOIN FETCH tdo.employees e ");
 		sql.append(" INNER JOIN FETCH tdo.assets a ");
+		sql.append(" INNER JOIN FETCH tdo.assets ats ");
 		sql.append(" WHERE tdo.transactionsIn.transactionsInCode = :code");
+		sql.append(" AND (ats IS NOT NULL OR ats IS NULL) ");
 		sql.append(" AND (l IS NOT NULL OR l IS NULL) ");
 		sql.append(" AND (e IS NOT NULL OR e IS NULL) ");
 		

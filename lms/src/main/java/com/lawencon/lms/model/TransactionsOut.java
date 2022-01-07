@@ -16,7 +16,7 @@ public class TransactionsOut extends BaseEntity {
 	private LocalDate checkOutDate;
 	
 	public String getTransactionsOutCode() {
-		return transactionsOutCode;
+		return transactionsOutCode; 
 	}
 	public void setTransactionsOutCode(String transactionsOutCode) {
 		this.transactionsOutCode = transactionsOutCode;

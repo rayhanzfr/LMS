@@ -61,7 +61,7 @@ public class TransactionsInController {
 		result = transactionsInService.findByCode(code);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-
+	
 	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = SaveFullTransactionsInResDto.class)))})
 	@PostMapping
 	public ResponseEntity<?> insertAll(@RequestBody SaveFullTransactionsInReqDto saveFullReq) throws Exception {
