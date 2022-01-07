@@ -396,7 +396,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 					StatusesAssets statusesAssets = statusesAssetsDao.findByCode(saveAssetsReqDto.getStatusesAssetsCode());
 					StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
 					String assetsName = generateCode(itemType.getItemsTypesName());
-					Companies companies = companiesDao.findByCode(saveAssetsReqDto.getCompaniesCode());
+					Companies companies = companiesDao.findByCode(companiesCode());
 					
 					Assets save = new Assets();
 					save.setItems(item);

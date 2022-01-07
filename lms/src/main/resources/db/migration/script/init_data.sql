@@ -238,3 +238,5 @@ INSERT INTO statuses_in_out (statuses_in_out_code,statuses_in_out_name,"version"
 	('CIN','Check In',0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),TRUE),
 	('COUT','Check Out',0,(select id from users where users_email = 'lawenconassetsmanagement@gmail.com'),now(),TRUE);
 
+INSERT INTO companies (companies_code, companies_name, companies_phone, companies_address, "version",  created_at, created_by, is_active ) VALUES
+	('COMP1', 'Lawencon International', '02128542549', 'Pakuwon Tower 22nd floor Jl Casablanca Kav 88, Jakarta Selatan DKI Jakarta', 0 ,now(), (select id from users where users_email = 'lawenconassetsmanagement@gmail.com'), true);

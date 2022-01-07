@@ -66,6 +66,14 @@ public class TransactionsDetailIn extends BaseEntity{
 		this.employees = employees;
 	}
 
+	public Assets getAssetsGeneral() {
+		return assetsGeneral;
+	}
+
+	public void setAssetsGeneral(Assets assetsGeneral) {
+		this.assetsGeneral = assetsGeneral;
+	}
+
 	public Assets getAssets() {
 		return assets;
 	}

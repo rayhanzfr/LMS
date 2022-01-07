@@ -256,7 +256,7 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 
 						Assets assetsGeneral = new Assets();
 						try {
-							Assets assetsDb = assetsDao.findByAssetsName(i.getAssetsGeneralName());
+							Assets assetsDb = assetsDao.findByAssetsName(saveDet.getAssetsGeneralName());
 							assetsGeneral.setId(assetsDb.getId());
 							assetsGeneral.setAssetsName(assetsDb.getAssetsName());
 							tdin.setAssetsGeneral(assetsGeneral);
@@ -271,7 +271,7 @@ public class TransactionsInServiceImpl extends BaseServiceLmsImpl implements Tra
 					}
 
 					
-					Assets assets = assetsDao.findByAssetsName(companiesCode(),saveDet.getAssetsName());
+					Assets assets = assetsDao.findByAssetsName(saveDet.getAssetsName());
 					StatusesTransactions statusesTransactions = statusesTransactionsDao.findByCode(saveDet.getStatusesTransactionsCode());
 
 					tdin.setTransactionsIn(tin);

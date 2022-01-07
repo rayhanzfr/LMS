@@ -24,7 +24,7 @@ public class Companies extends BaseEntity {
 	private String companiesAddress;
 
 	@ManyToOne()
-	@JoinColumn(name = "files_id", nullable = false)
+	@JoinColumn(name = "files_id")
 	private Files files;
 
 	public String getCompaniesCode() {
