@@ -163,7 +163,7 @@ public class TransactionsOutServiceImpl extends BaseServiceLmsImpl implements Tr
 
 					Assets assets = new Assets();
 					try {
-						Assets assetsDb = assetsDao.findByAssetsNameCompany(companiesCode(),i.getAssetsName());
+						Assets assetsDb = assetsDao.findByAssetsName(i.getAssetsName());
 						assets = assetsDb;
 						transactionsDetailOut.setAssets(assets);
 					} catch (Exception e) {

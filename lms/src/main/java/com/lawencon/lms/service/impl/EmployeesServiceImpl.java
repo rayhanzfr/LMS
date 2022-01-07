@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.lawencon.lms.dao.CompaniesDao;
 import com.lawencon.lms.dao.EmployeesDao;
 import com.lawencon.lms.dao.PermissionsDao;
 import com.lawencon.lms.dao.PermissionsRolesDao;
@@ -28,12 +29,9 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 
 	@Autowired
 	private EmployeesDao employeesDao;
-	
-	@Autowired
-	private UsersService usersService;
 
 	@Autowired
-	private CompaniesService companiesService;
+	private CompaniesDao companiesDao;
 	
 	@Autowired
 	private RolesDao rolesDao;
@@ -80,7 +78,8 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 		boolean validation = validation(permissionCode);
 		if(validation) {
 			try {
-				Users users = usersService.findById(getIdAuth());
+				begin();
+				Users users = usersDao.findById(getIdAuth());
 				if(users==null) {
 					throw new IllegalAccessException("must login first");
 				}
@@ -88,12 +87,11 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 					throw new IllegalAccessException("only superAdmin can Insert data!");
 				}
 				else {
-					Users user = usersService.findByEmail(employees.getUsers().getUsersEmail());
+					Users user = usersDao.findByEmail(employees.getUsers().getUsersEmail());
 					employees.setUsers(user);
-					Companies company = companiesService.findByCode(employees.getCompanies().getCompaniesCode());
+					Companies company = companiesDao.findByCode(employees.getCompanies().getCompaniesCode());
 					employees.setCompanies(company);
 					employees.setCreatedBy(getIdAuth());
-					begin();
 					employees = employeesDao.saveOrUpdate(employees);
 					commit();
 					resDto.setId(employees.getId());
@@ -118,10 +116,10 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 		boolean validation = validation(permissionCode);
 		if(validation) {
 			try {
-				Users user = usersService.findByEmail(employees.getUsers().getUsersEmail());
+				Users user = usersDao.findByEmail(employees.getUsers().getUsersEmail());
 				employees.setUsers(user);
 				
-				Companies companies = companiesService.findByCode(employees.getCompanies().getCompaniesCode());
+				Companies companies = companiesDao.findByCode(employees.getCompanies().getCompaniesCode());
 				employees.setCompanies(companies);
 				
 				Employees employee = employeesDao.findByCode(employees.getEmployeesCode());

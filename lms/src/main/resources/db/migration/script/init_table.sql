@@ -145,7 +145,7 @@ CREATE TABLE companies(
 	companies_name varchar(255) NOT NULL,
 	companies_phone varchar(14) NOT NULL,
 	companies_address text NOT NULL,
-	files_id varchar(36) NOT NULL,
+	files_id varchar(36),
 	"version" integer NOT NULL,
 	created_at timestamp WITHOUT time ZONE NOT NULL,
 	created_by text NOT NULL,
@@ -211,6 +211,7 @@ CREATE TABLE assets(
 	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
 	items_id varchar(36) NOT null,
 	invoices_id varchar(36) NOT null,
+	Companies_id varchar(36) NOT null,
 	assets_name varchar(50) unique not null,
 	statuses_assets_id varchar(36) NOT NULL,
 	statuses_in_out_id varchar(36) NOT NULL,
@@ -225,12 +226,15 @@ CREATE TABLE assets(
 	REFERENCES items(id),
 	FOREIGN KEY (invoices_id)
 	REFERENCES invoices(id),
+	FOREIGN KEY (companies_id)
+	REFERENCES companies(id),
 	FOREIGN KEY (statuses_assets_id)
 	REFERENCES statuses_assets(id),
 	FOREIGN KEY (statuses_in_out_id)
 	REFERENCES statuses_in_out(id)
 
 );
+
 
 
 CREATE TABLE statuses_transactions (
