@@ -32,7 +32,7 @@ public class CompaniesDaoImpl extends BaseDaoImpl<Companies> implements Companie
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT c ");
 		sql.append(" FROM Companies c ");
-		sql.append(" INNER JOIN FETCH c.files f ");
+		sql.append(" LEFT JOIN FETCH c.files f ");
 		sql.append(" WHERE c.companiesCode= :code ");
 		
 		Companies companies = createQuery(sql.toString(),Companies.class)
