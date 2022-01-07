@@ -27,7 +27,7 @@ CREATE TABLE users (
 	PRIMARY KEY(id),
 	FOREIGN KEY (roles_id)
 	REFERENCES roles(id)
-); 
+);
 
 
 CREATE TABLE permissions (
@@ -145,7 +145,7 @@ CREATE TABLE companies(
 	companies_name varchar(255) NOT NULL,
 	companies_phone varchar(14) NOT NULL,
 	companies_address text NOT NULL,
-	files_id varchar(36) NOT NULL,
+	files_id varchar(36),
 	"version" integer NOT NULL,
 	created_at timestamp WITHOUT time ZONE NOT NULL,
 	created_by text NOT NULL,
@@ -211,7 +211,7 @@ CREATE TABLE assets(
 	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
 	items_id varchar(36) NOT null,
 	invoices_id varchar(36) NOT null,
-	companies_id varchar(36) NOT Null,
+	Companies_id varchar(36) NOT null,
 	assets_name varchar(50) unique not null,
 	statuses_assets_id varchar(36) NOT NULL,
 	statuses_in_out_id varchar(36) NOT NULL,
@@ -236,6 +236,7 @@ CREATE TABLE assets(
 );
 
 
+
 CREATE TABLE statuses_transactions (
    id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
    statuses_assets_id varchar(36) NOT NULL,
@@ -254,15 +255,15 @@ CREATE TABLE statuses_transactions (
 
 CREATE TABLE transactions_out (
    id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
-   transactions_out_code varchar(15) UNIQUE NOT NULL, 
+   transactions_out_code varchar(15) UNIQUE NOT NULL,
    check_out_date timestamp without time zone NOT NULL,
+   expired_date date NOT NULL,
    "version" integer NOT NULL,
    created_by text NOT NULL,
    created_at timestamp without time zone NOT NULL,
    updated_by text,
    updated_at timestamp without time zone,
    is_active boolean NOT NULL
-   
 );
 
 
@@ -271,6 +272,7 @@ CREATE TABLE transactions_detail_out(
 	transactions_out_id varchar(36) NOT NULL,
 	locations_id varchar(36),
    	employees_id varchar(36),
+assets_general_id varchar(36),
 	assets_id varchar(36) NOT NULL,
 	transaction_detail_out_expired date NOT NULL,
 	"version" integer NOT NULL,
@@ -280,10 +282,12 @@ CREATE TABLE transactions_detail_out(
 	updated_at timestamp WITHOUT time ZONE,
 	is_active boolean NOT NULL,
 	FOREIGN KEY (locations_id)
-      REFERENCES locations (id),
-   FOREIGN KEY (employees_id)
-      REFERENCES employees (id),
-	FOREIGN KEY (transactions_out_id)
+REFERENCES locations (id),
+FOREIGN KEY (employees_id)
+REFERENCES employees (id),
+FOREIGN KEY (assets_general_id)
+REFERENCES assets (id),
+FOREIGN KEY (transactions_out_id)
 	REFERENCES transactions_out(id),
 	FOREIGN KEY (assets_id)
 	REFERENCES assets (id)
@@ -292,8 +296,8 @@ CREATE TABLE transactions_detail_out(
 
 CREATE TABLE transactions_in(
 	id varchar(36) PRIMARY KEY DEFAULT  uuid_generate_v4(),
-	transactions_code varchar(15) UNIQUE NOT NULL,
-	transactions_date timestamp WITHOUT time ZONE NOT NULL,
+	transactions_in_code varchar(15) UNIQUE NOT NULL,
+	transactions_in_date timestamp WITHOUT time ZONE NOT NULL,
 	transactions_out_id varchar(36) NOT NULL,
 	"version" integer NOT NULL,
 	created_at timestamp WITHOUT time ZONE NOT NULL,
@@ -308,6 +312,7 @@ CREATE TABLE transactions_detail_in(
 	transactions_in_id varchar(36) NOT NULL,
 	locations_id varchar(36),
    	employees_id varchar(36),
+	Assets_general_id varchar(36),
 	assets_id varchar(36) NOT NULL,
 	statuses_transactions_id varchar(36) NOT NULL,
 	return_date timestamp WITHOUT time ZONE,
@@ -331,9 +336,9 @@ CREATE TABLE histories(
 	updated_by text,
 	is_active bool NOT NULL,
 	FOREIGN KEY (users_id)
-      REFERENCES users (id),
+REFERENCES users (id),
    	FOREIGN KEY (assets_id)
-      REFERENCES assets (id)
+REFERENCES assets (id)
 	
 );
 
@@ -365,6 +370,11 @@ Alter table transactions_detail_in
 	add constraint assets_fk FOREIGN KEY(assets_id)
 	REFERENCES assets(id);
 
+Alter table transactions_detail_in
+	add constraint assets_general_fk FOREIGN KEY(assets_general_id)
+	REFERENCES assets(id);
+
 ALTER TABLE companies
 	ADD CONSTRAINT files_id_fk FOREIGN KEY(files_id)
 	REFERENCES files(id);
+

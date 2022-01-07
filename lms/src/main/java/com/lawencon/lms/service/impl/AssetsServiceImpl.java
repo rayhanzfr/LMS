@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lawencon.lms.assets.ExcelRequest;
+import com.lawencon.lms.constant.RolesCode;
 import com.lawencon.lms.constant.StatusesInOutCode;
 import com.lawencon.lms.dao.AssetsDao;
 import com.lawencon.lms.dao.CompaniesDao;
@@ -122,10 +123,14 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		return data;
 	}
 
-	public String companiesCode()throws Exception{
-		Employees employees = employeesDao.findByUserId(getIdAuth());
-		String companiesCode = employees.getCompanies().getCompaniesCode();
+	private String companiesCode()throws Exception{
+		String companiesCode = employeesDao.findByUserId(getIdAuth()).getCompanies().getCompaniesCode();
 		return companiesCode;
+	}
+	
+	private String rolesCode()throws Exception{
+		String roleCode = usersDao.findById(getIdAuth()).getRoles().getRolesCode();
+		return roleCode;
 	}
 	
 	@Override
@@ -134,13 +139,24 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		boolean validation = validation(permissionCode);
 		GetAllAssetsDto assetsAll = new GetAllAssetsDto();
 		if (validation) {
-			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.findAll();
-			assets.forEach(asset -> {
-				AssetsDataDto data = convert(asset);
-				listAssets.add(data);
-			});
-			assetsAll.setData(listAssets);
+			if(rolesCode().equals(RolesCode.ROLES2.name())) {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.findAll();
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);				
+			}
+			else {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.findByCompaniesCode(companiesCode());
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);		
+			}
 			return assetsAll;
 		} else {
 			throw new Exception("Acces Denied");
@@ -167,10 +183,17 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		String permissionCode = "PERMSN9";
 		boolean validation = validation(permissionCode);
 		if (validation) {
-			Assets asset = assetsDao.findByAssetsName(companiesCode(),assetsName);
 			GetByIdAssetsDto getAssets = new GetByIdAssetsDto();
-			AssetsDataDto data = convert(asset);
-			getAssets.setData(data);
+			if(rolesCode().equals(RolesCode.ROLES3.name())) {
+				Assets asset = assetsDao.findByAssetsNameCompany(companiesCode(),assetsName);
+				AssetsDataDto data = convert(asset);
+				getAssets.setData(data);
+			}
+			else {
+				Assets asset = assetsDao.findByAssetsName(assetsName);
+				AssetsDataDto data = convert(asset);
+				getAssets.setData(data);
+			}
 			return getAssets;
 		} else {
 			throw new Exception("Acces Denied");
@@ -183,13 +206,24 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		boolean validation = validation(permissionCode);
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
-			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.findByItemsCode(companiesCode(),itemsCode);
-			assets.forEach(asset -> {
-				AssetsDataDto data = convert(asset);
-				listAssets.add(data);
-			});
-			assetsAll.setData(listAssets);
+			if(rolesCode().equals(RolesCode.ROLES3.name())) {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.findByItemsCodeCompany(companiesCode(),itemsCode);
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);
+			}
+			else {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.findByItemsCodeCompany(companiesCode(),itemsCode);
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);	
+			}
 			return assetsAll;
 		} else {
 			throw new Exception("Acces Denied");
@@ -202,13 +236,24 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		boolean validation = validation(permissionCode);
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
-			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.findByBrandsCode(companiesCode(),brandsCode);
-			assets.forEach(asset -> {
-				AssetsDataDto data = convert(asset);
-				listAssets.add(data);
-			});
-			assetsAll.setData(listAssets);
+			if(rolesCode().equals(RolesCode.ROLES3.name())) {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.findByBrandsCodeCompany(companiesCode(),brandsCode);
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);
+			}
+			else {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.findByBrandsCode(brandsCode);
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);
+			}
 			return assetsAll;
 		} else {
 			throw new Exception("Acces Denied");
@@ -221,13 +266,24 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		boolean validation = validation(permissionCode);
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
-			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.findByItemsTypesCode(companiesCode(),itemsTypesCode);
-			assets.forEach(asset -> {
-				AssetsDataDto data = convert(asset);
-				listAssets.add(data);
-			});
-			assetsAll.setData(listAssets);
+			if(rolesCode().equals(RolesCode.ROLES3.name())) {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.findByItemsTypesCodeCompany(companiesCode(),itemsTypesCode);
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);	
+			}
+			else {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.findByItemsTypesCode(itemsTypesCode);
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+					assetsAll.setData(listAssets);
+				});
+			}
 			return assetsAll;
 		} else {
 			throw new Exception("Acces Denied");
@@ -241,7 +297,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
 			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.findByStatusesAssetsCode(companiesCode(),statusesAssetsCode);
+			List<Assets> assets = assetsDao.findByStatusesAssetsCodeCompany(companiesCode(),statusesAssetsCode);
 			assets.forEach(asset -> {
 				AssetsDataDto data = convert(asset);
 				listAssets.add(data);
@@ -259,13 +315,24 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		boolean validation = validation(permissionCode);
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
-			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.findByStatusesInOutCode(companiesCode(),statusesInOutCode);
-			assets.forEach(asset -> {
-				AssetsDataDto data = convert(asset);
-				listAssets.add(data);
-			});
-			assetsAll.setData(listAssets);
+			if(rolesCode().equals(RolesCode.ROLES3.name())) {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.findByStatusesInOutCodeCompany(companiesCode(),statusesInOutCode);
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);				
+			}
+			else {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.findByStatusesInOutCode(statusesInOutCode);
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);
+			}
 			return assetsAll;
 		} else {
 			throw new Exception("Access Denied");
@@ -279,48 +346,92 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		SaveAssetsResDto resDto = new SaveAssetsResDto();
 		if (validation) {
 			try {
-				Items item = itemsDao.findByCode(saveAssetsReqDto.getItemsCode());
-				ItemsTypes itemType = itemsTypesDao.findById(item.getItemsTypes().getId());
-				Invoices invoice = invoicesDao.findByCode(saveAssetsReqDto.getInvoicesCode());
-				StatusesAssets statusesAssets = statusesAssetsDao.findByCode(saveAssetsReqDto.getStatusesAssetsCode());
-				StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
-				String assetsName = generateCode(itemType.getItemsTypesName());
-				Companies companies = companiesDao.findByCode(companiesCode());
-				
-				Assets save = new Assets();
-				save.setItems(item);
-				save.setInvoices(invoice);
-				save.setAssetsName(assetsName);
-				save.setCompanies(companies);	
-				save.setStatusesAssets(statusesAssets);
-				save.setStatusesInOut(statusesInOut);
-				if (saveAssetsReqDto.getAssetsExpired() != null) {
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-					LocalDate localDate = LocalDate.parse(saveAssetsReqDto.getAssetsExpired(), formatter);
-					save.setAssetsExpired(localDate);
+				if(rolesCode().equals(RolesCode.ROLES3.name())) {
+					Items item = itemsDao.findByCode(saveAssetsReqDto.getItemsCode());
+					ItemsTypes itemType = itemsTypesDao.findById(item.getItemsTypes().getId());
+					Invoices invoice = invoicesDao.findByCode(saveAssetsReqDto.getInvoicesCode());
+					StatusesAssets statusesAssets = statusesAssetsDao.findByCode(saveAssetsReqDto.getStatusesAssetsCode());
+					StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
+					String assetsName = generateCode(itemType.getItemsTypesName());
+					Companies companies = companiesDao.findByCode(companiesCode());
+					
+					Assets save = new Assets();
+					save.setItems(item);
+					save.setInvoices(invoice);
+					save.setAssetsName(assetsName);
+					save.setCompanies(companies);	
+					save.setStatusesAssets(statusesAssets);
+					save.setStatusesInOut(statusesInOut);
+					if (saveAssetsReqDto.getAssetsExpired() != null) {
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+						LocalDate localDate = LocalDate.parse(saveAssetsReqDto.getAssetsExpired(), formatter);
+						save.setAssetsExpired(localDate);
+					}
+					save.setCreatedBy(getIdAuth());
+					save.setIsActive(true);
+					begin();
+					Assets result = assetsDao.saveOrUpdate(save);
+					
+					Users user = usersDao.findById(getIdAuth());
+					Histories history = new Histories();
+					history.setUsers(user);
+					history.setAssets(result);
+					history.setActivityName("CREATE");
+					history.setCreatedBy(getIdAuth());
+					
+					historiesDao.saveOrUpdate(history);
+					commit();
+					
+					SaveAssetsDataDto resDataDto = new SaveAssetsDataDto();
+					resDataDto.setId(result.getId());
+					
+					
+					resDto.setData(resDataDto);
+					resDto.setMessage("SUCCESS");
 				}
-				save.setCreatedBy(getIdAuth());
-				save.setIsActive(true);
-				begin();
-				Assets result = assetsDao.saveOrUpdate(save);
-				
-				Users user = usersDao.findById(getIdAuth());
-				Histories history = new Histories();
-				history.setUsers(user);
-				history.setAssets(result);
-				history.setActivityName("CREATE");
-				history.setCreatedBy(getIdAuth());
-				
-				historiesDao.saveOrUpdate(history);
-				commit();
-				
-				SaveAssetsDataDto resDataDto = new SaveAssetsDataDto();
-				resDataDto.setId(result.getId());
-				
-				
-				resDto.setData(resDataDto);
-				resDto.setMessage("SUCCESS");
-				
+				else {
+					Items item = itemsDao.findByCode(saveAssetsReqDto.getItemsCode());
+					ItemsTypes itemType = itemsTypesDao.findById(item.getItemsTypes().getId());
+					Invoices invoice = invoicesDao.findByCode(saveAssetsReqDto.getInvoicesCode());
+					StatusesAssets statusesAssets = statusesAssetsDao.findByCode(saveAssetsReqDto.getStatusesAssetsCode());
+					StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
+					String assetsName = generateCode(itemType.getItemsTypesName());
+					Companies companies = companiesDao.findByCode(companiesCode());
+					
+					Assets save = new Assets();
+					save.setItems(item);
+					save.setInvoices(invoice);
+					save.setAssetsName(assetsName);
+					save.setCompanies(companies);	
+					save.setStatusesAssets(statusesAssets);
+					save.setStatusesInOut(statusesInOut);
+					if (saveAssetsReqDto.getAssetsExpired() != null) {
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+						LocalDate localDate = LocalDate.parse(saveAssetsReqDto.getAssetsExpired(), formatter);
+						save.setAssetsExpired(localDate);
+					}
+					save.setCreatedBy(getIdAuth());
+					save.setIsActive(true);
+					begin();
+					Assets result = assetsDao.saveOrUpdate(save);
+					
+					Users user = usersDao.findById(getIdAuth());
+					Histories history = new Histories();
+					history.setUsers(user);
+					history.setAssets(result);
+					history.setActivityName("CREATE");
+					history.setCreatedBy(getIdAuth());
+					
+					historiesDao.saveOrUpdate(history);
+					commit();
+					
+					SaveAssetsDataDto resDataDto = new SaveAssetsDataDto();
+					resDataDto.setId(result.getId());
+					
+					
+					resDto.setData(resDataDto);
+					resDto.setMessage("SUCCESS");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -335,35 +446,68 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		String permissionCode = "PERMSN11";
 		boolean validation = validation(permissionCode);
 		if (validation) {
-			Items item = itemsDao.findByCode(updateAssetsReqDto.getItemsCode());
-			Invoices invoice = invoicesDao.findByCode(updateAssetsReqDto.getInvoicesCode());
-			StatusesAssets statusesAssets = statusesAssetsDao.findByCode(updateAssetsReqDto.getStatusesAssetsCode());
-			StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
-			Companies companies = companiesDao.findByCode(updateAssetsReqDto.getCompaniesCode());
-			
-			Assets save = assetsDao.findByAssetsName(companiesCode(),updateAssetsReqDto.getAssetsName());
-			save.setItems(item);
-			save.setInvoices(invoice);
-			save.setStatusesAssets(statusesAssets);
-			save.setStatusesInOut(statusesInOut);
-			save.setCompanies(companies);
-			if (updateAssetsReqDto.getAssetsExpired() != null) {
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-				LocalDate localDate = LocalDate.parse(updateAssetsReqDto.getAssetsExpired(), formatter);
-				save.setAssetsExpired(localDate);
+			if(rolesCode().equals(RolesCode.ROLES3.name())) {
+				Items item = itemsDao.findByCode(updateAssetsReqDto.getItemsCode());
+				Invoices invoice = invoicesDao.findByCode(updateAssetsReqDto.getInvoicesCode());
+				StatusesAssets statusesAssets = statusesAssetsDao.findByCode(updateAssetsReqDto.getStatusesAssetsCode());
+				StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
+				Companies companies = companiesDao.findByCode(companiesCode());
+				
+				Assets save = assetsDao.findByAssetsName(updateAssetsReqDto.getAssetsName());
+				save.setItems(item);
+				save.setInvoices(invoice);
+				save.setStatusesAssets(statusesAssets);
+				save.setStatusesInOut(statusesInOut);
+				save.setCompanies(companies);
+				if (updateAssetsReqDto.getAssetsExpired() != null) {
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+					LocalDate localDate = LocalDate.parse(updateAssetsReqDto.getAssetsExpired(), formatter);
+					save.setAssetsExpired(localDate);
+				}
+				save.setUpdatedBy(getIdAuth());
+				begin();
+				Assets result = assetsDao.saveOrUpdate(save);
+				commit();
+
+				UpdateAssetsDataDto resDataDto = new UpdateAssetsDataDto();
+				resDataDto.setId(result.getId());
+
+				UpdateAssetsResDto resDto = new UpdateAssetsResDto();
+				resDto.setData(resDataDto);
+				resDto.setMessage("SUCCESS");
+				return resDto;
 			}
-			save.setUpdatedBy(getIdAuth());
-			begin();
-			Assets result = assetsDao.saveOrUpdate(save);
-			commit();
+			else {
+				Items item = itemsDao.findByCode(updateAssetsReqDto.getItemsCode());
+				Invoices invoice = invoicesDao.findByCode(updateAssetsReqDto.getInvoicesCode());
+				StatusesAssets statusesAssets = statusesAssetsDao.findByCode(updateAssetsReqDto.getStatusesAssetsCode());
+				StatusesInOut statusesInOut = statusesInOutDao.findByCode(StatusesInOutCode.CHECKIN.getCode());
+				Companies companies = companiesDao.findByCode(updateAssetsReqDto.getCompaniesCode());
+				
+				Assets save = assetsDao.findByAssetsName(updateAssetsReqDto.getAssetsName());
+				save.setItems(item);
+				save.setInvoices(invoice);
+				save.setStatusesAssets(statusesAssets);
+				save.setStatusesInOut(statusesInOut);
+				save.setCompanies(companies);
+				if (updateAssetsReqDto.getAssetsExpired() != null) {
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+					LocalDate localDate = LocalDate.parse(updateAssetsReqDto.getAssetsExpired(), formatter);
+					save.setAssetsExpired(localDate);
+				}
+				save.setUpdatedBy(getIdAuth());
+				begin();
+				Assets result = assetsDao.saveOrUpdate(save);
+				commit();
 
-			UpdateAssetsDataDto resDataDto = new UpdateAssetsDataDto();
-			resDataDto.setId(result.getId());
+				UpdateAssetsDataDto resDataDto = new UpdateAssetsDataDto();
+				resDataDto.setId(result.getId());
 
-			UpdateAssetsResDto resDto = new UpdateAssetsResDto();
-			resDto.setData(resDataDto);
-			resDto.setMessage("SUCCESS");
-			return resDto;
+				UpdateAssetsResDto resDto = new UpdateAssetsResDto();
+				resDto.setData(resDataDto);
+				resDto.setMessage("SUCCESS");
+				return resDto;
+			}
 		} else {
 			throw new Exception("Access Denied");
 		}
@@ -396,9 +540,16 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		String permissionCode = "PERMSN9";
 		boolean validation = validation(permissionCode);
 		if (validation) {
-			List<Assets> listAssets = assetsDao.findByReq(itemsCode, companiesCode,
-					statusesAssetsCode,statusesInOutCode,total);
-			return listAssets;
+			if(rolesCode().equals(RolesCode.ROLES3.name())) {
+				List<Assets> listAssets = assetsDao.findByReqCompany(itemsCode, companiesCode,
+						statusesAssetsCode,statusesInOutCode,total);
+				return listAssets;
+			}
+			else {
+				List<Assets> listAssets = assetsDao.findByReq(itemsCode,
+						statusesAssetsCode,statusesInOutCode,total);
+				return listAssets;
+			}
 		} else {
 			throw new Exception("Acces Denied");
 		}
@@ -427,26 +578,50 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 	public Map<String,Object> getAssetsExpired() throws Exception {
 		Map<String,Object> resMap = new HashMap<>();
 		String code = companiesCode();
-		List<Assets> assets = assetsDao.getExpiredAssets(code);
 		List<JasperAssets> showJasper = new ArrayList<JasperAssets>();
-		for(Assets asset : assets) {
-			JasperAssets jp = new JasperAssets();
-			jp.setAssetsName(asset.getAssetsName());
-			jp.setItemsBrandsName(asset.getItems().getItemsBrands().getItemsBrandsName());
-			jp.setCompaniesName(asset.getCompanies().getCompaniesName());
-			jp.setItemsName(asset.getItems().getItemsName());
-			jp.setItemsTypesName(asset.getItems().getItemsTypes().getItemsTypesName());
-			jp.setStatusesAssetsName(asset.getStatusesAssets().getStatusesAssetsName());
-			jp.setStatusesInOutName(asset.getStatusesInOut().getStatusesInOutName());
-			if(asset.getAssetsExpired()!=null) {
-				DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-				String assetsExpired = asset.getAssetsExpired().format(formatDate);
-				jp.setAssetsExpired(assetsExpired);
+		if(rolesCode().equals(RolesCode.ROLES3.name())) {
+			List<Assets> assets = assetsDao.getExpiredAssetsCompany(code);
+			for(Assets asset : assets) {
+				JasperAssets jp = new JasperAssets();
+				jp.setAssetsName(asset.getAssetsName());
+				jp.setItemsBrandsName(asset.getItems().getItemsBrands().getItemsBrandsName());
+				jp.setCompaniesName(asset.getCompanies().getCompaniesName());
+				jp.setItemsName(asset.getItems().getItemsName());
+				jp.setItemsTypesName(asset.getItems().getItemsTypes().getItemsTypesName());
+				jp.setStatusesAssetsName(asset.getStatusesAssets().getStatusesAssetsName());
+				jp.setStatusesInOutName(asset.getStatusesInOut().getStatusesInOutName());
+				if(asset.getAssetsExpired()!=null) {
+					DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+					String assetsExpired = asset.getAssetsExpired().format(formatDate);
+					jp.setAssetsExpired(assetsExpired);
+				}
+				else {
+					jp.setAssetsExpired(null);
+				}
+				showJasper.add(jp);
 			}
-			else {
-				jp.setAssetsExpired(null);
+		}
+		else {
+			List<Assets> assets = assetsDao.getExpiredAssets();
+			for(Assets asset : assets) {
+				JasperAssets jp = new JasperAssets();
+				jp.setAssetsName(asset.getAssetsName());
+				jp.setItemsBrandsName(asset.getItems().getItemsBrands().getItemsBrandsName());
+				jp.setCompaniesName(asset.getCompanies().getCompaniesName());
+				jp.setItemsName(asset.getItems().getItemsName());
+				jp.setItemsTypesName(asset.getItems().getItemsTypes().getItemsTypesName());
+				jp.setStatusesAssetsName(asset.getStatusesAssets().getStatusesAssetsName());
+				jp.setStatusesInOutName(asset.getStatusesInOut().getStatusesInOutName());
+				if(asset.getAssetsExpired()!=null) {
+					DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+					String assetsExpired = asset.getAssetsExpired().format(formatDate);
+					jp.setAssetsExpired(assetsExpired);
+				}
+				else {
+					jp.setAssetsExpired(null);
+				}
+				showJasper.add(jp);
 			}
-			showJasper.add(jp);
 		}
 		Users users = usersDao.findById(getIdAuth());
 		EmailHelper emailHelper = new EmailHelper();
@@ -493,13 +668,24 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		boolean validation = validation(permissionCode);
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
-			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.getTop5AssetsDeploy(companiesCode());
-			assets.forEach(asset -> {
-				AssetsDataDto data = convert(asset);
-				listAssets.add(data);
-			});
-			assetsAll.setData(listAssets);
+			if(rolesCode().equals(RolesCode.ROLES3.name())) {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.getTop5AssetsDeployCompany(companiesCode());
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);
+			}
+			else {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.getTop5AssetsDeploy();
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);
+			}
 			return assetsAll;
 		} else {
 			throw new Exception("Access Denied");
@@ -512,13 +698,24 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		boolean validation = validation(permissionCode);
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
-			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.getNewAssets(companiesCode());
-			assets.forEach(asset -> {
-				AssetsDataDto data = convert(asset);
-				listAssets.add(data);
-			});
-			assetsAll.setData(listAssets);
+			if(rolesCode().equals(RolesCode.ROLES3.name())) {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.getNewAssetsCompany(companiesCode());
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);
+			}
+			else {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.getNewAssets();
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);
+			}
 			return assetsAll;
 		} else {
 			throw new Exception("Access Denied");
@@ -531,13 +728,24 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 		boolean validation = validation(permissionCode);
 		if (validation) {
 			GetAllAssetsDto assetsAll = new GetAllAssetsDto();
-			List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
-			List<Assets> assets = assetsDao.findByStatAssetsInOut(companiesCode(),statusesAssetsCode,statusesInOutCode);
-			assets.forEach(asset -> {
-				AssetsDataDto data = convert(asset);
-				listAssets.add(data);
-			});
-			assetsAll.setData(listAssets);
+			if(rolesCode().equals(RolesCode.ROLES3.name())) {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.findByStatAssetsInOutCompany(companiesCode(),statusesAssetsCode,statusesInOutCode);
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);	
+			}else {
+				List<AssetsDataDto> listAssets = new ArrayList<AssetsDataDto>();
+				List<Assets> assets = assetsDao.findByStatAssetsInOut(statusesAssetsCode,statusesInOutCode);
+				assets.forEach(asset -> {
+					AssetsDataDto data = convert(asset);
+					listAssets.add(data);
+				});
+				assetsAll.setData(listAssets);
+			}
+			
 			return assetsAll;
 		} else {
 			throw new Exception("Access Denied");

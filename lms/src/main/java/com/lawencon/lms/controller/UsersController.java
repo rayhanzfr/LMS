@@ -52,6 +52,13 @@ public class UsersController extends BaseController {
 		Users user = usersService.findByEmail(email);
 		return new ResponseEntity<>(user,HttpStatus.OK);
 	}
+
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Users.class)))})
+	@GetMapping("/companies")
+	public ResponseEntity<?>findByCompaniesCode() throws Exception{
+		List<Users> user = usersService.findByCompany();
+		return new ResponseEntity<>(user,HttpStatus.OK);
+	}
 	
 	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Users.class)))})
 	@PostMapping

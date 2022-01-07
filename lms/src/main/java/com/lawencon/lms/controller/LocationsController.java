@@ -55,6 +55,13 @@ public class LocationsController {
 		result = locationsService.findByCode(code);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
+	
+	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Locations.class)))})
+	@GetMapping("/companies")
+	public ResponseEntity<?> findByCompanies() throws Exception {
+		List<Locations> result = locationsService.findByCompanies();
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
 
 	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = SaveLocationsResDto.class)))})
 	@PostMapping

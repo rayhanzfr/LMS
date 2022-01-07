@@ -8,6 +8,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.lms.constant.EnumCode;
+import com.lawencon.lms.dao.EmployeesDao;
 import com.lawencon.lms.dao.InvoicesDao;
 import com.lawencon.lms.dao.PermissionsDao;
 import com.lawencon.lms.dao.PermissionsRolesDao;
@@ -15,6 +16,7 @@ import com.lawencon.lms.dao.RolesDao;
 import com.lawencon.lms.dao.UsersDao;
 import com.lawencon.lms.dto.invoices.SaveInvoicesResDto;
 import com.lawencon.lms.dto.invoices.UpdateInvoicesResDto;
+import com.lawencon.lms.model.Employees;
 import com.lawencon.lms.model.Invoices;
 import com.lawencon.lms.model.Permissions;
 import com.lawencon.lms.model.PermissionsRoles;
@@ -39,7 +41,16 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 
 	@Autowired
 	private PermissionsRolesDao permissionsRolesDao;
+	
+	@Autowired
+	private EmployeesDao employeesDao;
 
+	private String companiesCode()throws Exception{
+		Employees employee = employeesDao.findByUserId(getIdAuth());
+		String companiesCode = employee.getCompanies().getCompaniesCode();
+		return companiesCode;
+	}
+	
 	@Override
 	public List<Invoices> findAll() throws Exception {
 
@@ -114,7 +125,6 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 	@Override
 	public UpdateInvoicesResDto update(Invoices invoices) throws Exception {
 		UpdateInvoicesResDto updateRes = new UpdateInvoicesResDto();
-
 		try {
 			Invoices invoicesDb = findByCode(invoices.getInvoicesCode());
 			invoicesDb.setUpdatedBy(getIdAuth());
@@ -184,6 +194,15 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 		} catch (NotFoundException e) {
 			throw new Exception(e);
 		}
+	}
+
+	@Override
+	public List<Invoices> findByCompanies() throws Exception {
+		String permissionsCode = "PERMSN21";
+		Boolean validation = validationUsers(permissionsCode);
+		if (validation)
+			return invoicesDao.findByCompanies(companiesCode());
+		throw new Exception("Access Denied");
 	}
 
 }

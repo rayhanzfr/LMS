@@ -200,4 +200,46 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 		return null;
 	}
 
+	@Override
+	public List<Employees> employeesCompany(String companiesCode) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT e.id, e.employees_fullname,e.employees_phone_number, e.employees_address,e.employees_code,c.companies_code, c.companies_name, c.companies_address, c.companies_phone, u.users_email , r.roles_name  ");
+		sql.append(" FROM employees e ");
+		sql.append(" INNER JOIN users u ON u.id = e.users_id ");
+		sql.append(" INNER JOIN roles r ON r.id =u.roles_id ");
+		sql.append(" INNER JOIN companies c ON c.id =e.companies_id ");
+		sql.append(" WHERE c.companies_code = :code ");
+
+		List<?> result = createNativeQuery(sql.toString()).setParameter("code", companiesCode).getResultList();
+		List<Employees> list = new ArrayList<Employees>();
+		result.forEach(rs -> {
+			Object[] obj = (Object[]) rs;
+			Employees employee = new Employees();
+			employee.setId(obj[0].toString());
+			employee.setEmployeesFullname(obj[1].toString());
+			employee.setEmployeesPhoneNumber(obj[2].toString());
+			employee.setEmployeesAddress(obj[3].toString());
+			employee.setEmployeesCode(obj[4].toString());
+			
+			Companies company = new Companies();
+			company.setCompaniesCode(obj[5].toString());
+			company.setCompaniesName(obj[6].toString());
+			company.setCompaniesAddress(obj[7].toString());
+			company.setCompaniesPhone(obj[8].toString());
+
+			Roles role = new Roles();
+			role.setRolesName(obj[10].toString());
+
+			Users user = new Users();
+			user.setUsersEmail(obj[9].toString());
+			user.setRoles(role);
+
+			employee.setUsers(user);
+
+			list.add(employee);
+		});
+
+		return list;
+	}
+
 }
