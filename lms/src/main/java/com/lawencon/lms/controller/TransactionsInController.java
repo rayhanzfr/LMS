@@ -62,13 +62,6 @@ public class TransactionsInController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
-	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = GetAllTransactionsInByUsersResDto.class)))
-	@GetMapping("/users")
-	public ResponseEntity<?> findAllByUsers() throws Exception {
-		GetAllTransactionsInByUsersResDto result = transactionsInService.findAllByUsers();
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	}
-	
 	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = SaveFullTransactionsInResDto.class)))})
 	@PostMapping
 	public ResponseEntity<?> insertAll(@RequestBody SaveFullTransactionsInReqDto saveFullReq) throws Exception {

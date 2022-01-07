@@ -57,10 +57,10 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 		sql.append(" SELECT tdo.id tro.transactions_out_code,a.assets_name, l.locations_deploy, e.employees_fullname, tdo.transaction_detail_out_expired, as.assets_name ");
 		sql.append(" FROM transactions_detail_out tdo ");
 		sql.append(" INNER JOIN transactions_out tro ON tro.id = tdo.transactions_out_id ");
-		sql.append(" INNER JOIN locations l ON l.id = tdo.locations_id  ");
-		sql.append(" INNER JOIN employees e ON e.id =tdo.employees_id  ");
+		sql.append(" LEFT JOIN locations l ON l.id = tdo.locations_id  ");
+		sql.append(" LEFT JOIN employees e ON e.id =tdo.employees_id  ");
 		sql.append(" INNER JOIN assets a ON a.id = tdo.assets_id ");
-		sql.append(" INNER JOIN assets as ON as.id = tdo.assets_general_id ");
+		sql.append(" LEFT JOIN assets as ON as.id = tdo.assets_general_id ");
 		sql.append(" WHERE tdo.transaction_detail_out_expired IS NOT NULL AND tdo.transaction_detail_out_expired <= DATE(NOW()) ");
 		
 		List<?>result = createNativeQuery(sql.toString())
@@ -106,14 +106,14 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 	@Override
 	public List<TransactionsDetailOut> findAlmostExpired() throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT tdo.id , transout.transactions_out_code, a.assets_name , as.assets_name , e.employees_fullname, u.users_email , l.locations_deploy , c.companies_name, tdo.transaction_detail_out_expired, i.items_name  ");
+		sql.append(" SELECT tdo.id , transout.transactions_out_code, a.assets_name , e.employees_fullname, u.users_email , l.locations_deploy , c.companies_name, tdo.transaction_detail_out_expired, i.items_name  , ats.assets_name as assets_general_name");
 		sql.append(" FROM transactions_detail_out tdo  ");
 		sql.append(" INNER JOIN assets a ON a.id = tdo.assets_id ");
 		sql.append(" INNER JOIN transactions_out transout ON transout.id = tdo.transactions_out_id ");
-		sql.append(" INNER JOIN locations l ON l.id = tdo.locations_id OR tdo.locations_id IS NULL ");
-		sql.append(" INNER JOIN companies c ON c.id = l.companies_id OR l.companies_id IS NULL ");
-		sql.append(" INNER JOIN employees e ON e.id = tdo.employees_id OR tdo.employees_id IS NULL ");
-		sql.append(" INNER JOIN assets as ON a.id = tdo.assets_general_id ");
+		sql.append(" LEFT JOIN locations l ON l.id = tdo.locations_id OR tdo.locations_id IS NULL ");
+		sql.append(" LEFT JOIN companies c ON c.id = l.companies_id OR l.companies_id IS NULL ");
+		sql.append(" LEFT JOIN employees e ON e.id = tdo.employees_id OR tdo.employees_id IS NULL ");
+		sql.append(" LEFT JOIN assets ats ON ats.id = tdo.assets_general_id ");
 		sql.append(" INNER JOIN users u ON u.id = e.users_id OR e.users_id IS NULL ");
 		sql.append(" INNER JOIN items i ON i.id = a.items_id OR a.items_id IS NULL ");
 		sql.append(" WHERE (EXTRACT(DAY FROM tdo.transaction_detail_out_expired)- EXTRACT(DAY FROM now())) <=7 ");
@@ -147,6 +147,10 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 			if(obj[5]!=null) {
 				location.setLocationsDeploy(obj[5].toString());
 			}
+			Assets assetsGeneral =  new Assets();
+			if(obj[9]!=null) {
+				assetsGeneral.setAssetsName(obj[9].toString());
+			}
 			
 			Companies company = new Companies();
 			if(obj[6]!=null) {
@@ -157,6 +161,7 @@ public class TransactionsDetailOutDaoImpl extends BaseDaoImpl<TransactionsDetail
 			detail.setAssets(asset);
 			detail.setEmployees(employee);
 			detail.setLocations(location);
+			detail.setAssetsGeneral(assetsGeneral);
 			detail.setTransactionsOut(out);
 			detail.setTransactionDetailOutExpired(LocalDate.parse(obj[7].toString()));
 			

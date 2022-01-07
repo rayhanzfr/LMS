@@ -71,7 +71,7 @@ public class CompaniesController {
 
 	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = SaveCompaniesResDto.class)))})
 	@PostMapping
-	public ResponseEntity<?> insert(@RequestPart String data, @RequestPart MultipartFile file) throws Exception {
+	public ResponseEntity<?> insert(@RequestPart String data, @RequestPart(required=false) MultipartFile file) throws Exception {
 		SaveCompaniesResDto companies = companiesService.save(convertToModel(data, Companies.class), file);
 		SaveCompaniesResDto result = new SaveCompaniesResDto();
 		
