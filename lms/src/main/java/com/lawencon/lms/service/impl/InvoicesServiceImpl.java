@@ -121,7 +121,7 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 					commit();
 
 					saveRes.setId(invoices.getId());
-					saveRes.setMessage("Inserted");
+					saveRes.setMessage("You was create a new Invoice");
 				}
 
 			}
@@ -153,7 +153,7 @@ public class InvoicesServiceImpl extends BaseServiceLmsImpl implements InvoicesS
 				invoices = invoicesDao.saveOrUpdate(invoicesDb);
 				commit();
 				updateRes.setVersion(invoices.getVersion());
-				updateRes.setMessage("Inserted");
+				updateRes.setMessage("Succes updating invoice");
 			}
 
 		} catch (Exception e) {

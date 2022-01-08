@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,7 +69,7 @@ public class ItemsTypesController extends BaseController {
 	
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = ItemsTypes.class)))})
 	@DeleteMapping("{id}")
-	public ResponseEntity<?>removeById(@RequestParam("id") String id) throws Exception{
+	public ResponseEntity<?>removeById(@PathVariable("id") String id) throws Exception{
 		boolean result = itemsTypesService.removeById(id);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}

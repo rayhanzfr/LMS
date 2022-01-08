@@ -83,7 +83,7 @@ public class ItemsServiceImpl extends BaseServiceLmsImpl implements ItemsService
 				Items itemsResult = itemsDao.saveOrUpdate(items);
 				commit();
 				saveItemsResDto.setId(itemsResult.getId());
-				saveItemsResDto.setMsg("OK");
+				saveItemsResDto.setMsg("You was create a new Item");
 			} catch (Exception e) {
 				e.printStackTrace();
 				rollback();
@@ -123,7 +123,7 @@ public class ItemsServiceImpl extends BaseServiceLmsImpl implements ItemsService
 				items = itemsDao.saveOrUpdate(items);
 				commit();
 				updateItemsResDto.setVersion(itemsBrands.getVersion());
-				updateItemsResDto.setMsg("OK");
+				updateItemsResDto.setMsg("Success update item "+items.getItemsName());
 			} catch (Exception e) {
 				e.printStackTrace();
 				rollback();

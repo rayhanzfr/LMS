@@ -107,13 +107,12 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 				Users userSystem = usersDao.findByEmail("lawenconassetsmanagement@gmail.com");
 				users.setCreatedBy(userSystem.getId());
 				users.setRoles(roles);
-				users.setUsersPassword(bCryptPasswordEncoder.encode(users.getUsersPassword()));
 				users.setUsersPassword(bCryptPasswordEncoder.encode(initPassword));
 				begin();
 				users = usersDao.saveOrUpdate(users);
 				commit();
 				resDto.setId(users.getId());
-				resDto.setMessage("INSERTED");
+				resDto.setMessage("You was creating new User");
 				
 				EmailHelper emailHelper = new EmailHelper();
 				emailHelper.setReceiver(users.getUsersEmail());
@@ -149,7 +148,7 @@ public class UsersServiceImpl extends BaseServiceLmsImpl implements UsersService
 				users = usersDao.saveOrUpdate(users);
 				commit();
 				resDto.setVersion(users.getVersion());
-				resDto.setMessage("UPDATED");
+				resDto.setMessage("You updating "+users.getUsersEmail());
 			} catch (Exception e) {
 				e.printStackTrace();
 				rollback();

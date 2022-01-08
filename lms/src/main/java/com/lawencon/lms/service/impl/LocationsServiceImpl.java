@@ -7,6 +7,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.lms.constant.EnumCode;
+import com.lawencon.lms.dao.CompaniesDao;
 import com.lawencon.lms.dao.EmployeesDao;
 import com.lawencon.lms.dao.LocationsDao;
 import com.lawencon.lms.dao.PermissionsDao;
@@ -32,7 +33,7 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 	private LocationsDao locationsDao;
 
 	@Autowired
-	private CompaniesService companiesService;
+	private CompaniesDao companiesDao;
 
 	@Autowired
 	private UsersDao usersDao;
@@ -98,7 +99,7 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 			}
 
 			else {
-				Companies companies = companiesService.findByCode(locations.getCompanies().getCompaniesCode());
+				Companies companies = companiesDao.findByCode(locations.getCompanies().getCompaniesCode());
 
 				if (companies == null) {
 					throw new Exception("Companies code not found");
@@ -120,7 +121,7 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 			}
 
 			saveRes.setId(locations.getId());
-			saveRes.setMessage("Inserted");
+			saveRes.setMessage("You was inserted a new location");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -135,7 +136,7 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 
 		try {
 			Locations locationsDb = findByCode(locations.getLocationsCode());
-			Companies companies = companiesService.findByCode(locations.getCompanies().getCompaniesCode());
+			Companies companies = companiesDao.findByCode(locations.getCompanies().getCompaniesCode());
 			locationsDb.setCompanies(companies);
 			locationsDb.setUpdatedBy(getIdAuth());
 			locationsDb.setLocationsDeploy(locations.getLocationsDeploy());
@@ -145,19 +146,13 @@ public class LocationsServiceImpl extends BaseServiceLmsImpl implements Location
 			if (!validation) {
 				throw new Exception("Access Denied");
 			}
-
 			else {
-				if (locationsDb.getLocationsDeploy() == null) {
-					throw new Exception("locationsDeploy required");
-				} else {
 					begin();
 					locations = locationsDao.saveOrUpdate(locationsDb);
 					commit();
 					updateRes.setVersion(locations.getVersion());
-					updateRes.setMessage("Inserted");
+					updateRes.setMessage("Succes updating location "+locations.getLocationsDeploy());
 				}
-			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();

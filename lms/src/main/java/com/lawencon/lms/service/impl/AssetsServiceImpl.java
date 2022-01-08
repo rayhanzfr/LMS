@@ -399,7 +399,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 					
 					
 					resDto.setData(resDataDto);
-					resDto.setMessage("SUCCESS");
+					resDto.setMessage("You was inserted new Asset");
 				}
 				else {
 					Items item = itemsDao.findByCode(saveAssetsReqDto.getItemsCode());
@@ -442,7 +442,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 					
 					
 					resDto.setData(resDataDto);
-					resDto.setMessage("SUCCESS");
+					resDto.setMessage("You was inserted new Asset");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -484,7 +484,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 
 				UpdateAssetsResDto resDto = new UpdateAssetsResDto();
 				resDto.setData(resDataDto);
-				resDto.setMessage("SUCCESS");
+				resDto.setMessage("Success updated an asset "+result.getAssetsName());
 				return resDto;
 			}
 			else {
@@ -513,7 +513,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 
 				UpdateAssetsResDto resDto = new UpdateAssetsResDto();
 				resDto.setData(resDataDto);
-				resDto.setMessage("SUCCESS");
+				resDto.setMessage("Success updated an asset "+result.getAssetsName());
 				return resDto;
 			}
 		} else {

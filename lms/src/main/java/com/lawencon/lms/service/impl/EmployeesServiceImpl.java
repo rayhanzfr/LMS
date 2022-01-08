@@ -78,16 +78,7 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 		String permissionCode = "PERMSN18";
 		boolean validation = validation(permissionCode);
 		if(validation) {
-			try {
-				begin();
-				Users users = usersDao.findById(getIdAuth());
-				if(users==null) {
-					throw new IllegalAccessException("must login first");
-				}
-				else if (!users.getRoles().getRolesName().equals("SUPER-ADMIN") && users.getIsActive() == false) {
-					throw new IllegalAccessException("only superAdmin can Insert data!");
-				}
-				else {
+
 					Users user = usersDao.findByEmail(employees.getUsers().getUsersEmail());
 					employees.setUsers(user);
 					Companies company = companiesDao.findByCode(employees.getCompanies().getCompaniesCode());
@@ -97,12 +88,8 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 					employees = employeesDao.saveOrUpdate(employees);
 					commit();
 					resDto.setId(employees.getId());
-					resDto.setMessage("INSERTED");	
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				rollback();
-			}
+					resDto.setMessage("You was creating new Employee");	
+
 			return resDto;
 		}
 		else {
@@ -119,12 +106,12 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 		if(validation) {
 			try {
 				Users user = usersDao.findByEmail(employees.getUsers().getUsersEmail());
-				employees.setUsers(user);
 				
 				Companies companies = companiesDao.findByCode(employees.getCompanies().getCompaniesCode());
-				employees.setCompanies(companies);
 				
 				Employees employee = employeesDao.findByCode(employees.getEmployeesCode());
+				employee.setUsers(user);
+				employee.setCompanies(companies);
 				employee.setEmployeesFullname(employees.getEmployeesFullname());
 				employee.setEmployeesAddress(employees.getEmployeesAddress());
 				employee.setUpdatedBy(getIdAuth());
@@ -134,7 +121,7 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 				commit();
 				
 				resDto.setVersion(employees.getVersion());
-				resDto.setMessage("UPDATED");
+				resDto.setMessage("Success updating employee "+employees.getEmployeesFullname());
 			} catch (Exception e) {
 				e.printStackTrace();
 				rollback();

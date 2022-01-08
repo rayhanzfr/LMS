@@ -52,7 +52,7 @@ public class ItemsBrandsServiceImpl extends BaseServiceLmsImpl implements ItemsB
 				itemsBrands = itemsBrandsDao.saveOrUpdate(itemsBrands);
 				commit();
 				saveItemsBrandsResDto.setId(itemsBrands.getId());
-				saveItemsBrandsResDto.setMsg("OK");
+				saveItemsBrandsResDto.setMsg("You was creating a new item brand");
 			} catch (Exception e) {
 				e.printStackTrace();
 				rollback();
@@ -77,7 +77,7 @@ public class ItemsBrandsServiceImpl extends BaseServiceLmsImpl implements ItemsB
 				itemsBrands = itemsBrandsDao.saveOrUpdate(itemsBrands);
 				commit();
 				updateItemsBrandsResDto.setVersion(itemsBrands.getVersion());
-				updateItemsBrandsResDto.setMsg("OK");
+				updateItemsBrandsResDto.setMsg("Succes updating to "+itemsBrands.getItemsBrandsName());
 			} catch (Exception e) {
 				e.printStackTrace();
 				rollback();

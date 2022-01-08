@@ -73,27 +73,15 @@ public class CompaniesController {
 	@PostMapping
 	public ResponseEntity<?> insert(@RequestPart String data, @RequestPart(required=false) MultipartFile file) throws Exception {
 		SaveCompaniesResDto companies = companiesService.save(convertToModel(data, Companies.class), file);
-		SaveCompaniesResDto result = new SaveCompaniesResDto();
-		
-		SaveCompaniesResDto id = new SaveCompaniesResDto();
-		id.setId(companies.getId());
-		
-		result.setId(id.getId());
-		result.setMessage("SUCCESS");
-		return new ResponseEntity<>(result, HttpStatus.CREATED);
+		return new ResponseEntity<>(companies, HttpStatus.CREATED);
 	}
 
 	@ApiResponse(responseCode = "201", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = UpdateCompaniesResDto.class)))})	
 	@PutMapping
 	public ResponseEntity<?> update(@RequestPart String data, @RequestPart(required=false) MultipartFile file) throws Exception {
 		UpdateCompaniesResDto companies = companiesService.update(convertToModel(data, Companies.class), file);
-		UpdateCompaniesResDto ver = new UpdateCompaniesResDto();
-		ver.setVersion(companies.getVersion());
 		
-		UpdateCompaniesResDto result = new UpdateCompaniesResDto();
-		result.setVersion(ver.getVersion());
-		result.setMessage("SUCCESS");
-		return new ResponseEntity<>(result, HttpStatus.CREATED);
+		return new ResponseEntity<>(companies, HttpStatus.CREATED);
 	}
 
 	@ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = Companies.class)))})

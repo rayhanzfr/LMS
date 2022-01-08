@@ -76,13 +76,15 @@ public class CompaniesServiceImpl extends BaseServiceLmsImpl implements Companie
 	@Override
 	public SaveCompaniesResDto save(Companies companies, MultipartFile file) throws Exception {
 		SaveCompaniesResDto saveRes = new SaveCompaniesResDto();
-
+		Files filesInsert = null;
 		try {
-			String img = file.getOriginalFilename();
-			String ext = img.substring(img.lastIndexOf(".") + 1, img.length());
-			Files filesInsert = new Files();
-			filesInsert.setFile(file.getBytes());
-			filesInsert.setExtensions(ext);
+			if(file!=null) {
+				String img = file.getOriginalFilename();
+				String ext = img.substring(img.lastIndexOf(".") + 1, img.length());
+				filesInsert = new Files();
+				filesInsert.setFile(file.getBytes());
+				filesInsert.setExtensions(ext);
+			}
 
 			String permissionsCode = "PERMSN14";
 			Boolean validation = validationUsers(permissionsCode);
@@ -105,11 +107,13 @@ public class CompaniesServiceImpl extends BaseServiceLmsImpl implements Companie
 
 				else {
 					begin();
-					Files filesDb = new Files();
-					filesInsert.setCreatedBy(getIdAuth());
-					filesDb = filesDao.saveOrUpdate(filesInsert);
-					companies.setFiles(filesDb);
-					companies.setCompaniesCode(generateCode());
+					if(filesInsert!=null) {
+						Files filesDb = new Files();
+						filesInsert.setCreatedBy(getIdAuth());
+						filesDb = filesDao.saveOrUpdate(filesInsert);
+						companies.setFiles(filesDb);
+					}
+					companies.setCompaniesCode(generateCode());	
 					companies.setCreatedBy(getIdAuth());
 					companies = companiesDao.saveOrUpdate(companies);
 					commit();
@@ -117,7 +121,7 @@ public class CompaniesServiceImpl extends BaseServiceLmsImpl implements Companie
 			}
 
 			saveRes.setId(companies.getId());
-			saveRes.setMessage("Inserted");
+			saveRes.setMessage("You was inserted new company");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -178,7 +182,7 @@ public class CompaniesServiceImpl extends BaseServiceLmsImpl implements Companie
 						commit();
 
 						updateRes.setVersion(companies.getVersion());
-						updateRes.setMessage("Inserted");
+						updateRes.setMessage("You was update "+companies.getCompaniesName());
 					}
 
 				}

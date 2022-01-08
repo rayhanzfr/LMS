@@ -100,7 +100,7 @@ public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTy
 					itemsTypes = itemsTypesDao.saveOrUpdate(itemType);
 					commit();
 					resDto.setId(itemsTypes.getId());
-					resDto.setMessage("INSERTED");
+					resDto.setMessage("You was create a new item type");
 				}
 
 			} catch (Exception e) {
@@ -128,7 +128,7 @@ public class ItemsTypesServiceImpl extends BaseServiceLmsImpl implements ItemsTy
 			itemsTypes = itemsTypesDao.saveOrUpdate(itemsType);
 			commit();
 			resDto.setVersion(itemsTypes.getVersion());
-			resDto.setMessage("UPDATED");
+			resDto.setMessage("Succes updating to "+itemsTypes.getItemsTypesName());
 		} catch (Exception e) {
 			e.printStackTrace();
 			rollback();
