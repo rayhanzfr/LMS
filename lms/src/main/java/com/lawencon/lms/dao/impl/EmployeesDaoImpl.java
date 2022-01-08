@@ -47,8 +47,8 @@ public class EmployeesDaoImpl extends BaseDaoImpl<Employees> implements Employee
 		sql.append(" INNER JOIN FETCH e.users u ");
 		sql.append(" INNER JOIN FETCH u.roles ");
 		sql.append(" INNER JOIN FETCH e.companies c ");
-		sql.append(" INNER JOIN FETCH c.files ");
-		sql.append(" WHERE e.employeesCode = :code ");
+		sql.append(" INNER JOIN FETCH c.files f ");
+		sql.append(" WHERE e.employeesCode = :code AND (f IS NULL OR f IS NOT NULL) ");
 		
 		Employees employees = createQuery(sql.toString(), Employees.class)
 				.setParameter("code", code)

@@ -77,7 +77,7 @@ public class ItemsTypesDaoImpl extends BaseDaoImpl<ItemsTypes> implements ItemsT
 
 	@Override
 	public Integer count() throws Exception {
-		String sql = "SELECT COUNT(it.id) FROM items_types ib ";
+		String sql = "SELECT COUNT(it) FROM items_types it ";
 		Object result = createNativeQuery(sql).getSingleResult();
 		BigInteger results = new BigInteger(result.toString());
 		Integer resultsInteger = results.intValue();

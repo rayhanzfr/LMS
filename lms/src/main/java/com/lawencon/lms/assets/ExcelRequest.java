@@ -85,9 +85,12 @@ public class ExcelRequest {
 						asset.setInvoicesCode(data);
 						break;
 					case 2:
-						asset.setStatusesAssetsCode(data);
+						asset.setCompaniesCode(data);
 						break;
 					case 3:
+						asset.setStatusesAssetsCode(data);
+						break;
+					case 4:
 						asset.setAssetsExpired(data);
 						break;
 					default:
