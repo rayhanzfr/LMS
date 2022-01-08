@@ -41,9 +41,6 @@ public class Assets extends BaseEntity{
 	@Column
 	private LocalDate assetsExpired;
 
-	
-	
-	
 	public Companies getCompanies() {
 		return companies;
 	}
