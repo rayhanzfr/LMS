@@ -25,8 +25,6 @@ public class AssetsDataDto {
 	private LocalDateTime updatedAt;
 	private boolean isActive;
 	private Integer version;
-
-	
 	
 	public String getCompaniesCode() {
 		return companiesCode;
