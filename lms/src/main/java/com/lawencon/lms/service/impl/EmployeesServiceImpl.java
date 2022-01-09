@@ -78,7 +78,7 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 		String permissionCode = "PERMSN18";
 		boolean validation = validation(permissionCode);
 		if(validation) {
-
+					begin();
 					Users user = usersDao.findByEmail(employees.getUsers().getUsersEmail());
 					employees.setUsers(user);
 					Companies company = companiesDao.findByCode(employees.getCompanies().getCompaniesCode());
@@ -86,9 +86,9 @@ public class EmployeesServiceImpl extends BaseServiceLmsImpl implements Employee
 					employees.setEmployeesCode(generateCode());
 					employees.setCreatedBy(getIdAuth());
 					employees = employeesDao.saveOrUpdate(employees);
-					commit();
 					resDto.setId(employees.getId());
 					resDto.setMessage("You was creating new Employee");	
+					commit();
 
 			return resDto;
 		}

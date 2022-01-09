@@ -1,12 +1,3 @@
-create or replace function bytea_import(p_path text, p_result out bytea) 
-                       language plpgsql as $$
-    declare
-      l_oid oid;
-    begin
-      select lo_import(p_path) into l_oid;
-      select lo_get(l_oid) INTO p_result;
-      perform lo_unlink(l_oid);
-    end;$$;
 
 INSERT INTO roles (roles_code,roles_name,"version",created_by,created_at,is_active)VALUES
 ('ROLES1','SYSTEM',0,'1',now(),true);
