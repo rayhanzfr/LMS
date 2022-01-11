@@ -20,7 +20,7 @@ import liquibase.pro.packaged.ce;
 public class ExcelRequest {
 
 	static String type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-	static String[] headers = { "items_code", "invoices_code","statuses_assets_code",
+	static String[] headers = { "items_code", "invoices_code","companies_code","statuses_assets_code",
 			"assets_expired" };
 	static String sheets = "assets";
 

@@ -571,6 +571,7 @@ public class AssetsServiceImpl extends BaseServiceLmsImpl implements AssetsServi
 				SaveAssetsReqDto save = new SaveAssetsReqDto();
 				save.setItemsCode(asset.getItemsCode());
 				save.setInvoicesCode(asset.getInvoicesCode());
+				save.setCompaniesCode(asset.getCompaniesCode());
 				save.setAssetsName(asset.getAssetsName());
 				save.setStatusesAssetsCode(asset.getStatusesAssetsCode());
 				save.setAssetsExpired(asset.getAssetsExpired());
